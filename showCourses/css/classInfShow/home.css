@@ -1,0 +1,357 @@
+#gdxy{ /*弹出窗*/
+	width: 600px;
+	/*height:526px;*/
+	background: #fff;
+	z-index: 100;
+	box-shadow: 0 0 15px #999999;
+	position: absolute;
+	left:218px;
+	top:210px;
+	display: none;
+}
+#xys{padding: 10px;}
+#gdxy ul li{/*每一块数据的样式，主要是固定宽度*/
+	width: 270px;
+	float: left;
+	margin: 5px;
+}
+#gdxy ul{/*弹出窗内容分2列显示*/
+	columns: 280px 2;
+}
+#close{/*弹出窗关闭按钮*/
+	position: relative;
+	left:577px;
+	top:7px;
+}
+#showMore:hover{
+	color: #007a51;
+}
+/*设置右侧板块左对齐的class，用于定位一行两个内容时左半部分内容*/
+.right_left{
+	 color:#006948;
+	 float:left;
+	 margin-top:26px;
+}
+
+/*设置右对齐的class，用于定位一行两个内容时右半部分内容*/
+.right_right{
+	 float:right;
+	 margin-top:26px;
+	color:#006948;
+}
+
+.right_right a{
+	font-size:16px;
+	font-weight:bold;
+	color:#006948;
+}
+
+.right_right .small{
+	font-size:14px;
+}
+
+.right_right .smallImg{
+	width:28px;
+	height:14px;
+}
+
+.right_right a:hover{
+	 color:#099d6b;
+}
+
+/*页面左侧的2个板块宽度与位置*/
+#home_left{
+	 width:277px;
+	 min-height:614px;
+	 float:left;
+	 margin-top:37px;
+}
+
+/*页面右侧的4个板块宽度与位置*/
+#home_right{
+	 width:825px;
+	 min-height:654px;
+	 float:right;
+	 margin-top:37px;
+	 color:#666666;
+	 font-size:14px;
+}
+
+/*设置left类调用两次来来显示左侧的两个小版块*/
+#home_left .left{
+	 width:277px;
+	 min-height:330px;
+	 background-color:#fff;
+	 color:#333333;
+	 font-size:14px;
+}
+
+/*使用表格显示左侧板块信息，第一个板块上垂直对齐，第二个板块中垂直对齐*/
+table{
+	 border:none;
+	 width:218px;
+	 margin-left:28px;
+}
+.left td:first-child{
+	width:60px;
+	/*color: red;*/
+}
+.left td{
+	 width:109px;
+	 vertical-align:text-top;
+}
+
+.left a{
+	 color:#333333;
+}
+
+.left a:hover{
+	 color:#666666;
+}
+
+/*为左侧的第二个板块设置中垂直对齐，用在多个td标签内，设置为class*/
+.left .down{
+	 vertical-align:middle;
+	 height:70px;
+}
+
+/*右侧板块的第一个板块*/
+#home_right #r1{
+	 width:825px;
+	 height:274px;
+	 background-color:#fff;
+}
+
+/*第一个板块的内容部分*/
+#r1 #r1_content{
+	 width:752px;
+	 height:211px;
+	 margin-left:37px;
+}
+
+#r1_content #left_photo{
+	 width:211px;
+	 height:211px;
+	 float:left;
+	 margin-top:26px;
+}
+
+#r1_content #left_photo a{
+	outline: none;
+}
+/*第一个板块除图片其他信息放在id为message的div内*/
+#r1_content #course_message{
+	 width:526px;
+	 height:211px;
+	 float:right;
+}
+
+/*课程简介的样式*/
+#course_message #course_details{
+	 width:526px;
+	 min-height: 140px;
+	 float:left;
+	 margin-top:-20px;
+}
+
+#course_message #evaluation3{
+	width:200px;
+	float:left;
+	margin-top:27px;
+}
+
+/*右侧板块的第二个板块*/
+#home_right #r2{
+	 width:825px;
+	 height:180px;
+	 background:#fff;
+}
+
+/*第二个板块的内容样式*/
+#r2 #r2_content{
+	 width:681px;
+	 margin-left:110px;
+
+}
+
+/*使用列表为4个链接定位*/
+#r2_content ul{
+	 width:681px;
+	 margin-top:56px;
+	 float:left;
+}
+
+#r2_content li{
+	 width:340px;
+	 /*height:30px;*/
+	 /*line-height: 30px;*/
+	 float:left;
+	 text-align: center;
+}
+
+/*列表中的第一列左对齐第二列右对齐，为了使两个li之间存在空隙*/
+li .li_left{
+	 width:300px;
+	 float:left;
+}
+
+li .li_right{
+	 width:300px;
+	 float:right;
+}
+#r2_content .right_left,#r2_content .right_right {
+	margin-top: 0;
+}
+#r2_content ul {
+	margin-top: 76px;
+}
+/*第三个板块*/
+#home_right #r3{
+	 width:825px;
+	 min-height:96px;
+	 position: relative;
+	 background:#fff;
+	 clear: both;
+}
+
+/*第三个板块的内容，为了使右上角的更多与标题对齐*/
+#r3 #r3_content{
+	 width:681px;
+	 margin-left:110px;
+}
+
+/*第四个板块*/
+#home_right #r4{
+	 width:825px;
+	 height:142px;
+	 background:#fff;
+}
+
+
+/*好评度写成一个div来整体定位*/
+#r4 #praise{
+	 color:#eaa327;
+	 font-size:18px;
+	 width:83px;
+	 height:49px;
+	 float:left;
+	 margin-left:25px;
+	 text-align:center;
+}
+
+/*好评度的分数*/
+#r4 #praise_score{
+	 color:#eaa327;
+	 font-size:30px;
+	 margin-top:56px;
+}
+
+/*因为分数的字体较大导致好评度和分数相隔较远，使用margin缩短距离*/
+#r4 #praise_name{
+	 margin-top:-25px;
+}
+
+#r4 #evaluation{
+	width:400px;
+	height:30px;
+	float:left;
+	margin-left:120px;
+	margin-top:-70px;
+}
+
+#evaluation li{
+	float:left;
+	width:200px;
+}
+
+#r4 #evaluation1{
+}
+
+#r4 #evaluation1{
+}
+
+#r4 form{
+	float:left;
+	margin-top:-70px;
+	margin-left:560px;
+}
+
+#r4 #button{
+	background-color: #007A51;
+	color:#fff;
+	border:none;
+	width:60px;
+	height:30px;
+
+}
+/*
+*BlueMUI_Review
+*评论组件
+*/
+
+.BlueMUI_Review{
+	overflow: hidden;
+	width: 200px;
+}
+/*评价组件的名字样式*/
+.BlueMUI_Review .name{
+	display: block;
+	float: left;
+	height: 30px;
+}
+/*星星的形状样式*/
+.BlueMUI_Review .star{
+	display: block;
+	float: left;
+	width: 18px;
+	height: 18px;
+	cursor: pointer;
+}
+/*有星星的背景图样式*/
+.BlueMUI_Review .onstar{
+	background: url("../../imgs/home-course/star1.png");
+}
+
+/*无星星的背景图样式*/
+.BlueMUI_Review .nostar{
+	background: url("../../imgs/home-course/star.png");
+}
+
+
+
+#kkqk>ul>li{
+	display: inline-block;
+	/*width: 196px;*/
+	margin-bottom: 20px;
+}
+#kkqk>ul>li>ul>li{
+	/*display: block;*/
+	margin: 7px 20px;
+}
+#kkqk {
+	width: 800px;
+	position: relative;
+	left: -70px;
+	top: 10px;
+}
+#r3>div:first-child {
+	padding-right: 36px;
+}
+
+
+/*修改*/
+#kcjs {
+	width: 526px;
+	height: 120px;
+	word-break: break-all;
+	line-height: 24px;
+	overflow: hidden;
+}
+
+#warn {
+	position: absolute;
+	font-size: 12px;
+	margin-top: 10px;
+	margin-left: -65px;
+}
+

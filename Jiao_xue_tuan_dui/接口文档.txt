@@ -1,0 +1,33 @@
+进入页面后，前台向后台发送查看者信息：
+{
+  id:string,//教师/主任的统一认证码
+  name:string教师的姓名
+}
+
+后台向前台返回：
+{
+  success:bool,//前台发送的身份是否合法，合法为true，非法为false（一般不会非法），若非法，data为空
+  data:{
+    rank:number,//3个不同的权限，3个数字
+    lists:[ //列表，为该教师权限下的数据,不同权限返回的子对象内容可不同
+      {   //院长、秘书
+        institute:string,//教研室名称
+        academy:string,//学院名称
+        master:string//教研室主任,可为空
+      },
+      {   //课程负责人
+        courseNum:string,//课程编号
+        courseName:string,//课程名称
+        teamMenber:[//教学团队成员，可为空
+          "name1",
+          "name2"
+        ]
+      },
+      {    //教研室主任
+        courseNum:string,//课程编号
+        courseName:sring,//课程名称
+        courseMaster:string//课程负责人
+      }
+    ]
+  }
+}
