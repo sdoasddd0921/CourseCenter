@@ -1,7 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 var ajax=require('./post_ajax.js');
-
+var Place=3;
+console.log("Place=3,预览、审核页")
+// var url_place=parseHash(window.location.href);
+// if("place" in url_place) {
+//   Place = url_place.place;
+// }
 /*
  * 学习资源
  */
@@ -72,14 +77,14 @@ var Show_nav_item=function(prop) {
     data={
       unifyCode:BluMUI.result.config.user_id,
       kcbh:BluMUI.result.config.course_id,
-      place:1,
+      place:Place,
     };
   } else {
     url=courseCenter.host+'getStudyResourceMsg';
     data={
       unifyCode:BluMUI.result.config.user_id,
       kcbh:BluMUI.result.config.course_id,
-      place:1,
+      place:Place,
       zylb:prop=='b'?21:1+num.indexOf(prop)
     };
   }
@@ -217,8 +222,9 @@ class BlueMUI_Create_b extends React.Component {
   }
   componentDidMount() {
     console.log('___247',this.jiangyi,this.other)
-    if(this.other&&this.jiangyi) {
-      this.refs.right.innerHTML="<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>没有数据</span></div>";
+    if((this.other==101||this.other==102)&&this.jiangyi) {
+      var error_msg=this.other==101?'没有数据':'正在维护';
+      this.refs.right.innerHTML="<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>"+error_msg+"</span></div>";
     } else {
       this.show(this.default_kcbh);
     }
@@ -287,7 +293,7 @@ class BlueMUI_Create_b extends React.Component {
     var data={
       unifyCode:BluMUI.result.config.user_id,
       kcbh:BluMUI.result.config.course_id,
-      place:2,
+      place:Place,
       zylb:22
     };
     var ajax_data='';
@@ -299,8 +305,8 @@ class BlueMUI_Create_b extends React.Component {
     {
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {
         let datas=JSON.parse(xmlhttp.responseText);
-        this.other = datas.meta.result==101;
-        if(this.other) {
+        this.other = datas.meta.result;
+        if(this.other==101||this.other==102) {
           back.push(<div key="no_data" style={{width:"100%",height:"100px"}}></div>);
         } else {
           console.log('success',datas)

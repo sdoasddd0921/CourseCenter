@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -54,10 +54,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -85,10 +85,11 @@ webpackJsonp([0],{
 
 	var ajax = __webpack_require__(160);
 	var Place = 2;
-	var url_place = parseHash(window.location.href);
-	if ("place" in url_place) {
-	  Place = url_place.place;
-	}
+	console.log("Place=2,展示页");
+	// var url_place=parseHash(window.location.href);
+	// if("place" in url_place) {
+	//   Place = url_place.place;
+	// }
 	/*
 	 * 学习资源
 	 */
@@ -967,10 +968,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1020,6 +1021,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

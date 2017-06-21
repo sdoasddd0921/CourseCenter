@@ -2,10 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 var ajax=require('./post_ajax.js');
 var Place=2;
-var url_place=parseHash(window.location.href);
-if("place" in url_place) {
-  Place = url_place.place;
-}
+console.log("Place=2,展示页")
+// var url_place=parseHash(window.location.href);
+// if("place" in url_place) {
+//   Place = url_place.place;
+// }
 /*
  * 学习资源
  */

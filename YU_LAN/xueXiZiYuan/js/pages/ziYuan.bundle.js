@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -54,10 +54,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -84,11 +84,12 @@ webpackJsonp([0],{
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var ajax = __webpack_require__(160);
-	var Place = 2;
-	var url_place = parseHash(window.location.href);
-	if ("place" in url_place) {
-	  Place = url_place.place;
-	}
+	var Place = 3;
+	console.log("Place=3,审核、预览页");
+	// var url_place=parseHash(window.location.href);
+	// if("place" in url_place) {
+	//   Place = url_place.place;
+	// }
 	/*
 	 * 学习资源
 	 */
@@ -967,10 +968,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1020,6 +1021,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

@@ -1,7 +1,7 @@
 webpackJsonp([1],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -21,10 +21,10 @@ webpackJsonp([1],{
 	console.log(document.body.height);
 	parent.document.getElementById('ifs-gzzd').height = document.body.offsetHeight;
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -947,10 +947,10 @@ webpackJsonp([1],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1000,6 +1000,6 @@ webpackJsonp([1],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

@@ -1,6 +1,10 @@
 var BluMUI = require('../libs/blueMonUI.js');
 var ajax=require('../libs/post_ajax.js');
-
+var Place=3;
+// var url_place=parseHash(window.location.href);
+// if("place" in url_place) {
+//   Place = url_place.place;
+// }
 let config={
   user_id:'',
   course_id:''
@@ -18,14 +22,14 @@ if(prop=='f') {
   data={
     unifyCode:BluMUI.result.config.user_id,
     kcbh:BluMUI.result.config.course_id,
-    place:1,
+    place:Place,
   };
 } else {
   url=courseCenter.host+'getStudyResourceMsg';
   data={
     unifyCode:BluMUI.result.config.user_id,
     kcbh:BluMUI.result.config.course_id,
-    place:1,
+    place:Place,
     zylb:1+num.indexOf(prop)
   };
 }
@@ -34,7 +38,9 @@ ajax({
   data:data,
   success:function(gets) {
     let datas=JSON.parse(gets);
-      console.log(datas);
+        console.log(datas);
+
+
       BluMUI.create({
         id:'Nav',
         module:parseHash(window.location.href).module
