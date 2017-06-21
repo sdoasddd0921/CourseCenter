@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -54,10 +54,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ }),
+/***/ },
 
 /***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -371,34 +371,33 @@ webpackJsonp([0],{
 	}(_react2["default"].Component);
 
 	/* 在线展示 */
+	// var config= { // flexpaper配置选项
+	//   Scale : 1,
+	//   ZoomTransition : 'easeOut',
+	//   ZoomTime : 0.5,
+	//   ZoomInterval : 0.2,
+	//   FitPageOnLoad : true,
+	//   FitWidthOnLoad : true,
+	//   FullScreenAsMaxWindow : false,
+	//   ProgressiveLoading : true,
+	//   MinZoomSize : 0.2,
+	//   MaxZoomSize : 5,
+	//   SearchMatchAll : false,
+	//   InitViewMode : 'Portrait',
+	//   RenderingOrder : 'flash',
+	//   StartAtPage : '',
+	//   ViewModeToolsVisible : true,
+	//   ZoomToolsVisible : true,
+	//   NavToolsVisible : true,
+	//   CursorToolsVisible : true,
+	//   SearchToolsVisible :true,
+	//   WMode : 'window',
+	//   localeChain: 'zh_CN'
+	// };
 
-
-	var config = { // flexpaper配置选项
-	  Scale: 1,
-	  ZoomTransition: 'easeOut',
-	  ZoomTime: 0.5,
-	  ZoomInterval: 0.2,
-	  FitPageOnLoad: true,
-	  FitWidthOnLoad: true,
-	  FullScreenAsMaxWindow: false,
-	  ProgressiveLoading: true,
-	  MinZoomSize: 0.2,
-	  MaxZoomSize: 5,
-	  SearchMatchAll: false,
-	  InitViewMode: 'Portrait',
-	  RenderingOrder: 'flash',
-	  StartAtPage: '',
-	  ViewModeToolsVisible: true,
-	  ZoomToolsVisible: true,
-	  NavToolsVisible: true,
-	  CursorToolsVisible: true,
-	  SearchToolsVisible: true,
-	  WMode: 'window',
-	  localeChain: 'zh_CN'
-	};
-	var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
 
 	//讲义
+
 
 	var BlueMUI_Create_b = function (_React$Component3) {
 	  _inherits(BlueMUI_Create_b, _React$Component3);
@@ -422,26 +421,18 @@ webpackJsonp([0],{
 	      this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + link.split('.')[0] + '&oName=' + link;
 	    }
 	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      console.log('___247', this.jiangyi, this.other);
-	      if ((this.other == 101 || this.other == 102) && this.jiangyi) {
-	        var error_msg = this.other == 101 ? '没有数据' : '正在维护';
-	        this.refs.right.innerHTML = "<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>" + error_msg + "</span></div>";
-	      } else {
-	        this.show(this.default_kcbh);
-	      }
-	    }
-	  }, {
 	    key: 'show',
 	    value: function show(No) {
+	      // 在线显示PDF
 	      if (No) {
-	        config.SWFFile = swfURL + No.xyswjm;
-	        $('#preview').FlexPaperViewer({
-	          config: config
-	        });
+	        var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
+	        window.frames['preview'].location.href = 'pdfViewer.html?file=' + (swfURL + No.xywjm);
+	        // $('#preview').FlexPaperViewer(
+	        //   {
+	        //     config: config
+	        //   }
+	        // );
 	        console.log(No);
-	        console.log('config:', config.SWFFile);
 	        if (No.sfnxz == 1) {
 	          // this.refs.fujian_download.innerText
 	          _reactDom2["default"].render(_react2["default"].createElement(
@@ -472,6 +463,8 @@ webpackJsonp([0],{
 	              '\u4E0B\u8F7D\u8BB2\u4E49'
 	            )
 	          ), document.getElementById('Down'));
+	        } else {
+	          _reactDom2["default"].unmountComponentAtNode(document.getElementById('Down'));
 	        }
 	      }
 	    }
@@ -565,7 +558,7 @@ webpackJsonp([0],{
 	          'div',
 	          { id: 'jiangyi' },
 	          this.create_jiangyi(),
-	          this.jiangyi ? '' : _react2["default"].createElement('div', { id: 'preview', ref: 'preview', style: { paddingRight: '24px', height: '700px' } }),
+	          this.jiangyi ? '' : _react2["default"].createElement('iframe', { name: 'preview', ref: 'preview', style: { display: 'block', width: '100%', height: '700px' } }),
 	          _react2["default"].createElement('div', { ref: 'fujian_download', id: 'Down' })
 	        ),
 	        _react2["default"].createElement(
@@ -575,6 +568,17 @@ webpackJsonp([0],{
 	        ),
 	        _react2["default"].createElement('iframe', { src: '', frameBorder: '0', ref: 'DOWNLOAD', style: { display: 'none' } })
 	      );
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      console.log('___247', this.jiangyi, this.other);
+	      if ((this.other == 101 || this.other == 102) && this.jiangyi) {
+	        var error_msg = this.other == 101 ? '没有数据' : '正在维护';
+	        this.refs.right.innerHTML = "<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>" + error_msg + "</span></div>";
+	      } else {
+	        this.show(this.default_kcbh);
+	      }
 	    }
 	  }]);
 
@@ -968,10 +972,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ }),
+/***/ },
 
 /***/ 160:
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	"use strict";
 
@@ -1021,6 +1025,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ })
+/***/ }
 
 });

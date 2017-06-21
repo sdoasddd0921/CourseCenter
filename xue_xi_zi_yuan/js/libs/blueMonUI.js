@@ -182,30 +182,30 @@ class BlueMUI_Create_a extends React.Component {
 }
 
 /* 在线展示 */
-var config= { // flexpaper配置选项
-  Scale : 1,
-  ZoomTransition : 'easeOut',
-  ZoomTime : 0.5,
-  ZoomInterval : 0.2,
-  FitPageOnLoad : true,
-  FitWidthOnLoad : true,
-  FullScreenAsMaxWindow : false,
-  ProgressiveLoading : true,
-  MinZoomSize : 0.2,
-  MaxZoomSize : 5,
-  SearchMatchAll : false,
-  InitViewMode : 'Portrait',
-  RenderingOrder : 'flash',
-  StartAtPage : '',
-  ViewModeToolsVisible : true,
-  ZoomToolsVisible : true,
-  NavToolsVisible : true,
-  CursorToolsVisible : true,
-  SearchToolsVisible :true,
-  WMode : 'window',
-  localeChain: 'zh_CN'
-};
-var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
+// var config= { // flexpaper配置选项
+//   Scale : 1,
+//   ZoomTransition : 'easeOut',
+//   ZoomTime : 0.5,
+//   ZoomInterval : 0.2,
+//   FitPageOnLoad : true,
+//   FitWidthOnLoad : true,
+//   FullScreenAsMaxWindow : false,
+//   ProgressiveLoading : true,
+//   MinZoomSize : 0.2,
+//   MaxZoomSize : 5,
+//   SearchMatchAll : false,
+//   InitViewMode : 'Portrait',
+//   RenderingOrder : 'flash',
+//   StartAtPage : '',
+//   ViewModeToolsVisible : true,
+//   ZoomToolsVisible : true,
+//   NavToolsVisible : true,
+//   CursorToolsVisible : true,
+//   SearchToolsVisible :true,
+//   WMode : 'window',
+//   localeChain: 'zh_CN'
+// };
+
 
 //讲义
 class BlueMUI_Create_b extends React.Component {
@@ -220,26 +220,18 @@ class BlueMUI_Create_b extends React.Component {
   xiazai(link) {
     this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
   }
-  componentDidMount() {
-    console.log('___247',this.jiangyi,this.other)
-    if((this.other==101||this.other==102)&&this.jiangyi) {
-      var error_msg=this.other==101?'没有数据':'正在维护';
-      this.refs.right.innerHTML="<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>"+error_msg+"</span></div>";
-    } else {
-      this.show(this.default_kcbh);
-    }
-  }
 
   show(No) {
+    // 在线显示PDF
     if(No) {
-      config.SWFFile = swfURL + No.xyswjm;
-      $('#preview').FlexPaperViewer(
-        {
-          config: config
-        }
-      );
+      var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
+      window.frames['preview'].location.href = 'pdfViewer.html?file='+(swfURL + No.xywjm);
+      // $('#preview').FlexPaperViewer(
+      //   {
+      //     config: config
+      //   }
+      // );
       console.log(No)
-      console.log('config:',config.SWFFile)
       if(No.sfnxz==1) {
         // this.refs.fujian_download.innerText
         ReactDOM.render(
@@ -265,6 +257,8 @@ class BlueMUI_Create_b extends React.Component {
           </div>,
           document.getElementById('Down')
         );
+      } else {
+        ReactDOM.unmountComponentAtNode(document.getElementById('Down'));
       }
     }
   }
@@ -332,7 +326,7 @@ class BlueMUI_Create_b extends React.Component {
     return(<div id='right' ref='right'>
       <div id="jiangyi">
         {this.create_jiangyi()}
-        {this.jiangyi?'':<div id="preview" ref="preview" style={{paddingRight:'24px',height:'700px'}}></div>}
+        {this.jiangyi?'':<iframe name="preview" ref="preview" style={{display:'block',width:'100%',height:'700px'}}></iframe>}
         
         <div ref="fujian_download" id="Down"></div>
       </div>
@@ -341,6 +335,16 @@ class BlueMUI_Create_b extends React.Component {
       </div>
       <iframe src="" frameBorder="0" ref='DOWNLOAD' style={{display:'none'}}></iframe>
     </div>);
+  }
+
+  componentDidMount() {
+    console.log('___247',this.jiangyi,this.other)
+    if((this.other==101||this.other==102)&&this.jiangyi) {
+      var error_msg=this.other==101?'没有数据':'正在维护';
+      this.refs.right.innerHTML="<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>"+error_msg+"</span></div>";
+    } else {
+      this.show(this.default_kcbh);
+    }
   }
 }
 
