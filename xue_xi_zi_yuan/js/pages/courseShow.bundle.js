@@ -8,21 +8,20 @@ webpackJsonp([0],{
 	var BluMUI = __webpack_require__(1);
 	var ajax = __webpack_require__(160);
 	var Place = 2;
-	// var url_place=parseHash(window.location.href);
-	// if("place" in url_place) {
-	//   Place = url_place.place;
-	// }
+
+	var prop = parseHash(window.location.href).module || 'a';
+	var num = ['a', 'b', 'c', 'd', 'e'];
 	var config = {
 	  user_id: '',
 	  course_id: ''
 	};
+	var data = {};
+	var url = '';
+
 	config.user_id = getCookie('userId');
 	config.course_id = parseHash(window.location.href).classId;
 	BluMUI.result.config = config;
-	var prop = parseHash(window.location.href).module || 'a';
-	var url = void 0;
-	var data = void 0;
-	var num = ['a', 'b', 'c', 'd', 'e'];
+
 	console.log('测试接收的参数：', config.course_id, prop);
 	if (prop == 'f') {
 	  url = courseCenter.host + 'getTextbookResourceMsg';
@@ -40,19 +39,12 @@ webpackJsonp([0],{
 	    zylb: 1 + num.indexOf(prop)
 	  };
 	}
-	ajax({
-	  url: url,
-	  data: data,
-	  success: function success(gets) {
-	    var datas = JSON.parse(gets);
-	    console.log(datas);
 
-	    BluMUI.create({
-	      id: 'Nav',
-	      module: parseHash(window.location.href).module
-	    }, 'CreateNav', document.getElementById('React_left'));
-	  }
-	});
+	BluMUI.create({
+	  id: 'Nav',
+	  // module为左边菜单的子选项，默认为'a'，即第一项
+	  module: parseHash(window.location.href).module || 'a'
+	}, 'CreateNav', document.getElementById('React_left'));
 
 /***/ },
 
@@ -107,7 +99,6 @@ webpackJsonp([0],{
 	    _this.choose = _this.choose.bind(_this);
 	    _this.set_nav = _this.set_nav.bind(_this);
 	    console.log(_this.props, '___15');
-	    // this.nav_state=[];
 	    _this.state = {
 	      Nav: _this.props.module || 'a'
 	    };
@@ -115,15 +106,9 @@ webpackJsonp([0],{
 	  }
 
 	  _createClass(BlueMUI_CreateNav, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      this.set_nav();
-	    }
-	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate(prevProps, prevState) {
 	      this.refs[prevState.Nav].style.background = '#FFF';
-	      // this.refs[prevState.Nav].children[0].style.background='#666';
 	      this.refs[prevState.Nav].children[0].style.color = '#333';
 	      this.set_nav();
 	    }
@@ -132,7 +117,6 @@ webpackJsonp([0],{
 	    value: function set_nav() {
 	      var nav = this.refs[this.state.Nav];
 	      nav.style.background = '#007A51';
-	      // nav.children[0].style.background='#FFF';
 	      nav.children[0].style.color = '#FFF';
 	      Show_nav_item(this.state.Nav);
 	    }
@@ -204,12 +188,21 @@ webpackJsonp([0],{
 	        )
 	      );
 	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this.set_nav();
+	    }
 	  }]);
 
 	  return BlueMUI_CreateNav;
 	}(_react2["default"].Component);
 
+	// 在右边显示左边菜单的子项目内容
+
+
 	var Show_nav_item = function Show_nav_item(prop) {
+	  var num = ['a', 'b', 'c', 'd', 'e'];
 	  var Comps = {
 	    a: BlueMUI_Create_a,
 	    b: BlueMUI_Create_b,
@@ -218,10 +211,10 @@ webpackJsonp([0],{
 	    e: BlueMUI_Create_e,
 	    f: BlueMUI_Create_f
 	  };
-	  var url = void 0;
-	  var data = void 0;
 	  var Comp = Comps[prop];
-	  var num = ['a', 'b', 'c', 'd', 'e'];
+	  var data = {};
+	  var url = '';
+
 	  if (prop == 'f') {
 	    url = courseCenter.host + 'getTextbookResourceMsg';
 	    data = {
@@ -238,23 +231,20 @@ webpackJsonp([0],{
 	      zylb: prop == 'b' ? 21 : 1 + num.indexOf(prop)
 	    };
 	  }
+
 	  ajax({
 	    url: url,
 	    data: data,
 	    success: function success(gets) {
 	      var datas = JSON.parse(gets);
-	      // if(datas.meta.result==101) {
-	      //   window.location.href='error1.html';
-	      // } else if(datas.meta.result==102) {
-	      //   window.location.href='error2.html';
-	      // }
-	      console.log(datas);
+	      console.log(datas, '___94');
 	      _reactDom2["default"].unmountComponentAtNode(document.getElementById('React_right'));
 	      _reactDom2["default"].render(_react2["default"].createElement(Comp, datas), document.getElementById('React_right'));
 	    }
 	  });
 	};
 
+	// 检查函数，用于检查每个子项目的数据是否合法
 	function check() {
 	  if (this.props.meta.result == 101) {
 	    return _react2["default"].createElement(
@@ -339,8 +329,9 @@ webpackJsonp([0],{
 	    key: 'create_other_shipin',
 	    value: function create_other_shipin() {
 	      var back = [];
-	      back.push(Create_tab('录播视频'));
 	      var flag = check.call(this);
+
+	      back.push(Create_tab('录播视频'));
 	      if (flag) return;
 	      this.down.map(function (e) {
 	        back.push(_react2["default"].createElement(
@@ -357,7 +348,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.props);
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'right' },
@@ -370,32 +360,6 @@ webpackJsonp([0],{
 	  return BlueMUI_Create_a;
 	}(_react2["default"].Component);
 
-	/* 在线展示 */
-	// var config= { // flexpaper配置选项
-	//   Scale : 1,
-	//   ZoomTransition : 'easeOut',
-	//   ZoomTime : 0.5,
-	//   ZoomInterval : 0.2,
-	//   FitPageOnLoad : true,
-	//   FitWidthOnLoad : true,
-	//   FullScreenAsMaxWindow : false,
-	//   ProgressiveLoading : true,
-	//   MinZoomSize : 0.2,
-	//   MaxZoomSize : 5,
-	//   SearchMatchAll : false,
-	//   InitViewMode : 'Portrait',
-	//   RenderingOrder : 'flash',
-	//   StartAtPage : '',
-	//   ViewModeToolsVisible : true,
-	//   ZoomToolsVisible : true,
-	//   NavToolsVisible : true,
-	//   CursorToolsVisible : true,
-	//   SearchToolsVisible :true,
-	//   WMode : 'window',
-	//   localeChain: 'zh_CN'
-	// };
-
-
 	//讲义
 
 
@@ -405,7 +369,6 @@ webpackJsonp([0],{
 	  function BlueMUI_Create_b(props) {
 	    _classCallCheck(this, BlueMUI_Create_b);
 
-	    // this.create_jiangyi=this.create_jiangyi.bind(this);
 	    var _this4 = _possibleConstructorReturn(this, (BlueMUI_Create_b.__proto__ || Object.getPrototypeOf(BlueMUI_Create_b)).call(this, props));
 
 	    _this4.jiangyi = false;
@@ -426,40 +389,27 @@ webpackJsonp([0],{
 	      // 在线显示PDF
 	      if (No) {
 	        var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
+
 	        window.frames['preview'].location.href = 'pdfViewer.html?file=' + (swfURL + No.xywjm);
-	        // $('#preview').FlexPaperViewer(
-	        //   {
-	        //     config: config
-	        //   }
-	        // );
 	        console.log(No);
 	        if (No.sfnxz == 1) {
-	          // this.refs.fujian_download.innerText
+	          // 字段sfnxz：1->能下载，2->不能下载
 	          _reactDom2["default"].render(_react2["default"].createElement(
 	            'div',
 	            null,
 	            _react2["default"].createElement(
-	              'div',
-	              { style: {
-	                  width: '24px',
-	                  height: '24px',
-	                  borderRadius: '50%',
-	                  display: 'inline-block',
-	                  overflow: 'hidden',
-	                  lineHeight: '24px'
-	                } },
-	              _react2["default"].createElement('img', { src: '../../imgs/classListInfShow/courseShow/ziyuan.png', style: {
-	                  height: '50px',
-	                  width: '50px',
-	                  borderRadius: '50%',
-	                  position: 'relative',
-	                  top: '-13px',
-	                  left: '-13px'
-	                } })
-	            ),
-	            _react2["default"].createElement(
 	              'a',
-	              { href: 'javascript:void(0)', onClick: this.xiazai.bind(this, No.ywjm) },
+	              { href: 'javascript:void(0)', onClick: this.xiazai.bind(this, No.ywjm), style: {
+	                  background: 'url(../../imgs/public/download.png) no-repeat 0px 8px',
+	                  display: 'block',
+	                  color: '#666',
+	                  paddingLeft: '24px',
+	                  width: '58px',
+	                  height: '32px',
+	                  lineHeight: '32px',
+	                  textDecoration: 'none',
+	                  fontSize: '12px'
+	                } },
 	              '\u4E0B\u8F7D\u8BB2\u4E49'
 	            )
 	          ), document.getElementById('Down'));
@@ -468,16 +418,15 @@ webpackJsonp([0],{
 	        }
 	      }
 	    }
-	    // sfnxz
-
 	  }, {
 	    key: 'create_jiangyi',
 	    value: function create_jiangyi() {
 	      var _this5 = this;
 
+	      var back = [];
+
 	      this.jiangyi = check.call(this);
 	      console.log("讲义：", this.props);
-	      var back = [];
 	      back.push(Create_tab('讲义'));
 	      if (this.jiangyi) {
 	        back.push(_react2["default"].createElement('div', { key: 'no_data', style: { width: "100%", height: "100px" } }));
@@ -595,7 +544,6 @@ webpackJsonp([0],{
 	    _classCallCheck(this, BlueMUI_Create_c);
 
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_c.__proto__ || Object.getPrototypeOf(BlueMUI_Create_c)).call(this, props));
-	    // this.create_zuoye=this.create_zuoye.bind(this);
 	  }
 
 	  _createClass(BlueMUI_Create_c, [{
@@ -671,7 +619,6 @@ webpackJsonp([0],{
 	    _classCallCheck(this, BlueMUI_Create_d);
 
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_d.__proto__ || Object.getPrototypeOf(BlueMUI_Create_d)).call(this, props));
-	    // this.create_xiti=this.create_xiti.bind(this);
 	  }
 
 	  _createClass(BlueMUI_Create_d, [{
@@ -746,8 +693,6 @@ webpackJsonp([0],{
 	  function BlueMUI_Create_e(props) {
 	    _classCallCheck(this, BlueMUI_Create_e);
 
-	    // this.create_ziyuan=this.create_ziyuan.bind(this);
-	    // this.create_link=this.create_link.bind(this);
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_e.__proto__ || Object.getPrototypeOf(BlueMUI_Create_e)).call(this, props));
 	  }
 
@@ -762,10 +707,10 @@ webpackJsonp([0],{
 	      var _this12 = this;
 
 	      var flag = check.call(this);
-	      if (flag) return flag;
 	      var back = [];
-	      back.push(Create_tab('附件'));
 	      var xiazai = void 0;
+	      if (flag) return flag;
+	      back.push(Create_tab('附件'));
 
 	      this.props.data.map(function (e) {
 	        if (e.ywjm != '') {
@@ -857,9 +802,10 @@ webpackJsonp([0],{
 	    key: 'create_jiaocai',
 	    value: function create_jiaocai() {
 	      console.log(this);
-	      var back = [];
-	      back.push(Create_tab('课程教材'));
 	      var flag = check.call(this);
+	      var back = [];
+
+	      back.push(Create_tab('课程教材'));
 	      console.log('aaa', flag);
 	      if (flag) return flag;
 	      this.props.data.teachBookList.map(function (e) {
@@ -895,9 +841,10 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'create_cankaoshu',
 	    value: function create_cankaoshu() {
-	      var back = [];
-	      back.push(Create_tab('参考书'));
 	      var flag = check.call(this);
+	      var back = [];
+
+	      back.push(Create_tab('参考书'));
 	      if (flag) return;
 	      this.props.data.referenceBookList.map(function (e) {
 	        back.push(_react2["default"].createElement(

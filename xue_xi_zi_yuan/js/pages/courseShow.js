@@ -1,21 +1,20 @@
 var BluMUI = require('../libs/blueMonUI.js');
 var ajax=require('../libs/post_ajax.js');
 var Place=2;
-// var url_place=parseHash(window.location.href);
-// if("place" in url_place) {
-//   Place = url_place.place;
-// }
+
+let prop=parseHash(window.location.href).module||'a';
+let num=['a','b','c','d','e']
 let config={
   user_id:'',
   course_id:''
 }
+let data={};
+let url='';
+
 config.user_id=getCookie('userId')
 config.course_id=parseHash(window.location.href).classId
 BluMUI.result.config=config;
-let prop=parseHash(window.location.href).module||'a';
-let url;
-let data;
-let num=['a','b','c','d','e']
+
 console.log('测试接收的参数：',config.course_id,prop)
 if(prop=='f') {
   url=courseCenter.host+'getTextbookResourceMsg';
@@ -33,21 +32,13 @@ if(prop=='f') {
     zylb:1+num.indexOf(prop)
   };
 }
-ajax({
-  url:url,
-  data:data,
-  success:function(gets) {
-    let datas=JSON.parse(gets);
-        console.log(datas);
 
-
-      BluMUI.create({
-        id:'Nav',
-        module:parseHash(window.location.href).module
-        },
-        'CreateNav',
-        document.getElementById('React_left')
-      );
-    
-  }
-});
+BluMUI.create(
+  {
+    id:'Nav',
+    // module为左边菜单的子选项，默认为'a'，即第一项
+    module:parseHash(window.location.href).module||'a'
+  },
+  'CreateNav',
+  document.getElementById('React_left')
+);

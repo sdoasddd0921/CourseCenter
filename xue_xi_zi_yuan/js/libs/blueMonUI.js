@@ -11,25 +11,20 @@ console.log("Place=2,展示页")
  * 学习资源
  */
 
- // 左侧导航
+// 左侧导航
 class BlueMUI_CreateNav extends React.Component {
   constructor(props) {
     super(props);
     this.choose=this.choose.bind(this);
     this.set_nav=this.set_nav.bind(this);
     console.log(this.props,'___15')
-    // this.nav_state=[];
     this.state={
       Nav:this.props.module||'a'
     }
   }
 
-  componentDidMount() {
-    this.set_nav();
-  }
   componentDidUpdate(prevProps, prevState) {
     this.refs[prevState.Nav].style.background='#FFF';
-    // this.refs[prevState.Nav].children[0].style.background='#666';
     this.refs[prevState.Nav].children[0].style.color='#333';
     this.set_nav();
   }
@@ -37,7 +32,6 @@ class BlueMUI_CreateNav extends React.Component {
   set_nav() {
     let nav=this.refs[this.state.Nav];
     nav.style.background='#007A51';
-    // nav.children[0].style.background='#FFF';
     nav.children[0].style.color='#FFF';
     Show_nav_item(this.state.Nav);
   }
@@ -57,9 +51,15 @@ class BlueMUI_CreateNav extends React.Component {
       <li ref='f' onClick={this.choose.bind(this,'f')}><span>材料，参考书</span></li>
     </ul>);
   }
+
+  componentDidMount() {
+    this.set_nav();
+  }
 }
 
+// 在右边显示左边菜单的子项目内容
 var Show_nav_item=function(prop) {
+  let num=['a','b','c','d','e'];
   let Comps={
     a:BlueMUI_Create_a,
     b:BlueMUI_Create_b,
@@ -68,10 +68,10 @@ var Show_nav_item=function(prop) {
     e:BlueMUI_Create_e,
     f:BlueMUI_Create_f,
   };
-  let url;
-  let data;
   let Comp=Comps[prop];
-  let num=['a','b','c','d','e']
+  let data={};
+  let url='';
+
   if(prop=='f') {
     url=courseCenter.host+'getTextbookResourceMsg';
     data={
@@ -88,17 +88,13 @@ var Show_nav_item=function(prop) {
       zylb:prop=='b'?21:1+num.indexOf(prop)
     };
   }
+
   ajax({
     url:url,
     data:data,
     success:function(gets) {
       let datas=JSON.parse(gets);
-      // if(datas.meta.result==101) {
-      //   window.location.href='error1.html';
-      // } else if(datas.meta.result==102) {
-      //   window.location.href='error2.html';
-      // }
-      console.log(datas);
+      console.log(datas,'___94');
       ReactDOM.unmountComponentAtNode(document.getElementById('React_right'));
       ReactDOM.render(
         <Comp {...datas}/>,
@@ -108,6 +104,7 @@ var Show_nav_item=function(prop) {
   });
 }
 
+// 检查函数，用于检查每个子项目的数据是否合法
 function check() {
   if(this.props.meta.result==101) {
     return(<div id="error" key='error'>
@@ -160,8 +157,9 @@ class BlueMUI_Create_a extends React.Component {
 
   create_other_shipin() {
     let back=[];
-    back.push(Create_tab('录播视频'));
     let flag = check.call(this);
+
+    back.push(Create_tab('录播视频'));
     if(flag) return;
     this.down.map(e=>{
       back.push(<a target="view_window" href={e.wlxxzylj} key={e.id}>{e.ljmc}</a>)
@@ -173,7 +171,6 @@ class BlueMUI_Create_a extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return(<div id='right'>
       {this.create_shipin()}
       {this.create_other_shipin()}
@@ -181,42 +178,16 @@ class BlueMUI_Create_a extends React.Component {
   }
 }
 
-/* 在线展示 */
-// var config= { // flexpaper配置选项
-//   Scale : 1,
-//   ZoomTransition : 'easeOut',
-//   ZoomTime : 0.5,
-//   ZoomInterval : 0.2,
-//   FitPageOnLoad : true,
-//   FitWidthOnLoad : true,
-//   FullScreenAsMaxWindow : false,
-//   ProgressiveLoading : true,
-//   MinZoomSize : 0.2,
-//   MaxZoomSize : 5,
-//   SearchMatchAll : false,
-//   InitViewMode : 'Portrait',
-//   RenderingOrder : 'flash',
-//   StartAtPage : '',
-//   ViewModeToolsVisible : true,
-//   ZoomToolsVisible : true,
-//   NavToolsVisible : true,
-//   CursorToolsVisible : true,
-//   SearchToolsVisible :true,
-//   WMode : 'window',
-//   localeChain: 'zh_CN'
-// };
-
-
 //讲义
 class BlueMUI_Create_b extends React.Component {
   constructor(props) {
     super(props);
-    // this.create_jiangyi=this.create_jiangyi.bind(this);
     this.jiangyi=false;
     this.other=false;
     this.ziyuan=false;
     this.default_kcbh='';
   }
+
   xiazai(link) {
     this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
   }
@@ -225,35 +196,24 @@ class BlueMUI_Create_b extends React.Component {
     // 在线显示PDF
     if(No) {
       var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
+      
       window.frames['preview'].location.href = 'pdfViewer.html?file='+(swfURL + No.xywjm);
-      // $('#preview').FlexPaperViewer(
-      //   {
-      //     config: config
-      //   }
-      // );
       console.log(No)
       if(No.sfnxz==1) {
-        // this.refs.fujian_download.innerText
+        // 字段sfnxz：1->能下载，2->不能下载
         ReactDOM.render(
           <div>
-            <div style={{
-              width:'24px',
-              height:'24px',
-              borderRadius:'50%',
-              display:'inline-block',
-              overflow:'hidden',
-              lineHeight:'24px'
-            }}>
-              <img src="../../imgs/classListInfShow/courseShow/ziyuan.png" style={{
-                height:'50px',
-                width:'50px',
-                borderRadius:'50%',
-                position:'relative',
-                top:'-13px',
-                left:'-13px'
-              }}/>
-            </div>
-            <a href="javascript:void(0)" onClick={this.xiazai.bind(this,No.ywjm)}>下载讲义</a>
+            <a href="javascript:void(0)" onClick={this.xiazai.bind(this,No.ywjm)} style={{
+              background:'url(../../imgs/public/download.png) no-repeat 0px 8px',
+              display:'block',
+              color:'#666',
+              paddingLeft:'24px',
+              width:'58px',
+              height:'32px',
+              lineHeight:'32px',
+              textDecoration:'none',
+              fontSize:'12px',
+            }}>下载讲义</a>
           </div>,
           document.getElementById('Down')
         );
@@ -262,11 +222,12 @@ class BlueMUI_Create_b extends React.Component {
       }
     }
   }
-// sfnxz
+
   create_jiangyi() {
+    let back = [];
+
     this.jiangyi = check.call(this);
     console.log("讲义：",this.props)
-    let back = [];
     back.push(Create_tab('讲义'));
     if(this.jiangyi) {
       back.push(<div key="no_data" style={{width:"100%",height:"100px"}}></div>);
@@ -295,8 +256,7 @@ class BlueMUI_Create_b extends React.Component {
       ajax_data+=i+'='+data[i]+'&';
     }
     console.log(ajax_data.substr(0,ajax_data.length-1))
-    xmlhttp.onreadystatechange=()=>
-    {
+    xmlhttp.onreadystatechange=()=>{
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {
         let datas=JSON.parse(xmlhttp.responseText);
         this.other = datas.meta.result;
@@ -305,13 +265,13 @@ class BlueMUI_Create_b extends React.Component {
         } else {
           console.log('success',datas)
           datas.data.map(e=>{
-              back.push(<div className="ziyuan_item" key={e.id}>
-            <img src="../../imgs/classListInfShow/courseShow/ziyuan.png"/>
-            <br/>
-            <span title={e.ywjm}>{e.ywjm.split('.')[0]}</span>
-            <br/>
-            <span className='ziyuan_xiazai' onClick={this.xiazai.bind(this,e.ywjm)}>下载</span>
-          </div>);
+            back.push(<div className="ziyuan_item" key={e.id}>
+              <img src="../../imgs/classListInfShow/courseShow/ziyuan.png"/>
+              <br/>
+              <span title={e.ywjm}>{e.ywjm.split('.')[0]}</span>
+              <br/>
+              <span className='ziyuan_xiazai' onClick={this.xiazai.bind(this,e.ywjm)}>下载</span>
+            </div>);
           });
         }
       }
@@ -327,7 +287,6 @@ class BlueMUI_Create_b extends React.Component {
       <div id="jiangyi">
         {this.create_jiangyi()}
         {this.jiangyi?'':<iframe name="preview" ref="preview" style={{display:'block',width:'100%',height:'700px'}}></iframe>}
-        
         <div ref="fujian_download" id="Down"></div>
       </div>
       <div id="other">
@@ -348,13 +307,12 @@ class BlueMUI_Create_b extends React.Component {
   }
 }
 
-
 //作业
 class BlueMUI_Create_c extends React.Component {
   constructor(props) {
     super(props);
-    // this.create_zuoye=this.create_zuoye.bind(this);
   }
+
   xiazai(link) {
     this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
   }
@@ -400,7 +358,6 @@ class BlueMUI_Create_c extends React.Component {
 class BlueMUI_Create_d extends React.Component {
   constructor(props) {
     super(props);
-    // this.create_xiti=this.create_xiti.bind(this);
   }
   xiazai(link) {
     this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
@@ -442,12 +399,9 @@ class BlueMUI_Create_d extends React.Component {
   }
 }
 
-
 //资源
 class BlueMUI_Create_e extends React.Component {
   constructor(props) {
-    // this.create_ziyuan=this.create_ziyuan.bind(this);
-    // this.create_link=this.create_link.bind(this);
     super(props);
   }
   xiazai(link) {
@@ -456,10 +410,10 @@ class BlueMUI_Create_e extends React.Component {
 
   create_ziyuan() {
     let flag = check.call(this);
-    if(flag) return flag;
     let back=[];
-    back.push(Create_tab('附件'));
     let xiazai;
+    if(flag) return flag;
+    back.push(Create_tab('附件'));
 
     this.props.data.map(e=>{
       if(e.ywjm!='') {
@@ -514,9 +468,10 @@ class BlueMUI_Create_f extends React.Component {
 
   create_jiaocai() {
     console.log(this);
-    let back=[];
-    back.push(Create_tab('课程教材'));
     let flag = check.call(this);
+    let back=[];
+
+    back.push(Create_tab('课程教材'));
     console.log('aaa',flag)
     if(flag) return flag;
     this.props.data.teachBookList.map(e=>{
@@ -534,9 +489,10 @@ class BlueMUI_Create_f extends React.Component {
   }
 
   create_cankaoshu() {
-    let back=[];
-    back.push(Create_tab('参考书'));
     let flag = check.call(this);
+    let back=[];
+
+    back.push(Create_tab('参考书'));
     if(flag) return;
     this.props.data.referenceBookList.map(e=>{
       back.push(<div className="item" key={e.id} >
@@ -565,11 +521,6 @@ function Create_tab(tab_name) {
     <span>{tab_name}</span>
   </div>);
 }
-
-
-
-
-
 
 var BluMUI_M = {
   CreateNav:BlueMUI_CreateNav,
