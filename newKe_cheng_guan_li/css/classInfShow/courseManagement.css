@@ -117,7 +117,7 @@ table{
   padding: 16px 0 0 0;
   cursor: pointer;
 }
-#tab #tab_line {
+#tab .tab_line {
   cursor: default;
   width: 0px;
   height: 16px;
@@ -130,8 +130,11 @@ table{
 }
 
 /*option*/
-#option_bar ul {
+#option_bar {
   float: right;
+}
+#option_bar ul {
+  /*float: right;*/
 }
 #option_bar li {
   list-style: none;
@@ -288,8 +291,7 @@ input[type="checkbox"]:checked + label{
 
 
 #React_list {
-  /*min-height: 300px;*/
-  min-height: 544px;
+  min-height: 603px;
 }
 
 
@@ -337,14 +339,18 @@ input[type="checkbox"]:checked + label{
 
 
 /*翻页条*/
+#React_fanye {
+  float: left;
+}
 
 #fanye {
-  width: 100%;
+  clear: both;
+  width: 1180px;
   height: 40px;
   font-size: 13px;
   line-height: 40px;
   text-align: center;
-  margin: 23px auto;
+  margin: -50px auto;
 }
 #fanye>div {
   width: 40px;

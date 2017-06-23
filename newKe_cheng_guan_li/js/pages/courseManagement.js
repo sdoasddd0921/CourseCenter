@@ -15,7 +15,6 @@ var User={
 }
 User.id=getCookie('userId')
 BluMUI.result.unifyCode=User.id;
-console.log("cookie",document.cookie)
 
 //获取subModule(tab)
 
@@ -45,7 +44,3 @@ ajax({
     );
   }
 });
-
-console.log('审核返回后：',parseHash(window.location.href).subModule)
-console.log(window.location.href)
-

@@ -1,6 +1,7 @@
 var courseCenter = {
 	// host:'http://cc.cqupt.edu.cn/',
-	host:'http://172.22.114.135:6535/',
+	// host:'http://172.22.114.135:6535/',
+	host:'http://172.20.2.139/'
 }
 function parseHash(URL) {
 	var hash = decodeURI(URL).split('?')[1],

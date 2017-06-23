@@ -2,12 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 var ajax=require('./post_ajax.js');
 var OUT_COUNT=10;
-// /**
-//  * ******************课程管理******************
-//  */
-/*
- * 编辑、审核等操作的跳转在300行，不要动“历史操作”
- * 批量操作214行
+/**
+ * ******************课程管理******************
  */
 
 class BlueMUI_CreateFanye extends React.Component {
@@ -18,7 +14,6 @@ class BlueMUI_CreateFanye extends React.Component {
   }
 
   create_popup_fanye() {
-    // console.log(this.state,"___376")
     let style={};
     let fanye=[];
     let start=1;
@@ -100,7 +95,6 @@ class BlueMUI_CreateFanye extends React.Component {
     if(p==0) {
       return;
     }
-    console.log("开始翻页")
     Array().map.call(
       document.getElementById('center_table').getElementsByTagName('input'),
       e=>{e.checked=false;}
@@ -108,29 +102,44 @@ class BlueMUI_CreateFanye extends React.Component {
     this.props.This.setState({page:p});
   }
 
-  // componentDidMount() {
-  //   this.fanye();
-  // }
-  // componentDidUpdate(prevProps, prevState) {
-  //   this.fanye();
-  // }
-
   render() {
-    // console.log(this.props,"fanye")
     return this.create_popup_fanye();
   }
 }
 
-
-
-//入口
+//入口(tabs)
 class BlueMUI_CreateTabs extends React.Component {
   constructor(props) {
     super(props);
-    this.change_subModule=this.change_subModule.bind(this);
+    // this.change_subModule=this.change_subModule.bind(this);
     this.state={
       subModule:parseHash(window.location.href).subModule||this.props.tabs[0].subModule
     };
+  }
+
+  change_subModule(Module) {
+    this.setState({subModule:Module});
+    BluMUI.result.Options.setState({
+      subModule:Module,
+      page:1
+    });
+    // 清空搜索内容
+    document.getElementById('jxtdss').value='';
+  }
+
+  render() {
+    let tabs=[];
+
+    if(this.props.tabs.length>0) {
+      this.props.tabs.map((e,index)=>{
+        tabs.push(<li key={e.subModule} ref={e.subModule} onClick={this.change_subModule.bind(this,e.subModule)}>{e.cdmc}</li>);
+        tabs.push(<li key={'tab_line'+index} className='tab_line'></li>);
+      });
+      tabs.pop();
+    } else {
+      alert("数据获取失败，请刷新页面！");
+    }
+    return(<div id='tabs'><ul id='tab' ref='tabs'>{tabs}</ul></div>);
   }
 
   componentDidMount() {
@@ -145,36 +154,14 @@ class BlueMUI_CreateTabs extends React.Component {
     this.refs[nextState.subModule].style.borderBottom='2px solid #009361';
   }
 
-  change_subModule(Module) {
-    this.setState({subModule:Module});
-    BluMUI.result.Options.setState({
-      subModule:Module,
-      page:1
-    });
-    document.getElementById('jxtdss').value='';
-  }
-
-  render() {
-    // console.log(this.state.subModule)
-    let tabs=[];
-    if(this.props.tabs.length>1) {
-      tabs=[
-        <li key={this.props.tabs[0].subModule} ref={this.props.tabs[0].subModule} onClick={this.change_subModule.bind(this,this.props.tabs[0].subModule)}>{this.props.tabs[0].cdmc}</li>,
-        <li key='tab_line' id='tab_line'></li>,
-        <li key={this.props.tabs[1].subModule} ref={this.props.tabs[1].subModule} onClick={this.change_subModule.bind(this,this.props.tabs[1].subModule)}>{this.props.tabs[1].cdmc}</li>
-      ];
-    } else {
-      tabs=[<li key={this.props.tabs[0].subModule} ref={this.props.tabs[0].subModule}>{this.props.tabs[0].cdmc}</li>];
-    }
-    return(<div id='tabs'><ul id='tab' ref='tabs'>{tabs}</ul></div>);
-  }
 }
 
-//显示options
+//显示options(6个过滤条件)
 class BlueMUI_CreateOptions extends React.Component {
   constructor(props) {
     super(props);
     this.pages=1;
+    // 默认state
     this.state={
       subModule:this.props.subModule,
       page:1,
@@ -211,11 +198,16 @@ class BlueMUI_CreateOptions extends React.Component {
         page:1,
         course_state:[1,1,1,1,1,1]
       });
+    } else {
+      this.setState({
+        page:1,
+        course_state:[0,0,0,0,0,0]
+      });
     }
   }
   componentDidMount() {
     let that=this;
-    function hand_serch (eve) {
+    function hand_serch(eve) {
       BlueMUI_GetList(
         that.state.subModule,
         1,
@@ -227,9 +219,7 @@ class BlueMUI_CreateOptions extends React.Component {
     //查询列表
     BlueMUI_GetList(this.state.subModule,this.state.page,this.state.course_state,this.refs.serchValue.value,this);
     this.refs.serchValue.onkeydown=e=>{
-      console.log(e.keyCode)
       if(e.keyCode==13) {
-        console.log(document.getElementById('jxtdss').value)
         hand_serch();
       }
     }
@@ -237,74 +227,65 @@ class BlueMUI_CreateOptions extends React.Component {
     this.refs.serchBtn.onclick=hand_serch;
   }
   componentWillUpdate(nextProps, nextState) {
-    BlueMUI_GetList(nextState.subModule,nextState.page,nextState.course_state,this.refs.serchValue.value,this);
-
-  }
-
-  pi_liang(msg) {
-    let piliang_type = ['tijiaoshenhe','error','chehui','tingyong','qiyong'];
-    // if(msg=='tingyong') {
-      console.log(BluMUI.result.CreateList.pi_liang.toString());
-    // }
-    if(BluMUI.result.CreateList.pi_liang.length<=0) {
-      alert('请选择课程！');
-      return;
+    if(nextState.subModule!=this.state.subModule) {
+      nextState.course_state=[1,1,1,1,1,1];
     }
-    ajax({
-      url:courseCenter.host+"submitOperations",
-      data:{
-        unifyCode:BluMUI.result.unifyCode,
-        type:piliang_type.indexOf(msg)+1,
-        courseNo:BluMUI.result.CreateList.pi_liang.toString()
-      },
-      success:function(gets) {
-        let datas = JSON.parse(gets);
-        if(datas.meta.result==301) {
-          alert('操作失败，请检查所选课程的状态！');
-        } else if(datas.meta.result==100) {
-          alert('操作成功！');
-          BluMUI.result.Tab.change_subModule('audit');
-        }
-      }
-    });
+    BlueMUI_GetList(nextState.subModule,nextState.page,nextState.course_state,this.refs.serchValue.value,this);
   }
 
   render() {
-    let four;
-    if(this.state.subModule=='audit') {
-      // 隐藏批量操作~
-      four=<div id="double_option" style={{display:'none'}}>
-        <span className="double_btn" ref='tingyong' onClick={this.pi_liang.bind(this,'tingyong')}>停用</span>
-        <span className="double_btn" ref='qiyong' onClick={this.pi_liang.bind(this,'qiyong')}>启用</span>
-      </div>;
-    }
     let double_option=<div>
-      {four}
       <div id="out_serch">
         <span>课程名称：</span>
         <input type="text" id="jxtdss" ref="serchValue"/>
         <span id="serch_btn" ref="serchBtn">搜索</span>
       </div>
     </div>;
+    // label用作勾选框，中间不能填字
+    let filter_items=<ul id="option_bar">
+      <li><input type="checkbox" ref='check-5' value="5" id="itm5" onChange={this.change_course_state}/><label htmlFor="itm5"></label>已上线</li>
+      <li><input type="checkbox" ref='check-4' value="4" id="itm4" onChange={this.change_course_state}/><label htmlFor="itm4"></label>已停用</li>
+      <li><input type="checkbox" ref='check-3' value="3" id="itm3" onChange={this.change_course_state}/><label htmlFor="itm3"></label>驳回</li>
+      <li><input type="checkbox" ref='check-2' value="2" id="itm2" onChange={this.change_course_state}/><label htmlFor="itm2"></label>待审核</li>
+      <li><input type="checkbox" ref='check-1' value="1" id="itm1" onChange={this.change_course_state}/><label htmlFor="itm1"></label>编辑中</li>
+      <li><input type="checkbox" ref='check-0' value="0" id="itm0" onChange={this.change_course_state}/><label htmlFor="itm0"></label>初始</li>
+    </ul>;
+    let filter_allcheck=<span id="option_allcheck">
+      <input type="checkbox" value="7" ref='allchecked' id="itm7" onChange={this.allcheck}/>
+      <label htmlFor="itm7"></label>所有课程
+    </span>;
+    let space_div=<div style={{width:'1px',height:'18px'}}></div>
+
     return(<div id="options">
-      <ul id="option_bar">
-        <li><input type="checkbox" ref='check-5' value="5" id="itm5" onChange={this.change_course_state}/><label htmlFor="itm5"></label>已上线</li>
-        <li><input type="checkbox" ref='check-4' value="4" id="itm4" onChange={this.change_course_state}/><label htmlFor="itm4"></label>已停用</li>
-        <li><input type="checkbox" ref='check-3' value="3" id="itm3" onChange={this.change_course_state}/><label htmlFor="itm3"></label>驳回</li>
-        <li><input type="checkbox" ref='check-2' value="2" id="itm2" onChange={this.change_course_state}/><label htmlFor="itm2"></label>待审核</li>
-        <li><input type="checkbox" ref='check-1' value="1" id="itm1" onChange={this.change_course_state}/><label htmlFor="itm1"></label>编辑中</li>
-        <li><input type="checkbox" ref='check-0' value="0" id="itm0" onChange={this.change_course_state}/><label htmlFor="itm0"></label>初始</li>
-      </ul>
-      <span id="option_allcheck"><input type="checkbox" value="7" ref='allchecked' id="itm7" onChange={this.allcheck}/><label htmlFor="itm7"></label>所有课程</span>
+      {this.state.subModule=='audit'?'':filter_items}
+      {this.state.subModule=='audit'?space_div:filter_allcheck}
       <div style={{clear:'both'}}></div>
       <div id="hr"></div>
       {double_option}
     </div>);
   }
+
+  componentDidUpdate(prevProps,prevState) {
+    if(this.state.subModule=='audit') {
+      return;
+    }
+
+    let allchecked=this.state.course_state.reduce((x,y)=>x+y);
+    if(allchecked==0||allchecked==6) {
+      this.refs.allchecked.checked=true;
+      for(let i=0;i<6;i++) {
+        this.refs['check-'+i].checked=false;
+      }
+    } else {
+      this.refs.allchecked.checked=false;
+      for(let i=0;i<6;i++) {
+        this.refs['check-'+i].checked=this.state.course_state[i];
+      }
+    }
+  }
 }
 
 var BlueMUI_GetList=function(Module,P,Cs,Serch,This) {
-  console.log("GetList___314",Module)
   ajax({
     url:courseCenter.host+'getCourseList',
     data:{
@@ -312,7 +293,7 @@ var BlueMUI_GetList=function(Module,P,Cs,Serch,This) {
       courseState:'['+Cs+']',
       page:P,
       count:OUT_COUNT,
-      subModule:Module,
+      subModule:Module=='history'?'maintenance':Module,
       selectName:Serch
     },
     success:function(gets) {
@@ -321,136 +302,44 @@ var BlueMUI_GetList=function(Module,P,Cs,Serch,This) {
       if(datas.meta.result!=100) {
         list=[];
       } else {
-        // console.log(datas,'___57');
         list=datas.data.courseList;
       }
       if(BluMUI.result.CreateList) {
-        console.log('set new lists___358')
         BluMUI.result.CreateList.setState({
-          Lists:list
+          Lists:list,
+          Module:Module
         });
       } else {
-        console.log("创建列表___340")
-
         BluMUI.create({
           id:'CreateList',
+          module:Module,
           Lists:list
           },
           'Create_list',
           document.getElementById('React_list')
         );
       }
-
-        //显示翻页
-        // BluMUI.create({
-        //   id:'Fanye',
-        //   pages:datas.data.totalPages,
-        //   page:BluMUI.result.Options.state.page
-        //   },
-        //   'Create_list',
-        //   document.getElementById('React_fanye')
-        //   );
-        // ReactDOM.render(
-        //   <BlueMUI_CreateFanye pages={datas.data.totalPages} page={P}/>,
-        //   document.getElementById('React_fanye')
-        // );
-        // BluMUI.result.Fanye.props.pages=datas.data.totalPages;
-        ReactDOM.render(
-          <BlueMUI_CreateFanye pages={datas.data.totalPages} page={P} This={This}/>,
-          document.getElementById('React_fanye')
-        );
-      // }
-      // BluMUI.result.Options.pages=datas.data.totalPages;
+      ReactDOM.render(
+        <BlueMUI_CreateFanye pages={datas.data.totalPages} page={P} This={This}/>,
+        document.getElementById('React_fanye')
+      );
     }
   });
 };
-
-// 提交审核的弹出
-
-class Tijiaoshenhe extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  componentDidMount() {
-    this.refs.tijiao.onclick=(e=>{
-      console.log(this.props.Kcbh);
-      Tijiao(1,this.props.Kcbh);
-      this.die();
-    });
-    this.refs.fanhui.onclick=this.die;
-    this.refs.close.onclick=this.die;
-  }
-  die() {
-    document.getElementById('tijiaoshenhe').style.display='none';
-    ReactDOM.unmountComponentAtNode(document.getElementById('tijiaoshenhe'));
-  }
-  render() {
-    return(<div>
-      <div id="tijiaoshenhe_head">
-        <span>提交审核</span>
-        <img ref='close' src="../../imgs/courseAudit/close.png"/>
-      </div>
-      <p>材料将提交至教学院长、系部中心主任、<br/>课程负责人进行审核，提交后不可修改。</p>
-      <div id="tijiao_div">
-        <span className="tijiao" ref="tijiao">确定</span>
-        <span className="fanhui" ref="fanhui">返回</span>
-      </div>
-    </div>);
-  }
-}
-
-function Tjsh(kcbh) {
-  let t=document.getElementById('tijiaoshenhe');
-  t.style.display="block";
-  ReactDOM.render(
-    <Tijiaoshenhe Kcbh={kcbh}/>,
-    t
-  );
-}
-
-function Tijiao(op,course,note) {
-  ajax({
-    url:courseCenter.host+'submitOperation',
-    data: {
-      unifyCode:BluMUI.result.unifyCode,
-      courseNo:course,
-      note:note||'',
-      type:op
-    },
-    success:function(gets) {
-      let datas=JSON.parse(gets);
-      BluMUI.result.Tab.change_subModule('audit');
-      // BlueMUI_GetList(
-      //   BluMUI.result.Tab.state.subModule,
-      //   BluMUI.result.Options.state.page,
-      //   BluMUI.result.Options.state.course_state
-      // );
-    }
-  });
-}
-
 
 //显示列表
 class BlueMUI_CreateList extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.lists,'___298')
-    this.pi_liang=[];
     this.create_list=this.create_list.bind(this);
-    this.check=this.check.bind(this);
-    this.allcheck=this.allcheck.bind(this);
     this.state={
-      Lists:this.props.Lists
+      Lists:this.props.Lists,
+      Module:this.props.module
     }
   }
 
   operation(o,a,event) {
-    console.log(a)
     switch(o) {
-      // case '提交审核':
-      //   Tjsh(a);
-      //   console.log('提交审核')
-      //   break;
       case '提交/审核':
         window.location.href='classManageCheck.html?classId='+a+'&type=1';
         break;
@@ -460,41 +349,25 @@ class BlueMUI_CreateList extends React.Component {
       case '教学院长审核':
         window.location.href='classManageCheck.html?classId='+a+'&type=3';
         break;
-
       case '撤回':
         Tijiao(3,a);
-        console.log('撤回')
         break;
       case '停用':
         Tijiao(4,a);
-        console.log('停用')
         break;
       case '启用':
         Tijiao(5,a);
-        console.log('启用')
         break;
       case '编辑':
         window.location.href='classManageEditor.html?classId='+a;
-        console.log('编辑')
         break;
       case '抽查':
         window.location.href='classManageSpotCheck.html?classId='+a+'&type=6';
         break;
       case '历史':
-        console.log('历史');
         Show_lishi(a);
         break;
     }
-  }
-
-  check(No,eve) {
-    this.refs.allcheck.checked=false;
-    if(eve.target.checked) {
-      this.pi_liang.push(No);
-    } else {
-      this.pi_liang.splice(this.pi_liang.indexOf(No),1);
-    }
-    // console.log(this.pi_liang);
   }
 
   create_list() {
@@ -513,21 +386,15 @@ class BlueMUI_CreateList extends React.Component {
     this.state.Lists.map((e,index)=>{
       let check;
       let ops=[];
+      let lishi=<span key='lish' onClick={this.operation.bind(this,'历史',e.kcbh)} className='op_on'>历史查询</span>;
       let style={
         background: index%2?'#eee':'#fff'
       };
-      if(BluMUI.result.Tab.state.subModule=='audit') {
-        // check=<td width="3%">
-        //   <input type="checkbox" value={e.kcbh} id={e.kcbh} onChange={this.check.bind(this,e.kcbh)}/>
-        //   <label htmlFor={e.kcbh}></label>
-        // </td>;
-      }
       e.cz.map(f=>{
         op_func=f.able?this.operation.bind(this,f.name,e.kcbh):'';
-        ops.push(<span key={f.name} onClick={op_func} className={f.able?'op_on':''}>{f.name}</span>)
+        ops.push(<span key={f.name} onClick={op_func} className={f.able?'op_on':''}>{f.name}</span>);
       });
-      ops.push(<span key='lish' onClick={this.operation.bind(this,'历史',e.kcbh)} className='op_on'>历史查询</span>)
-
+      ops.push(<span key='lish' onClick={this.operation.bind(this,'历史',e.kcbh)} className='op_on'>历史查询</span>);
       list.push(<tr key={e.kcbh} style={style}>
         <td></td>
         {check}
@@ -552,29 +419,11 @@ class BlueMUI_CreateList extends React.Component {
     }
   }
 
-  componentDidMount() {
-    // this.get_list(this.props.subModule);
-  }
-
-  allcheck() {
-    this.pi_liang=[];
-    Array().map.call(this.refs.list_body.getElementsByTagName('input'),(e=>{
-      e.checked=this.refs.allcheck.checked;
-      e.checked&&this.pi_liang.push(e.parentNode.nextSibling.innerText);
-    }));
-    console.log(this.pi_liang.toString());
-  }
-
   render() {
-    let check;
-    if(BluMUI.result.Tab.state.subModule=='audit') {
-      // check=<td width="3%"><input type="checkbox" value="0" id="allcheck" onChange={this.allcheck} ref='allcheck' /><label htmlFor="allcheck"></label><span id="quanxuan">全选</span></td>;
-    }
     return(<table id="center_table">
       <thead>
         <tr>
           <td width='20px'></td>
-          {check}
           <td width="16%">课程编号</td>
           <td width="20%">课程名称</td>
           <td width="20%">教学机构名称</td>
@@ -590,7 +439,7 @@ class BlueMUI_CreateList extends React.Component {
 }
 
 /*显示历史*/
-function Show_lishi (course_id) {
+function Show_lishi(course_id) {
   ReactDOM.render(
     <BlueMUI_CreatePopup Course={course_id}/>,
     document.getElementById('popup')
@@ -675,16 +524,9 @@ class BlueMUI_CreatePopup extends React.Component {
 
   componentDidMount() {
     document.getElementById('popup_body').onclick=e=>{
-      console.log('popup_body click')
-      // e.stopPropagation();
     };
     this.refs.close.onclick=this.del_popup.bind(this);
-    // this.popup.onclick=this.del_popup.bind(this);
     this.get_lists();
-
-
-
-
   }
 
   render() {
@@ -705,7 +547,6 @@ var BluMUI_M = {
   Create_options:BlueMUI_CreateOptions,
   Create_tabs:BlueMUI_CreateTabs,
   Create_list:BlueMUI_CreateList,
-  Get_list:BlueMUI_GetList,
 }
 
 var BluMUI = {

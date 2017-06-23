@@ -120,6 +120,11 @@ function check() {
   return false;
 }
 
+// 下载函数，用于下载文件
+function xiazai(name,down) {
+  this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
+}
+
 // 导航的子项目
 //视频
 class BlueMUI_Create_a extends React.Component {
@@ -188,9 +193,9 @@ class BlueMUI_Create_b extends React.Component {
     this.default_kcbh='';
   }
 
-  xiazai(link) {
-    this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-  }
+  // xiazai(name,down) {
+  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
+  // }
 
   show(No) {
     // 在线显示PDF
@@ -203,7 +208,7 @@ class BlueMUI_Create_b extends React.Component {
         // 字段sfnxz：1->能下载，2->不能下载
         ReactDOM.render(
           <div>
-            <a href="javascript:void(0)" onClick={this.xiazai.bind(this,No.ywjm)} style={{
+            <a href="javascript:void(0)" onClick={xiazai.bind(this,No.ywjm,No.xywjm)} style={{
               background:'url(../../imgs/public/download.png) no-repeat 0px 8px',
               display:'block',
               color:'#666',
@@ -270,13 +275,13 @@ class BlueMUI_Create_b extends React.Component {
               <br/>
               <span title={e.ywjm}>{e.ywjm.split('.')[0]}</span>
               <br/>
-              <span className='ziyuan_xiazai' onClick={this.xiazai.bind(this,e.ywjm)}>下载</span>
+              <span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>
             </div>);
           });
         }
       }
     }
-    xmlhttp.open("POST","http://cc.cqupt.edu.cn/getStudyResourceMsg",false);
+    xmlhttp.open("POST",courseCenter.host+"getStudyResourceMsg",false);
     xmlhttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
     xmlhttp.send(ajax_data.substr(0,ajax_data.length-1));
     return back;
@@ -313,27 +318,27 @@ class BlueMUI_Create_c extends React.Component {
     super(props);
   }
 
-  xiazai(link) {
-    this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-  }
+  // xiazai(name,down) {
+  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
+  // }
 
   create_zuoye() {
     let flag = check.call(this);
     if(flag) return flag;
     let back=[];
-    let xiazai;
+    let Xiazai;
     this.props.data.map(e=>{
       if(e.sfnxz==1) {
-        xiazai=<span className='ziyuan_xiazai' onClick={this.xiazai.bind(this,e.ywjm)}>下载</span>;
+        Xiazai=<span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>;
       } else {
-        xiazai='';
+        Xiazai='';
       }
       back.push(<div className="ziyuan_item" key={e.id}>
         <img src="../../imgs/classListInfShow/courseShow/ziyuan.png"/>
         <br/>
         <span title={e.ywjm}>{e.ywjm.split('.')[0]}</span>
         <br/>
-        {xiazai}
+        {Xiazai}
       </div>);
     });
     if(back.length==1) {
@@ -359,27 +364,27 @@ class BlueMUI_Create_d extends React.Component {
   constructor(props) {
     super(props);
   }
-  xiazai(link) {
-    this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-  }
+  // xiazai(link) {
+  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
+  // }
 
   create_xiti() {
     let flag = check.call(this);
     if(flag) return flag;
     let back=[];
-    let xiazai;
+    let Xiazai;
     this.props.data.map(e=>{
       if(e.sfnxz==1) {
-        xiazai=<span className='ziyuan_xiazai' onClick={this.xiazai.bind(this,e.ywjm)}>下载</span>;
+        Xiazai=<span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>;
       } else {
-        xiazai='';
+        Xiazai='';
       }
       back.push(<div className="ziyuan_item" key={e.id}>
         <img src="../../imgs/classListInfShow/courseShow/ziyuan.png"/>
         <br/>
         <span title={e.ywjm}>{e.ywjm.split('.')[0]}</span>
         <br/>
-        {xiazai}
+        {Xiazai}
       </div>);
     });
     if(back.length==1) {
@@ -404,26 +409,26 @@ class BlueMUI_Create_e extends React.Component {
   constructor(props) {
     super(props);
   }
-  xiazai(link) {
-    this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-  }
+  // xiazai(link) {
+  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
+  // }
 
   create_ziyuan() {
     let flag = check.call(this);
     let back=[];
-    let xiazai;
+    let Xiazai;
     if(flag) return flag;
     back.push(Create_tab('附件'));
 
     this.props.data.map(e=>{
       if(e.ywjm!='') {
-        xiazai=<span className='ziyuan_xiazai' onClick={this.xiazai.bind(this,e.ywjm)}>下载</span>;
+        Xiazai=<span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>;
         back.push(<div className="ziyuan_item" key={e.id}>
           <img src="../../imgs/classListInfShow/courseShow/ziyuan.png"/>
           <br/>
           <span title={e.ywjm}>{e.ywjm.split('.')[0]||e.ywjm.split('.')[0]+'.'+e.ywjm.split('.')[1]}</span>
           <br/>
-          {xiazai}
+          {Xiazai}
         </div>);
       }
     });

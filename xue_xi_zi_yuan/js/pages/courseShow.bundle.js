@@ -272,6 +272,11 @@ webpackJsonp([0],{
 	  return false;
 	}
 
+	// 下载函数，用于下载文件
+	function xiazai(name, down) {
+	  this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + name + '&oName=' + down;
+	}
+
 	// 导航的子项目
 	//视频
 
@@ -378,12 +383,11 @@ webpackJsonp([0],{
 	    return _this4;
 	  }
 
+	  // xiazai(name,down) {
+	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
+	  // }
+
 	  _createClass(BlueMUI_Create_b, [{
-	    key: 'xiazai',
-	    value: function xiazai(link) {
-	      this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + link.split('.')[0] + '&oName=' + link;
-	    }
-	  }, {
 	    key: 'show',
 	    value: function show(No) {
 	      // 在线显示PDF
@@ -399,7 +403,7 @@ webpackJsonp([0],{
 	            null,
 	            _react2["default"].createElement(
 	              'a',
-	              { href: 'javascript:void(0)', onClick: this.xiazai.bind(this, No.ywjm), style: {
+	              { href: 'javascript:void(0)', onClick: xiazai.bind(this, No.ywjm, No.xywjm), style: {
 	                  background: 'url(../../imgs/public/download.png) no-repeat 0px 8px',
 	                  display: 'block',
 	                  color: '#666',
@@ -484,7 +488,7 @@ webpackJsonp([0],{
 	                _react2["default"].createElement('br', null),
 	                _react2["default"].createElement(
 	                  'span',
-	                  { className: 'ziyuan_xiazai', onClick: _this6.xiazai.bind(_this6, e.ywjm) },
+	                  { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this6, e.ywjm, e.xywjm) },
 	                  '\u4E0B\u8F7D'
 	                )
 	              ));
@@ -492,7 +496,7 @@ webpackJsonp([0],{
 	          }
 	        }
 	      };
-	      xmlhttp.open("POST", "http://cc.cqupt.edu.cn/getStudyResourceMsg", false);
+	      xmlhttp.open("POST", courseCenter.host + "getStudyResourceMsg", false);
 	      xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 	      xmlhttp.send(ajax_data.substr(0, ajax_data.length - 1));
 	      return back;
@@ -546,12 +550,11 @@ webpackJsonp([0],{
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_c.__proto__ || Object.getPrototypeOf(BlueMUI_Create_c)).call(this, props));
 	  }
 
+	  // xiazai(name,down) {
+	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
+	  // }
+
 	  _createClass(BlueMUI_Create_c, [{
-	    key: 'xiazai',
-	    value: function xiazai(link) {
-	      this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + link.split('.')[0] + '&oName=' + link;
-	    }
-	  }, {
 	    key: 'create_zuoye',
 	    value: function create_zuoye() {
 	      var _this8 = this;
@@ -559,16 +562,16 @@ webpackJsonp([0],{
 	      var flag = check.call(this);
 	      if (flag) return flag;
 	      var back = [];
-	      var xiazai = void 0;
+	      var Xiazai = void 0;
 	      this.props.data.map(function (e) {
 	        if (e.sfnxz == 1) {
-	          xiazai = _react2["default"].createElement(
+	          Xiazai = _react2["default"].createElement(
 	            'span',
-	            { className: 'ziyuan_xiazai', onClick: _this8.xiazai.bind(_this8, e.ywjm) },
+	            { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this8, e.ywjm, e.xywjm) },
 	            '\u4E0B\u8F7D'
 	          );
 	        } else {
-	          xiazai = '';
+	          Xiazai = '';
 	        }
 	        back.push(_react2["default"].createElement(
 	          'div',
@@ -581,7 +584,7 @@ webpackJsonp([0],{
 	            e.ywjm.split('.')[0]
 	          ),
 	          _react2["default"].createElement('br', null),
-	          xiazai
+	          Xiazai
 	        ));
 	      });
 	      if (back.length == 1) {
@@ -620,13 +623,11 @@ webpackJsonp([0],{
 
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_d.__proto__ || Object.getPrototypeOf(BlueMUI_Create_d)).call(this, props));
 	  }
+	  // xiazai(link) {
+	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
+	  // }
 
 	  _createClass(BlueMUI_Create_d, [{
-	    key: 'xiazai',
-	    value: function xiazai(link) {
-	      this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + link.split('.')[0] + '&oName=' + link;
-	    }
-	  }, {
 	    key: 'create_xiti',
 	    value: function create_xiti() {
 	      var _this10 = this;
@@ -634,16 +635,16 @@ webpackJsonp([0],{
 	      var flag = check.call(this);
 	      if (flag) return flag;
 	      var back = [];
-	      var xiazai = void 0;
+	      var Xiazai = void 0;
 	      this.props.data.map(function (e) {
 	        if (e.sfnxz == 1) {
-	          xiazai = _react2["default"].createElement(
+	          Xiazai = _react2["default"].createElement(
 	            'span',
-	            { className: 'ziyuan_xiazai', onClick: _this10.xiazai.bind(_this10, e.ywjm) },
+	            { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this10, e.ywjm, e.xywjm) },
 	            '\u4E0B\u8F7D'
 	          );
 	        } else {
-	          xiazai = '';
+	          Xiazai = '';
 	        }
 	        back.push(_react2["default"].createElement(
 	          'div',
@@ -656,7 +657,7 @@ webpackJsonp([0],{
 	            e.ywjm.split('.')[0]
 	          ),
 	          _react2["default"].createElement('br', null),
-	          xiazai
+	          Xiazai
 	        ));
 	      });
 	      if (back.length == 1) {
@@ -695,28 +696,26 @@ webpackJsonp([0],{
 
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_e.__proto__ || Object.getPrototypeOf(BlueMUI_Create_e)).call(this, props));
 	  }
+	  // xiazai(link) {
+	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
+	  // }
 
 	  _createClass(BlueMUI_Create_e, [{
-	    key: 'xiazai',
-	    value: function xiazai(link) {
-	      this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + link.split('.')[0] + '&oName=' + link;
-	    }
-	  }, {
 	    key: 'create_ziyuan',
 	    value: function create_ziyuan() {
 	      var _this12 = this;
 
 	      var flag = check.call(this);
 	      var back = [];
-	      var xiazai = void 0;
+	      var Xiazai = void 0;
 	      if (flag) return flag;
 	      back.push(Create_tab('附件'));
 
 	      this.props.data.map(function (e) {
 	        if (e.ywjm != '') {
-	          xiazai = _react2["default"].createElement(
+	          Xiazai = _react2["default"].createElement(
 	            'span',
-	            { className: 'ziyuan_xiazai', onClick: _this12.xiazai.bind(_this12, e.ywjm) },
+	            { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this12, e.ywjm, e.xywjm) },
 	            '\u4E0B\u8F7D'
 	          );
 	          back.push(_react2["default"].createElement(
@@ -730,7 +729,7 @@ webpackJsonp([0],{
 	              e.ywjm.split('.')[0] || e.ywjm.split('.')[0] + '.' + e.ywjm.split('.')[1]
 	            ),
 	            _react2["default"].createElement('br', null),
-	            xiazai
+	            Xiazai
 	          ));
 	        }
 	      });

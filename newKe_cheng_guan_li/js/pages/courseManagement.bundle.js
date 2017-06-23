@@ -20,7 +20,6 @@ webpackJsonp([0],{
 	};
 	User.id = getCookie('userId');
 	BluMUI.result.unifyCode = User.id;
-	console.log("cookie", document.cookie);
 
 	//获取subModule(tab)
 
@@ -44,9 +43,6 @@ webpackJsonp([0],{
 	    }, 'Create_options', document.getElementById('React_options'));
 	  }
 	});
-
-	console.log('审核返回后：', parseHash(window.location.href).subModule);
-	console.log(window.location.href);
 
 /***/ },
 
@@ -79,12 +75,8 @@ webpackJsonp([0],{
 
 	var ajax = __webpack_require__(160);
 	var OUT_COUNT = 10;
-	// /**
-	//  * ******************课程管理******************
-	//  */
-	/*
-	 * 编辑、审核等操作的跳转在300行，不要动“历史操作”
-	 * 批量操作214行
+	/**
+	 * ******************课程管理******************
 	 */
 
 	var BlueMUI_CreateFanye = function (_React$Component) {
@@ -103,7 +95,6 @@ webpackJsonp([0],{
 	  _createClass(BlueMUI_CreateFanye, [{
 	    key: 'create_popup_fanye',
 	    value: function create_popup_fanye() {
-	      // console.log(this.state,"___376")
 	      var style = {};
 	      var fanye = [];
 	      var start = 1;
@@ -258,24 +249,14 @@ webpackJsonp([0],{
 	      if (p == 0) {
 	        return;
 	      }
-	      console.log("开始翻页");
 	      Array().map.call(document.getElementById('center_table').getElementsByTagName('input'), function (e) {
 	        e.checked = false;
 	      });
 	      this.props.This.setState({ page: p });
 	    }
-
-	    // componentDidMount() {
-	    //   this.fanye();
-	    // }
-	    // componentDidUpdate(prevProps, prevState) {
-	    //   this.fanye();
-	    // }
-
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      // console.log(this.props,"fanye")
 	      return this.create_popup_fanye();
 	    }
 	  }]);
@@ -283,7 +264,7 @@ webpackJsonp([0],{
 	  return BlueMUI_CreateFanye;
 	}(_react2["default"].Component);
 
-	//入口
+	//入口(tabs)
 
 
 	var BlueMUI_CreateTabs = function (_React$Component2) {
@@ -292,9 +273,9 @@ webpackJsonp([0],{
 	  function BlueMUI_CreateTabs(props) {
 	    _classCallCheck(this, BlueMUI_CreateTabs);
 
+	    // this.change_subModule=this.change_subModule.bind(this);
 	    var _this2 = _possibleConstructorReturn(this, (BlueMUI_CreateTabs.__proto__ || Object.getPrototypeOf(BlueMUI_CreateTabs)).call(this, props));
 
-	    _this2.change_subModule = _this2.change_subModule.bind(_this2);
 	    _this2.state = {
 	      subModule: parseHash(window.location.href).subModule || _this2.props.tabs[0].subModule
 	    };
@@ -302,6 +283,47 @@ webpackJsonp([0],{
 	  }
 
 	  _createClass(BlueMUI_CreateTabs, [{
+	    key: 'change_subModule',
+	    value: function change_subModule(Module) {
+	      this.setState({ subModule: Module });
+	      BluMUI.result.Options.setState({
+	        subModule: Module,
+	        page: 1
+	      });
+	      // 清空搜索内容
+	      document.getElementById('jxtdss').value = '';
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this3 = this;
+
+	      var tabs = [];
+
+	      if (this.props.tabs.length > 0) {
+	        this.props.tabs.map(function (e, index) {
+	          tabs.push(_react2["default"].createElement(
+	            'li',
+	            { key: e.subModule, ref: e.subModule, onClick: _this3.change_subModule.bind(_this3, e.subModule) },
+	            e.cdmc
+	          ));
+	          tabs.push(_react2["default"].createElement('li', { key: 'tab_line' + index, className: 'tab_line' }));
+	        });
+	        tabs.pop();
+	      } else {
+	        alert("数据获取失败，请刷新页面！");
+	      }
+	      return _react2["default"].createElement(
+	        'div',
+	        { id: 'tabs' },
+	        _react2["default"].createElement(
+	          'ul',
+	          { id: 'tab', ref: 'tabs' },
+	          tabs
+	        )
+	      );
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this.refs[this.state.subModule].style.borderBottom = '2px solid #009361';
@@ -315,54 +337,12 @@ webpackJsonp([0],{
 	      }
 	      this.refs[nextState.subModule].style.borderBottom = '2px solid #009361';
 	    }
-	  }, {
-	    key: 'change_subModule',
-	    value: function change_subModule(Module) {
-	      this.setState({ subModule: Module });
-	      BluMUI.result.Options.setState({
-	        subModule: Module,
-	        page: 1
-	      });
-	      document.getElementById('jxtdss').value = '';
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      // console.log(this.state.subModule)
-	      var tabs = [];
-	      if (this.props.tabs.length > 1) {
-	        tabs = [_react2["default"].createElement(
-	          'li',
-	          { key: this.props.tabs[0].subModule, ref: this.props.tabs[0].subModule, onClick: this.change_subModule.bind(this, this.props.tabs[0].subModule) },
-	          this.props.tabs[0].cdmc
-	        ), _react2["default"].createElement('li', { key: 'tab_line', id: 'tab_line' }), _react2["default"].createElement(
-	          'li',
-	          { key: this.props.tabs[1].subModule, ref: this.props.tabs[1].subModule, onClick: this.change_subModule.bind(this, this.props.tabs[1].subModule) },
-	          this.props.tabs[1].cdmc
-	        )];
-	      } else {
-	        tabs = [_react2["default"].createElement(
-	          'li',
-	          { key: this.props.tabs[0].subModule, ref: this.props.tabs[0].subModule },
-	          this.props.tabs[0].cdmc
-	        )];
-	      }
-	      return _react2["default"].createElement(
-	        'div',
-	        { id: 'tabs' },
-	        _react2["default"].createElement(
-	          'ul',
-	          { id: 'tab', ref: 'tabs' },
-	          tabs
-	        )
-	      );
-	    }
 	  }]);
 
 	  return BlueMUI_CreateTabs;
 	}(_react2["default"].Component);
 
-	//显示options
+	//显示options(6个过滤条件)
 
 
 	var BlueMUI_CreateOptions = function (_React$Component3) {
@@ -371,17 +351,18 @@ webpackJsonp([0],{
 	  function BlueMUI_CreateOptions(props) {
 	    _classCallCheck(this, BlueMUI_CreateOptions);
 
-	    var _this3 = _possibleConstructorReturn(this, (BlueMUI_CreateOptions.__proto__ || Object.getPrototypeOf(BlueMUI_CreateOptions)).call(this, props));
+	    var _this4 = _possibleConstructorReturn(this, (BlueMUI_CreateOptions.__proto__ || Object.getPrototypeOf(BlueMUI_CreateOptions)).call(this, props));
 
-	    _this3.pages = 1;
-	    _this3.state = {
-	      subModule: _this3.props.subModule,
+	    _this4.pages = 1;
+	    // 默认state
+	    _this4.state = {
+	      subModule: _this4.props.subModule,
 	      page: 1,
 	      course_state: [1, 1, 1, 1, 1, 1]
 	    };
-	    _this3.change_course_state = _this3.change_course_state.bind(_this3);
-	    _this3.allcheck = _this3.allcheck.bind(_this3);
-	    return _this3;
+	    _this4.change_course_state = _this4.change_course_state.bind(_this4);
+	    _this4.allcheck = _this4.allcheck.bind(_this4);
+	    return _this4;
 	  }
 
 	  // 单个复选框选中
@@ -416,6 +397,11 @@ webpackJsonp([0],{
 	          page: 1,
 	          course_state: [1, 1, 1, 1, 1, 1]
 	        });
+	      } else {
+	        this.setState({
+	          page: 1,
+	          course_state: [0, 0, 0, 0, 0, 0]
+	        });
 	      }
 	    }
 	  }, {
@@ -428,9 +414,7 @@ webpackJsonp([0],{
 	      //查询列表
 	      BlueMUI_GetList(this.state.subModule, this.state.page, this.state.course_state, this.refs.serchValue.value, this);
 	      this.refs.serchValue.onkeydown = function (e) {
-	        console.log(e.keyCode);
 	        if (e.keyCode == 13) {
-	          console.log(document.getElementById('jxtdss').value);
 	          hand_serch();
 	        }
 	      };
@@ -440,62 +424,17 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentWillUpdate',
 	    value: function componentWillUpdate(nextProps, nextState) {
-	      BlueMUI_GetList(nextState.subModule, nextState.page, nextState.course_state, this.refs.serchValue.value, this);
-	    }
-	  }, {
-	    key: 'pi_liang',
-	    value: function pi_liang(msg) {
-	      var piliang_type = ['tijiaoshenhe', 'error', 'chehui', 'tingyong', 'qiyong'];
-	      // if(msg=='tingyong') {
-	      console.log(BluMUI.result.CreateList.pi_liang.toString());
-	      // }
-	      if (BluMUI.result.CreateList.pi_liang.length <= 0) {
-	        alert('请选择课程！');
-	        return;
+	      if (nextState.subModule != this.state.subModule) {
+	        nextState.course_state = [1, 1, 1, 1, 1, 1];
 	      }
-	      ajax({
-	        url: courseCenter.host + "submitOperations",
-	        data: {
-	          unifyCode: BluMUI.result.unifyCode,
-	          type: piliang_type.indexOf(msg) + 1,
-	          courseNo: BluMUI.result.CreateList.pi_liang.toString()
-	        },
-	        success: function success(gets) {
-	          var datas = JSON.parse(gets);
-	          if (datas.meta.result == 301) {
-	            alert('操作失败，请检查所选课程的状态！');
-	          } else if (datas.meta.result == 100) {
-	            alert('操作成功！');
-	            BluMUI.result.Tab.change_subModule('audit');
-	          }
-	        }
-	      });
+	      BlueMUI_GetList(nextState.subModule, nextState.page, nextState.course_state, this.refs.serchValue.value, this);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var four = void 0;
-	      if (this.state.subModule == 'audit') {
-	        // 隐藏批量操作~
-	        four = _react2["default"].createElement(
-	          'div',
-	          { id: 'double_option', style: { display: 'none' } },
-	          _react2["default"].createElement(
-	            'span',
-	            { className: 'double_btn', ref: 'tingyong', onClick: this.pi_liang.bind(this, 'tingyong') },
-	            '\u505C\u7528'
-	          ),
-	          _react2["default"].createElement(
-	            'span',
-	            { className: 'double_btn', ref: 'qiyong', onClick: this.pi_liang.bind(this, 'qiyong') },
-	            '\u542F\u7528'
-	          )
-	        );
-	      }
 	      var double_option = _react2["default"].createElement(
 	        'div',
 	        null,
-	        four,
 	        _react2["default"].createElement(
 	          'div',
 	          { id: 'out_serch' },
@@ -512,66 +451,93 @@ webpackJsonp([0],{
 	          )
 	        )
 	      );
+	      // label用作勾选框，中间不能填字
+	      var filter_items = _react2["default"].createElement(
+	        'ul',
+	        { id: 'option_bar' },
+	        _react2["default"].createElement(
+	          'li',
+	          null,
+	          _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-5', value: '5', id: 'itm5', onChange: this.change_course_state }),
+	          _react2["default"].createElement('label', { htmlFor: 'itm5' }),
+	          '\u5DF2\u4E0A\u7EBF'
+	        ),
+	        _react2["default"].createElement(
+	          'li',
+	          null,
+	          _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-4', value: '4', id: 'itm4', onChange: this.change_course_state }),
+	          _react2["default"].createElement('label', { htmlFor: 'itm4' }),
+	          '\u5DF2\u505C\u7528'
+	        ),
+	        _react2["default"].createElement(
+	          'li',
+	          null,
+	          _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-3', value: '3', id: 'itm3', onChange: this.change_course_state }),
+	          _react2["default"].createElement('label', { htmlFor: 'itm3' }),
+	          '\u9A73\u56DE'
+	        ),
+	        _react2["default"].createElement(
+	          'li',
+	          null,
+	          _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-2', value: '2', id: 'itm2', onChange: this.change_course_state }),
+	          _react2["default"].createElement('label', { htmlFor: 'itm2' }),
+	          '\u5F85\u5BA1\u6838'
+	        ),
+	        _react2["default"].createElement(
+	          'li',
+	          null,
+	          _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-1', value: '1', id: 'itm1', onChange: this.change_course_state }),
+	          _react2["default"].createElement('label', { htmlFor: 'itm1' }),
+	          '\u7F16\u8F91\u4E2D'
+	        ),
+	        _react2["default"].createElement(
+	          'li',
+	          null,
+	          _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-0', value: '0', id: 'itm0', onChange: this.change_course_state }),
+	          _react2["default"].createElement('label', { htmlFor: 'itm0' }),
+	          '\u521D\u59CB'
+	        )
+	      );
+	      var filter_allcheck = _react2["default"].createElement(
+	        'span',
+	        { id: 'option_allcheck' },
+	        _react2["default"].createElement('input', { type: 'checkbox', value: '7', ref: 'allchecked', id: 'itm7', onChange: this.allcheck }),
+	        _react2["default"].createElement('label', { htmlFor: 'itm7' }),
+	        '\u6240\u6709\u8BFE\u7A0B'
+	      );
+	      var space_div = _react2["default"].createElement('div', { style: { width: '1px', height: '18px' } });
+
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'options' },
-	        _react2["default"].createElement(
-	          'ul',
-	          { id: 'option_bar' },
-	          _react2["default"].createElement(
-	            'li',
-	            null,
-	            _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-5', value: '5', id: 'itm5', onChange: this.change_course_state }),
-	            _react2["default"].createElement('label', { htmlFor: 'itm5' }),
-	            '\u5DF2\u4E0A\u7EBF'
-	          ),
-	          _react2["default"].createElement(
-	            'li',
-	            null,
-	            _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-4', value: '4', id: 'itm4', onChange: this.change_course_state }),
-	            _react2["default"].createElement('label', { htmlFor: 'itm4' }),
-	            '\u5DF2\u505C\u7528'
-	          ),
-	          _react2["default"].createElement(
-	            'li',
-	            null,
-	            _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-3', value: '3', id: 'itm3', onChange: this.change_course_state }),
-	            _react2["default"].createElement('label', { htmlFor: 'itm3' }),
-	            '\u9A73\u56DE'
-	          ),
-	          _react2["default"].createElement(
-	            'li',
-	            null,
-	            _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-2', value: '2', id: 'itm2', onChange: this.change_course_state }),
-	            _react2["default"].createElement('label', { htmlFor: 'itm2' }),
-	            '\u5F85\u5BA1\u6838'
-	          ),
-	          _react2["default"].createElement(
-	            'li',
-	            null,
-	            _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-1', value: '1', id: 'itm1', onChange: this.change_course_state }),
-	            _react2["default"].createElement('label', { htmlFor: 'itm1' }),
-	            '\u7F16\u8F91\u4E2D'
-	          ),
-	          _react2["default"].createElement(
-	            'li',
-	            null,
-	            _react2["default"].createElement('input', { type: 'checkbox', ref: 'check-0', value: '0', id: 'itm0', onChange: this.change_course_state }),
-	            _react2["default"].createElement('label', { htmlFor: 'itm0' }),
-	            '\u521D\u59CB'
-	          )
-	        ),
-	        _react2["default"].createElement(
-	          'span',
-	          { id: 'option_allcheck' },
-	          _react2["default"].createElement('input', { type: 'checkbox', value: '7', ref: 'allchecked', id: 'itm7', onChange: this.allcheck }),
-	          _react2["default"].createElement('label', { htmlFor: 'itm7' }),
-	          '\u6240\u6709\u8BFE\u7A0B'
-	        ),
+	        this.state.subModule == 'audit' ? '' : filter_items,
+	        this.state.subModule == 'audit' ? space_div : filter_allcheck,
 	        _react2["default"].createElement('div', { style: { clear: 'both' } }),
 	        _react2["default"].createElement('div', { id: 'hr' }),
 	        double_option
 	      );
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (this.state.subModule == 'audit') {
+	        return;
+	      }
+
+	      var allchecked = this.state.course_state.reduce(function (x, y) {
+	        return x + y;
+	      });
+	      if (allchecked == 0 || allchecked == 6) {
+	        this.refs.allchecked.checked = true;
+	        for (var i = 0; i < 6; i++) {
+	          this.refs['check-' + i].checked = false;
+	        }
+	      } else {
+	        this.refs.allchecked.checked = false;
+	        for (var _i = 0; _i < 6; _i++) {
+	          this.refs['check-' + _i].checked = this.state.course_state[_i];
+	        }
+	      }
 	    }
 	  }]);
 
@@ -579,7 +545,6 @@ webpackJsonp([0],{
 	}(_react2["default"].Component);
 
 	var BlueMUI_GetList = function BlueMUI_GetList(Module, P, Cs, Serch, This) {
-	  console.log("GetList___314", Module);
 	  ajax({
 	    url: courseCenter.host + 'getCourseList',
 	    data: {
@@ -587,7 +552,7 @@ webpackJsonp([0],{
 	      courseState: '[' + Cs + ']',
 	      page: P,
 	      count: OUT_COUNT,
-	      subModule: Module,
+	      subModule: Module == 'history' ? 'maintenance' : Module,
 	      selectName: Serch
 	    },
 	    success: function success(gets) {
@@ -596,175 +561,47 @@ webpackJsonp([0],{
 	      if (datas.meta.result != 100) {
 	        list = [];
 	      } else {
-	        // console.log(datas,'___57');
 	        list = datas.data.courseList;
 	      }
 	      if (BluMUI.result.CreateList) {
-	        console.log('set new lists___358');
 	        BluMUI.result.CreateList.setState({
-	          Lists: list
+	          Lists: list,
+	          Module: Module
 	        });
 	      } else {
-	        console.log("创建列表___340");
-
 	        BluMUI.create({
 	          id: 'CreateList',
+	          module: Module,
 	          Lists: list
 	        }, 'Create_list', document.getElementById('React_list'));
 	      }
-
-	      //显示翻页
-	      // BluMUI.create({
-	      //   id:'Fanye',
-	      //   pages:datas.data.totalPages,
-	      //   page:BluMUI.result.Options.state.page
-	      //   },
-	      //   'Create_list',
-	      //   document.getElementById('React_fanye')
-	      //   );
-	      // ReactDOM.render(
-	      //   <BlueMUI_CreateFanye pages={datas.data.totalPages} page={P}/>,
-	      //   document.getElementById('React_fanye')
-	      // );
-	      // BluMUI.result.Fanye.props.pages=datas.data.totalPages;
 	      _reactDom2["default"].render(_react2["default"].createElement(BlueMUI_CreateFanye, { pages: datas.data.totalPages, page: P, This: This }), document.getElementById('React_fanye'));
-	      // }
-	      // BluMUI.result.Options.pages=datas.data.totalPages;
 	    }
 	  });
 	};
 
-	// 提交审核的弹出
-
-	var Tijiaoshenhe = function (_React$Component4) {
-	  _inherits(Tijiaoshenhe, _React$Component4);
-
-	  function Tijiaoshenhe(props) {
-	    _classCallCheck(this, Tijiaoshenhe);
-
-	    return _possibleConstructorReturn(this, (Tijiaoshenhe.__proto__ || Object.getPrototypeOf(Tijiaoshenhe)).call(this, props));
-	  }
-
-	  _createClass(Tijiaoshenhe, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this5 = this;
-
-	      this.refs.tijiao.onclick = function (e) {
-	        console.log(_this5.props.Kcbh);
-	        Tijiao(1, _this5.props.Kcbh);
-	        _this5.die();
-	      };
-	      this.refs.fanhui.onclick = this.die;
-	      this.refs.close.onclick = this.die;
-	    }
-	  }, {
-	    key: 'die',
-	    value: function die() {
-	      document.getElementById('tijiaoshenhe').style.display = 'none';
-	      _reactDom2["default"].unmountComponentAtNode(document.getElementById('tijiaoshenhe'));
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2["default"].createElement(
-	        'div',
-	        null,
-	        _react2["default"].createElement(
-	          'div',
-	          { id: 'tijiaoshenhe_head' },
-	          _react2["default"].createElement(
-	            'span',
-	            null,
-	            '\u63D0\u4EA4\u5BA1\u6838'
-	          ),
-	          _react2["default"].createElement('img', { ref: 'close', src: '../../imgs/courseAudit/close.png' })
-	        ),
-	        _react2["default"].createElement(
-	          'p',
-	          null,
-	          '\u6750\u6599\u5C06\u63D0\u4EA4\u81F3\u6559\u5B66\u9662\u957F\u3001\u7CFB\u90E8\u4E2D\u5FC3\u4E3B\u4EFB\u3001',
-	          _react2["default"].createElement('br', null),
-	          '\u8BFE\u7A0B\u8D1F\u8D23\u4EBA\u8FDB\u884C\u5BA1\u6838\uFF0C\u63D0\u4EA4\u540E\u4E0D\u53EF\u4FEE\u6539\u3002'
-	        ),
-	        _react2["default"].createElement(
-	          'div',
-	          { id: 'tijiao_div' },
-	          _react2["default"].createElement(
-	            'span',
-	            { className: 'tijiao', ref: 'tijiao' },
-	            '\u786E\u5B9A'
-	          ),
-	          _react2["default"].createElement(
-	            'span',
-	            { className: 'fanhui', ref: 'fanhui' },
-	            '\u8FD4\u56DE'
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Tijiaoshenhe;
-	}(_react2["default"].Component);
-
-	function Tjsh(kcbh) {
-	  var t = document.getElementById('tijiaoshenhe');
-	  t.style.display = "block";
-	  _reactDom2["default"].render(_react2["default"].createElement(Tijiaoshenhe, { Kcbh: kcbh }), t);
-	}
-
-	function Tijiao(op, course, note) {
-	  ajax({
-	    url: courseCenter.host + 'submitOperation',
-	    data: {
-	      unifyCode: BluMUI.result.unifyCode,
-	      courseNo: course,
-	      note: note || '',
-	      type: op
-	    },
-	    success: function success(gets) {
-	      var datas = JSON.parse(gets);
-	      BluMUI.result.Tab.change_subModule('audit');
-	      // BlueMUI_GetList(
-	      //   BluMUI.result.Tab.state.subModule,
-	      //   BluMUI.result.Options.state.page,
-	      //   BluMUI.result.Options.state.course_state
-	      // );
-	    }
-	  });
-	}
-
 	//显示列表
 
-	var BlueMUI_CreateList = function (_React$Component5) {
-	  _inherits(BlueMUI_CreateList, _React$Component5);
+	var BlueMUI_CreateList = function (_React$Component4) {
+	  _inherits(BlueMUI_CreateList, _React$Component4);
 
 	  function BlueMUI_CreateList(props) {
 	    _classCallCheck(this, BlueMUI_CreateList);
 
-	    var _this6 = _possibleConstructorReturn(this, (BlueMUI_CreateList.__proto__ || Object.getPrototypeOf(BlueMUI_CreateList)).call(this, props));
+	    var _this5 = _possibleConstructorReturn(this, (BlueMUI_CreateList.__proto__ || Object.getPrototypeOf(BlueMUI_CreateList)).call(this, props));
 
-	    console.log(_this6.props.lists, '___298');
-	    _this6.pi_liang = [];
-	    _this6.create_list = _this6.create_list.bind(_this6);
-	    _this6.check = _this6.check.bind(_this6);
-	    _this6.allcheck = _this6.allcheck.bind(_this6);
-	    _this6.state = {
-	      Lists: _this6.props.Lists
+	    _this5.create_list = _this5.create_list.bind(_this5);
+	    _this5.state = {
+	      Lists: _this5.props.Lists,
+	      Module: _this5.props.module
 	    };
-	    return _this6;
+	    return _this5;
 	  }
 
 	  _createClass(BlueMUI_CreateList, [{
 	    key: 'operation',
 	    value: function operation(o, a, event) {
-	      console.log(a);
 	      switch (o) {
-	        // case '提交审核':
-	        //   Tjsh(a);
-	        //   console.log('提交审核')
-	        //   break;
 	        case '提交/审核':
 	          window.location.href = 'classManageCheck.html?classId=' + a + '&type=1';
 	          break;
@@ -774,47 +611,30 @@ webpackJsonp([0],{
 	        case '教学院长审核':
 	          window.location.href = 'classManageCheck.html?classId=' + a + '&type=3';
 	          break;
-
 	        case '撤回':
 	          Tijiao(3, a);
-	          console.log('撤回');
 	          break;
 	        case '停用':
 	          Tijiao(4, a);
-	          console.log('停用');
 	          break;
 	        case '启用':
 	          Tijiao(5, a);
-	          console.log('启用');
 	          break;
 	        case '编辑':
 	          window.location.href = 'classManageEditor.html?classId=' + a;
-	          console.log('编辑');
 	          break;
 	        case '抽查':
 	          window.location.href = 'classManageSpotCheck.html?classId=' + a + '&type=6';
 	          break;
 	        case '历史':
-	          console.log('历史');
 	          Show_lishi(a);
 	          break;
 	      }
 	    }
 	  }, {
-	    key: 'check',
-	    value: function check(No, eve) {
-	      this.refs.allcheck.checked = false;
-	      if (eve.target.checked) {
-	        this.pi_liang.push(No);
-	      } else {
-	        this.pi_liang.splice(this.pi_liang.indexOf(No), 1);
-	      }
-	      // console.log(this.pi_liang);
-	    }
-	  }, {
 	    key: 'create_list',
 	    value: function create_list() {
-	      var _this7 = this;
+	      var _this6 = this;
 
 	      var op_func = void 0;
 	      var op_able = void 0;
@@ -843,17 +663,16 @@ webpackJsonp([0],{
 	      this.state.Lists.map(function (e, index) {
 	        var check = void 0;
 	        var ops = [];
+	        var lishi = _react2["default"].createElement(
+	          'span',
+	          { key: 'lish', onClick: _this6.operation.bind(_this6, '历史', e.kcbh), className: 'op_on' },
+	          '\u5386\u53F2\u67E5\u8BE2'
+	        );
 	        var style = {
 	          background: index % 2 ? '#eee' : '#fff'
 	        };
-	        if (BluMUI.result.Tab.state.subModule == 'audit') {
-	          // check=<td width="3%">
-	          //   <input type="checkbox" value={e.kcbh} id={e.kcbh} onChange={this.check.bind(this,e.kcbh)}/>
-	          //   <label htmlFor={e.kcbh}></label>
-	          // </td>;
-	        }
 	        e.cz.map(function (f) {
-	          op_func = f.able ? _this7.operation.bind(_this7, f.name, e.kcbh) : '';
+	          op_func = f.able ? _this6.operation.bind(_this6, f.name, e.kcbh) : '';
 	          ops.push(_react2["default"].createElement(
 	            'span',
 	            { key: f.name, onClick: op_func, className: f.able ? 'op_on' : '' },
@@ -862,10 +681,9 @@ webpackJsonp([0],{
 	        });
 	        ops.push(_react2["default"].createElement(
 	          'span',
-	          { key: 'lish', onClick: _this7.operation.bind(_this7, '历史', e.kcbh), className: 'op_on' },
+	          { key: 'lish', onClick: _this6.operation.bind(_this6, '历史', e.kcbh), className: 'op_on' },
 	          '\u5386\u53F2\u67E5\u8BE2'
 	        ));
-
 	        list.push(_react2["default"].createElement(
 	          'tr',
 	          { key: e.kcbh, style: style },
@@ -920,29 +738,8 @@ webpackJsonp([0],{
 	      }
 	    }
 	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      // this.get_list(this.props.subModule);
-	    }
-	  }, {
-	    key: 'allcheck',
-	    value: function allcheck() {
-	      var _this8 = this;
-
-	      this.pi_liang = [];
-	      Array().map.call(this.refs.list_body.getElementsByTagName('input'), function (e) {
-	        e.checked = _this8.refs.allcheck.checked;
-	        e.checked && _this8.pi_liang.push(e.parentNode.nextSibling.innerText);
-	      });
-	      console.log(this.pi_liang.toString());
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var check = void 0;
-	      if (BluMUI.result.Tab.state.subModule == 'audit') {
-	        // check=<td width="3%"><input type="checkbox" value="0" id="allcheck" onChange={this.allcheck} ref='allcheck' /><label htmlFor="allcheck"></label><span id="quanxuan">全选</span></td>;
-	      }
 	      return _react2["default"].createElement(
 	        'table',
 	        { id: 'center_table' },
@@ -953,7 +750,6 @@ webpackJsonp([0],{
 	            'tr',
 	            null,
 	            _react2["default"].createElement('td', { width: '20px' }),
-	            check,
 	            _react2["default"].createElement(
 	              'td',
 	              { width: '16%' },
@@ -1008,21 +804,21 @@ webpackJsonp([0],{
 
 	//创建弹出层层(历史)
 
-	var BlueMUI_CreatePopup = function (_React$Component6) {
-	  _inherits(BlueMUI_CreatePopup, _React$Component6);
+	var BlueMUI_CreatePopup = function (_React$Component5) {
+	  _inherits(BlueMUI_CreatePopup, _React$Component5);
 
 	  function BlueMUI_CreatePopup(props) {
 	    _classCallCheck(this, BlueMUI_CreatePopup);
 
-	    var _this9 = _possibleConstructorReturn(this, (BlueMUI_CreatePopup.__proto__ || Object.getPrototypeOf(BlueMUI_CreatePopup)).call(this, props));
+	    var _this7 = _possibleConstructorReturn(this, (BlueMUI_CreatePopup.__proto__ || Object.getPrototypeOf(BlueMUI_CreatePopup)).call(this, props));
 
-	    _this9.state = {
+	    _this7.state = {
 	      lists: [],
 	      page: 1,
 	      pages: 0
 	    };
-	    _this9.popup = document.getElementById('popup');
-	    return _this9;
+	    _this7.popup = document.getElementById('popup');
+	    return _this7;
 	  }
 
 	  _createClass(BlueMUI_CreatePopup, [{
@@ -1128,7 +924,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'get_lists',
 	    value: function get_lists() {
-	      var _this10 = this;
+	      var _this8 = this;
 
 	      /* 获取数据 */
 	      ajax({
@@ -1141,7 +937,7 @@ webpackJsonp([0],{
 	        },
 	        success: function success(e) {
 	          var datas = JSON.parse(e);
-	          _this10.setState({
+	          _this8.setState({
 	            lists: datas.data.operationList,
 	            pages: datas.data.totalPages
 	          });
@@ -1158,12 +954,8 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      document.getElementById('popup_body').onclick = function (e) {
-	        console.log('popup_body click');
-	        // e.stopPropagation();
-	      };
+	      document.getElementById('popup_body').onclick = function (e) {};
 	      this.refs.close.onclick = this.del_popup.bind(this);
-	      // this.popup.onclick=this.del_popup.bind(this);
 	      this.get_lists();
 	    }
 	  }, {
@@ -1191,8 +983,7 @@ webpackJsonp([0],{
 	var BluMUI_M = {
 	  Create_options: BlueMUI_CreateOptions,
 	  Create_tabs: BlueMUI_CreateTabs,
-	  Create_list: BlueMUI_CreateList,
-	  Get_list: BlueMUI_GetList
+	  Create_list: BlueMUI_CreateList
 	};
 
 	var BluMUI = {
