@@ -179,7 +179,7 @@ webpackJsonp([0],{
 	          _react2["default"].createElement(
 	            'span',
 	            null,
-	            '\u6750\u6599/\u53C2\u8003\u4E66'
+	            '\u6559\u6750/\u53C2\u8003\u4E66'
 	          )
 	        )
 	      );

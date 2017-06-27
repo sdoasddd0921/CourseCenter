@@ -44,7 +44,7 @@ class BlueMUI_CreateNav extends React.Component {
       <li ref='c' onClick={this.choose.bind(this,'c')}><span>作业</span></li>
       <li ref='d' onClick={this.choose.bind(this,'d')}><span>习（试）题库</span></li>
       <li ref='e' onClick={this.choose.bind(this,'e')}><span>网络学习资源</span></li>
-      <li ref='f' onClick={this.choose.bind(this,'f')}><span>材料/参考书</span></li>
+      <li ref='f' onClick={this.choose.bind(this,'f')}><span>教材/参考书</span></li>
     </ul>);
   }
 

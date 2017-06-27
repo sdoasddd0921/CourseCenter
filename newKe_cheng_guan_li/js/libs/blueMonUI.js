@@ -119,10 +119,13 @@ class BlueMUI_CreateTabs extends React.Component {
 
   change_subModule(Module) {
     this.setState({subModule:Module});
-    BluMUI.result.Options.setState({
-      subModule:Module,
-      page:1
-    });
+    if(BluMUI.result.Options) {
+      BluMUI.result.Options.setState({
+        subModule:Module,
+        page:1
+      });
+    }
+
     // 清空搜索内容
     document.getElementById('jxtdss').value='';
   }
@@ -223,8 +226,10 @@ class BlueMUI_CreateOptions extends React.Component {
         hand_serch();
       }
     }
-    this.refs.allchecked.checked=true;
-    this.refs.serchBtn.onclick=hand_serch;
+    if(this.state.subModule!='audit') {
+      this.refs.allchecked.checked=true;
+      this.refs.serchBtn.onclick=hand_serch;
+    }
   }
   componentWillUpdate(nextProps, nextState) {
     if(nextState.subModule!=this.state.subModule) {

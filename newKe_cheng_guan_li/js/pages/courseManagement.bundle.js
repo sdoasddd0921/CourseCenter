@@ -280,10 +280,13 @@ webpackJsonp([0],{
 	    key: 'change_subModule',
 	    value: function change_subModule(Module) {
 	      this.setState({ subModule: Module });
-	      BluMUI.result.Options.setState({
-	        subModule: Module,
-	        page: 1
-	      });
+	      if (BluMUI.result.Options) {
+	        BluMUI.result.Options.setState({
+	          subModule: Module,
+	          page: 1
+	        });
+	      }
+
 	      // 清空搜索内容
 	      document.getElementById('jxtdss').value = '';
 	    }
@@ -412,8 +415,10 @@ webpackJsonp([0],{
 	          hand_serch();
 	        }
 	      };
-	      this.refs.allchecked.checked = true;
-	      this.refs.serchBtn.onclick = hand_serch;
+	      if (this.state.subModule != 'audit') {
+	        this.refs.allchecked.checked = true;
+	        this.refs.serchBtn.onclick = hand_serch;
+	      }
 	    }
 	  }, {
 	    key: 'componentWillUpdate',
