@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom';
 var ajax=require('./post_ajax.js');
 var Place=2;
 console.log("Place=2,展示页")
-// var url_place=parseHash(window.location.href);
-// if("place" in url_place) {
-//   Place = url_place.place;
-// }
 /*
  * 学习资源
  */
@@ -48,7 +44,7 @@ class BlueMUI_CreateNav extends React.Component {
       <li ref='c' onClick={this.choose.bind(this,'c')}><span>作业</span></li>
       <li ref='d' onClick={this.choose.bind(this,'d')}><span>习（试）题库</span></li>
       <li ref='e' onClick={this.choose.bind(this,'e')}><span>网络学习资源</span></li>
-      <li ref='f' onClick={this.choose.bind(this,'f')}><span>材料，参考书</span></li>
+      <li ref='f' onClick={this.choose.bind(this,'f')}><span>材料/参考书</span></li>
     </ul>);
   }
 
@@ -106,15 +102,10 @@ var Show_nav_item=function(prop) {
 
 // 检查函数，用于检查每个子项目的数据是否合法
 function check() {
-  if(this.props.meta.result==101) {
+  if(this.props.meta.result!=100) {
     return(<div id="error" key='error'>
       <img src="../../imgs/public/error.png" alt="error"/>
-      <span>没有数据</span>
-    </div>);
-  } else if(this.props.meta.result==102) {
-    return(<div id="error" key='error'>
-      <img src="../../imgs/public/error.png" alt="error"/>
-      <span>正在维护</span>
+      <span>该模块暂无数据</span>
     </div>);
   }
   return false;
@@ -192,10 +183,6 @@ class BlueMUI_Create_b extends React.Component {
     this.ziyuan=false;
     this.default_kcbh='';
   }
-
-  // xiazai(name,down) {
-  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
-  // }
 
   show(No) {
     // 在线显示PDF
@@ -304,7 +291,7 @@ class BlueMUI_Create_b extends React.Component {
   componentDidMount() {
     console.log('___247',this.jiangyi,this.other)
     if((this.other==101||this.other==102)&&this.jiangyi) {
-      var error_msg=this.other==101?'没有数据':'正在维护';
+      var error_msg='该模块暂无数据';
       this.refs.right.innerHTML="<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>"+error_msg+"</span></div>";
     } else {
       this.show(this.default_kcbh);
@@ -317,10 +304,6 @@ class BlueMUI_Create_c extends React.Component {
   constructor(props) {
     super(props);
   }
-
-  // xiazai(name,down) {
-  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
-  // }
 
   create_zuoye() {
     let flag = check.call(this);
@@ -364,9 +347,6 @@ class BlueMUI_Create_d extends React.Component {
   constructor(props) {
     super(props);
   }
-  // xiazai(link) {
-  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-  // }
 
   create_xiti() {
     let flag = check.call(this);
@@ -409,9 +389,6 @@ class BlueMUI_Create_e extends React.Component {
   constructor(props) {
     super(props);
   }
-  // xiazai(link) {
-  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-  // }
 
   create_ziyuan() {
     let flag = check.call(this);

@@ -82,7 +82,7 @@ class BlueMUI_CreateFanye extends React.Component {
       fanye.unshift(<li key={1} onClick={this.fanye.bind(this,1)}>{1}</li>);
       fanye.push(<li key={this.props.pages} onClick={this.fanye.bind(this,this.props.pages)}>{this.props.pages}</li>);
     }
-    return(<div id="fanye">
+    return(<div id={this.props.id}>
       <div id="fanye_pre" ref="pre" onClick={this.fanye.bind(this,this.props.page-1<1?0:this.props.page-1)}><img src="../../imgs/courseAudit/fanye_left.png" alt=""/></div>
       <ul ref="popup_fanye">
         {fanye}
@@ -320,7 +320,7 @@ var BlueMUI_GetList=function(Module,P,Cs,Serch,This) {
         );
       }
       ReactDOM.render(
-        <BlueMUI_CreateFanye pages={datas.data.totalPages} page={P} This={This}/>,
+        <BlueMUI_CreateFanye id={'fanye'} pages={datas.data.totalPages} page={P} This={This}/>,
         document.getElementById('React_fanye')
       );
     }
@@ -390,12 +390,12 @@ class BlueMUI_CreateList extends React.Component {
       let style={
         background: index%2?'#eee':'#fff'
       };
-      e.cz.map(f=>{
+      e.cz.map((f,findex)=>{
         op_func=f.able?this.operation.bind(this,f.name,e.kcbh):'';
-        ops.push(<span key={f.name} onClick={op_func} className={f.able?'op_on':''}>{f.name}</span>);
+        ops.push(<span key={findex} onClick={op_func} className={f.able?'op_on':''}>{f.name}</span>);
       });
       ops.push(<span key='lish' onClick={this.operation.bind(this,'历史',e.kcbh)} className='op_on'>历史查询</span>);
-      list.push(<tr key={e.kcbh} style={style}>
+      list.push(<tr key={index} style={style}>
         <td></td>
         {check}
         <td>{e.kcbh}</td>
@@ -537,7 +537,7 @@ class BlueMUI_CreatePopup extends React.Component {
         {this.create_popup_thead()}
         {this.create_popup_tbody()}
       </table>
-      <BlueMUI_CreateFanye page={this.state.page} pages={this.state.pages} This={this} ref="fanye_in" />
+      <BlueMUI_CreateFanye id={'lishi_fanye'} page={this.state.page} pages={this.state.pages} This={this} ref="fanye_in" />
     </div>);
   }
 }

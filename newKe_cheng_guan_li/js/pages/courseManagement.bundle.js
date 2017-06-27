@@ -8,12 +8,6 @@ webpackJsonp([0],{
 	var BluMUI = __webpack_require__(1);
 	var ajax = __webpack_require__(160);
 
-	/*
-	院长：0102295 Cq011568 (黄容)
-	教研室主任：0102549  251833（罗婷婷）
-	课程负责人：0102387 密码caiting@cqupt（蔡婷）
-	教师：0102295 0102549   0102387 
-	 */
 	// 此处需要获取角色ID
 	var User = {
 	  id: ''
@@ -225,7 +219,7 @@ webpackJsonp([0],{
 	      }
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'fanye' },
+	        { id: this.props.id },
 	        _react2["default"].createElement(
 	          'div',
 	          { id: 'fanye_pre', ref: 'pre', onClick: this.fanye.bind(this, this.props.page - 1 < 1 ? 0 : this.props.page - 1) },
@@ -575,7 +569,7 @@ webpackJsonp([0],{
 	          Lists: list
 	        }, 'Create_list', document.getElementById('React_list'));
 	      }
-	      _reactDom2["default"].render(_react2["default"].createElement(BlueMUI_CreateFanye, { pages: datas.data.totalPages, page: P, This: This }), document.getElementById('React_fanye'));
+	      _reactDom2["default"].render(_react2["default"].createElement(BlueMUI_CreateFanye, { id: 'fanye', pages: datas.data.totalPages, page: P, This: This }), document.getElementById('React_fanye'));
 	    }
 	  });
 	};
@@ -671,11 +665,11 @@ webpackJsonp([0],{
 	        var style = {
 	          background: index % 2 ? '#eee' : '#fff'
 	        };
-	        e.cz.map(function (f) {
+	        e.cz.map(function (f, findex) {
 	          op_func = f.able ? _this6.operation.bind(_this6, f.name, e.kcbh) : '';
 	          ops.push(_react2["default"].createElement(
 	            'span',
-	            { key: f.name, onClick: op_func, className: f.able ? 'op_on' : '' },
+	            { key: findex, onClick: op_func, className: f.able ? 'op_on' : '' },
 	            f.name
 	          ));
 	        });
@@ -686,7 +680,7 @@ webpackJsonp([0],{
 	        ));
 	        list.push(_react2["default"].createElement(
 	          'tr',
-	          { key: e.kcbh, style: style },
+	          { key: index, style: style },
 	          _react2["default"].createElement('td', null),
 	          check,
 	          _react2["default"].createElement(
@@ -972,7 +966,7 @@ webpackJsonp([0],{
 	          this.create_popup_thead(),
 	          this.create_popup_tbody()
 	        ),
-	        _react2["default"].createElement(BlueMUI_CreateFanye, { page: this.state.page, pages: this.state.pages, This: this, ref: 'fanye_in' })
+	        _react2["default"].createElement(BlueMUI_CreateFanye, { id: 'lishi_fanye', page: this.state.page, pages: this.state.pages, This: this, ref: 'fanye_in' })
 	      );
 	    }
 	  }]);

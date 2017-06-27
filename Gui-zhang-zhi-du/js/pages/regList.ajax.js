@@ -95,12 +95,12 @@ function ajax(ajaxObj,host){
 					ul[0].appendChild(li);
 				}
 				var disNum = 10;
-				var style = "background-color:#007a51;border-radius:100%;color:#fff;";
+				var style = "text-decoration:none;text-align:center;display:inline-block;width:20px;height:20px;background-color:#007a51;border-radius:50%;color:#fff;";
 				PT(allPage,nowPage);
 				function PT(allPage,nowPage){
 					//console.log(nowPage)
 					page({
-						id:'test',
+						id:'test_fanye',
 						nowNum:nowPage,
 						allNum:allPage,
 						callback:function(now,all){
@@ -162,7 +162,7 @@ function ajax(ajaxObj,host){
 				}
 				var width = (1182 - parseInt(allPage) * 28 - 56)/2;
 				//console.log(width)
-				var test = document.getElementById("test");
+				var test = document.getElementById("test_fanye");
 				test.style.marginLeft = width + "px";
 			}
 		}

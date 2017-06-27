@@ -5,13 +5,6 @@ require('es6-promise');
 var BluMUI = require('../libs/blueMonUI');
 var ajax = require('../libs/post_ajax');
 
-/*
-院长：0102295 Cq011568 (黄容)
-教研室主任：0102549  251833（罗婷婷）
-课程负责人：0102387 密码caiting@cqupt（蔡婷）
-教师：0102295 0102549   0102387 
-课程编号： A1040040  A2040080  A2040020  
-*/
 
 //查询数据的变量
 let User={
@@ -23,7 +16,6 @@ let Course={
 User.id=getCookie('userId')
 Course.kcbh=parseHash(window.location.href).classId
 
-//http://172.22.113.230:8080/getCourseMajor?courseNo=A1100020
 //显示全部（适用专业）
 function showMore(){
 	document.getElementById('gdxy').style.display='inline';
@@ -59,10 +51,9 @@ ajax({
     'unifyCode': User.id
 	},
 	success: function (response) {
-    var fengmian='../../imgs/home-course/home_course.jpg';
+    var fengmian='../../imgs/home-course/default.png';
 		var totalInfos={};
 		var getCourseHomePageMsg=JSON.parse(response).data;
-
 		var courseBaseMsg=getCourseHomePageMsg.courseBaseMsg[0];
 		var teacherMsg=getCourseHomePageMsg.teacherMsg;
 		var courseIntrodeceList=getCourseHomePageMsg.courseIntrodeceList[0];
@@ -73,7 +64,6 @@ ajax({
 		for(let b in courseBaseMsg){
 			totalInfos[b]=courseBaseMsg[b];
 		}
-		// console.log(getCourseHomePageMsg,'___97');
 		document.getElementById('bigkcmc').innerText=totalInfos['kcmc'];
     // 访问量：
     ajax({
@@ -83,23 +73,24 @@ ajax({
         'unifyCode':User.id
       },
       success:function(response) {
-        console.log('response:',response)
         var datas=JSON.parse(response);
+
+        console.log('response:',response)
         console.log("访问量：",datas,datas.data)
         if("fwl" in datas.data) {
           document.getElementById('visited').innerText=datas.data.fwl+'人看过';
         }
       }
     })
-    // document.getElementById('visited').innerText=courseBaseMsg.fwl+'人看过'
+
 		var baseInfos=['kcmc','kcbh','xf','xs','kcjs'];
+
 		baseInfos.map(e=>{
 			document.getElementById(e).innerText=totalInfos[e];
 		});//填充课程基本信息
     if(courseBaseMsg.tpurl!='') {
       fengmian=courseCenter.host+'upload/PIC/'+courseBaseMsg.tpurl;
     }
-    // console.log(document.getElementById('fengmian').src)
     document.getElementById('fengmian').src=fengmian;
 		//适用专业、学院
 
@@ -117,6 +108,19 @@ ajax({
       'Show_teacher',
       document.getElementById('rkjs_table')
     );
+
+    // 课程资源：
+
+    if(courseBaseMsg.kclx==1) {
+      console.log("有资源")
+      BluMUI.create({
+          id:"Resources"
+        },
+        'Resources',
+        document.getElementById('Resources')
+      );
+      set_more();
+    }
 
 		/**
 		 * 在这进行星星打分///
@@ -136,14 +140,6 @@ ajax({
       'Review',
       document.getElementById('evaluation3')
     );
-
-    //中间的开课情况
-    // BluMUI.create({
-    //     datas: getCourseHomePageMsg.semesterCourse
-    //   },
-    //   'Show_kkqk',
-    //   document.getElementById('kkqk')
-    // );
 	}
 });
 
@@ -176,45 +172,15 @@ BluMUI.create({
 	}
 },'Review',document.getElementById('evaluation1'));
 
-
-
-
-
-
-
-
-
-
-
-document.getElementById('more1').onclick=function(e) {
-  // alert('a');
-  window.location.href='courseShow.html?module=f&toModuleName=学习资源&classId='+Course.kcbh;
-  e.preventDefault();
-}
-document.getElementById('more2').onclick=function(e) {
-  // alert('b');
-  window.location.href='courseShow.html?module=a&toModuleName=学习资源&classId='+Course.kcbh;
-  e.preventDefault();
-}
-document.getElementById('more3').onclick=function(e) {
-  // alert('c');
-  window.location.href='courseShow.html?module=d&toModuleName=学习资源&classId='+Course.kcbh;
-  e.preventDefault();
-}
-document.getElementById('more4').onclick=function(e) {
-  // alert('d');
-  window.location.href='courseShow.html?module=e&toModuleName=学习资源&classId='+Course.kcbh;
-  e.preventDefault();
-}
-document.getElementById('more5').onclick=function(e) {
-  // alert('d');
-  window.location.href='courseShow.html?module=c&toModuleName=学习资源&classId='+Course.kcbh;
-  e.preventDefault();
-}
-document.getElementById('more6').onclick=function(e) {
-  // alert('d');
-  window.location.href='courseShow.html?module=b&toModuleName=学习资源&classId='+Course.kcbh;
-  e.preventDefault();
+// 绑定“更多”事件
+function set_more() {
+  let Mapps=['f','a','d','e','c','b'];
+  [1,2,3,4,5,6].map((e)=>{
+    document.getElementById('more'+e).onclick=(eve)=>{
+      window.location.href=`courseShow.html?module=${Mapps[e-1]}&toModuleName=学习资源&classId=${Course.kcbh}`;
+      eve.preventDefault();
+    };
+  });
 }
 
 document.getElementById('more_info').onclick=function(e) {
@@ -225,7 +191,6 @@ document.getElementById('more_info').onclick=function(e) {
 document.getElementById('button').onclick=function(e) {
   let v1=document.getElementById('value1').value;
   let v2=document.getElementById('value2').value;
-  // console.log(v1,v2);
   ajax({
     url:courseCenter.host+'courseScore',
     data: {

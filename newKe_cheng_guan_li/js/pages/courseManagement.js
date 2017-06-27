@@ -2,13 +2,6 @@ var BluMUI = require('../libs/blueMonUI.js');
 var ajax=require('../libs/post_ajax.js');
 
 
-
-/*
-院长：0102295 Cq011568 (黄容)
-教研室主任：0102549  251833（罗婷婷）
-课程负责人：0102387 密码caiting@cqupt（蔡婷）
-教师：0102295 0102549   0102387 
- */
 // 此处需要获取角色ID
 var User={
   id:''

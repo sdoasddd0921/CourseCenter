@@ -352,7 +352,16 @@ input[type="checkbox"]:checked + label{
   text-align: center;
   margin: -50px auto;
 }
-#fanye>div {
+#lishi_fanye {
+  clear: both;
+  width: 800px;
+  font-size: 13px;
+  line-height: 40px;
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+}
+#fanye>div, #lishi_fanye>div{
   width: 40px;
   height: 40px;
   background: #FFF;
@@ -360,12 +369,12 @@ input[type="checkbox"]:checked + label{
   cursor: pointer;
   /*border: 1px solid #DDD;*/
 }
-#fanye>ul {
+#fanye>ul, #lishi_fanye>ul{
   display: inline-block;
   background: #FFF;
   list-style: none;
 }
-#fanye>ul>li {
+#fanye>ul>li, #lishi_fanye>ul>li{
   width: 40px;
   height: 40px;
   display: inline-block;
@@ -374,10 +383,10 @@ input[type="checkbox"]:checked + label{
   cursor: pointer;
   /*border-right: none;*/
 }
-#fanye #fanye_pre {
+#fanye #fanye_pre, #lishi_fanye #fanye_pre{
   border-radius: 5px 0 0 5px;
 }
-#fanye #fanye_next {
+#fanye #fanye_next, #lishi_fanye #fanye_next{
   border-radius: 0 5px 5px 0;
 }
 

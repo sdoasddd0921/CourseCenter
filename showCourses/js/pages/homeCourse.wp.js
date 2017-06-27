@@ -12,14 +12,6 @@ webpackJsonp([0],{
 	var BluMUI = __webpack_require__(7);
 	var ajax = __webpack_require__(165);
 
-	/*
-	院长：0102295 Cq011568 (黄容)
-	教研室主任：0102549  251833（罗婷婷）
-	课程负责人：0102387 密码caiting@cqupt（蔡婷）
-	教师：0102295 0102549   0102387 
-	课程编号： A1040040  A2040080  A2040020  
-	*/
-
 	//查询数据的变量
 	var User = {
 	  id: ''
@@ -30,7 +22,6 @@ webpackJsonp([0],{
 	User.id = getCookie('userId');
 	Course.kcbh = parseHash(window.location.href).classId;
 
-	//http://172.22.113.230:8080/getCourseMajor?courseNo=A1100020
 	//显示全部（适用专业）
 	function showMore() {
 	  document.getElementById('gdxy').style.display = 'inline';
@@ -64,10 +55,9 @@ webpackJsonp([0],{
 	    'unifyCode': User.id
 	  },
 	  success: function success(response) {
-	    var fengmian = '../../imgs/home-course/home_course.jpg';
+	    var fengmian = '../../imgs/home-course/default.png';
 	    var totalInfos = {};
 	    var getCourseHomePageMsg = JSON.parse(response).data;
-
 	    var courseBaseMsg = getCourseHomePageMsg.courseBaseMsg[0];
 	    var teacherMsg = getCourseHomePageMsg.teacherMsg;
 	    var courseIntrodeceList = getCourseHomePageMsg.courseIntrodeceList[0];
@@ -78,7 +68,6 @@ webpackJsonp([0],{
 	    for (var b in courseBaseMsg) {
 	      totalInfos[b] = courseBaseMsg[b];
 	    }
-	    // console.log(getCourseHomePageMsg,'___97');
 	    document.getElementById('bigkcmc').innerText = totalInfos['kcmc'];
 	    // 访问量：
 	    ajax({
@@ -88,23 +77,24 @@ webpackJsonp([0],{
 	        'unifyCode': User.id
 	      },
 	      success: function success(response) {
-	        console.log('response:', response);
 	        var datas = JSON.parse(response);
+
+	        console.log('response:', response);
 	        console.log("访问量：", datas, datas.data);
 	        if ("fwl" in datas.data) {
 	          document.getElementById('visited').innerText = datas.data.fwl + '人看过';
 	        }
 	      }
 	    });
-	    // document.getElementById('visited').innerText=courseBaseMsg.fwl+'人看过'
+
 	    var baseInfos = ['kcmc', 'kcbh', 'xf', 'xs', 'kcjs'];
+
 	    baseInfos.map(function (e) {
 	      document.getElementById(e).innerText = totalInfos[e];
 	    }); //填充课程基本信息
 	    if (courseBaseMsg.tpurl != '') {
 	      fengmian = courseCenter.host + 'upload/PIC/' + courseBaseMsg.tpurl;
 	    }
-	    // console.log(document.getElementById('fengmian').src)
 	    document.getElementById('fengmian').src = fengmian;
 	    //适用专业、学院
 
@@ -119,6 +109,16 @@ webpackJsonp([0],{
 	    BluMUI.create({
 	      teachers: teacherMsg
 	    }, 'Show_teacher', document.getElementById('rkjs_table'));
+
+	    // 课程资源：
+
+	    if (courseBaseMsg.kclx == 1) {
+	      console.log("有资源");
+	      BluMUI.create({
+	        id: "Resources"
+	      }, 'Resources', document.getElementById('Resources'));
+	      set_more();
+	    }
 
 	    /**
 	     * 在这进行星星打分///
@@ -136,14 +136,6 @@ webpackJsonp([0],{
 	        //
 	        console.log(value);
 	      } }, 'Review', document.getElementById('evaluation3'));
-
-	    //中间的开课情况
-	    // BluMUI.create({
-	    //     datas: getCourseHomePageMsg.semesterCourse
-	    //   },
-	    //   'Show_kkqk',
-	    //   document.getElementById('kkqk')
-	    // );
 	  }
 	});
 
@@ -178,36 +170,16 @@ webpackJsonp([0],{
 	  }
 	}, 'Review', document.getElementById('evaluation1'));
 
-	document.getElementById('more1').onclick = function (e) {
-	  // alert('a');
-	  window.location.href = 'courseShow.html?module=f&toModuleName=学习资源&classId=' + Course.kcbh;
-	  e.preventDefault();
-	};
-	document.getElementById('more2').onclick = function (e) {
-	  // alert('b');
-	  window.location.href = 'courseShow.html?module=a&toModuleName=学习资源&classId=' + Course.kcbh;
-	  e.preventDefault();
-	};
-	document.getElementById('more3').onclick = function (e) {
-	  // alert('c');
-	  window.location.href = 'courseShow.html?module=d&toModuleName=学习资源&classId=' + Course.kcbh;
-	  e.preventDefault();
-	};
-	document.getElementById('more4').onclick = function (e) {
-	  // alert('d');
-	  window.location.href = 'courseShow.html?module=e&toModuleName=学习资源&classId=' + Course.kcbh;
-	  e.preventDefault();
-	};
-	document.getElementById('more5').onclick = function (e) {
-	  // alert('d');
-	  window.location.href = 'courseShow.html?module=c&toModuleName=学习资源&classId=' + Course.kcbh;
-	  e.preventDefault();
-	};
-	document.getElementById('more6').onclick = function (e) {
-	  // alert('d');
-	  window.location.href = 'courseShow.html?module=b&toModuleName=学习资源&classId=' + Course.kcbh;
-	  e.preventDefault();
-	};
+	// 绑定“更多”事件
+	function set_more() {
+	  var Mapps = ['f', 'a', 'd', 'e', 'c', 'b'];
+	  [1, 2, 3, 4, 5, 6].map(function (e) {
+	    document.getElementById('more' + e).onclick = function (eve) {
+	      window.location.href = 'courseShow.html?module=' + Mapps[e - 1] + '&toModuleName=\u5B66\u4E60\u8D44\u6E90&classId=' + Course.kcbh;
+	      eve.preventDefault();
+	    };
+	  });
+	}
 
 	document.getElementById('more_info').onclick = function (e) {
 	  window.location.href = 'courseJianjie.html?toModuleName=课程简介&classId=' + Course.kcbh;
@@ -217,7 +189,6 @@ webpackJsonp([0],{
 	document.getElementById('button').onclick = function (e) {
 	  var v1 = document.getElementById('value1').value;
 	  var v2 = document.getElementById('value2').value;
-	  // console.log(v1,v2);
 	  ajax({
 	    url: courseCenter.host + 'courseScore',
 	    data: {
@@ -4105,20 +4076,218 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var BlueMUI_Review = function (_React$Component) {
-	  _inherits(BlueMUI_Review, _React$Component);
+	// 课程资源模板
+	var BlueMUI_Resources = function (_React$Component) {
+	  _inherits(BlueMUI_Resources, _React$Component);
+
+	  function BlueMUI_Resources(props) {
+	    _classCallCheck(this, BlueMUI_Resources);
+
+	    return _possibleConstructorReturn(this, (BlueMUI_Resources.__proto__ || Object.getPrototypeOf(BlueMUI_Resources)).call(this, props));
+	  }
+
+	  _createClass(BlueMUI_Resources, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2["default"].createElement(
+	        'div',
+	        { id: 'r2' },
+	        _react2["default"].createElement(
+	          'p',
+	          { className: 'content_title' },
+	          '\u8BFE\u7A0B\u8D44\u6E90'
+	        ),
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'r2_content' },
+	          _react2["default"].createElement(
+	            'ul',
+	            null,
+	            _react2["default"].createElement(
+	              'li',
+	              null,
+	              _react2["default"].createElement(
+	                'div',
+	                { className: 'li_left' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  { className: 'right_left' },
+	                  '\u53C2\u8003\u4E66'
+	                ),
+	                _react2["default"].createElement(
+	                  'div',
+	                  { className: 'right_right' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'a',
+	                      { id: 'more1', className: 'small', href: '#' },
+	                      '\u66F4\u591A'
+	                    ),
+	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
+	                  )
+	                )
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'li',
+	              null,
+	              _react2["default"].createElement(
+	                'div',
+	                { className: 'li_left' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  { className: 'right_left' },
+	                  '\u89C6\u9891\u8D44\u6E90'
+	                ),
+	                _react2["default"].createElement(
+	                  'div',
+	                  { className: 'right_right' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'a',
+	                      { id: 'more2', className: 'small', href: '#' },
+	                      '\u66F4\u591A'
+	                    ),
+	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
+	                  )
+	                )
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'li',
+	              null,
+	              _react2["default"].createElement(
+	                'div',
+	                { className: 'li_left' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  { className: 'right_left' },
+	                  '\u4E60\u9898\u5E93'
+	                ),
+	                _react2["default"].createElement(
+	                  'div',
+	                  { className: 'right_right' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'a',
+	                      { id: 'more3', className: 'small', href: '#' },
+	                      '\u66F4\u591A'
+	                    ),
+	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
+	                  )
+	                )
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'li',
+	              null,
+	              _react2["default"].createElement(
+	                'div',
+	                { className: 'li_left' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  { className: 'right_left' },
+	                  '\u7F51\u7EDC\u5B66\u4E60\u8D44\u6E90'
+	                ),
+	                _react2["default"].createElement(
+	                  'div',
+	                  { className: 'right_right' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'a',
+	                      { id: 'more4', className: 'small', href: '#' },
+	                      '\u66F4\u591A'
+	                    ),
+	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
+	                  )
+	                )
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'li',
+	              null,
+	              _react2["default"].createElement(
+	                'div',
+	                { className: 'li_left' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  { className: 'right_left' },
+	                  '\u4F5C\u4E1A'
+	                ),
+	                _react2["default"].createElement(
+	                  'div',
+	                  { className: 'right_right' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'a',
+	                      { id: 'more5', className: 'small', href: '#' },
+	                      '\u66F4\u591A'
+	                    ),
+	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
+	                  )
+	                )
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'li',
+	              null,
+	              _react2["default"].createElement(
+	                'div',
+	                { className: 'li_left' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  { className: 'right_left' },
+	                  '\u8BB2\u4E49'
+	                ),
+	                _react2["default"].createElement(
+	                  'div',
+	                  { className: 'right_right' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'a',
+	                      { id: 'more6', className: 'small', href: '#' },
+	                      '\u66F4\u591A'
+	                    ),
+	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
+	                  )
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return BlueMUI_Resources;
+	}(_react2["default"].Component);
+
+	var BlueMUI_Review = function (_React$Component2) {
+	  _inherits(BlueMUI_Review, _React$Component2);
 
 	  function BlueMUI_Review(props) {
 	    _classCallCheck(this, BlueMUI_Review);
 
-	    var _this = _possibleConstructorReturn(this, (BlueMUI_Review.__proto__ || Object.getPrototypeOf(BlueMUI_Review)).call(this, props));
+	    var _this2 = _possibleConstructorReturn(this, (BlueMUI_Review.__proto__ || Object.getPrototypeOf(BlueMUI_Review)).call(this, props));
 
-	    _this._clickStar = _this._clickStar.bind(_this);
-	    _this.state = {
+	    _this2._clickStar = _this2._clickStar.bind(_this2);
+	    _this2.state = {
 	      choiced: null,
-	      curIndex: _this.props.starNum
+	      curIndex: _this2.props.starNum
 	    };
-	    return _this;
+	    return _this2;
 	  }
 
 	  _createClass(BlueMUI_Review, [{
@@ -4205,13 +4374,16 @@ webpackJsonp([0],{
 	//任课教师
 
 
-	var BlueMUI_Teachers = function (_React$Component2) {
-	  _inherits(BlueMUI_Teachers, _React$Component2);
+	var BlueMUI_Teachers = function (_React$Component3) {
+	  _inherits(BlueMUI_Teachers, _React$Component3);
 
 	  function BlueMUI_Teachers(props) {
 	    _classCallCheck(this, BlueMUI_Teachers);
 
-	    return _possibleConstructorReturn(this, (BlueMUI_Teachers.__proto__ || Object.getPrototypeOf(BlueMUI_Teachers)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (BlueMUI_Teachers.__proto__ || Object.getPrototypeOf(BlueMUI_Teachers)).call(this, props));
+
+	    console.log("teachers:", _this3.props);
+	    return _this3;
 	  }
 
 	  _createClass(BlueMUI_Teachers, [{
@@ -4219,6 +4391,7 @@ webpackJsonp([0],{
 	    value: function render() {
 	      var teachers = [];
 	      var teacher = [];
+	      var warnings = void 0;
 	      var fuzeren = void 0;
 	      this.props.teachers.map(function (e) {
 	        if (e.jslx == '负责人') {
@@ -4296,11 +4469,21 @@ webpackJsonp([0],{
 	          teacher = teachers;
 	        }
 	      }
+	      if (this.props.teachers.length == 0) {
+	        warnings = _react2["default"].createElement(
+	          'p',
+	          null,
+	          '\u8BE5\u8BFE\u7A0B\u6CA1\u6709\u4EFB\u8BFE\u6559\u5E08'
+	        );
+	      } else {
+	        warnings = '';
+	      }
 	      return _react2["default"].createElement(
 	        'tbody',
 	        null,
 	        fuzeren,
-	        teacher
+	        teacher,
+	        warnings
 	      );
 	    }
 	  }]);
@@ -4311,8 +4494,8 @@ webpackJsonp([0],{
 	//全部显示
 
 
-	var BlueMUI_ShowAll = function (_React$Component3) {
-	  _inherits(BlueMUI_ShowAll, _React$Component3);
+	var BlueMUI_ShowAll = function (_React$Component4) {
+	  _inherits(BlueMUI_ShowAll, _React$Component4);
 
 	  function BlueMUI_ShowAll(props) {
 	    _classCallCheck(this, BlueMUI_ShowAll);
@@ -4369,6 +4552,7 @@ webpackJsonp([0],{
 
 	var BluMUI_M = {
 	  Review: BlueMUI_Review,
+	  Resources: BlueMUI_Resources,
 	  Show_all: BlueMUI_ShowAll,
 	  Show_teacher: BlueMUI_Teachers
 	};

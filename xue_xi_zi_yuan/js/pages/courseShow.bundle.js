@@ -78,10 +78,6 @@ webpackJsonp([0],{
 	var ajax = __webpack_require__(160);
 	var Place = 2;
 	console.log("Place=2,展示页");
-	// var url_place=parseHash(window.location.href);
-	// if("place" in url_place) {
-	//   Place = url_place.place;
-	// }
 	/*
 	 * 学习资源
 	 */
@@ -183,7 +179,7 @@ webpackJsonp([0],{
 	          _react2["default"].createElement(
 	            'span',
 	            null,
-	            '\u6750\u6599\uFF0C\u53C2\u8003\u4E66'
+	            '\u6750\u6599/\u53C2\u8003\u4E66'
 	          )
 	        )
 	      );
@@ -246,7 +242,7 @@ webpackJsonp([0],{
 
 	// 检查函数，用于检查每个子项目的数据是否合法
 	function check() {
-	  if (this.props.meta.result == 101) {
+	  if (this.props.meta.result != 100) {
 	    return _react2["default"].createElement(
 	      'div',
 	      { id: 'error', key: 'error' },
@@ -254,18 +250,7 @@ webpackJsonp([0],{
 	      _react2["default"].createElement(
 	        'span',
 	        null,
-	        '\u6CA1\u6709\u6570\u636E'
-	      )
-	    );
-	  } else if (this.props.meta.result == 102) {
-	    return _react2["default"].createElement(
-	      'div',
-	      { id: 'error', key: 'error' },
-	      _react2["default"].createElement('img', { src: '../../imgs/public/error.png', alt: 'error' }),
-	      _react2["default"].createElement(
-	        'span',
-	        null,
-	        '\u6B63\u5728\u7EF4\u62A4'
+	        '\u8BE5\u6A21\u5757\u6682\u65E0\u6570\u636E'
 	      )
 	    );
 	  }
@@ -382,10 +367,6 @@ webpackJsonp([0],{
 	    _this4.default_kcbh = '';
 	    return _this4;
 	  }
-
-	  // xiazai(name,down) {
-	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
-	  // }
 
 	  _createClass(BlueMUI_Create_b, [{
 	    key: 'show',
@@ -527,7 +508,7 @@ webpackJsonp([0],{
 	    value: function componentDidMount() {
 	      console.log('___247', this.jiangyi, this.other);
 	      if ((this.other == 101 || this.other == 102) && this.jiangyi) {
-	        var error_msg = this.other == 101 ? '没有数据' : '正在维护';
+	        var error_msg = '该模块暂无数据';
 	        this.refs.right.innerHTML = "<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>" + error_msg + "</span></div>";
 	      } else {
 	        this.show(this.default_kcbh);
@@ -549,10 +530,6 @@ webpackJsonp([0],{
 
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_c.__proto__ || Object.getPrototypeOf(BlueMUI_Create_c)).call(this, props));
 	  }
-
-	  // xiazai(name,down) {
-	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
-	  // }
 
 	  _createClass(BlueMUI_Create_c, [{
 	    key: 'create_zuoye',
@@ -623,9 +600,6 @@ webpackJsonp([0],{
 
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_d.__proto__ || Object.getPrototypeOf(BlueMUI_Create_d)).call(this, props));
 	  }
-	  // xiazai(link) {
-	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-	  // }
 
 	  _createClass(BlueMUI_Create_d, [{
 	    key: 'create_xiti',
@@ -696,9 +670,6 @@ webpackJsonp([0],{
 
 	    return _possibleConstructorReturn(this, (BlueMUI_Create_e.__proto__ || Object.getPrototypeOf(BlueMUI_Create_e)).call(this, props));
 	  }
-	  // xiazai(link) {
-	  //   this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+link.split('.')[0]+'&oName='+link;
-	  // }
 
 	  _createClass(BlueMUI_Create_e, [{
 	    key: 'create_ziyuan',
