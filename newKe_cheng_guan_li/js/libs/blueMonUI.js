@@ -111,7 +111,6 @@ class BlueMUI_CreateFanye extends React.Component {
 class BlueMUI_CreateTabs extends React.Component {
   constructor(props) {
     super(props);
-    // this.change_subModule=this.change_subModule.bind(this);
     this.state={
       subModule:parseHash(window.location.href).subModule||this.props.tabs[0].subModule
     };

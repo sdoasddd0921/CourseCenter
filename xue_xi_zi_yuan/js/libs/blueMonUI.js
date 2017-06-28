@@ -113,7 +113,7 @@ function check() {
 
 // 下载函数，用于下载文件
 function xiazai(name,down) {
-  this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;
+  this.refs.DOWNLOAD.src=`${courseCenter.host}fileDownLoad?name=${name}&oName=${down}&unifyCode=${BluMUI.result.config.user_id}`;
 }
 
 // 导航的子项目
