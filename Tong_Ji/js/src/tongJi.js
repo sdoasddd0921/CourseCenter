@@ -1,15 +1,14 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
 var BluMUI = require('../libs/blueMonUI.js');
 var ajax=require('../libs/post_ajax.js');
 
-
 var menues=BluMUI.menues;
 var menue_names=BluMUI.menue_names;
+
 ajax({
   url:courseCenter.host+'getMenu',
   data:{
-    module:9,
+    // module=9:规章制度，module=10：统计分析
+    module:10,
     unifyCode:getCookie('userId')
   },
   success:function(gets) {
