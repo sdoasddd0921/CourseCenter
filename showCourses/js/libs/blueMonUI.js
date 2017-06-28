@@ -162,7 +162,6 @@ class BlueMUI_Teachers extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log("teachers:",this.props)
   }
 
   render() {
@@ -218,9 +217,9 @@ class BlueMUI_Teachers extends React.Component {
       }
     }
     if(this.props.teachers.length==0) {
-      warnings=<p>该课程没有任课教师</p>
+      warnings=<tr><td><p>该课程没有任课教师</p></td></tr>;
     } else {
-      warnings='';
+      warnings=null;
     }
     return (
       <tbody>
@@ -231,6 +230,7 @@ class BlueMUI_Teachers extends React.Component {
     );
   }
 }
+
 
 //全部显示
 class BlueMUI_ShowAll extends React.Component {
@@ -260,7 +260,6 @@ class BlueMUI_ShowAll extends React.Component {
     return (<ul>{items}</ul>)
   }
 }
-
 
 var BluMUI_M = {
   Review: BlueMUI_Review,

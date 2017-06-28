@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -13,20 +13,7 @@ webpackJsonp([0],{
 	  id: ""
 	};
 	User.id = getCookie('userId');
-	/**
-	 * 0100032：院长、秘书（1）
-	 * 0100033：主任（2）
-	 * 0101225：课程负责人（3）
-	 * 院长：0102295 Cq011568 (黄容)
-	 * 教研室主任：0102549  251833（罗婷婷）
-	 * 课程负责人：0102387 密码caiting@cqupt（蔡婷）
-	 * 教师：0102295 0102549   0102387 
-	 */
 
-	/**
-	 * 服务器：172.20.2.137/subjectCenter/
-	 * 刘堂臣：172.22.113.230:8080/subjectCenter/
-	 */
 	BluMUI.result.user_id = User.id;
 	ajax({
 	  url: courseCenter.host + 'getMenu',
@@ -44,10 +31,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -76,11 +63,6 @@ webpackJsonp([0],{
 	var ajax = __webpack_require__(160);
 	var _count = 13;
 
-	// /**
-	//  * ******************系部中心、教学团队******************
-	//  */
-
-
 	//创建绿色的表头（又是绿色= =！）
 
 	var BlueMUI_CreateThead = function (_React$Component) {
@@ -100,18 +82,12 @@ webpackJsonp([0],{
 	    return _this;
 	  }
 
+	  //根据权限创建绿色的表头（绿色……）
+
+
 	  _createClass(BlueMUI_CreateThead, [{
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      console.log("删除");
-	    }
-
-	    //根据权限创建绿色的表头（绿色……）
-
-	  }, {
 	    key: 'thead_create',
 	    value: function thead_create() {
-	      // console.log(this.props.rank,"___rank__27")
 	      //创建表头内容数组
 	      var thead_items = [];
 	      //填充表头内容
@@ -175,7 +151,6 @@ webpackJsonp([0],{
 	    key: 'face_serch',
 	    value: function face_serch(p) {
 	      if (p == 0 || p == this.state.page) {
-	        console.log('阻止翻页');
 	        return;
 	      }
 	      var that = this;
@@ -190,7 +165,6 @@ webpackJsonp([0],{
 	        },
 	        success: function success(gets) {
 	          var list = JSON.parse(gets);
-	          console.log(list, '___68');
 	          that.setState({
 	            lists: list.data.courseList,
 	            page: p
@@ -206,7 +180,6 @@ webpackJsonp([0],{
 	    value: function bind_pages() {
 	      var that = this;
 	      var fanye_out = this.refs.fanye_out;
-	      // console.log(fanye_out)
 	      if (fanye_out.refs.popup_fanye) {
 	        var fanye_bar = fanye_out.refs.popup_fanye.children;
 	        var yema = fanye_bar.length;
@@ -214,9 +187,7 @@ webpackJsonp([0],{
 	          if (fanye_bar[j].innerText != '...') {
 	            fanye_bar[j].onclick = function () {
 	              var click_page = +this.innerText;
-	              console.log("aaa", click_page);
 	              that.face_serch(click_page);
-	              // that.state.page=click_page;
 	            };
 	          }
 	        }
@@ -238,6 +209,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      document.getElementById('list').style.minHeight = "556px";
 	      this.bind_pages();
 	    }
 
@@ -251,7 +223,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
-	      console.log(nextProps, "___nextprops");
 	      this.setState({
 	        lists: nextProps.lists,
 	        page: nextProps.page
@@ -260,8 +231,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.state.lists, "___124");
-	      console.log(this.props.lists, "___123");
 	      return _react2["default"].createElement(
 	        'div',
 	        null,
@@ -279,7 +248,7 @@ webpackJsonp([0],{
 	          ),
 	          _react2["default"].createElement(BlueMUI_CreateTbody, { Lists: this.state.lists, Rank: BluMUI.result.Tab.state.Rank, page: this.state.page })
 	        ),
-	        _react2["default"].createElement(BlueMUI_CreateFanye, { pages: this.state.totalPages, page: this.state.page, ref: 'fanye_out' })
+	        _react2["default"].createElement(BlueMUI_CreateFanye, { id: 'Out_fanye', pages: this.state.totalPages, page: this.state.page, ref: 'fanye_out' })
 	      );
 	    }
 	  }]);
@@ -299,36 +268,25 @@ webpackJsonp([0],{
 	    var _this2 = _possibleConstructorReturn(this, (BlueMUI_CreateTbody.__proto__ || Object.getPrototypeOf(BlueMUI_CreateTbody)).call(this, props));
 
 	    _this2.create_list = _this2.create_list.bind(_this2);
-	    // this.state={
-	    //   Lists:this.props.Lists
-	    // }
 	    return _this2;
 	  }
-	  //修改该组件的State（打算）
 
 	  _createClass(BlueMUI_CreateTbody, [{
 	    key: 'option',
 	    value: function option(data, event) {
-	      console.log(this.props.Rank, "___147");
 	      switch (this.props.Rank) {
 	        case 1:
 	          document.getElementById('body_head').style.display = 'none';
 	          _reactDom2["default"].render(_react2["default"].createElement(BlueMUI_CreateAdding, { Rank: BluMUI.result.Tab.state.Rank, Leaders: data.Liders, Jysh: data.Jysh }), document.getElementById('list'));
 	          break;
 	        case 2:
-	          console.log(document.getElementById('out_serch'));
 	          document.getElementById('body_head').style.display = 'none';
-	          // document.getElementById('out_serch').style.display='none';
 	          var that = this;
 	          //获取教学团队成员信息
-	          // document.getElementById('body_head').style.display='none';
 	          _reactDom2["default"].render(_react2["default"].createElement(BlueMUI_CreateAdding, { Rank: BluMUI.result.Tab.state.Rank, Master: data.Master, Teachers: data.Teachers, Kcbh: data.Kcbh, Kcmc: data.Kcmc }), document.getElementById('list'));
 	          break;
 	        case 3:
-	          console.log("LLLLLLLLLLLLLLLLL");
 	          document.getElementById('body_head').style.display = 'none';
-	          // console.log(data)
-	          // document.getElementById('body_head').style.display='none';
 	          _reactDom2["default"].render(_react2["default"].createElement(BlueMUI_CreateAdding, { Teachers: data.Teachers, Rank: BluMUI.result.Tab.state.Rank, Kcbh: data.Kcbh, Kcmc: data.Kcmc }), document.getElementById('list'));
 	          break;
 	      }
@@ -360,7 +318,6 @@ webpackJsonp([0],{
 	        );
 	      }
 	      var j = 0;
-	      console.log(this.props.page, '___178');
 	      var lists = [];
 	      var teachers = []; //教师数组
 	      var end = all_lists.length;
@@ -413,14 +370,12 @@ webpackJsonp([0],{
 	              ),
 	              _react2["default"].createElement('td', null)
 	            ));
-	            // lists.push(<tr className='tr_line' key={'line-'+i} ></tr>);
 	          }
 	          break;
 	        case 2:
 	          j = 0;
 	          for (var _i = 0; _i < end; _i++) {
 	            teachers = [];
-	            // console.log(all_lists[i],'___204')
 	            all_lists[_i].teacher.map(function (e) {
 	              teachers.push(_react2["default"].createElement(
 	                'span',
@@ -474,7 +429,6 @@ webpackJsonp([0],{
 	              ),
 	              _react2["default"].createElement('td', null)
 	            ));
-	            // lists.push(<tr className='tr_line' key={'line-'+i} ></tr>);
 	          }
 	          break;
 	        case 3:
@@ -537,7 +491,6 @@ webpackJsonp([0],{
 	              ),
 	              _react2["default"].createElement('td', null)
 	            ));
-	            // lists.push(<tr className='tr_line' key={'line-'+i} ></tr>);
 	            teachers = [];
 	          }
 	          break;
@@ -547,7 +500,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.props.Rank, '___253');
 	      return _react2["default"].createElement(
 	        'tbody',
 	        null,
@@ -656,7 +608,6 @@ webpackJsonp([0],{
 	      var lists = [];
 	      var end = this.state.teachers.length;
 	      for (var i = 0; i < end; i++) {
-	        // console.log(this.state.teachers[i],"___312")
 	        lists.push(_react2["default"].createElement(
 	          'tr',
 	          { key: this.state.teachers[i].sfrzh },
@@ -713,10 +664,8 @@ webpackJsonp([0],{
 	    key: 'popup_serch',
 	    value: function popup_serch(p, start) {
 	      if (p == 0) {
-	        console.log('popup翻页阻止');
 	        return;
 	      }
-	      console.log(start, "___333");
 	      //每次发生ajax的时候清空候选数据与checkbox
 	      this.refs.popup_allcheck.checked = false;
 	      var inputs = this.refs.popup_tbody.getElementsByTagName('input');
@@ -738,7 +687,6 @@ webpackJsonp([0],{
 	        },
 	        success: function success(gets) {
 	          var list = JSON.parse(gets);
-	          // console.log(list,"___436")
 	          if (list.data) {
 	            that.setState({
 	              teachers: list.data.teacherList,
@@ -764,13 +712,9 @@ webpackJsonp([0],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var that = this;
-	      console.log("MOUNT");
 	      var hide_popup = function hide_popup() {
 	        that.popup.style.display = "none";
 	        _reactDom2["default"].unmountComponentAtNode(document.getElementById('popup'));
-	        // document.getElementById('popup').innerHTML="";
-	        //清空搜索栏
-	        // that.refs.serch_value.value="";
 	      };
 	      //单击弹出窗后面的背景隐藏弹出层
 	      this.popup.onclick = hide_popup;
@@ -790,7 +734,6 @@ webpackJsonp([0],{
 	      };
 
 	      //单击确定按钮
-	      // this.refs.OK.onclick=hide_popup;
 	      this.popup_serch(1, 'init');
 	    }
 
@@ -810,38 +753,33 @@ webpackJsonp([0],{
 	          if (that.props.Master) {
 	            that.props.callback({ master: that.Master });
 	          } else {
-	            (function () {
-	              var Teachers = [];
-	              if (that.props.Rank == 1) {
-	                that.choose_teachers.map(function (e) {
-	                  Teachers.push({
-	                    sfrzh: e,
-	                    jyszr: that.teacher_names[e]
-	                  });
+	            var Teachers = [];
+	            if (that.props.Rank == 1) {
+	              that.choose_teachers.map(function (e) {
+	                Teachers.push({
+	                  sfrzh: e,
+	                  jyszr: that.teacher_names[e]
 	                });
-	              } else {
-	                that.choose_teachers.map(function (e) {
-	                  Teachers.push({
-	                    sfrzh: e,
-	                    xm: that.teacher_names[e]
-	                  });
+	              });
+	            } else {
+	              that.choose_teachers.map(function (e) {
+	                Teachers.push({
+	                  sfrzh: e,
+	                  xm: that.teacher_names[e]
 	                });
-	              }
-	              that.props.callback(Teachers);
-	            })();
+	              });
+	            }
+	            that.props.callback(Teachers);
 	          }
 	        }
 	        //清空搜索栏
-	        // that.refs.serch_value.value="";
 	        that.popup.style.display = "none";
 	        _reactDom2["default"].unmountComponentAtNode(document.getElementById('popup'));
-	        console.log(that.props);
 	      };
 
 	      //全部打钩
 	      var inputs = that.refs.popup_tbody.getElementsByTagName('input');
 	      var end = inputs.length;
-	      console.log("end", end);
 	      if (!this.props.Master) {
 	        //不是权限 1或者权限 2的 Master
 	        this.refs.popup_allcheck.onchange = function () {
@@ -857,7 +795,6 @@ webpackJsonp([0],{
 	      //单个打钩
 	      for (var j = 0; j < end; j++) {
 	        inputs[j].onchange = function (a) {
-	          console.log("change!496___", a);
 	          if (a) {
 	            //取消“全部打钩”的钩
 	            that.refs.popup_allcheck.checked = false;
@@ -865,7 +802,6 @@ webpackJsonp([0],{
 	          if (that.props.Master) {
 	            //权限 1进入
 	            if (this.checked) {
-	              console.log("___value", JSON.parse(this.value));
 	              that.Master = JSON.parse(this.value);
 	              for (var k = 0; k < end; k++) {
 	                inputs[k].checked = false;
@@ -876,7 +812,6 @@ webpackJsonp([0],{
 	            }
 	          } else {
 	            //不是唯一设置的课程负责人
-	            console.log("权限2——教师");
 	            if (this.checked) {
 	              that.choose_teachers.push(this.id);
 	              that.teacher_names[this.id] = JSON.parse(this.value).xm;
@@ -893,7 +828,6 @@ webpackJsonp([0],{
 
 	      //fanye
 	      var fanye_in = this.refs.fanye_in;
-	      // console.log(fanye_in)
 	      if (fanye_in.refs.popup_fanye) {
 	        var fanye_bar = fanye_in.refs.popup_fanye.children;
 	        var yema = fanye_bar.length;
@@ -901,7 +835,6 @@ webpackJsonp([0],{
 	          if (fanye_bar[_j].innerText != '...') {
 	            fanye_bar[_j].onclick = function (e) {
 	              var click_page = +e.target.innerText;
-	              // that.state.page=click_page;
 	              that.popup_serch(click_page == _this4.state.page ? 0 : click_page, that.serch_name || 'init');
 	            };
 	          }
@@ -911,7 +844,7 @@ webpackJsonp([0],{
 	      //搜索的前翻和后翻
 	      if (fanye_in.refs.next && fanye_in.refs.pre) {
 	        fanye_in.refs.next.onclick = function () {
-	          that.popup_serch(that.state.page + 1 > that.state.pages ? 0 : that.state.page + 1, that.serch_name || 'inti');
+	          that.popup_serch(that.state.page + 1 > that.state.pages ? 0 : that.state.page + 1, that.serch_name || 'init');
 	        };
 	        fanye_in.refs.pre.onclick = function () {
 	          that.popup_serch(that.state.page - 1 < 1 ? 0 : that.state.page - 1, that.serch_name || 'init');
@@ -933,7 +866,7 @@ webpackJsonp([0],{
 	          this.create_popup_thead(),
 	          this.create_popup_tbody()
 	        ),
-	        _react2["default"].createElement(BlueMUI_CreateFanye, { page: this.state.page, pages: this.state.pages, ref: 'fanye_in' }),
+	        _react2["default"].createElement(BlueMUI_CreateFanye, { id: 'Popup_Fanye', page: this.state.page, pages: this.state.pages, ref: 'fanye_in' }),
 	        this.create_popup_option()
 	      );
 	    }
@@ -950,14 +883,12 @@ webpackJsonp([0],{
 
 	    var _this5 = _possibleConstructorReturn(this, (BlueMUI_CreateAdding.__proto__ || Object.getPrototypeOf(BlueMUI_CreateAdding)).call(this, props));
 
-	    console.log(_this5.props.Teachers, '___577');
 	    _this5.del_teacher = _this5.del_teacher.bind(_this5);
 	    _this5.save_adding = _this5.save_adding.bind(_this5);
 	    _this5.back = _this5.back.bind(_this5);
 	    _this5.create_tdjs = _this5.create_tdjs.bind(_this5);
 	    _this5.state = {
 	      teachers: _this5.props.Teachers || _this5.props.Leaders,
-	      // leaders:this.props.Leaders||[],
 	      master: _this5.props.Master
 	    };
 	    return _this5;
@@ -973,17 +904,13 @@ webpackJsonp([0],{
 	        teacher_cache.splice(a, 1);
 	        this.setState({ teachers: teacher_cache });
 	      } else {
-	        console.log("master");
-	        this.setState({ master: "" }, function () {
-	          console.log(that.state);
-	        });
+	        this.setState({ master: "" });
 	      }
 	    }
 	  }, {
 	    key: 'back',
 	    value: function back() {
 	      var that = this;
-	      console.log(this.props, '602');
 	      ajax({
 	        url: courseCenter.host + 'CourseMatainMsg',
 	        data: {
@@ -994,7 +921,6 @@ webpackJsonp([0],{
 	          selectName: document.getElementById('jxtdss').value
 	        },
 	        success: function success(gets) {
-	          console.log('BACK');
 	          document.getElementById('body_head').style.display = 'block';
 	          var data = JSON.parse(gets);
 	          BluMUI.create({
@@ -1012,7 +938,6 @@ webpackJsonp([0],{
 	    value: function save_adding() {
 	      var that = this;
 
-	      console.log(this.state, '___629');
 	      if (!this.state.master && this.props.Rank == 2) {
 	        alert("请添加负责人！");
 	        return;
@@ -1044,7 +969,6 @@ webpackJsonp([0],{
 	                data: {
 	                  type: 3,
 	                  unifyCode: BluMUI.result.user_id,
-	                  // page:BluMUI.result.Title.state.page,
 	                  page: BluMUI.result.Title.state.page,
 	                  count: _count,
 	                  selectName: document.getElementById('jxtdss').value
@@ -1052,11 +976,9 @@ webpackJsonp([0],{
 	                success: function success(gets) {
 	                  document.getElementById('body_head').style.display = 'block';
 	                  var data = JSON.parse(gets);
-	                  console.log('___665', data);
 	                  BluMUI.create({
 	                    id: 'Title',
 	                    rank: 3,
-	                    // page:BluMUI.result.Title.state.page,
 	                    page: BluMUI.result.Title.state.page,
 	                    lists: data.data.courseList,
 	                    totalPages: data.data.totalPages
@@ -1089,7 +1011,6 @@ webpackJsonp([0],{
 	                data: {
 	                  type: 2,
 	                  unifyCode: BluMUI.result.user_id,
-	                  // page:BluMUI.result.Title.state.page,
 	                  page: BluMUI.result.Title.state.page,
 	                  count: _count,
 	                  selectName: document.getElementById('jxtdss').value
@@ -1097,11 +1018,9 @@ webpackJsonp([0],{
 	                success: function success(gets) {
 	                  document.getElementById('body_head').style.display = 'block';
 	                  var data = JSON.parse(gets);
-	                  console.log(data, '___706');
 	                  BluMUI.create({
 	                    id: 'Title',
 	                    rank: 2,
-	                    // page:BluMUI.result.Title.state.page,
 	                    page: BluMUI.result.Title.state.page,
 	                    lists: data.data.courseList,
 	                    totalPages: data.data.totalPages
@@ -1132,7 +1051,6 @@ webpackJsonp([0],{
 	                data: {
 	                  type: 1,
 	                  unifyCode: BluMUI.result.user_id,
-	                  // page:BluMUI.result.Title.state.page,
 	                  page: BluMUI.result.Title.state.page,
 	                  count: _count,
 	                  selectName: document.getElementById('jxtdss').value
@@ -1144,7 +1062,6 @@ webpackJsonp([0],{
 	                  BluMUI.create({
 	                    id: 'Title',
 	                    rank: 1,
-	                    // page:BluMUI.result.Title.state.page,
 	                    page: BluMUI.result.Title.state.page,
 	                    lists: data.data.courseList,
 	                    totalPages: data.data.totalPages
@@ -1161,7 +1078,6 @@ webpackJsonp([0],{
 	    value: function create_fuzeren() {
 	      var fuzeren = void 0;
 	      var mst = void 0;
-	      console.log(this.props, '___695');
 
 	      if (this.props.Rank == 2) {
 	        if (this.state.master.xm) {
@@ -1238,7 +1154,6 @@ webpackJsonp([0],{
 	    value: function create_adding_right() {
 	      var teachers = [];
 	      var end = this.state.teachers.length;
-	      console.log(this.state, "adding_teachers_state___345");
 	      for (var i = 0; i < end; i++) {
 	        teachers.push(_react2["default"].createElement(
 	          'span',
@@ -1303,6 +1218,7 @@ webpackJsonp([0],{
 	    value: function componentDidMount() {
 	      var _this6 = this;
 
+	      document.getElementById('list').style.minHeight = "738px";
 	      if (this.props.Rank == 3) {
 	        ajax({
 	          url: courseCenter.host + 'getTeachingTeamPageMsg',
@@ -1321,8 +1237,6 @@ webpackJsonp([0],{
 	        that.setState(dat);
 	      };
 	      var add_teacher = function add_teacher(tea) {
-	        console.log(that.state.teachers, "___639");
-
 	        var newTeachers = that.state.teachers.concat(tea);
 	        var result = [];
 	        for (var i = 0; i < newTeachers.length; i++) {
@@ -1336,7 +1250,6 @@ webpackJsonp([0],{
 	            result.push(newTeachers[i]);
 	          }
 	        }
-	        // console.log("result:_",result);
 	        that.setState({ teachers: result });
 	      };
 
@@ -1393,7 +1306,6 @@ webpackJsonp([0],{
 	  _createClass(BlueMUI_CreateFanye, [{
 	    key: 'create_popup_fanye',
 	    value: function create_popup_fanye() {
-	      // console.log(this.state,"___376")
 	      var style = {};
 	      var fanye = [];
 	      var start = 1;
@@ -1526,7 +1438,7 @@ webpackJsonp([0],{
 	      }
 	      return _react2["default"].createElement(
 	        'div',
-	        { className: 'fanye' },
+	        { className: 'fanye', id: this.props.id },
 	        _react2["default"].createElement(
 	          'div',
 	          { className: 'popup_fanye_pre', ref: 'pre' },
@@ -1565,7 +1477,6 @@ webpackJsonp([0],{
 
 	    var _this8 = _possibleConstructorReturn(this, (BlueMUI_CreateTab.__proto__ || Object.getPrototypeOf(BlueMUI_CreateTab)).call(this, props));
 
-	    console.log(_this8.props, '___982');
 	    _this8.state = {
 	      Rank: +_this8.props.role[0].subModule
 	    };
@@ -1578,8 +1489,6 @@ webpackJsonp([0],{
 	    value: function componentDidMount() {
 	      var _this9 = this;
 
-	      console.log(this.refs, "___940");
-	      console.log(this.state.Rank, "___941");
 	      //改变第一个tab标签的字体为粗体
 	      this.refs['Rank-' + this.state.Rank].style.borderBottomColor = '#009361';
 	      var that = this;
@@ -1587,7 +1496,6 @@ webpackJsonp([0],{
 	      var _loop = function _loop(i) {
 	        _this9.refs['Rank-' + _this9.props.role[i].subModule].onclick = function (e) {
 	          document.getElementById('jxtdss').value = '';
-	          // BluMUI.result.Title.setState({page:1});
 	          that.setState({ Rank: +that.props.role[i].subModule }, tab_change);
 	        };
 	      };
@@ -1595,8 +1503,6 @@ webpackJsonp([0],{
 	      for (var i = 0; i < this.props.role.length; i++) {
 	        _loop(i);
 	      }
-	      // console.log("?????",BluMUI.result.Title)
-	      // BluMUI.result.Title.setState({page:1});
 
 	      var tab_change = function tab_change() {
 	        that.props.role.map(function (e) {
@@ -1611,7 +1517,6 @@ webpackJsonp([0],{
 	        if (e.keyCode == 13) SERCH();
 	      };
 	      function SERCH() {
-	        console.log('type is:', that.state.Rank);
 	        ajax({
 	          url: courseCenter.host + 'CourseMatainMsg',
 	          data: {
@@ -1623,7 +1528,6 @@ webpackJsonp([0],{
 	          },
 	          success: function success(get) {
 	            var datas = JSON.parse(get);
-	            console.log("搜索:", datas);
 	            BluMUI.result.Title.setState({
 	              lists: datas.data.courseList,
 	              page: 1,
@@ -1648,7 +1552,6 @@ webpackJsonp([0],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log('newajaxdatas', datas);
 	          if (!BluMUI.result.Title) {
 	            BluMUI.create({
 	              id: 'Title',
@@ -1716,10 +1619,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1769,6 +1672,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

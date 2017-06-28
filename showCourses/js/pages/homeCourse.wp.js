@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -79,8 +79,6 @@ webpackJsonp([0],{
 	      success: function success(response) {
 	        var datas = JSON.parse(response);
 
-	        console.log('response:', response);
-	        console.log("访问量：", datas, datas.data);
 	        if ("fwl" in datas.data) {
 	          document.getElementById('visited').innerText = datas.data.fwl + '人看过';
 	        }
@@ -105,15 +103,12 @@ webpackJsonp([0],{
 	    document.getElementById('showMore').onclick = showMore;
 
 	    //左下角的老师
-
 	    BluMUI.create({
 	      teachers: teacherMsg
 	    }, 'Show_teacher', document.getElementById('rkjs_table'));
 
 	    // 课程资源：
-
 	    if (courseBaseMsg.kclx == 1) {
-	      console.log("有资源");
 	      BluMUI.create({
 	        id: "Resources"
 	      }, 'Resources', document.getElementById('Resources'));
@@ -211,10 +206,10 @@ webpackJsonp([0],{
 	  e.preventDefault();
 	};
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	 * https://github.com/es-shims/es5-shim
@@ -2283,10 +2278,10 @@ webpackJsonp([0],{
 	}));
 
 
-/***/ },
+/***/ }),
 
 /***/ 2:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	 * https://github.com/es-shims/es5-shim
@@ -2853,10 +2848,10 @@ webpackJsonp([0],{
 	}));
 
 
-/***/ },
+/***/ }),
 
 /***/ 3:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// Console-polyfill. MIT license.
 	// https://github.com/paulmillr/console-polyfill
@@ -2879,10 +2874,10 @@ webpackJsonp([0],{
 	})(typeof window === 'undefined' ? this : window);
 
 
-/***/ },
+/***/ }),
 
 /***/ 4:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var require;/* WEBPACK VAR INJECTION */(function(process, global) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
@@ -4040,17 +4035,17 @@ webpackJsonp([0],{
 	//# sourceMappingURL=es6-promise.map
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), (function() { return this; }())))
 
-/***/ },
+/***/ }),
 
 /***/ 6:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/* (ignored) */
 
-/***/ },
+/***/ }),
 
 /***/ 7:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -4380,10 +4375,7 @@ webpackJsonp([0],{
 	  function BlueMUI_Teachers(props) {
 	    _classCallCheck(this, BlueMUI_Teachers);
 
-	    var _this3 = _possibleConstructorReturn(this, (BlueMUI_Teachers.__proto__ || Object.getPrototypeOf(BlueMUI_Teachers)).call(this, props));
-
-	    console.log("teachers:", _this3.props);
-	    return _this3;
+	    return _possibleConstructorReturn(this, (BlueMUI_Teachers.__proto__ || Object.getPrototypeOf(BlueMUI_Teachers)).call(this, props));
 	  }
 
 	  _createClass(BlueMUI_Teachers, [{
@@ -4471,12 +4463,20 @@ webpackJsonp([0],{
 	      }
 	      if (this.props.teachers.length == 0) {
 	        warnings = _react2["default"].createElement(
-	          'p',
+	          'tr',
 	          null,
-	          '\u8BE5\u8BFE\u7A0B\u6CA1\u6709\u4EFB\u8BFE\u6559\u5E08'
+	          _react2["default"].createElement(
+	            'td',
+	            null,
+	            _react2["default"].createElement(
+	              'p',
+	              null,
+	              '\u8BE5\u8BFE\u7A0B\u6CA1\u6709\u4EFB\u8BFE\u6559\u5E08'
+	            )
+	          )
 	        );
 	      } else {
-	        warnings = '';
+	        warnings = null;
 	      }
 	      return _react2["default"].createElement(
 	        'tbody',
@@ -4567,10 +4567,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 165:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -4620,6 +4620,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

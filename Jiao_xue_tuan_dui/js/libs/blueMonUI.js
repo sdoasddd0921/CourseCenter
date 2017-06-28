@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom';
 var ajax = require('../libs/post_ajax.js');
 var _count=13;
 
-// /**
-//  * ******************系部中心、教学团队******************
-//  */
-
 
 //创建绿色的表头（又是绿色= =！）
 class BlueMUI_CreateThead extends React.Component {
@@ -20,13 +16,8 @@ class BlueMUI_CreateThead extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log("删除");
-  }
-
   //根据权限创建绿色的表头（绿色……）
   thead_create() {
-    // console.log(this.props.rank,"___rank__27")
     //创建表头内容数组
     let thead_items=[];
     //填充表头内容
@@ -53,7 +44,6 @@ class BlueMUI_CreateThead extends React.Component {
 
   face_serch(p) {
     if(p==0||p==this.state.page) {
-      console.log('阻止翻页')
       return;
     }
     let that=this;
@@ -68,7 +58,6 @@ class BlueMUI_CreateThead extends React.Component {
       },
       success: function(gets) {
         let list=JSON.parse(gets);
-        console.log(list,'___68')
         that.setState({
           lists: list.data.courseList,
           page: p
@@ -81,7 +70,6 @@ class BlueMUI_CreateThead extends React.Component {
   bind_pages() {
     let that=this;
     let fanye_out=this.refs.fanye_out;
-    // console.log(fanye_out)
     if(fanye_out.refs.popup_fanye){
       let fanye_bar=fanye_out.refs.popup_fanye.children;
       let yema=fanye_bar.length;
@@ -89,9 +77,7 @@ class BlueMUI_CreateThead extends React.Component {
         if(fanye_bar[j].innerText!='...') {
           fanye_bar[j].onclick=function() {
             let click_page= +this.innerText;
-            console.log("aaa",click_page)
             that.face_serch(click_page);
-            // that.state.page=click_page;
           }
         }
       }
@@ -110,6 +96,7 @@ class BlueMUI_CreateThead extends React.Component {
 
   //组件加载后执行的事件
   componentDidMount() {
+    document.getElementById('list').style.minHeight="556px";
     this.bind_pages();
   }
 
@@ -119,7 +106,6 @@ class BlueMUI_CreateThead extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps,"___nextprops")
     this.setState({
       lists:nextProps.lists,
       page:nextProps.page
@@ -127,8 +113,6 @@ class BlueMUI_CreateThead extends React.Component {
   }
 
   render() {
-    console.log(this.state.lists,"___124")
-    console.log(this.props.lists,"___123")
     return (<div>
       <table>
         <thead>
@@ -136,7 +120,7 @@ class BlueMUI_CreateThead extends React.Component {
         </thead>
         <BlueMUI_CreateTbody Lists={this.state.lists} Rank={BluMUI.result.Tab.state.Rank} page={this.state.page} />
       </table>
-      <BlueMUI_CreateFanye pages={this.state.totalPages} page={this.state.page} ref="fanye_out" />
+      <BlueMUI_CreateFanye id="Out_fanye" pages={this.state.totalPages} page={this.state.page} ref="fanye_out" />
     </div>);
   }
 }
@@ -146,14 +130,9 @@ class BlueMUI_CreateTbody extends React.Component {
   constructor(props) {
     super(props);
     this.create_list=this.create_list.bind(this);
-    // this.state={
-    //   Lists:this.props.Lists
-    // }
   }
-  //修改该组件的State（打算）
 
   option(data,event) {
-    console.log(this.props.Rank,"___147")
     switch(this.props.Rank) {
       case 1:
       document.getElementById('body_head').style.display='none';
@@ -163,22 +142,16 @@ class BlueMUI_CreateTbody extends React.Component {
         );
         break;
       case 2:
-      console.log(document.getElementById('out_serch'))
-      document.getElementById('body_head').style.display='none';
-      // document.getElementById('out_serch').style.display='none';
+        document.getElementById('body_head').style.display='none';
         let that=this;
         //获取教学团队成员信息
-        // document.getElementById('body_head').style.display='none';
         ReactDOM.render(
           <BlueMUI_CreateAdding Rank={BluMUI.result.Tab.state.Rank} Master={data.Master} Teachers={data.Teachers} Kcbh={data.Kcbh} Kcmc={data.Kcmc} />,
           document.getElementById('list')
         );
         break;
       case 3:
-      console.log("LLLLLLLLLLLLLLLLL")
-    document.getElementById('body_head').style.display='none';
-        // console.log(data)
-        // document.getElementById('body_head').style.display='none';
+        document.getElementById('body_head').style.display='none';
         ReactDOM.render(
           <BlueMUI_CreateAdding Teachers={data.Teachers} Rank={BluMUI.result.Tab.state.Rank} Kcbh={data.Kcbh} Kcmc={data.Kcmc} />,
           document.getElementById('list')
@@ -200,7 +173,6 @@ class BlueMUI_CreateTbody extends React.Component {
       </td></tr>);
     }
     let j=0;
-    console.log(this.props.page,'___178')
     let lists=[];
     let teachers=[];//教师数组
     let end=all_lists.length;
@@ -221,14 +193,12 @@ class BlueMUI_CreateTbody extends React.Component {
             })}>{all_lists[i].officeLeadersName.length?"修改":"添加"}</a></td>
             <td></td>
           </tr>);
-          // lists.push(<tr className='tr_line' key={'line-'+i} ></tr>);
         }
         break;
       case 2:
         j=0;
         for(let i=0;i<end;i++) {
           teachers=[];
-          // console.log(all_lists[i],'___204')
           all_lists[i].teacher.map(e=>{
             teachers.push(<span key={j++} >{e.xm}</span>);
           });
@@ -248,7 +218,6 @@ class BlueMUI_CreateTbody extends React.Component {
             })}>编辑</a></td>
             <td></td>
           </tr>);
-          // lists.push(<tr className='tr_line' key={'line-'+i} ></tr>);
         }
         break;
       case 3:
@@ -277,7 +246,6 @@ class BlueMUI_CreateTbody extends React.Component {
             })}>编辑</a></td>
             <td></td>
           </tr>);
-          // lists.push(<tr className='tr_line' key={'line-'+i} ></tr>);
           teachers=[];
         }
         break;
@@ -285,7 +253,6 @@ class BlueMUI_CreateTbody extends React.Component {
     return lists;
   }
   render() {
-    console.log(this.props.Rank,'___253')
     return (<tbody>{this.create_list(this.props.Lists)}</tbody>);
   }
 }
@@ -339,7 +306,6 @@ class BlueMUI_CreatePopup extends React.Component {
     let lists=[];
     let end=this.state.teachers.length;
     for(let i=0;i<end;i++) {
-      // console.log(this.state.teachers[i],"___312")
       lists.push(<tr key={this.state.teachers[i].sfrzh}>
         <td>{i+1+10*(this.state.page-1)}</td>
         <td><input type="checkbox" value={JSON.stringify(this.state.teachers[i])} id={this.state.teachers[i].sfrzh} /></td>
@@ -360,10 +326,8 @@ class BlueMUI_CreatePopup extends React.Component {
   //搜索
   popup_serch(p,start) {
     if(p==0) {
-      console.log('popup翻页阻止');
       return;
     }
-    console.log(start,"___333")
     //每次发生ajax的时候清空候选数据与checkbox
     this.refs.popup_allcheck.checked=false;
     let inputs=this.refs.popup_tbody.getElementsByTagName('input');
@@ -385,7 +349,6 @@ class BlueMUI_CreatePopup extends React.Component {
       },
       success: function(gets) {
         let list=JSON.parse(gets);
-        // console.log(list,"___436")
         if(list.data) {
           that.setState({
             teachers: list.data.teacherList,
@@ -408,13 +371,9 @@ class BlueMUI_CreatePopup extends React.Component {
   //因为react的事件全部代理在document上面的
   componentDidMount(){
     let that=this;
-    console.log("MOUNT");
     let hide_popup=function(){
       that.popup.style.display="none";
       ReactDOM.unmountComponentAtNode(document.getElementById('popup'));
-      // document.getElementById('popup').innerHTML="";
-      //清空搜索栏
-      // that.refs.serch_value.value="";
     };
     //单击弹出窗后面的背景隐藏弹出层
     this.popup.onclick=hide_popup;
@@ -434,7 +393,6 @@ class BlueMUI_CreatePopup extends React.Component {
     }
 
     //单击确定按钮
-    // this.refs.OK.onclick=hide_popup;
     this.popup_serch(1,'init');
   }
 
@@ -469,16 +427,13 @@ class BlueMUI_CreatePopup extends React.Component {
         }
       }
       //清空搜索栏
-      // that.refs.serch_value.value="";
       that.popup.style.display="none";
       ReactDOM.unmountComponentAtNode(document.getElementById('popup'));
-      console.log(that.props)
     }
 
     //全部打钩
     let inputs=that.refs.popup_tbody.getElementsByTagName('input');
     let end=inputs.length;
-    console.log("end",end)
     if(!this.props.Master) {   //不是权限 1或者权限 2的 Master
       this.refs.popup_allcheck.onchange=function() {
         for(let i=0;i<end;i++) {
@@ -494,14 +449,12 @@ class BlueMUI_CreatePopup extends React.Component {
     //单个打钩
     for(let j=0;j<end;j++) {
       inputs[j].onchange=function(a) {
-        console.log("change!496___",a)
         if(a) {
           //取消“全部打钩”的钩
           that.refs.popup_allcheck.checked=false;
         }
         if(that.props.Master) {      //权限 1进入
           if(this.checked) {
-            console.log("___value",JSON.parse(this.value))
             that.Master=JSON.parse(this.value);
             for(let k=0;k<end;k++) {
               inputs[k].checked=false;
@@ -511,7 +464,6 @@ class BlueMUI_CreatePopup extends React.Component {
             that.Master="";
           }
         } else {     //不是唯一设置的课程负责人
-          console.log("权限2——教师");
           if(this.checked) {
             that.choose_teachers.push(this.id);
             that.teacher_names[this.id]=JSON.parse(this.value).xm;
@@ -528,7 +480,6 @@ class BlueMUI_CreatePopup extends React.Component {
 
     //fanye
     let fanye_in=this.refs.fanye_in;
-    // console.log(fanye_in)
     if(fanye_in.refs.popup_fanye){
       let fanye_bar=fanye_in.refs.popup_fanye.children;
       let yema=fanye_bar.length;
@@ -536,7 +487,6 @@ class BlueMUI_CreatePopup extends React.Component {
         if(fanye_bar[j].innerText!='...') {
           fanye_bar[j].onclick=e=>{
             let click_page= +e.target.innerText;
-            // that.state.page=click_page;
             that.popup_serch(click_page==this.state.page?0:click_page,that.serch_name||'init');
           }
         }
@@ -546,7 +496,7 @@ class BlueMUI_CreatePopup extends React.Component {
     //搜索的前翻和后翻
     if(fanye_in.refs.next&&fanye_in.refs.pre) {
       fanye_in.refs.next.onclick=function() {
-        that.popup_serch(that.state.page+1>that.state.pages?0:that.state.page+1,that.serch_name||'inti');
+        that.popup_serch(that.state.page+1>that.state.pages?0:that.state.page+1,that.serch_name||'init');
       }
       fanye_in.refs.pre.onclick=function() {
         that.popup_serch(that.state.page-1<1?0:that.state.page-1,that.serch_name||'init');
@@ -563,7 +513,7 @@ class BlueMUI_CreatePopup extends React.Component {
         {this.create_popup_thead()}
         {this.create_popup_tbody()}
       </table>
-      <BlueMUI_CreateFanye page={this.state.page} pages={this.state.pages} ref="fanye_in" />
+      <BlueMUI_CreateFanye id="Popup_Fanye" page={this.state.page} pages={this.state.pages} ref="fanye_in" />
       {this.create_popup_option()}
     </div>);
   }
@@ -574,14 +524,12 @@ class BlueMUI_CreatePopup extends React.Component {
 class BlueMUI_CreateAdding extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.Teachers,'___577')
     this.del_teacher=this.del_teacher.bind(this);
     this.save_adding=this.save_adding.bind(this);
     this.back=this.back.bind(this);
     this.create_tdjs=this.create_tdjs.bind(this);
     this.state={
       teachers:this.props.Teachers||this.props.Leaders,
-      // leaders:this.props.Leaders||[],
       master:this.props.Master,
     }
   }
@@ -593,14 +541,12 @@ class BlueMUI_CreateAdding extends React.Component {
       teacher_cache.splice(a,1);
       this.setState({teachers:teacher_cache});
     } else {
-      console.log(("master"))
-      this.setState({master:""},function(){console.log(that.state)});
+      this.setState({master:""});
     }
   }
 
   back() {
     let that=this;
-    console.log(this.props,'602')
     ajax({
       url:courseCenter.host+'CourseMatainMsg',
       data:{
@@ -611,7 +557,6 @@ class BlueMUI_CreateAdding extends React.Component {
         selectName:document.getElementById('jxtdss').value
       },
       success:function(gets) {
-        console.log('BACK')
         document.getElementById('body_head').style.display='block';
         let data=JSON.parse(gets);
         BluMUI.create({
@@ -630,7 +575,6 @@ class BlueMUI_CreateAdding extends React.Component {
   save_adding() {
     let that=this;
 
-    console.log(this.state,'___629');
     if(!this.state.master&&this.props.Rank==2) {
       alert("请添加负责人！");
       return;
@@ -662,19 +606,16 @@ class BlueMUI_CreateAdding extends React.Component {
               data:{
                 type:3,
                 unifyCode:BluMUI.result.user_id,
-                // page:BluMUI.result.Title.state.page,
                 page:BluMUI.result.Title.state.page,
                 count:_count,
                 selectName:document.getElementById('jxtdss').value
               },
               success:function(gets) {
-        document.getElementById('body_head').style.display='block';
+                document.getElementById('body_head').style.display='block';
                 let data=JSON.parse(gets);
-                console.log('___665',data)
                 BluMUI.create({
                   id:'Title',
                   rank:3,
-                  // page:BluMUI.result.Title.state.page,
                   page:BluMUI.result.Title.state.page,
                   lists:data.data.courseList,
                   totalPages:data.data.totalPages
@@ -709,19 +650,16 @@ class BlueMUI_CreateAdding extends React.Component {
               data:{
                 type:2,
                 unifyCode:BluMUI.result.user_id,
-                // page:BluMUI.result.Title.state.page,
                 page:BluMUI.result.Title.state.page,
                 count:_count,
                 selectName:document.getElementById('jxtdss').value
               },
               success:function(gets) {
-        document.getElementById('body_head').style.display='block';
+                document.getElementById('body_head').style.display='block';
                 let data=JSON.parse(gets);
-                console.log(data,'___706')
                 BluMUI.create({
                   id:'Title',
                   rank:2,
-                  // page:BluMUI.result.Title.state.page,
                   page:BluMUI.result.Title.state.page,
                   lists:data.data.courseList,
                   totalPages:data.data.totalPages
@@ -754,19 +692,17 @@ class BlueMUI_CreateAdding extends React.Component {
               data:{
                 type:1,
                 unifyCode:BluMUI.result.user_id,
-                // page:BluMUI.result.Title.state.page,
                 page:BluMUI.result.Title.state.page,
                 count:_count,
                 selectName:document.getElementById('jxtdss').value
               },
               success:function(gets) {
-        document.getElementById('body_head').style.display='block';
+                document.getElementById('body_head').style.display='block';
                 let data=JSON.parse(gets);
                 console.log(data,'___706')
                 BluMUI.create({
                   id:'Title',
                   rank:1,
-                  // page:BluMUI.result.Title.state.page,
                   page:BluMUI.result.Title.state.page,
                   lists:data.data.courseList,
                   totalPages:data.data.totalPages
@@ -784,7 +720,6 @@ class BlueMUI_CreateAdding extends React.Component {
   create_fuzeren() {
     let fuzeren;
     let mst;
-    console.log(this.props,'___695')
 
     if(this.props.Rank==2) {
       if(this.state.master.xm) {
@@ -820,7 +755,6 @@ class BlueMUI_CreateAdding extends React.Component {
   create_adding_right() {
     let teachers=[];
     let end=this.state.teachers.length;
-    console.log(this.state,"adding_teachers_state___345")
     for(let i=0;i<end;i++) {
       teachers.push(
         <span className="blue_btn" key={this.state.teachers[i].sfrzh}>
@@ -850,6 +784,7 @@ class BlueMUI_CreateAdding extends React.Component {
 
   //组件第一次渲染后执行的内容
   componentDidMount() {
+    document.getElementById('list').style.minHeight="738px";
     if(this.props.Rank==3) {
       ajax({
         url:courseCenter.host+'getTeachingTeamPageMsg',
@@ -868,8 +803,6 @@ class BlueMUI_CreateAdding extends React.Component {
       that.setState(dat);
     };
     let add_teacher=function(tea) {
-      console.log(that.state.teachers,"___639");
-
       let newTeachers=that.state.teachers.concat(tea);
       let result=[];
       for(let i=0;i<newTeachers.length;i++) {
@@ -883,7 +816,6 @@ class BlueMUI_CreateAdding extends React.Component {
           result.push(newTeachers[i]);
         }
       }
-      // console.log("result:_",result);
       that.setState({teachers:result});
     }
 
@@ -939,7 +871,6 @@ class BlueMUI_CreateFanye extends React.Component {
   }
 
   create_popup_fanye() {
-    // console.log(this.state,"___376")
     let style={};
     let fanye=[];
     let start=1;
@@ -1010,7 +941,7 @@ class BlueMUI_CreateFanye extends React.Component {
       fanye.unshift(<li key={1}>{1}</li>);
       fanye.push(<li key={this.props.pages}>{this.props.pages}</li>);
     }
-    return(<div className="fanye">
+    return(<div className="fanye" id={this.props.id}>
       <div className="popup_fanye_pre" ref="pre"><img src="../../imgs/courseAudit/fanye_left.png"/></div>
       <ul ref="popup_fanye">
         {fanye}
@@ -1029,7 +960,6 @@ class BlueMUI_CreateFanye extends React.Component {
 class BlueMUI_CreateTab extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props,'___982')
     this.state={
       Rank: +this.props.role[0].subModule,
     };
@@ -1037,20 +967,15 @@ class BlueMUI_CreateTab extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.refs,"___940")
-    console.log(this.state.Rank,"___941")
     //改变第一个tab标签的字体为粗体
     this.refs['Rank-'+this.state.Rank].style.borderBottomColor='#009361';
     let that=this;
     for(let i=0; i<this.props.role.length; i++) {
       this.refs['Rank-'+this.props.role[i].subModule].onclick=function(e) {
         document.getElementById('jxtdss').value='';
-        // BluMUI.result.Title.setState({page:1});
         that.setState({Rank: +that.props.role[i].subModule},tab_change);
       }
     }
-    // console.log("?????",BluMUI.result.Title)
-    // BluMUI.result.Title.setState({page:1});
 
     let tab_change=function() {
       that.props.role.map(e=>{
@@ -1066,7 +991,6 @@ class BlueMUI_CreateTab extends React.Component {
         SERCH();
     };
     function SERCH() {
-      console.log('type is:',that.state.Rank)
       ajax({
         url:courseCenter.host+'CourseMatainMsg',
         data:{
@@ -1078,7 +1002,6 @@ class BlueMUI_CreateTab extends React.Component {
         },
         success:function(get) {
           let datas=JSON.parse(get);
-          console.log("搜索:",datas);
           BluMUI.result.Title.setState({
             lists:datas.data.courseList,
             page:1,
@@ -1102,7 +1025,6 @@ class BlueMUI_CreateTab extends React.Component {
       },
       success:function(gets) {
         let datas=JSON.parse(gets);
-        console.log('newajaxdatas',datas)
         if(!BluMUI.result.Title) {
           BluMUI.create({
             id:'Title',
@@ -1147,7 +1069,6 @@ var BluMUI_M = {
 	CreateTableTitle: BlueMUI_CreateThead,
 	CreateTableBody:BlueMUI_CreateTbody,
   CreateTab:BlueMUI_CreateTab,
-  // CreateAdding:BlueMUI_CreateAdding,
 }
 
 var BluMUI = {

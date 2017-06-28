@@ -75,8 +75,6 @@ ajax({
       success:function(response) {
         var datas=JSON.parse(response);
 
-        console.log('response:',response)
-        console.log("访问量：",datas,datas.data)
         if("fwl" in datas.data) {
           document.getElementById('visited').innerText=datas.data.fwl+'人看过';
         }
@@ -101,7 +99,6 @@ ajax({
 		document.getElementById('showMore').onclick=showMore;
 
     //左下角的老师
-
     BluMUI.create({
       teachers: teacherMsg
       },
@@ -110,9 +107,7 @@ ajax({
     );
 
     // 课程资源：
-
     if(courseBaseMsg.kclx==1) {
-      console.log("有资源")
       BluMUI.create({
           id:"Resources"
         },

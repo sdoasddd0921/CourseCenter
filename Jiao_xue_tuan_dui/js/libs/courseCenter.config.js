@@ -1,6 +1,7 @@
 var courseCenter = {
-	host:'http://172.22.114.135:6535/',
-	// host:'http://172.20.2.137/subjectCenter/'
+	// host:'http://172.22.114.135:6535/',
+	// host:'http://172.20.2.137/',
+	host:'http://172.20.2.139/',
 	// host:'http://cc.cqupt.edu.cn/',
 
 }
@@ -45,7 +46,8 @@ function getCookie(c_name)
 	督导：0102215
 
 	*/
-	return "0102215"
+	// return "0102215"
+	return "0102295";
 }
 
 // 删除cookie

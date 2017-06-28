@@ -32,10 +32,6 @@ table{
 #head>img {
   vertical-align: middle;
   margin: 0 15px;
-  /*margin: 13px 13px 0 20px;*/
-/*  position: relative;
-  left: 20px;
-  top: 13px;*/
 }
 #head>span {
   vertical-align: middle;
@@ -44,9 +40,6 @@ table{
   font-size: 24px;
   font-weight: bold;
   display: inline-block;
-  /*vertical-align: middle;*/
-  /*position: relative;*/
-  /*top: -22px;*/
 }
 
 /*top用户*/
@@ -92,9 +85,6 @@ table{
 /*中间部分*/
 #body-a {
   width: 100%;
-  /*height: 500px;*/
-  /*background: #FFF;*/
-  /*margin-top: 26px;*/
 }
 #body-a>span {
   display: block;
@@ -109,8 +99,6 @@ table{
 }
 #table_title>ul>li {
   color: #009361;
-  /*padding-left: 5px;*/
-  /*border-left: 1px solid #000;*/
   border-bottom: 3px solid #FFF;
   padding: 0 9px 8px 9px;
   font-size: 18px;
@@ -140,16 +128,6 @@ table{
   margin-left: -45px;
 }
 
-
-/*footer*/
-/*#footer {
-  height: 102px;
-  width: 100%;
-  margin-top: 30px;
-  background: #FFFFCC;
-  text-align: center;
-  display: table;
-}*/
 #words {
   /*控制br的高度*/
   line-height: 16px;
@@ -177,25 +155,25 @@ table{
   background: #FFF;
   margin-top: 26px;
   padding: 0 45px;
-  /*padding-top: 6px;*/
   padding-bottom: 15px;
 }
 
-#list { position: relative; height: 637px;}
+#list {
+  position: relative;
+  min-height: 556px;
+}
 
 /*中间的表格*/
 #list table {
   font-size: 13px;
   text-align: center;
-  /*margin: 39px auto 0 auto;*/
-  /*margin-top: 30px;*/
   width: 100%;
   border-collapse: collapse;
+  margin-bottom: 80px;
 }
 #list td {
   padding: 5px 0;
   height: 29px;
-  /*border: 1px solid #797979;*/
 }
 #list table>thead {
   color: #FFF;
@@ -235,8 +213,6 @@ table{
   margin-top: 26px;
 }
 .caozuo {
-/*  margin-top: 30px;
-  background: #007A51;*/
   display: inline-block;
   line-height: 26px;
   text-align: center;
@@ -367,12 +343,10 @@ table{
 #jxtdss {
   position: relative;
   top: -1px;
-  /*height: 18px;*/
   border: 1px solid #009361;
   border-right: none;
   padding: 2px 5px;
   border-radius: 4px 0 0 4px;
-  /*vertical-align: middle;*/
 }
 #out_serch #serch_btn {
   background: #009361;
@@ -389,19 +363,7 @@ table{
   cursor: pointer;
 }
 
-
-/*翻页条*/
-/*#fanye {
-  margin: 0 auto;
-}
-#pt button {
-  display: inline-block;
-}
-#pt li {
-  list-style: none;
-  float: left;
-}
-*/
+/* 翻页条 */
 .fanye {
   width: 100%;
   font-size: 13px;
@@ -409,7 +371,6 @@ table{
   text-align: center;
   margin: 0 auto;
   margin-top: 20px;
-  /*position: absolute;*/
   bottom: 0px;
 }
 .fanye>div {
@@ -418,7 +379,6 @@ table{
   background: #FFF;
   display: inline-block;
   cursor: pointer;
-  /*border: 1px solid #DDD;*/
 }
 .fanye>ul {
   display: inline-block;
@@ -430,9 +390,7 @@ table{
   height: 40px;
   display: inline-block;
   word-spacing: 0;
-  /*border: 1px solid #DDD;*/
   cursor: pointer;
-  /*border-right: none;*/
 }
 .fanye .popup_fanye_pre {
   border-radius: 5px 0 0 5px;
@@ -441,11 +399,10 @@ table{
   border-radius: 0 5px 5px 0;
 }
 
-#popup_body .fanye {
-  /*margin: 0;*/
-  /*display: block;*/
+#Out_fanye {
+  position: absolute;
+  bottom: -60px;
 }
-
 
 
 
@@ -457,8 +414,6 @@ table{
   text-align: center;
   margin: 10px auto;
   position: relative;
-  /*top: 550px;*/
-  /*left: 250px;*/
 }
 #popup_option>span {
   margin: 0 16px;
@@ -469,7 +424,6 @@ table{
   height: 38px;
   line-height: 38px;
   background: #007A51;
-  /*margin: 0 auto;*/
 }
 #popup_return {
   display: inline-block;
@@ -478,7 +432,6 @@ table{
   line-height: 36px;
   border-radius: 5px;
   border: 1px solid #CCC;
-  /*margin: 0 auto;*/
 }
 
 
@@ -531,7 +484,6 @@ table{
   vertical-align: top;
 }
 .list_left span {
-  /*vertical-align: middle;*/
   line-height: 32px;
   display: inline-block;
 }
@@ -664,100 +616,6 @@ a{
 /*------结构内容部分--------------------------------------------------------
 ----------------------------------------------------------------------*/
 
-/*header - UserLoginState*/
-
-.BluMUI_UserLoginState{
-  font-size: 14px;
-}
-.BluMUI_UserLoginState ul{
-  float: right;
-}
-.BluMUI_UserLoginState li{
-  cursor: default;
-  float: right;
-  margin-left: 24px;
-}
-.BluMUI_UserLoginState hr{
-  display: block;
-  float: right;
-  height:11px;
-  width: 1px;
-  background-color: #666666;
-  border:1px solid #ababab;
-  margin-top: 19px;
-  margin-left:23px;
-}
-.BluMUI_UserLoginState{
-  width: 1180px;
-  position: relative;
-  line-height: 49px;
-  height: 48px;
-}
-.BluMUI_UserLoginState .userInf{
-  display: inline-block;
-  position: relative;
-  margin-left:23px;
-  float: right;
-  cursor: pointer;
-  height: 49px;
-}
-.BluMUI_UserLoginState .login{
-  color:#007a51;
-  margin-left: 25px;
-  font-size: 14px;
-  float: right;
-}
-.BluMUI_UserLoginState .loginNum{
-  float: left;
-}
-.BluMUI_UserLoginState .loginExtInf{
-  color: red;
-  float: right;
-  margin-left: 23px;
-}
-.BluMUI_UserLoginState .userName {
-  height: 49px;
-  overflow: hidden;
-}
-.BluMUI_UserLoginState  #show{
-  display: none;
-}
-.BluMUI_UserLoginState #userName{
-  float: left;
-  height: 49px;
-  line-height: 49px;
-  background-color:inherit;
-
-}
-.BluMUI_UserLoginState #userDrop{
-  width: 24px;
-  height: 49px;
-  float: left;
-  margin-left: 0;
-  background:url('../../imgs/public/userList.png') no-repeat 0px 20px;
-}
-.BluMUI_UserLoginState .userList{
-  z-index: 10;
-  position: absolute;
-  top:35px;
-  right:0;
-}
-.BluMUI_UserLoginState .userList .func {
-  float: none;
-  height: 24px;
-  width: 100px;
-  background-color: #d8d8d8;
-  margin-top: 2px;
-  line-height: 24px;
-  text-align: center;
-  color: #ffffff;
-}
-.BluMUI_UserLoginState .userList .func:hover{
-  background-color: #999999;
-}
-.BluMUI_UserLoginState  .inLoginText{
-  float: right;
-}
 
 /* logo-logo_warp */
 #logo .logo_warp{

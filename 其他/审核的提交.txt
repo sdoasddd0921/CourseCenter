@@ -1,0 +1,121 @@
+	// 提交审核的弹出
+
+	var Tijiaoshenhe = function (_React$Component4) {
+	  _inherits(Tijiaoshenhe, _React$Component4);
+
+	  function Tijiaoshenhe(props) {
+	    _classCallCheck(this, Tijiaoshenhe);
+
+	    return _possibleConstructorReturn(this, (Tijiaoshenhe.__proto__ || Object.getPrototypeOf(Tijiaoshenhe)).call(this, props));
+	  }
+
+	  _createClass(Tijiaoshenhe, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this6 = this;
+
+	      this.refs.tijiao.onclick = function (e) {
+	        console.log(_this6.props.Kcbh);
+	        Tijiao(1, _this6.props.Kcbh);
+	        _this6.die();
+	      };
+	      this.refs.fanhui.onclick = this.die;
+	      this.refs.close.onclick = this.die;
+	    }
+	  }, {
+	    key: 'die',
+	    value: function die() {
+	      document.getElementById('tijiaoshenhe').style.display = 'none';
+	      _reactDom2["default"].unmountComponentAtNode(document.getElementById('tijiaoshenhe'));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2["default"].createElement(
+	        'div',
+	        null,
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'tijiaoshenhe_head' },
+	          _react2["default"].createElement(
+	            'span',
+	            null,
+	            '\u63D0\u4EA4\u5BA1\u6838'
+	          ),
+	          _react2["default"].createElement('img', { ref: 'close', src: '../../imgs/courseAudit/close.png' })
+	        ),
+	        _react2["default"].createElement(
+	          'p',
+	          null,
+	          '\u6750\u6599\u5C06\u63D0\u4EA4\u81F3\u6559\u5B66\u9662\u957F\u3001\u7CFB\u90E8\u4E2D\u5FC3\u4E3B\u4EFB\u3001',
+	          _react2["default"].createElement('br', null),
+	          '\u8BFE\u7A0B\u8D1F\u8D23\u4EBA\u8FDB\u884C\u5BA1\u6838\uFF0C\u63D0\u4EA4\u540E\u4E0D\u53EF\u4FEE\u6539\u3002'
+	        ),
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'tijiao_div' },
+	          _react2["default"].createElement(
+	            'span',
+	            { className: 'tijiao', ref: 'tijiao' },
+	            '\u786E\u5B9A'
+	          ),
+	          _react2["default"].createElement(
+	            'span',
+	            { className: 'fanhui', ref: 'fanhui' },
+	            '\u8FD4\u56DE'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Tijiaoshenhe;
+	}(_react2["default"].Component);
+
+	function Tjsh(kcbh) {
+	  var t = document.getElementById('tijiaoshenhe');
+	  t.style.display = "block";
+	  _reactDom2["default"].render(_react2["default"].createElement(Tijiaoshenhe, { Kcbh: kcbh }), t);
+	}
+
+	function Tijiao(op, course, note) {
+	  if (course instanceof Array) {
+	    console.log('批量提交审核');
+	    console.log(course.toString());
+	    ajax({
+	      url: courseCenter.host + "submitOperations",
+	      data: {
+	        unifyCode: BluMUI.result.unifyCode,
+	        type: 1,
+	        courseNo: course.toString()
+	      },
+	      success: function success(gets) {
+	        var datas = JSON.parse(gets);
+	        if (datas.meta.result != 100) {
+	          alert('操作失败，请检查所选课程的状态！');
+	        } else if (datas.meta.result == 100) {
+	          BluMUI.result.Tab.change_subModule('audit');
+	        }
+	      }
+	    });
+	    return;
+	  }
+	  ajax({
+	    url: courseCenter.host + 'submitOperation',
+	    data: {
+	      unifyCode: BluMUI.result.unifyCode,
+	      courseNo: course,
+	      note: note,
+	      type: op
+	    },
+	    success: function success(gets) {
+	      var datas = JSON.parse(gets);
+	      BluMUI.result.Tab.change_subModule('audit');
+	      // BlueMUI_GetList(
+	      //   BluMUI.result.Tab.state.subModule,
+	      //   BluMUI.result.Options.state.page,
+	      //   BluMUI.result.Options.state.course_state
+	      // );
+	    }
+	  });
+	}
