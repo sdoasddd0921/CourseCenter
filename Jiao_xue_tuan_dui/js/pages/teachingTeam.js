@@ -1,11 +1,12 @@
 let BluMUI = require('../libs/blueMonUI.js');
-var ajax = require('../libs/post_ajax.js');
+let ajax = require('../libs/post_ajax.js');
+
 // 需要获取用户id
 let User = {
   name: "",
   id: "",
 }
-User.id=getCookie('userId')
+User.id=getCookie('userId');
 
 BluMUI.result.user_id=User.id;
 ajax({

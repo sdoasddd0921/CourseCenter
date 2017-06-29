@@ -1,17 +1,16 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	// import React from 'react';
-	// import ReactDOM from 'react-dom';
 	var BluMUI = __webpack_require__(1);
 	var ajax = __webpack_require__(160);
 
 	var menues = BluMUI.menues;
 	var menue_names = BluMUI.menue_names;
+
 	ajax({
 	  url: courseCenter.host + 'getMenu',
 	  data: {
@@ -30,17 +29,13 @@ webpackJsonp([0],{
 	    BluMUI.create({
 	      Menues: menues
 	    }, 'Create_menu', document.getElementById('menue'));
-	    // ReactDOM.render(
-	    //   <Menue Menues={menues}/>,
-	    //   document.getElementById('menue')
-	    // );
 	  }
 	});
 
-/***/ }),
+/***/ },
 
 /***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -963,18 +958,39 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ }),
+/***/ },
 
 /***/ 160:
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	// 登录判断与处理
+	function loginCheck(loginData) {
+	  var status = [100, 101, 102, 303];
+	  if (!Array.indexOf) {
+	    Array.prototype.indexOf = function (obj) {
+	      for (var i = 0; i < this.length; i++) {
+	        if (this[i] == obj) {
+	          return i;
+	        }
+	      }
+	      return -1;
+	    };
+	  }
+	  if (status.indexOf(loginData.meta.result) === -1) {
+	    alert(loginData.meta.msg);
+	  }
+	  if (loginData.meta.result == 303) {
+	    confirm(loginData.meta.msg);
+	    window.location.href = "https://ids.cqupt.edu.cn/authserver/login?service=" + courseCenter.host + "classList";
+	  }
+	}
 
-	//封装ajax(BluMUI.result.Title.props.ajaxing)
+	// 封装ajax(BluMUI.result.Title.props.ajaxing)
 	var post_ajax = function post_ajax(options) {
 	  options = options || {};
 	  // options.dataType = "json";
@@ -1005,6 +1021,7 @@ webpackJsonp([0],{
 	    if (xhr.readyState == 4) {
 	      var status = xhr.status;
 	      if (status >= 200 && status < 300) {
+	        loginCheck(JSON.parse(xhr.responseText));
 	        options.success && options.success(xhr.responseText, xhr.responseXML);
 	      } else {
 	        options.fail && options.fail(status);
@@ -1016,6 +1033,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ })
+/***/ }
 
 });

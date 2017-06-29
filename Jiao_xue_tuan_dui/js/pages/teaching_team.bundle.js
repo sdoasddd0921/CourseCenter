@@ -1,12 +1,13 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var BluMUI = __webpack_require__(1);
 	var ajax = __webpack_require__(160);
+
 	// 需要获取用户id
 	var User = {
 	  name: "",
@@ -31,10 +32,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ }),
+/***/ },
 
 /***/ 1:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -753,23 +754,25 @@ webpackJsonp([0],{
 	          if (that.props.Master) {
 	            that.props.callback({ master: that.Master });
 	          } else {
-	            var Teachers = [];
-	            if (that.props.Rank == 1) {
-	              that.choose_teachers.map(function (e) {
-	                Teachers.push({
-	                  sfrzh: e,
-	                  jyszr: that.teacher_names[e]
+	            (function () {
+	              var Teachers = [];
+	              if (that.props.Rank == 1) {
+	                that.choose_teachers.map(function (e) {
+	                  Teachers.push({
+	                    sfrzh: e,
+	                    jyszr: that.teacher_names[e]
+	                  });
 	                });
-	              });
-	            } else {
-	              that.choose_teachers.map(function (e) {
-	                Teachers.push({
-	                  sfrzh: e,
-	                  xm: that.teacher_names[e]
+	              } else {
+	                that.choose_teachers.map(function (e) {
+	                  Teachers.push({
+	                    sfrzh: e,
+	                    xm: that.teacher_names[e]
+	                  });
 	                });
-	              });
-	            }
-	            that.props.callback(Teachers);
+	              }
+	              that.props.callback(Teachers);
+	            })();
 	          }
 	        }
 	        //清空搜索栏
@@ -1058,7 +1061,6 @@ webpackJsonp([0],{
 	                success: function success(gets) {
 	                  document.getElementById('body_head').style.display = 'block';
 	                  var data = JSON.parse(gets);
-	                  console.log(data, '___706');
 	                  BluMUI.create({
 	                    id: 'Title',
 	                    rank: 1,
@@ -1619,18 +1621,39 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ }),
+/***/ },
 
 /***/ 160:
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	// 登录判断与处理
+	function loginCheck(loginData) {
+	  var status = [100, 101, 102, 303];
+	  if (!Array.indexOf) {
+	    Array.prototype.indexOf = function (obj) {
+	      for (var i = 0; i < this.length; i++) {
+	        if (this[i] == obj) {
+	          return i;
+	        }
+	      }
+	      return -1;
+	    };
+	  }
+	  if (status.indexOf(loginData.meta.result) === -1) {
+	    alert(loginData.meta.msg);
+	  }
+	  if (loginData.meta.result == 303) {
+	    confirm(loginData.meta.msg);
+	    window.location.href = "https://ids.cqupt.edu.cn/authserver/login?service=" + courseCenter.host + "classList";
+	  }
+	}
 
-	//封装ajax(BluMUI.result.Title.props.ajaxing)
+	// 封装ajax(BluMUI.result.Title.props.ajaxing)
 	var post_ajax = function post_ajax(options) {
 	  options = options || {};
 	  // options.dataType = "json";
@@ -1661,6 +1684,7 @@ webpackJsonp([0],{
 	    if (xhr.readyState == 4) {
 	      var status = xhr.status;
 	      if (status >= 200 && status < 300) {
+	        loginCheck(JSON.parse(xhr.responseText));
 	        options.success && options.success(xhr.responseText, xhr.responseXML);
 	      } else {
 	        options.fail && options.fail(status);
@@ -1672,6 +1696,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ })
+/***/ }
 
 });

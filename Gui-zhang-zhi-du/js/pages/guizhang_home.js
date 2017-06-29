@@ -1,11 +1,9 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom';
 var BluMUI = require('../libs/blueMonUI.js');
 var ajax=require('../libs/post_ajax.js');
 
-
 var menues=BluMUI.menues;
 var menue_names=BluMUI.menue_names;
+
 ajax({
   url:courseCenter.host+'getMenu',
   data:{
@@ -24,10 +22,6 @@ ajax({
     BluMUI.create({
       Menues:menues
     },'Create_menu',document.getElementById('menue'))
-    // ReactDOM.render(
-    //   <Menue Menues={menues}/>,
-    //   document.getElementById('menue')
-    // );
   }
 });
 

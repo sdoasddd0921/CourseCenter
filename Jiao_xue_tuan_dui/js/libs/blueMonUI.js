@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 var ajax = require('../libs/post_ajax.js');
 var _count=13;
 
-
 //创建绿色的表头（又是绿色= =！）
 class BlueMUI_CreateThead extends React.Component {
   constructor(props) {
@@ -699,7 +698,6 @@ class BlueMUI_CreateAdding extends React.Component {
               success:function(gets) {
                 document.getElementById('body_head').style.display='block';
                 let data=JSON.parse(gets);
-                console.log(data,'___706')
                 BluMUI.create({
                   id:'Title',
                   rank:1,
