@@ -77,7 +77,8 @@ webpackJsonp([0],{
 
 	var ajax = __webpack_require__(160);
 	var Place = 3;
-	console.log("Place=333333");
+
+	console.log("Place=333");
 	/*
 	 * 学习资源
 	 */
@@ -259,7 +260,6 @@ webpackJsonp([0],{
 
 	// 下载函数，用于下载文件
 	function xiazai(name, down) {
-	  // this.refs.DOWNLOAD.src=courseCenter.host+'fileDownLoad?name='+name+'&oName='+down;BluMUI.result.config.user_id
 	  this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + name + '&oName=' + down + '&unifyCode=' + BluMUI.result.config.user_id;
 	}
 
