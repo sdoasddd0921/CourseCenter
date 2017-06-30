@@ -69,7 +69,7 @@ function first(){
   }
   function file(host,name,oName){
     return function(){
-      fileDown.src=host+"fileDownLoad?name="+name+"&oName="+oName;
+      fileDown.src=host+"fileDownLoad?name="+name+"&oName="+oName+"&unifyCode="+unifyCode;
     }
   }
 

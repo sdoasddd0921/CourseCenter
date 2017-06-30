@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -38,10 +38,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -416,8 +416,8 @@ webpackJsonp([0],{
 	      };
 	      if (this.state.subModule != 'audit') {
 	        this.refs.allchecked.checked = true;
-	        this.refs.serchBtn.onclick = hand_serch;
 	      }
+	      this.refs.serchBtn.onclick = hand_serch;
 	    }
 	  }, {
 	    key: 'componentWillUpdate',
@@ -997,10 +997,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1072,6 +1072,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });
