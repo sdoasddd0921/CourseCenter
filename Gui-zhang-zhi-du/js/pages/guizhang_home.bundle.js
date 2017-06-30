@@ -18,6 +18,10 @@ webpackJsonp([0],{
 	    unifyCode: getCookie('userId')
 	  },
 	  success: function success(gets) {
+	    // 未获取到数据则刷新页面
+	    if (JSON.parse(gets).meta.result != 100) {
+	      alert("数据获取失败，请重新登录！");
+	    }
 	    var datas = JSON.parse(gets);
 	    menues = [];
 	    datas.data.map(function (e) {

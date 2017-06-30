@@ -16,6 +16,10 @@ ajax({
     module:11
   },
   success: function(gets) {
+    // 未获取到数据则刷新页面
+    if(JSON.parse(gets).meta.result!=100) {
+      alert("数据获取失败，请重新登录！");
+    }
     var datas=JSON.parse(gets);
     console.log(datas)
     BluMUI.create({
