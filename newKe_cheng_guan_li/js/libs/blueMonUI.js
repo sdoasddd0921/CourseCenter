@@ -227,8 +227,8 @@ class BlueMUI_CreateOptions extends React.Component {
     }
     if(this.state.subModule!='audit') {
       this.refs.allchecked.checked=true;
-      this.refs.serchBtn.onclick=hand_serch;
     }
+    this.refs.serchBtn.onclick=hand_serch;
   }
   componentWillUpdate(nextProps, nextState) {
     if(nextState.subModule!=this.state.subModule) {
