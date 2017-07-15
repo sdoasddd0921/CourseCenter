@@ -1,0 +1,136 @@
+* { margin: 0; padding: 0; }
+body {
+  font-family: "Microsoft YaHei UI";
+}
+
+/*·­Ò³Ìõ*/
+
+#fanye {
+  width: 100%;
+  height: 40px;
+  font-size: 13px;
+  line-height: 40px;
+  text-align: center;
+  margin: 23px auto;
+}
+#fanye>div {
+  width: 40px;
+  height: 40px;
+  background: #FFF;
+  display: inline-block;
+  cursor: pointer;
+}
+#fanye>ul {
+  display: inline-block;
+  background: #FFF;
+  list-style: none;
+}
+#fanye>ul>li {
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  word-spacing: 0;
+  cursor: pointer;
+}
+#fanye #fanye_pre {
+  border-radius: 5px 0 0 5px;
+}
+#fanye #fanye_next {
+  border-radius: 0 5px 5px 0;
+}
+
+/*--------------------------------------------------------------*/
+
+/*option*/
+#kczystj_filter {
+  /*text-align: center;*/
+  padding: 15px;
+  line-height: 28px;
+}
+#kczystj_filter>select {
+  width: 250px;
+  height: 30px;
+  margin-right: 15px;
+  font-size: 16px;
+  outline: none;
+  border: 1px solid #009361;
+  color: #009361;
+  /*border-radius: 5px;*/
+}
+#serch {
+  display: inline-block;
+  width: 250px;
+  height: 28px;
+  border: 1px solid #009361;
+  border-radius: 6px 0 0 6px;
+  border-right: none;
+}
+#serch>#filter_name {
+  height: 28px;
+  line-height: 28px;
+  outline: none;
+  border: none;
+  padding-left: 5px;
+  font-size: 16px;
+  color: #009361;
+  position: absolute;
+  background: transparent;
+}
+#serch>#btn {
+  position: relative;
+  left: 230px;
+  top: -1px;
+  border: 1px solid #009361;
+  border-radius: 0 6px 6px 0;
+  background: #009361;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: left;
+  padding-left: 8px;
+  color: #FFF;
+  height: 30px;
+  width: 50px;
+}
+
+#kczystj_lists>table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+
+#kczystj_lists thead {
+  /*background: #009361;*/
+  color: #FFF;
+  font-size: 14px;
+}
+
+#kczystj_lists thead tr td {
+  height: 35px;
+  background: #009361;
+}
+#kczystj_lists .lefttd,
+#kczystj_lists .righttd {
+  width: 25px;
+  background: transparent;
+}
+#kczystj_lists .lefttd>div,
+#kczystj_lists .righttd>div {
+  width: 25px;
+  height: 100%;
+}
+#kczystj_lists thead tr td.lefttd>div,
+#kczystj_lists thead tr td.righttd>div {
+  background: #009361;
+}
+#kczystj_lists .lefttd>div {
+  border-radius: 5px 0 0 5px;
+}
+#kczystj_lists .righttd>div {
+  border-radius: 0 5px 5px 0;
+}
+#kczystj_lists tbody tr td {
+  height: 35px;
+}
+
+
+
