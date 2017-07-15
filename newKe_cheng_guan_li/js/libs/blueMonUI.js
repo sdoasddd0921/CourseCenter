@@ -404,6 +404,7 @@ class BlueMUI_CreateList extends React.Component {
         {check}
         <td>{e.kcbh}</td>
         <td><a target="view_window" href={'../classInfShow/classInfReview.html?classId='+e.kcbh}>{e.kcmc}</a></td>
+        {(this.state.Module=="query"||this.state.Module=="maintenance")?<td>{e.fzrxm}</td>:null}
         <td>{e.jysmc}</td>
         <td>{e.czsj||''}</td>
         <td>{e.dqzt}</td>
@@ -424,21 +425,41 @@ class BlueMUI_CreateList extends React.Component {
   }
 
   render() {
-    return(<table id="center_table">
-      <thead>
-        <tr>
-          <td width='20px'></td>
-          <td width="16%">课程编号</td>
-          <td width="20%">课程名称</td>
-          <td width="20%">教学机构名称</td>
-          <td width="14%">最近更新时间</td>
-          <td width="13%">课程状态</td>
-          <td width="10%">操作</td>
-          <td width='35px'></td>
-        </tr>
-      </thead>
-      <tbody ref='list_body'>{this.create_list()}</tbody>
-    </table>);
+    if(this.state.Module=="query"||this.state.Module=="maintenance") {
+      return(<table id="center_table">
+        <thead>
+          <tr>
+            <td width='20px'></td>
+            <td width="10%">课程编号</td>
+            <td width="20%">课程名称</td>
+            <td width="6%">课程负责人</td>
+            <td width="20%">教学机构名称</td>
+            <td width="14%">最近更新时间</td>
+            <td width="13%">课程状态</td>
+            <td width="10%">操作</td>
+            <td width='35px'></td>
+          </tr>
+        </thead>
+        <tbody ref='list_body'>{this.create_list()}</tbody>
+      </table>);
+    } else {
+      return(<table id="center_table">
+        <thead>
+          <tr>
+            <td width='20px'></td>
+            <td width="16%">课程编号</td>
+            <td width="20%">课程名称</td>
+            <td width="20%">教学机构名称</td>
+            <td width="14%">最近更新时间</td>
+            <td width="13%">课程状态</td>
+            <td width="10%">操作</td>
+            <td width='35px'></td>
+          </tr>
+        </thead>
+        <tbody ref='list_body'>{this.create_list()}</tbody>
+      </table>);
+    }
+
   }
 }
 

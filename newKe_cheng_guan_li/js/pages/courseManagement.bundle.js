@@ -706,6 +706,11 @@ webpackJsonp([0],{
 	              e.kcmc
 	            )
 	          ),
+	          _this6.state.Module == "query" || _this6.state.Module == "maintenance" ? _react2["default"].createElement(
+	            'td',
+	            null,
+	            e.fzrxm
+	          ) : null,
 	          _react2["default"].createElement(
 	            'td',
 	            null,
@@ -743,55 +748,112 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2["default"].createElement(
-	        'table',
-	        { id: 'center_table' },
-	        _react2["default"].createElement(
-	          'thead',
-	          null,
+	      if (this.state.Module == "query" || this.state.Module == "maintenance") {
+	        return _react2["default"].createElement(
+	          'table',
+	          { id: 'center_table' },
 	          _react2["default"].createElement(
-	            'tr',
+	            'thead',
 	            null,
-	            _react2["default"].createElement('td', { width: '20px' }),
 	            _react2["default"].createElement(
-	              'td',
-	              { width: '16%' },
-	              '\u8BFE\u7A0B\u7F16\u53F7'
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              { width: '20%' },
-	              '\u8BFE\u7A0B\u540D\u79F0'
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              { width: '20%' },
-	              '\u6559\u5B66\u673A\u6784\u540D\u79F0'
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              { width: '14%' },
-	              '\u6700\u8FD1\u66F4\u65B0\u65F6\u95F4'
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              { width: '13%' },
-	              '\u8BFE\u7A0B\u72B6\u6001'
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              { width: '10%' },
-	              '\u64CD\u4F5C'
-	            ),
-	            _react2["default"].createElement('td', { width: '35px' })
+	              'tr',
+	              null,
+	              _react2["default"].createElement('td', { width: '20px' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                '\u8BFE\u7A0B\u7F16\u53F7'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '20%' },
+	                '\u8BFE\u7A0B\u540D\u79F0'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '6%' },
+	                '\u8BFE\u7A0B\u8D1F\u8D23\u4EBA'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '20%' },
+	                '\u6559\u5B66\u673A\u6784\u540D\u79F0'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '14%' },
+	                '\u6700\u8FD1\u66F4\u65B0\u65F6\u95F4'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '13%' },
+	                '\u8BFE\u7A0B\u72B6\u6001'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                '\u64CD\u4F5C'
+	              ),
+	              _react2["default"].createElement('td', { width: '35px' })
+	            )
+	          ),
+	          _react2["default"].createElement(
+	            'tbody',
+	            { ref: 'list_body' },
+	            this.create_list()
 	          )
-	        ),
-	        _react2["default"].createElement(
-	          'tbody',
-	          { ref: 'list_body' },
-	          this.create_list()
-	        )
-	      );
+	        );
+	      } else {
+	        return _react2["default"].createElement(
+	          'table',
+	          { id: 'center_table' },
+	          _react2["default"].createElement(
+	            'thead',
+	            null,
+	            _react2["default"].createElement(
+	              'tr',
+	              null,
+	              _react2["default"].createElement('td', { width: '20px' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '16%' },
+	                '\u8BFE\u7A0B\u7F16\u53F7'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '20%' },
+	                '\u8BFE\u7A0B\u540D\u79F0'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '20%' },
+	                '\u6559\u5B66\u673A\u6784\u540D\u79F0'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '14%' },
+	                '\u6700\u8FD1\u66F4\u65B0\u65F6\u95F4'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '13%' },
+	                '\u8BFE\u7A0B\u72B6\u6001'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                '\u64CD\u4F5C'
+	              ),
+	              _react2["default"].createElement('td', { width: '35px' })
+	            )
+	          ),
+	          _react2["default"].createElement(
+	            'tbody',
+	            { ref: 'list_body' },
+	            this.create_list()
+	          )
+	        );
+	      }
 	    }
 	  }]);
 
