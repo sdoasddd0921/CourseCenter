@@ -102,10 +102,18 @@ var Show_nav_item=function(prop) {
 
 // 检查函数，用于检查每个子项目的数据是否合法
 function check() {
+  let error_msg="";
   if(this.props.meta.result!=100) {
+    if(this.props.meta.result===101) {
+      error_msg="该模块暂无数据";
+    } else if(this.props.meta.result===102) {
+      error_msg="该模块数据正在编辑/审核中";
+    } else {
+      error_msg="系统发生错误";
+    }
     return(<div id="error" key='error'>
       <img src="../../imgs/public/error.png" alt="error"/>
-      <span>该模块暂无数据</span>
+      <span>{error_msg}</span>
     </div>);
   }
   return false;
@@ -290,8 +298,15 @@ class BlueMUI_Create_b extends React.Component {
 
   componentDidMount() {
     console.log('___247',this.jiangyi,this.other)
-    if((this.other==101||this.other==102)&&this.jiangyi) {
-      var error_msg='该模块暂无数据';
+    let error_msg="";
+    if(this.other!==100) {
+      if(this.other===101) {
+        error_msg="该模块暂无数据";
+      } else if(this.other==102) {
+        error_msg="该模块数据正在编辑/审核中";
+      } else {
+        error_msg="系统发生错误";
+      }
       this.refs.right.innerHTML="<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>"+error_msg+"</span></div>";
     } else {
       this.show(this.default_kcbh);

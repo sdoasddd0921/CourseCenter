@@ -242,7 +242,15 @@ webpackJsonp([0],{
 
 	// 检查函数，用于检查每个子项目的数据是否合法
 	function check() {
+	  var error_msg = "";
 	  if (this.props.meta.result != 100) {
+	    if (this.props.meta.result === 101) {
+	      error_msg = "该模块暂无数据";
+	    } else if (this.props.meta.result === 102) {
+	      error_msg = "该模块数据正在编辑/审核中";
+	    } else {
+	      error_msg = "系统发生错误";
+	    }
 	    return _react2["default"].createElement(
 	      'div',
 	      { id: 'error', key: 'error' },
@@ -250,7 +258,7 @@ webpackJsonp([0],{
 	      _react2["default"].createElement(
 	        'span',
 	        null,
-	        '\u8BE5\u6A21\u5757\u6682\u65E0\u6570\u636E'
+	        error_msg
 	      )
 	    );
 	  }
@@ -507,8 +515,15 @@ webpackJsonp([0],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      console.log('___247', this.jiangyi, this.other);
-	      if ((this.other == 101 || this.other == 102) && this.jiangyi) {
-	        var error_msg = '该模块暂无数据';
+	      var error_msg = "";
+	      if (this.other !== 100) {
+	        if (this.other === 101) {
+	          error_msg = "该模块暂无数据";
+	        } else if (this.other == 102) {
+	          error_msg = "该模块数据正在编辑/审核中";
+	        } else {
+	          error_msg = "系统发生错误";
+	        }
 	        this.refs.right.innerHTML = "<div id='error' key='error'><img src='../../imgs/public/error.png' alt='error'/><span>" + error_msg + "</span></div>";
 	      } else {
 	        this.show(this.default_kcbh);

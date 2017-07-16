@@ -1,4 +1,4 @@
-webpackJsonp([1],{
+webpackJsonp([2],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
@@ -9,24 +9,6 @@ webpackJsonp([1],{
 	var ajax = __webpack_require__(160);
 
 	// ����ҳ���Ȼ�ȡѧԺ����Ϣ��Ȼ�����䵽��ȡ��Դ���Ľӿ�
-
-
-	// ajax({
-	//   url: courseCenter.host + "getKczyList",
-	//   data: {
-	//     unifyCode: getCookie("userId"),
-	//     college: "",
-	//     courseDepartment: "",
-	//     courseName: "",
-	//     page: 1,
-	//     count: 10
-	//   },
-	//   success: function(gets) {
-	//     let datas = JSON.parse(gets);
-	//     // show list;
-	//   }
-	// })
-
 
 	BluMUI.create({
 	    id: 'filter'
@@ -130,56 +112,36 @@ webpackJsonp([1],{
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var _COUNT = 10;
 	var ajax = __webpack_require__(160);
-
-	var Test = function (_React$Component) {
-	  _inherits(Test, _React$Component);
-
-	  function Test(props) {
-	    _classCallCheck(this, Test);
-
-	    return _possibleConstructorReturn(this, (Test.__proto__ || Object.getPrototypeOf(Test)).call(this, props));
-	  }
-
-	  _createClass(Test, [{
-	    key: 'render',
-	    value: function render() {
-	      return _react2["default"].createElement(
-	        'div',
-	        null,
-	        'test'
-	      );
-	    }
-	  }]);
-
-	  return Test;
-	}(_react2["default"].Component);
 
 	// 筛选条件
 
-
-	var Filter = function (_React$Component2) {
-	  _inherits(Filter, _React$Component2);
+	var Filter = function (_React$Component) {
+	  _inherits(Filter, _React$Component);
 
 	  function Filter(props) {
 	    _classCallCheck(this, Filter);
 
-	    var _this2 = _possibleConstructorReturn(this, (Filter.__proto__ || Object.getPrototypeOf(Filter)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Filter.__proto__ || Object.getPrototypeOf(Filter)).call(this, props));
 
-	    _this2.state = {
+	    _this.state = {
 	      college: "",
 	      department: "",
 	      name: "",
 	      page: 1,
-	      pages: 1
+	      pages: 1,
+	      rows: 1
 	    };
-	    return _this2;
+	    return _this;
 	  }
 
 	  _createClass(Filter, [{
@@ -197,7 +159,7 @@ webpackJsonp([1],{
 	            _react2["default"].createElement(
 	              'option',
 	              { value: '' },
-	              '\u8BF7\u9009\u62E9'
+	              '\u8BF7\u9009\u62E9\u5B66\u9662'
 	            )
 	          ),
 	          _react2["default"].createElement(
@@ -206,15 +168,11 @@ webpackJsonp([1],{
 	            _react2["default"].createElement(
 	              'option',
 	              { value: '' },
-	              '\u8BF7\u9009\u62E9'
+	              '\u8BF7\u9009\u62E9\u7CFB\u90E8\u4E2D\u5FC3'
 	            )
 	          ),
-	          _react2["default"].createElement(
-	            'div',
-	            { id: 'serch' },
-	            _react2["default"].createElement('input', { type: 'text', id: 'filter_name', ref: 'name' }),
-	            _react2["default"].createElement('input', { type: 'button', id: 'btn', ref: 'btn', value: '\u641C\u7D22' })
-	          )
+	          _react2["default"].createElement('input', { type: 'text', id: 'filter_name', placeholder: '\u8BF7\u8F93\u5165\u8BFE\u7A0B\u540D\u79F0', ref: 'name' }),
+	          _react2["default"].createElement('input', { type: 'button', id: 'btn', ref: 'btn', value: '\u641C\u7D22' })
 	        ),
 	        _react2["default"].createElement(Lists, { ref: 'list', options: this.state })
 	      );
@@ -222,7 +180,7 @@ webpackJsonp([1],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this3 = this;
+	      var _this2 = this;
 
 	      // 获取学院
 	      ajax({
@@ -234,7 +192,7 @@ webpackJsonp([1],{
 	          var datas = JSON.parse(gets);
 	          if (datas.meta.result == 100) {
 	            datas.data.map(function (e, index) {
-	              _this3.refs.college.innerHTML += '<option value=' + e.kkxymc + '>' + e.kkxymc + '</option>';
+	              _this2.refs.college.innerHTML += '<option value=' + e.kkxymc + '>' + e.kkxymc + '</option>';
 	            });
 	          }
 	        }
@@ -242,31 +200,30 @@ webpackJsonp([1],{
 
 	      // 选定学院后获取专业并填充
 	      this.refs.college.onchange = function (e) {
-	        _this3.refs.department.innerHTML = "<option value=''>请选择</option>";
+	        _this2.refs.department.innerHTML = "<option value=''>请选择系部中心</option>";
 	        ajax({
 	          url: courseCenter.host + "getCourseDepartment",
 	          data: {
 	            unifyCode: getCookie("userId"),
-	            college: _this3.refs.college.value
+	            college: _this2.refs.college.value
 	          },
 	          success: function success(gets) {
 	            var datas = JSON.parse(gets);
 	            if (datas.meta.result == 100) {
 	              datas.data.map(function (e, index) {
-	                _this3.refs.department.innerHTML += '<option value=' + e.jysmc + '>' + e.jysmc + '</option>';
+	                _this2.refs.department.innerHTML += '<option value=' + e.jysmc + '>' + e.jysmc + '</option>';
 	              });
-
-	              // 单击搜索按钮的事件
-	              _this3.refs.btn.onclick = function (e) {
-	                _this3.refs.list.setState({ options: {
-	                    college: _this3.refs.college.value,
-	                    department: _this3.refs.department.value,
-	                    name: _this3.refs.name.value,
-	                    page: 1
-	                  } });
-	              };
 	            }
 	          }
+	        });
+	      };
+
+	      // 单击搜索按钮的事件
+	      this.refs.btn.onclick = function (e) {
+	        _this2.refs.list.refresh(1, {
+	          college: _this2.refs.college.value,
+	          department: _this2.refs.department.value,
+	          name: _this2.refs.name.value
 	        });
 	      };
 	    }
@@ -275,17 +232,22 @@ webpackJsonp([1],{
 	  return Filter;
 	}(_react2["default"].Component);
 
-	var Lists = function (_React$Component3) {
-	  _inherits(Lists, _React$Component3);
+	var Lists = function (_React$Component2) {
+	  _inherits(Lists, _React$Component2);
 
 	  function Lists(props) {
 	    _classCallCheck(this, Lists);
 
-	    var _this4 = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
+	    var _this3 = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
 
-	    _this4.state = _this4.props;
-	    _this4.datas = [];
-	    return _this4;
+	    var newState = {};
+	    for (var i in _this3.props.options) {
+	      newState[i] = _this3.props.options[i];
+	    }
+	    newState.list = [];
+	    _this3.state = newState;
+	    _this3.datas = [];
+	    return _this3;
 	  }
 
 	  _createClass(Lists, [{
@@ -295,79 +257,69 @@ webpackJsonp([1],{
 	      this.datas.map(function (e, index) {
 	        tds.push(_react2["default"].createElement(
 	          'tr',
-	          { key: index },
+	          { key: index, className: index == 9 ? "noborder" : null },
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            { className: 'lefttd' },
 	            _react2["default"].createElement('div', null)
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
-	            e.kkxync
+	            e.kkxymc
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
-	            null,
-	            e.kkxyh
-	          ),
-	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.jysmc
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
-	            null,
-	            e.jysh
-	          ),
-	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.kcmc
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.kcbh
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.kclx
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.jxdg
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.zsdtx
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.ksdg
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.xxzy
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.dzja
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            null,
 	            e.dxfa
 	          ),
 	          _react2["default"].createElement(
-	            'tr',
+	            'td',
 	            { className: 'righttd' },
 	            _react2["default"].createElement('div', null)
 	          )
@@ -380,101 +332,133 @@ webpackJsonp([1],{
 	      );
 	    }
 	  }, {
+	    key: 'refresh',
+	    value: function refresh(page, _ref) {
+	      var _this4 = this;
+
+	      var sets = _objectWithoutProperties(_ref, []);
+
+	      // 未传第二个参数时sets为空对象{}
+	      // 判断sets是否为空（是否只是翻页）
+	      if (JSON.stringify(sets) !== "{}") {
+	        this.state = sets;
+	      }
+	      ajax({
+	        url: courseCenter.host + "getKczyList",
+	        data: {
+	          unifyCode: getCookie("userId"),
+	          college: sets.college || this.state.college,
+	          courseDepartment: sets.department || this.state.department,
+	          courseName: sets.name || this.state.name,
+	          page: page,
+	          count: _COUNT
+	        },
+	        success: function success(gets) {
+	          var datas = JSON.parse(gets);
+	          _this4.datas = datas.data.KczyList;
+	          _this4.setState({
+	            list: datas.data.KczyList,
+	            page: page,
+	            pages: datas.data.totalPages,
+	            rows: datas.data.total
+	          });
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log("lists:", this.state);
+	      console.log("lists-state:", this.state);
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'kczystj_lists' },
 	        _react2["default"].createElement(
-	          'table',
-	          null,
+	          'div',
+	          { id: 'kczystj_table' },
 	          _react2["default"].createElement(
-	            'thead',
+	            'table',
 	            null,
 	            _react2["default"].createElement(
-	              'tr',
+	              'thead',
 	              null,
 	              _react2["default"].createElement(
-	                'td',
-	                { className: 'lefttd' },
-	                _react2["default"].createElement('div', null)
-	              ),
-	              _react2["default"].createElement(
-	                'td',
+	                'tr',
 	                null,
-	                '\u5B66\u9662\u540D\u79F0'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u5B66\u9662\u53F7'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u7CFB\u90E8\u4E2D\u5FC3\u540D\u79F0'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u7CFB\u90E8\u4E2D\u5FC3\u53F7'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u8BFE\u7A0B\u540D\u79F0'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u8BFE\u7A0B\u7F16\u53F7'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u8BFE\u7A0B\u7C7B\u578B'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u6559\u5B66\u5927\u7EB2'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u77E5\u8BC6\u70B9\u4F53\u7CFB'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u8003\u8BD5\u5927\u7EB2'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u5B66\u4E60\u8D44\u6E90'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u7535\u5B50\u6559\u6848'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                null,
-	                '\u5BFC\u5B66\u65B9\u6848'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                { className: 'righttd' },
-	                _react2["default"].createElement('div', null)
+	                _react2["default"].createElement(
+	                  'td',
+	                  { className: 'lefttd' },
+	                  _react2["default"].createElement('div', null)
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '15%' },
+	                  '\u5B66\u9662\u540D\u79F0'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '15%' },
+	                  '\u7CFB\u90E8\u4E2D\u5FC3\u540D\u79F0'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  '\u8BFE\u7A0B\u540D\u79F0'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '6%' },
+	                  '\u8BFE\u7A0B\u7F16\u53F7'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '11%' },
+	                  '\u8BFE\u7A0B\u7C7B\u578B'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '5.5%' },
+	                  '\u6559\u5B66\u5927\u7EB2'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '5.5%' },
+	                  '\u77E5\u8BC6\u70B9\u4F53\u7CFB'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '5.5%' },
+	                  '\u8003\u8BD5\u5927\u7EB2'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '5.5%' },
+	                  '\u5B66\u4E60\u8D44\u6E90'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '5.5%' },
+	                  '\u7535\u5B50\u6559\u6848'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '5.5%' },
+	                  '\u5BFC\u5B66\u65B9\u6848'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { className: 'righttd' },
+	                  _react2["default"].createElement('div', null)
+	                )
 	              )
-	            )
-	          ),
-	          this.create_list()
+	            ),
+	            this.create_list()
+	          )
 	        ),
-	        _react2["default"].createElement(Fanye, { This: this, page: this.state.options.page || 1, pages: this.state.options.pages || 1 })
+	        _react2["default"].createElement(Fanye, { This: this, options: {
+	            page: this.state.page || 1,
+	            pages: this.state.pages || 1,
+	            rows: this.state.rows
+	          } })
 	      );
 	    }
 	  }, {
@@ -484,28 +468,52 @@ webpackJsonp([1],{
 
 	      ajax({
 	        url: courseCenter.host + "getKczyList",
-	        datas: {
+	        data: {
 	          unifyCode: getCookie("userId"),
 	          college: this.props.options.college,
 	          courseDepartment: this.props.options.department,
 	          courseName: this.props.options.name,
 	          page: this.props.options.page,
-	          count: 15
+	          count: _COUNT
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
 	          _this5.datas = datas.data.KczyList;
+	          _this5.setState({
+	            list: datas.data.KczyList,
+	            pages: datas.data.totalPages,
+	            rows: datas.data.total
+	          });
 	          console.log(_this5.datas);
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      // 获取该frame的id
+	      // var frameId = window.frameElement && window.frameElement.id || '';
+	      // 设置该frame的高度自适应
+	      if (window.frameElement) {
+	        window.frameElement.height = document.body.offsetHeight;
+	      }
+	      // function setIframeHeight(iframe) {
+	      // if (iframe) {
+	      // var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
+	      // if (iframeWin.document.body) {
+	      // iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
+	      // }
+	      // }
+	      // };
+	      // parent.document.getElementById('ifs-kczystj').height=document.body.offsetHeight;
 	    }
 	  }]);
 
 	  return Lists;
 	}(_react2["default"].Component);
 
-	var Fanye = function (_React$Component4) {
-	  _inherits(Fanye, _React$Component4);
+	var Fanye = function (_React$Component3) {
+	  _inherits(Fanye, _React$Component3);
 
 	  function Fanye(props) {
 	    _classCallCheck(this, Fanye);
@@ -516,168 +524,108 @@ webpackJsonp([1],{
 	  _createClass(Fanye, [{
 	    key: 'create_popup_fanye',
 	    value: function create_popup_fanye() {
-	      console.log(this.props, "___376");
-	      var style = {};
-	      var fanye = [];
+	      var _this7 = this;
+
+	      var nums = [];
 	      var start = 1;
-	      var end = this.props.pages;
-	      var style_on = {
-	        background: "url('../../imgs/courseAudit/fanye_bg.png')",
-	        backgroundRepeat: 'no-repeat',
-	        backgroundPosition: '5px 5px',
-	        color: '#FFF'
-	      };
-	      if (this.props.pages < 1) {
-	        return _react2["default"].createElement('div', null);
-	      }
-	      if (this.props.pages <= 7) {
-	        for (var i = 2; i < this.props.pages; i++) {
-	          if (i == this.props.page) {
-	            style = style_on;
-	          } else {
-	            style = {};
-	          }
-	          fanye.push(_react2["default"].createElement(
+	      var end = this.props.options.pages || 1;
+	      var now = this.props.options.page || 1;
+	      var page_on = { color: "#007A51" };
+
+	      var change_page = function change_page(p) {
+	        if (p === now) {
+	          nums.push(_react2["default"].createElement(
 	            'li',
-	            { key: i, style: style, onClick: this.fanye.bind(this, i) },
-	            i
-	          ));
-	        }
-	      } else {
-	        if (this.props.page < 5) {
-	          for (var j = 2; j <= 6; j++) {
-	            if (j == this.props.page) {
-	              style = style_on;
-	            } else {
-	              style = {};
-	            }
-	            fanye.push(_react2["default"].createElement(
-	              'li',
-	              { key: j, style: style, onClick: this.fanye.bind(this, j) },
-	              j
-	            ));
-	          }
-	          fanye.push(_react2["default"].createElement(
-	            'li',
-	            { key: 'end' },
-	            '...'
-	          ));
-	        } else if (this.props.page > this.props.pages - 4) {
-	          for (var k = this.props.pages - 5; k < this.props.pages; k++) {
-	            if (k == this.props.page) {
-	              style = style_on;
-	            } else {
-	              style = {};
-	            }
-	            fanye.push(_react2["default"].createElement(
-	              'li',
-	              { key: k, style: style, onClick: this.fanye.bind(this, k) },
-	              k
-	            ));
-	          }
-	          fanye.unshift(_react2["default"].createElement(
-	            'li',
-	            { key: 'start' },
-	            '...'
+	            { key: p, style: page_on },
+	            p
 	          ));
 	        } else {
-	          for (var l = this.props.page - 2; l <= this.props.page + 2; l++) {
-	            if (l == this.props.page) {
-	              style = style_on;
-	            } else {
-	              style = {};
-	            }
-	            fanye.push(_react2["default"].createElement(
-	              'li',
-	              { key: l, style: style, onClick: this.fanye.bind(this, l) },
-	              l
-	            ));
-	          }
-	          fanye.unshift(_react2["default"].createElement(
+	          nums.push(_react2["default"].createElement(
 	            'li',
-	            { key: 'start' },
-	            '...'
-	          ));
-	          fanye.push(_react2["default"].createElement(
-	            'li',
-	            { key: 'end' },
-	            '...'
+	            { key: p, onClick: _this7.fanye.bind(_this7, p) },
+	            p
 	          ));
 	        }
-	      }
-	      if (1 == this.props.pages) {
-	        fanye.push(_react2["default"].createElement(
+	      };
+
+	      if (end < 1) {
+	        nums.push(_react2["default"].createElement(
 	          'li',
-	          { key: 1, style: style_on },
-	          1
+	          { key: 'only', onClick: this.fanye.bind(this, 1) },
+	          '1'
 	        ));
-	      } else if (this.props.page == this.props.pages) {
-	        fanye.unshift(_react2["default"].createElement(
-	          'li',
-	          { key: 1, onClick: this.fanye.bind(this, 1) },
-	          1
-	        ));
-	        fanye.push(_react2["default"].createElement(
-	          'li',
-	          { key: this.props.pages, style: style_on },
-	          this.props.pages
-	        ));
-	      } else if (this.props.page == 1) {
-	        fanye.unshift(_react2["default"].createElement(
-	          'li',
-	          { key: 1, style: style_on },
-	          1
-	        ));
-	        fanye.push(_react2["default"].createElement(
-	          'li',
-	          { key: this.props.pages, onClick: this.fanye.bind(this, this.props.pages) },
-	          this.props.pages
-	        ));
+	      } else if (end <= 5) {
+	        for (var i = 1; i <= end; i++) {
+	          change_page(i);
+	        }
 	      } else {
-	        fanye.unshift(_react2["default"].createElement(
-	          'li',
-	          { key: 1, onClick: this.fanye.bind(this, 1) },
-	          1
-	        ));
-	        fanye.push(_react2["default"].createElement(
-	          'li',
-	          { key: this.props.pages, onClick: this.fanye.bind(this, this.props.pages) },
-	          this.props.pages
-	        ));
+	        if (now < 3) {
+	          for (var _i = 1; _i <= 5; _i++) {
+	            change_page(_i);
+	          }
+	        } else if (now > end - 3) {
+	          for (var _i2 = end - 5; _i2 <= end; _i2++) {
+	            change_page(_i2);
+	          }
+	        } else {
+	          for (var _i3 = now - 2; _i3 <= now + 2; _i3++) {
+	            change_page(_i3);
+	          }
+	        }
 	      }
+
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'fanye' },
+	        { id: 'kczystj_fanye' },
 	        _react2["default"].createElement(
-	          'div',
-	          { id: 'fanye_pre', ref: 'pre', onClick: this.fanye.bind(this, this.props.page - 1 < 0 ? 1 : this.props.page - 1) },
-	          _react2["default"].createElement('img', { src: '../../imgs/courseAudit/fanye_left.png', alt: '' })
+	          'span',
+	          { id: 'rows' },
+	          '\u5171',
+	          this.props.options.rows ? this.props.options.rows : 1,
+	          '\u6761\u8BB0\u5F55'
 	        ),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u9996\u9875', id: 'fanye_start', onClick: this.fanye.bind(this, 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0A\u4E00\u9875', id: 'fanye_pre', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
 	        _react2["default"].createElement(
 	          'ul',
-	          { ref: 'popup_fanye' },
-	          fanye
+	          { id: 'fanye_nums' },
+	          nums
 	        ),
-	        _react2["default"].createElement(
-	          'div',
-	          { id: 'fanye_next', ref: 'next', onClick: this.fanye.bind(this, this.props.page + 1 > this.props.pages ? 0 : this.props.page + 1) },
-	          _react2["default"].createElement('img', { src: '../../imgs/courseAudit/fanye_right.png', alt: '' })
-	        )
+	        _react2["default"].createElement('input', { type: 'text', id: 'tp', ref: 'tp', placeholder: this.props.options.page + '/' + this.props.options.pages }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0B\u4E00\u9875', id: 'fanye_next', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u5C3E\u9875', id: 'fanye_end', onClick: this.fanye.bind(this, end) })
 	      );
 	    }
 	  }, {
 	    key: 'fanye',
 	    value: function fanye(p) {
+	      this.refs.tp.value = null;
 	      if (p == 0) {
 	        return;
 	      }
-	      console.log("开始翻页");
-	      this.props.This.state.page = p;
+	      this.props.This.refresh(p);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return this.create_popup_fanye();
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this8 = this;
+
+	      // 手动跳转翻页
+	      this.refs.tp.onkeydown = function (eve) {
+	        if (eve.keyCode === 13) {
+	          if (!isNaN(+eve.target.value)) {
+	            _this8.fanye(+eve.target.value);
+	          } else {
+	            eve.target.value = null;
+	            eve.target.blur();
+	          }
+	        }
+	      };
 	    }
 	  }]);
 
@@ -685,7 +633,6 @@ webpackJsonp([1],{
 	}(_react2["default"].Component);
 
 	var BluMUI_M = {
-	  test: Test,
 	  BluMUI_Filter: Filter
 	};
 
