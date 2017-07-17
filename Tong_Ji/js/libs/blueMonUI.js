@@ -14,8 +14,7 @@ class Iframe extends React.Component {
       enumerable: false
     });
     this.state.tabs.map((e,index)=>{
-      console.log(e)
-      this.iframes[e]=<iframe src={'tongji-'+e+'.html'} frameBorder="0" id={'ifs-'+e} key={index} style={{display:'none'}} onLoad={this.ld.bind(this)} ></iframe>;
+      this.iframes[e]=<iframe src={'../systemManage/'+e+'.html'} frameBorder="0" id={'ifs-'+e} key={index} style={{display:'none'}} onLoad={this.ld.bind(this)} ></iframe>;
       this.iframes.length++;
     });
   }
@@ -24,10 +23,10 @@ class Iframe extends React.Component {
     } else if(nextProps.tabs.length>this.iframes.length) {
       nextProps.tabs.map(e=>{
         if(typeof this.iframes[e] =='undefined') {
-          this.iframes[e]=<iframe src={'tongji-'+e+'.html'} frameBorder="0" id={'ifs-'+e} key={e} style={{display:'none'}} onLoad={this.ld.bind(this)}></iframe>;
+          this.iframes[e]=<iframe src={'../systemManage/'+e+'.html'} frameBorder="0" id={'ifs-'+e} key={e} style={{display:'none'}} onLoad={this.ld.bind(this)}></iframe>;
           this.iframes.length++;
         }
-      })
+      });
     } else if(nextProps.tabs.length<this.iframes.length) {
       for(let i in this.iframes) {
         if(-1==nextProps.tabs.indexOf(i)) {
@@ -40,6 +39,7 @@ class Iframe extends React.Component {
     this.setState(nextProps);
   }
   ld() {
+    // 从外面设置iframe的高度
     iframe_set('ifs-'+this.state.on);
   }
 
@@ -183,7 +183,7 @@ class Tab_head extends React.Component {
           tabs:tabs,
           on:new_on
         });
-        Menue_this.setState({Menue_on:new_on})
+        Menue_this.setState({Menue_on:new_on});
       }}
     );
   }
@@ -220,7 +220,6 @@ var BluMUI_M = {
 
 var BluMUI = {
 	result: {},
-  menues:[],
   menue_names:{},
 	create: function (data, type, elem) {
 		var props = data, Blu = BluMUI_M[type];

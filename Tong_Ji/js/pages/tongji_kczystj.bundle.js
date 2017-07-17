@@ -5,7 +5,7 @@ webpackJsonp([2],{
 
 	'use strict';
 
-	var BluMUI = __webpack_require__(161);
+	var BluMUI = __webpack_require__(162);
 	var ajax = __webpack_require__(160);
 
 	// ����ҳ���Ȼ�ȡѧԺ����Ϣ��Ȼ�����䵽��ȡ��Դ���Ľӿ�
@@ -91,7 +91,7 @@ webpackJsonp([2],{
 
 /***/ },
 
-/***/ 161:
+/***/ 162:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -246,7 +246,6 @@ webpackJsonp([2],{
 	    }
 	    newState.list = [];
 	    _this3.state = newState;
-	    _this3.datas = [];
 	    return _this3;
 	  }
 
@@ -254,7 +253,7 @@ webpackJsonp([2],{
 	    key: 'create_list',
 	    value: function create_list() {
 	      var tds = [];
-	      this.datas.map(function (e, index) {
+	      this.state.list.map(function (e, index) {
 	        tds.push(_react2["default"].createElement(
 	          'tr',
 	          { key: index, className: index == 9 ? "noborder" : null },
@@ -355,7 +354,6 @@ webpackJsonp([2],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          _this4.datas = datas.data.KczyList;
 	          _this4.setState({
 	            list: datas.data.KczyList,
 	            page: page,
@@ -581,7 +579,7 @@ webpackJsonp([2],{
 	          'span',
 	          { id: 'rows' },
 	          '\u5171',
-	          this.props.options.rows ? this.props.options.rows : 1,
+	          this.props.options.rows >= 0 ? this.props.options.rows : 1,
 	          '\u6761\u8BB0\u5F55'
 	        ),
 	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u9996\u9875', id: 'fanye_start', onClick: this.fanye.bind(this, 1) }),

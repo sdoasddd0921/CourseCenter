@@ -135,7 +135,6 @@ webpackJsonp([1],{
 
 	    _this.state = {
 	      college: "",
-	      department: "",
 	      name: "",
 	      page: 1,
 	      pages: 1,
@@ -149,10 +148,10 @@ webpackJsonp([1],{
 	    value: function render() {
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'kczystj' },
+	        { id: 'kczttj' },
 	        _react2["default"].createElement(
 	          'div',
-	          { id: 'kczystj_filter' },
+	          { id: 'kczttj_filter' },
 	          _react2["default"].createElement(
 	            'select',
 	            { name: 'college', id: 'filter_college', ref: 'college' },
@@ -162,16 +161,6 @@ webpackJsonp([1],{
 	              '\u8BF7\u9009\u62E9\u5B66\u9662'
 	            )
 	          ),
-	          _react2["default"].createElement(
-	            'select',
-	            { name: 'department', id: 'filter_department', ref: 'department' },
-	            _react2["default"].createElement(
-	              'option',
-	              { value: '' },
-	              '\u8BF7\u9009\u62E9\u7CFB\u90E8\u4E2D\u5FC3'
-	            )
-	          ),
-	          _react2["default"].createElement('input', { type: 'text', id: 'filter_name', placeholder: '\u8BF7\u8F93\u5165\u8BFE\u7A0B\u540D\u79F0', ref: 'name' }),
 	          _react2["default"].createElement('input', { type: 'button', id: 'btn', ref: 'btn', value: '\u641C\u7D22' })
 	        ),
 	        _react2["default"].createElement(Lists, { ref: 'list', options: this.state })
@@ -198,32 +187,10 @@ webpackJsonp([1],{
 	        }
 	      });
 
-	      // 选定学院后获取专业并填充
-	      this.refs.college.onchange = function (e) {
-	        _this2.refs.department.innerHTML = "<option value=''>请选择系部中心</option>";
-	        ajax({
-	          url: courseCenter.host + "getCourseDepartment",
-	          data: {
-	            unifyCode: getCookie("userId"),
-	            college: _this2.refs.college.value
-	          },
-	          success: function success(gets) {
-	            var datas = JSON.parse(gets);
-	            if (datas.meta.result == 100) {
-	              datas.data.map(function (e, index) {
-	                _this2.refs.department.innerHTML += '<option value=' + e.jysmc + '>' + e.jysmc + '</option>';
-	              });
-	            }
-	          }
-	        });
-	      };
-
 	      // 单击搜索按钮的事件
 	      this.refs.btn.onclick = function (e) {
 	        _this2.refs.list.refresh(1, {
-	          college: _this2.refs.college.value,
-	          department: _this2.refs.department.value,
-	          name: _this2.refs.name.value
+	          college: _this2.refs.college.value
 	        });
 	      };
 	    }
@@ -246,7 +213,6 @@ webpackJsonp([1],{
 	    }
 	    newState.list = [];
 	    _this3.state = newState;
-	    _this3.datas = [];
 	    return _this3;
 	  }
 
@@ -254,7 +220,7 @@ webpackJsonp([1],{
 	    key: 'create_list',
 	    value: function create_list() {
 	      var tds = [];
-	      this.datas.map(function (e, index) {
+	      this.state.list.map(function (e, index) {
 	        tds.push(_react2["default"].createElement(
 	          'tr',
 	          { key: index, className: index == 9 ? "noborder" : null },
@@ -271,52 +237,37 @@ webpackJsonp([1],{
 	          _react2["default"].createElement(
 	            'td',
 	            null,
-	            e.jysmc
+	            e.cs
 	          ),
 	          _react2["default"].createElement(
 	            'td',
 	            null,
-	            e.kcmc
+	            e.bjz
 	          ),
 	          _react2["default"].createElement(
 	            'td',
 	            null,
-	            e.kcbh
+	            e.xbzxzrds
 	          ),
 	          _react2["default"].createElement(
 	            'td',
 	            null,
-	            e.kclx
+	            e.jxyzds
 	          ),
 	          _react2["default"].createElement(
 	            'td',
 	            null,
-	            e.jxdg
+	            e.bhdxg
 	          ),
 	          _react2["default"].createElement(
 	            'td',
 	            null,
-	            e.zsdtx
+	            e.ysx
 	          ),
 	          _react2["default"].createElement(
 	            'td',
 	            null,
-	            e.ksdg
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            null,
-	            e.xxzy
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            null,
-	            e.dzja
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            null,
-	            e.dxfa
+	            e.yty
 	          ),
 	          _react2["default"].createElement(
 	            'td',
@@ -344,20 +295,17 @@ webpackJsonp([1],{
 	        this.state = sets;
 	      }
 	      ajax({
-	        url: courseCenter.host + "getKczyList",
+	        url: courseCenter.host + "getKcztList",
 	        data: {
 	          unifyCode: getCookie("userId"),
 	          college: sets.college || this.state.college,
-	          courseDepartment: sets.department || this.state.department,
-	          courseName: sets.name || this.state.name,
 	          page: page,
 	          count: _COUNT
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          _this4.datas = datas.data.KczyList;
 	          _this4.setState({
-	            list: datas.data.KczyList,
+	            list: datas.data.KcztList,
 	            page: page,
 	            pages: datas.data.totalPages,
 	            rows: datas.data.total
@@ -371,10 +319,10 @@ webpackJsonp([1],{
 	      console.log("lists-state:", this.state);
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'kczystj_lists' },
+	        { id: 'kczttj_lists' },
 	        _react2["default"].createElement(
 	          'div',
-	          { id: 'kczystj_table' },
+	          { id: 'kczttj_table' },
 	          _react2["default"].createElement(
 	            'table',
 	            null,
@@ -391,58 +339,43 @@ webpackJsonp([1],{
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '15%' },
-	                  '\u5B66\u9662\u540D\u79F0'
-	                ),
-	                _react2["default"].createElement(
-	                  'td',
-	                  { width: '15%' },
-	                  '\u7CFB\u90E8\u4E2D\u5FC3\u540D\u79F0'
-	                ),
-	                _react2["default"].createElement(
-	                  'td',
 	                  null,
-	                  '\u8BFE\u7A0B\u540D\u79F0'
+	                  '\u5F00\u8BFE\u5B66\u9662'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '6%' },
-	                  '\u8BFE\u7A0B\u7F16\u53F7'
+	                  { width: '10%' },
+	                  '\u521D\u59CB'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '11%' },
-	                  '\u8BFE\u7A0B\u7C7B\u578B'
+	                  { width: '10%' },
+	                  '\u7F16\u8F91\u4E2D'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '5.5%' },
-	                  '\u6559\u5B66\u5927\u7EB2'
+	                  { width: '10%' },
+	                  '\u7CFB\u90E8\u4E2D\u5FC3\u5F85\u5BA1'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '5.5%' },
-	                  '\u77E5\u8BC6\u70B9\u4F53\u7CFB'
+	                  { width: '10%' },
+	                  '\u6559\u5B66\u9662\u957F\u5F85\u5BA1'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '5.5%' },
-	                  '\u8003\u8BD5\u5927\u7EB2'
+	                  { width: '10%' },
+	                  '\u9A73\u56DE'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '5.5%' },
-	                  '\u5B66\u4E60\u8D44\u6E90'
+	                  { width: '10%' },
+	                  '\u5DF2\u4E0A\u7EBF'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '5.5%' },
-	                  '\u7535\u5B50\u6559\u6848'
-	                ),
-	                _react2["default"].createElement(
-	                  'td',
-	                  { width: '5.5%' },
-	                  '\u5BFC\u5B66\u65B9\u6848'
+	                  { width: '10%' },
+	                  '\u5DF2\u505C\u7528'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
@@ -467,20 +400,18 @@ webpackJsonp([1],{
 	      var _this5 = this;
 
 	      ajax({
-	        url: courseCenter.host + "getKczyList",
+	        url: courseCenter.host + "getKcztList",
 	        data: {
 	          unifyCode: getCookie("userId"),
 	          college: this.props.options.college,
-	          courseDepartment: this.props.options.department,
-	          courseName: this.props.options.name,
 	          page: this.props.options.page,
 	          count: _COUNT
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          _this5.datas = datas.data.KczyList;
+	          _this5.datas = datas.data.KcztList;
 	          _this5.setState({
-	            list: datas.data.KczyList,
+	            list: datas.data.KcztList,
 	            pages: datas.data.totalPages,
 	            rows: datas.data.total
 	          });
@@ -491,21 +422,10 @@ webpackJsonp([1],{
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      // 获取该frame的id
-	      // var frameId = window.frameElement && window.frameElement.id || '';
 	      // 设置该frame的高度自适应
 	      if (window.frameElement) {
 	        window.frameElement.height = document.body.offsetHeight;
 	      }
-	      // function setIframeHeight(iframe) {
-	      // if (iframe) {
-	      // var iframeWin = iframe.contentWindow || iframe.contentDocument.parentWindow;
-	      // if (iframeWin.document.body) {
-	      // iframe.height = iframeWin.document.documentElement.scrollHeight || iframeWin.document.body.scrollHeight;
-	      // }
-	      // }
-	      // };
-	      // parent.document.getElementById('ifs-kczystj').height=document.body.offsetHeight;
 	    }
 	  }]);
 
@@ -576,7 +496,7 @@ webpackJsonp([1],{
 
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'kczystj_fanye' },
+	        { id: 'kczttj_fanye' },
 	        _react2["default"].createElement(
 	          'span',
 	          { id: 'rows' },

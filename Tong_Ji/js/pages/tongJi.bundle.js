@@ -30,10 +30,6 @@ webpackJsonp([0],{
 	    BluMUI.create({
 	      Menues: menues
 	    }, 'Create_menu', document.getElementById('menue'));
-	    // ReactDOM.render(
-	    //   <Menue Menues={menues}/>,
-	    //   document.getElementById('menue')
-	    // );
 	  }
 	});
 
@@ -85,8 +81,7 @@ webpackJsonp([0],{
 	      enumerable: false
 	    });
 	    _this.state.tabs.map(function (e, index) {
-	      console.log(e);
-	      _this.iframes[e] = _react2["default"].createElement('iframe', { src: 'tongji-' + e + '.html', frameBorder: '0', id: 'ifs-' + e, key: index, style: { display: 'none' }, onLoad: _this.ld.bind(_this) });
+	      _this.iframes[e] = _react2["default"].createElement('iframe', { src: '../systemManage/' + e + '.html', frameBorder: '0', id: 'ifs-' + e, key: index, style: { display: 'none' }, onLoad: _this.ld.bind(_this) });
 	      _this.iframes.length++;
 	    });
 	    return _this;
@@ -100,7 +95,7 @@ webpackJsonp([0],{
 	      if (nextProps.tabs.length == this.iframes.length) {} else if (nextProps.tabs.length > this.iframes.length) {
 	        nextProps.tabs.map(function (e) {
 	          if (typeof _this2.iframes[e] == 'undefined') {
-	            _this2.iframes[e] = _react2["default"].createElement('iframe', { src: 'tongji-' + e + '.html', frameBorder: '0', id: 'ifs-' + e, key: e, style: { display: 'none' }, onLoad: _this2.ld.bind(_this2) });
+	            _this2.iframes[e] = _react2["default"].createElement('iframe', { src: '../systemManage/' + e + '.html', frameBorder: '0', id: 'ifs-' + e, key: e, style: { display: 'none' }, onLoad: _this2.ld.bind(_this2) });
 	            _this2.iframes.length++;
 	          }
 	        });
@@ -118,6 +113,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'ld',
 	    value: function ld() {
+	      // 从外面设置iframe的高度
 	      iframe_set('ifs-' + this.state.on);
 	    }
 	  }, {

@@ -1,7 +1,7 @@
 var BluMUI = require('../libs/blueMonUI.js');
 var ajax=require('../libs/post_ajax.js');
 
-var menues=BluMUI.menues;
+var menues=[];
 var menue_names=BluMUI.menue_names;
 
 ajax({
@@ -12,9 +12,7 @@ ajax({
   },
   success:function(gets) {
     // 未获取到数据则刷新页面
-    if(JSON.parse(gets).meta.result!=100) {
-      alert("数据获取失败，请重新登录！");
-    }
+    // 
     let datas=JSON.parse(gets);
     menues=[];
     datas.data.map(e=>{
