@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 var ajax=require('./post_ajax.js');
-var Menue_this;
+var Menu_this;
 
 // iframe
 class Iframe extends React.Component {
@@ -71,38 +71,100 @@ function iframe_set(elem) {
 
 // 菜单
 
-class Menue extends React.Component {
+
+
+class Menu extends React.Component {
   constructor(props) {
     super(props);
     // 设置默认显示的第一个tab
     this.state={
-      Menue_on:this.props.Menues[0]
+      Menu_on: this.props.Menus[0].url
     }
   }
 
   tab_change(name,eve) {
-    this.setState({
-      Menue_on:name
-    },()=>{
-      Create_tabs(this.state.Menue_on);
+    Array.from(document.querySelectorAll(".menu_on")).map(e=>{
+      e.className="a";
     });
-    
-  }
 
-  componentDidMount() {
-    Menue_this=this;
-    this.refs.menue.children[0].className='menue_on';
-    Create_tabs(this.state.Menue_on);
-  }
-  componentDidUpdate(preProps,preState) {
-    this.refs.menue.children[this.props.Menues.indexOf(preState.Menue_on)].className='';
-    this.refs.menue.children[this.props.Menues.indexOf(this.state.Menue_on)].className='menue_on';
+    this.setState({
+      Menu_on:name
+    },()=>{
+      this.props.Menus.map(e=>{
+        if(e.url==name) {
+          if(e.hasOwnProperty("second")) {
+            this.refs["menu_"+name].getElementsByTagName('ul')[0].style.display="block";
+          } else {
+            document.querySelector("#menu li>ul").style.display="none";
+            Create_tabs(name);
+          }
+          this.refs["menu_"+name].className="menu_on";
+        } else {
+          if(e.hasOwnProperty("second")) {
+            e.second.map(m=>{
+              if(m.url==name) {
+                this.refs["menu_"+e.url].className="menu_on";
+                this.refs["menu_"+e.url].querySelector("ul").style.display="block";
+                this.refs["menu_"+name].className="menu_on";
+                Create_tabs(name);
+              }
+            });
+          }
+        }
+      });
+    });
   }
 
   render() {
-    return(<ul ref='menue'>{
-      this.props.Menues.map((e,index)=><li key={index} name={e} onClick={this.tab_change.bind(this,e)}>{BluMUI.menue_names[e]}</li>)
+    return(<ul ref='menu'>{
+      this.props.Menus.map((e,index)=>{
+        // 判断二级菜单
+        if(e.hasOwnProperty("second")) {
+          return (<li key={index} name={e.url} ref={"menu_"+e.url} onClick={this.tab_change.bind(this,e.url)}>
+            {e.name}
+            <ul className="secondMenu" style={{marginTop:"2px"}}>
+              {e.second.map((m,n)=><li key={n} ref={"menu_"+m.url} onClick={this.tab_change.bind(this,m.url)}>{m.name}</li>)}
+            </ul>
+          </li>);
+        } else {
+          return (<li key={index} name={e.url} ref={"menu_"+e.url} onClick={this.tab_change.bind(this,e.url)}>{e.name}</li>);
+        }
+      })
     }</ul>);
+  }
+
+  componentDidMount() {
+    Menu_this=this;
+    this.refs["menu_"+this.state.Menu_on].className='menu_on';
+    Create_tabs(this.state.Menu_on);
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+  //   let First=[],Second=[];
+  //   this.props.Menus.map(e=>{First.push(e.url)});
+  //   console.log("will update:",First.indexOf(nextState.Menu_on))
+  //   if(First.indexOf(nextState.Menu_on)!=-1) {
+  //     console.log("__136",this.props.Menus[First.indexOf(nextState.Menu_on)])
+  //     if(this.props.Menus[First.indexOf(nextState.Menu_on)].hasOwnProperty("second")) {
+  //       alert("2ji")
+  //     }
+  //   }
+    // this.tab_change(nextState.menu_on);
+  }
+
+  componentDidUpdate(preProps,preState) {
+    // let First=[],Second=[];
+
+    // this.props.Menus.map(e=>{First.push(e.url)});
+    // if(First.indexOf(this.state.Menu_on)!=-1) {
+    //   if(this.props.Menus[First.indexOf(this.state.Menu_on)].hasOwnProperty("second")) {
+    //     this.refs["menu_"+this.state.Menu_on].getElementsByTagName('ul')[0].style.display='block';
+    //     return;
+    //   }
+    //   this.refs["menu_"+preState.Menu_on].className='';
+    //   this.refs["menu_"+this.state.Menu_on].className='menu_on';
+    // }
+
   }
 }
 
@@ -116,11 +178,14 @@ class Tab_head extends React.Component {
       on:this.props.Tab
     }
   }
+
   tab_change(tab_name,eve) {
     this.refs[this.state.on].className='';
     this.setState({on:tab_name});
-    Menue_this.setState({Menue_on:tab_name});
+    // Menu_this.setState({Menu_on:tab_name});
+    Menu_this.tab_change(tab_name)
   }
+
   del(tab_name,eve) {
     eve.nativeEvent.preventDefault()
     let tabs=this.state.tabs;
@@ -137,6 +202,22 @@ class Tab_head extends React.Component {
       on:new_on
     });
   }
+
+  render() {
+    //需要this.state向下传递信息，包括tab[]和on
+    return(<ul ref='tabs'>{
+      this.state.tabs.map((e,index)=><li key={index} ref={e} onClick={this.tab_change.bind(this,e)}>
+        {BluMUI.menu_names[e]}
+        <span className="close">x</span>
+      </li>)
+    }</ul>);
+  }
+
+  componentDidMount() {
+    Create_iframes(this.state);
+    this.refs[this.state.on].className='tabs_on';
+  }
+
   componentWillReceiveProps(nextProps) {
     let new_tabs=this.state.tabs;
     if(this.state.tabs.indexOf(nextProps.Tab)==-1) {
@@ -146,11 +227,8 @@ class Tab_head extends React.Component {
       tabs:new_tabs,
       on:nextProps.Tab
     });
-  }
-  componentDidMount() {
-    Create_iframes(this.state);
-    this.refs[this.state.on].className='tabs_on';
-  }
+  }  
+  
   componentDidUpdate(preProps,preState) {
     Create_iframes(this.state);
     if(this.refs[preState.on]) {
@@ -183,23 +261,15 @@ class Tab_head extends React.Component {
           tabs:tabs,
           on:new_on
         });
-        Menue_this.setState({Menue_on:new_on});
+        Menu_this.tab_change(new_on);
       }}
     );
-  }
-  render() {
-    //需要this.state向下传递信息，包括tab[]和on
-    return(<ul ref='tabs'>{
-      this.state.tabs.map((e,index)=><li key={index} ref={e} onClick={this.tab_change.bind(this,e)}>
-        {BluMUI.menue_names[e]}
-        <span className="close">x</span>
-      </li>)
-    }</ul>);
   }
 }
 
 
 function Create_tabs(tab) {
+  console.log("Tab:",tab)
   BluMUI.create({
     Tab:tab
   },'Create_tab',document.getElementById('tabs'))
@@ -212,14 +282,14 @@ function Create_iframes(state) {
 
 // ----------------------------------------------------------------------------------------------------
 var BluMUI_M = {
-  Create_menu: Menue,
+  Create_menu: Menu,
   Create_iframe: Iframe,
   Create_tab: Tab_head
 }
 
 var BluMUI = {
 	result: {},
-  menue_names:{},
+  menu_names: {},
 	create: function (data, type, elem) {
 		var props = data, Blu = BluMUI_M[type];
 		this.result[props.id] = ReactDOM.render(<Blu {...props}/>, elem);    
