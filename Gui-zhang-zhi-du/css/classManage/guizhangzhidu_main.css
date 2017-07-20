@@ -81,6 +81,19 @@ iframe {
 #menu li ul.secondMenu {
   display: none;
 }
+#menu li ul.secondMenu li {
+  width: 90%;
+  color: #333;
+  font-size: 16px;
+  padding-left: 20px;
+  border-bottom: none;
+}
+#menu li ul.secondMenu li.menu_on {
+  color:#007A51;
+  background: none;
+  font-weight: bold;
+}
+
 
 /*--------------------------------------------------------*/
 /* content */

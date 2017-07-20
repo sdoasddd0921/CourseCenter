@@ -138,36 +138,7 @@ class Menu extends React.Component {
     this.refs["menu_"+this.state.Menu_on].className='menu_on';
     Create_tabs(this.state.Menu_on);
   }
-
-  componentWillUpdate(nextProps, nextState) {
-  //   let First=[],Second=[];
-  //   this.props.Menus.map(e=>{First.push(e.url)});
-  //   console.log("will update:",First.indexOf(nextState.Menu_on))
-  //   if(First.indexOf(nextState.Menu_on)!=-1) {
-  //     console.log("__136",this.props.Menus[First.indexOf(nextState.Menu_on)])
-  //     if(this.props.Menus[First.indexOf(nextState.Menu_on)].hasOwnProperty("second")) {
-  //       alert("2ji")
-  //     }
-  //   }
-    // this.tab_change(nextState.menu_on);
-  }
-
-  componentDidUpdate(preProps,preState) {
-    // let First=[],Second=[];
-
-    // this.props.Menus.map(e=>{First.push(e.url)});
-    // if(First.indexOf(this.state.Menu_on)!=-1) {
-    //   if(this.props.Menus[First.indexOf(this.state.Menu_on)].hasOwnProperty("second")) {
-    //     this.refs["menu_"+this.state.Menu_on].getElementsByTagName('ul')[0].style.display='block';
-    //     return;
-    //   }
-    //   this.refs["menu_"+preState.Menu_on].className='';
-    //   this.refs["menu_"+this.state.Menu_on].className='menu_on';
-    // }
-
-  }
 }
-
 
 // tabs
 class Tab_head extends React.Component {
@@ -182,7 +153,6 @@ class Tab_head extends React.Component {
   tab_change(tab_name,eve) {
     this.refs[this.state.on].className='';
     this.setState({on:tab_name});
-    // Menu_this.setState({Menu_on:tab_name});
     Menu_this.tab_change(tab_name)
   }
 

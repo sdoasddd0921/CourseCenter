@@ -1,8 +1,9 @@
 var webpack = require('webpack');
 module.exports = {
    entry:{
-    gzzd:'./js/pages/gzzd.js',
-    guizhang_home:'./js/pages/guizhang_home.js',
+    gzzd:'./js/src/gzzd.js',
+    guizhang_home:'./js/src/guizhang_home.js',
+    wpgl: './js/src/wpgl.js',
     vendor: ['react', 'react-dom']
   },
   output:{

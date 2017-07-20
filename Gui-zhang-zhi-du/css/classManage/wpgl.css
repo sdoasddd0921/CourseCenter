@@ -1,0 +1,179 @@
+* { margin: 0; padding: 0; }
+html {
+}
+body {
+  width: 1550px;
+  overflow: hidden;
+}
+
+#wpgl_option {
+  background: #F7F6F6;
+}
+#option {
+  background: #FFF;
+}
+#big_btns {
+  margin-top: 16px;
+  margin-left: 21px;
+}
+.big_btn {
+  width: 89px;
+  height: 29px;
+  color: #007A51;
+  font-size: 16px;
+  line-height: 29px;
+  background: #FFF;
+  cursor: pointer;
+  border: 1px solid #007A51;
+  margin-left: 97px;
+}
+.big_btn:hover {
+  color: #FFF;
+  background: #007A51;
+}
+
+/*------------------------------------------*/
+
+#filter_bar {
+  width: 100%;
+  height: 42px;
+  font-size: 14px;
+  margin-top: 3px;
+  line-height: 42px;
+}
+#wppc {
+  margin-left: 118px;
+}
+
+#filter_bar select {
+  color: gray;
+  width: 66px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 12px;
+  border: 1px solid #55B796;
+}
+
+#serch {
+  width: 51px;
+  height: 20px;
+  color: #FFF;
+  border: none;
+  cursor: pointer;
+  line-height: 20px;
+  margin-left: 137px;
+  border: 1px solid #007A51;
+  background: #007A51;
+}
+
+/*============================================*/
+
+#wpgl_table {
+  width: 100%;
+  background: #FFF;
+  box-shadow: 0 14px 17px -12px rgba(120,120,120,.20);
+}
+#wpgl_table table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+}
+#wpgl_table thead {
+  color: #FFF;
+}
+#wpgl_table thead td {
+  height: 40px;
+  background: #009361;
+}
+#wpgl_table td.td_head,
+#wpgl_table td.td_end {
+  background: none;
+}
+#wpgl_table thead td.td_head>div,
+#wpgl_table thead td.td_end>div {
+  background: #009361;
+}
+#wpgl_table td.td_head>div {
+  width: 100%;
+  height: 100%;
+  border-radius: 2px 0 0 2px;
+}
+#wpgl_table td.td_end>div {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 2px 2px 0;
+}
+
+/*-----------------------------*/
+
+#wpgl_table tbody td {
+  height: 66px;
+}
+#wpgl_table tbody td {
+  border-bottom: 1px solid #EEE;
+}
+#wpgl_table tbody td.td_head,
+#wpgl_table tbody td.td_end {
+  border-bottom: none;
+}
+#wpgl_table tbody td div span {
+  margin: 0 15px;
+  cursor: pointer;
+}
+.green_btn {
+  color: #009361;
+}
+.yellow_btn {
+  color: #ff9b29;
+}
+/*===================================================*/
+
+/* 翻页条 */
+#kczttj_fanye {
+  width: 100%;
+  text-align: center;
+  font-size: 16px;
+  line-height: 16px;
+  padding: 30px 0;
+}
+#kczttj_fanye ul {
+  margin: 0 5px;
+  display: inline-block;
+}
+#kczttj_fanye li {
+  color: #666;
+  margin: 0 10px;
+  cursor: pointer;
+  list-style: none;
+  display: inline-block;
+}
+#kczttj_fanye #rows {
+  color: #999;
+  margin-right: 23px;
+  font-size: 14px;
+}
+#kczttj_fanye .fanye_options {
+  color: #666;
+  width: 61px;
+  height: 21px;
+  border: none;
+  margin: 0 5px;
+  outline: none;
+  cursor: pointer;
+  line-height: 21px;
+  background: #E1E1E1;
+}
+#kczttj_fanye #tp {
+  width: 53px;
+  height: 19px;
+  outline: none;
+  margin-right: 8px;
+  border: 1px solid #D3D2D2;
+}
+#kczttj_fanye #tp::-webkit-input-placeholder {
+  text-align: center;
+}
+
+
+
+
