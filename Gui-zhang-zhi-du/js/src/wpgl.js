@@ -7,100 +7,240 @@ const _COUNT=10;
 class Option extends React.Component {
   constructor(props) {
     super(props);
+    this._modeChange=this._modeChange.bind(this);
+    this.shuldUp=true;
+    this.other_args="";
     this.state={
       page:1,
       pages:1,
       total:1,
+      // modes
+      mode: 1,
       list: []
     }
   }
 
-  _getLists(p) {
-    ajax({
-      url: courseCenter.host+"reviewList",
-      data: {
-        unifyCode: getCookie("userId"),
-        name: this.refs.wppc.value,
-        page: p||this.state.page,
-        count: _COUNT
-      },
-      success: (gets)=>{
-        let datas=JSON.parse(gets);
-        this.setState({
-          list: datas.data.list,
-          page: p||this.state.page,
-          pages: datas.data.totalPages,
-          total: datas.data.total
+  _modeChange(mode,id) {
+    sessionStorage.setItem("mode"+this.state.mode+"page",this.state.page);
+    this.other_args=id;
+    this.state={
+      page:+sessionStorage.getItem("mode"+mode+"page")||1,
+      pages:1,
+      total:1,
+      mode: mode,
+      list: []
+    };
+    this._getLists();
+  }
+
+  _getLists(eve, p) {
+    switch(this.state.mode) {
+      case 1:
+      console.log("serch")
+        ajax({
+          url: courseCenter.host+"reviewList",
+          data: {
+            unifyCode: getCookie("userId"),
+            name: this.refs.wppc?this.refs.wppc.value:"",
+            page: p||this.state.page,
+            count: _COUNT
+          },
+          success: (gets)=>{
+            let datas=JSON.parse(gets);
+            this.setState({
+              list: datas.data.list,
+              page: p||this.state.page,
+              pages: datas.data.totalPages,
+              total: datas.data.total
+            });
+          }
         });
-      }
-    });
+        break;
+      case 2:
+        break;
+      case 3:
+        ajax({
+          url: courseCenter.host+"reviewList",
+          data: {
+            unifyCode: getCookie("userId"),
+            page: p||this.state.page,
+            count: _COUNT
+          },
+          success: (gets)=>{
+            let datas=JSON.parse(gets);
+            this.setState({
+              list: datas.data.list,
+              page: p||this.state.page,
+              pages: datas.data.totalPages,
+              total: datas.data.total
+            });
+          }
+        });
+        break;
+    }
   }
 
   render() {
-    return (
-      <div id="wpgl_option">
-        <div id="option">
-          <div id="big_btns">
-            <button className="big_btn" ref="fqwp">发起网评</button>
-            <button className="big_btn" ref="plsc">批量删除</button>
+    switch(this.state.mode) {
+      case 1:
+        return (
+          <div id="wpgl_option">
+            <div id="option">
+              <div id="big_btns">
+                <button className="big_btn" ref="fqwp">发起网评</button>
+                <button className="big_btn" ref="plsc">批量删除</button>
+              </div>
+              <div id="filter_bar">
+                <span id="wppc">网评批次：</span>
+                <select name="wppc" ref="wppc">
+                  <option value="">请选择</option>
+                </select>
+                <button id="serch" ref="btn">搜索</button>
+              </div>
+            </div>
+            <Lists ref="list" Lists={this.state.list} Mode={this.state.mode} callback={this._modeChange} />
+            <Fanye
+              ref="fanye"
+              TP={{
+                total:this.state.total,
+                page:this.state.page,
+                pages: this.state.pages
+              }}
+              callback={(num)=>{this._getLists.call(this, num)}}
+            />
           </div>
-          <div id="filter_bar">
-            <span id="wppc">网评批次：</span>
-            <select name="wppc" ref="wppc">
-              <option value="">请选择</option>
-            </select>
-            <button id="serch" ref="btn">搜索</button>
+        );
+        break;
+
+      case 2:
+        break;
+      case 3:
+        return (<div id="wpgl_option3">
+          <div id="option">
+            <button id="back" ref="back">返回</button>
+            <input type="checkbox" defaultChecked id="zj" ref="zj"/>
+            <label htmlFor="zj" ref="zj_label"><img src="../../imgs/public/hook.png"/></label>
+            <span>按专家查看</span>
+            <input type="checkbox" id="kc" ref="kc"/>
+            <label htmlFor="kc" ref="kc_label"><img src="../../imgs/public/hook.png"/></label>
+            <span>按课程查看</span>
+            <div id="filter_bar">
+              <span>专家分配课程状态：</span>
+              <input type="checkbox" defaultChecked id="yes" ref="yes"/>
+              <label htmlFor="yes" ref="yes_label"><img src="../../imgs/public/hook.png"/></label>
+              <span className="fenpei">已分配</span>
+              <input type="checkbox" defaultChecked id="no" ref="no"/>
+              <label htmlFor="no" ref="no_label"><img src="../../imgs/public/hook.png"/></label>
+              <span className="fenpei">未分配</span>
+              <span id="zjfz">专家分组：</span>
+              <select id="zjfz_select" ref="zjfz">
+                <option value="">请选择</option>
+              </select>
+              <span id="zjmc">专家名称：</span>
+              <input type="text" ref="name" id="zjname"/>
+              <button id="serch" ref="serch">搜索</button>
+            </div>
           </div>
-        </div>
-        <Lists Lists={this.state.list} ref="list" />
-        <Fanye
-          ref="fanye"
-          TP={{
-            total:this.state.total,
-            page:this.state.page,
-            pages: this.state.pages
-          }}
-          callback={(num)=>{this._getLists.call(this, num)}}
-        />
-      </div>
-    );
+          <Lists ref="list" Lists={this.state.list} Mode={this.state.mode} callback={this._modeChange} />
+          <Fanye
+            ref="fanye"
+            TP={{
+              total:this.state.total,
+              page:this.state.page,
+              pages: this.state.pages
+            }}
+            callback={(num)=>{this._getLists.call(this, num)}}
+          />
+        </div>);
+        break;
+    }
   }
 
   componentDidMount() {
     // 填充网评批次下拉菜单
-    ajax({
-      url: courseCenter.host+"reviewBriefList",
-      data: {
-        userID: getCookie("userId"),
-        state: 1
-      },
-      success: (gets)=>{
-        let datas=JSON.parse(gets);
-        if(datas.meta.result==100) {
-          datas.data.list.map((e,index)=>{
-            this.refs.wppc.innerHTML+=`<option value=${e.id}>${e.wppc}</option>`;
-          });
-        }
-      }
-    });
+    // ajax({
+    //   url: courseCenter.host+"reviewBriefList",
+    //   data: {
+    //     userID: getCookie("userId"),
+    //     state: 1
+    //   },
+    //   success: (gets)=>{
+    //     let datas=JSON.parse(gets);
+    //     if(datas.meta.result==100) {
+    //       let ops="<option value=''>请选择</option>";
+    //       datas.data.list.map((e,index)=>{
+    //         ops+=`<option value=${e.id}>${e.wppc}</option>`;
+    //       });
+    //       this.refs.wppc.innerHTML=ops;
+    //     }
+    //   }
+    // });
 
-    // 首次查询列表并填充
+    // // 首次查询列表并填充
     this._getLists();
-    this.refs.btn.onclick=this._getLists.bind(this);
+    // this.refs.btn.onclick=this._getLists;
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    switch(this.state.mode) {
+      case 3:
+        this.refs.back.onclick=this._modeChange.bind(this,1,"");
+        // 填充下拉菜单
+        ajax({
+          url: courseCenter.host+"getFzxByWppc",
+          data: {
+            unifyCode: getCookie("userId"),
+            reviewBatch: this.other_args
+          },
+          success: (gets)=>{
+            let datas=JSON.parse(gets);
+            console.log(datas)
+            if(datas.meta.result==100) {
+              let ops="<option value=''>请选择</option>";
+              datas.data.map((e,index)=>{
+                ops+=`<option value=${e.fzx}>${e.fzx}</option>`;
+              });
+              this.refs.zjfz.innerHTML=ops;
+            }
+          }
+        });
+
+        break;
+
+      case 1:
+        // 填充网评批次下拉菜单
+        ajax({
+          url: courseCenter.host+"reviewBriefList",
+          data: {
+            userID: getCookie("userId"),
+            state: 1
+          },
+          success: (gets)=>{
+            let datas=JSON.parse(gets);
+            if(datas.meta.result==100) {
+              let ops="<option value=''>请选择</option>";
+              datas.data.list.map((e,index)=>{
+                ops+=`<option value=${e.id}>${e.wppc}</option>`;
+              });
+              this.refs.wppc.innerHTML=ops;
+            }
+          }
+        });
+        // 绑定搜索事件
+        this.refs.btn.onclick=this._getLists.bind(this);
+        break;
+    }
+  }
+
 }
 
 class Lists extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      mode: 1,
-      lists: []
-    }
   }
 
   create_head() {
-    switch(this.state.mode) {
+    switch(this.props.Mode) {
       case 1:
         return (<thead>
           <tr>
@@ -127,7 +267,7 @@ class Lists extends React.Component {
   }
 
   create_body() {
-    switch(this.state.mode) {
+    switch(this.props.Mode) {
       case 1:
         return (<tbody>
           {this.props.Lists.map((e,index)=><tr key={index}>
@@ -141,7 +281,7 @@ class Lists extends React.Component {
             <td>{e.kssj+"-"+e.jssj}</td>
             <td>{<div>
               <span className="green_btn">分配</span>
-              <span className="green_btn">结果</span>
+              <span className="green_btn" onClick={this._modeChange.bind(this,3, e.wppc)}>结果</span>
             </div>}</td>
             <td>{<div>
               <span className="green_btn">编辑</span>
@@ -153,6 +293,10 @@ class Lists extends React.Component {
         </tbody>);
         break;
     }
+  }
+
+  _modeChange(mode, id) {
+    this.props.callback(mode,id);
   }
 
   render() {
