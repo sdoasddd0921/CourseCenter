@@ -1,0 +1,160 @@
+/*--------页面公共部分样式----------*/
+div,body,ul,li,img{
+	font-family: "Microsoft Yahei UI" ! important;
+	padding:0;
+	margin:0;
+}
+
+/*-----------各模块-------------*/
+#width {
+	width : 1182px;
+	margin:0 auto;
+	position:relative;
+	height:inherit;
+}
+
+#head{
+	width: 100%;
+	height:125px;
+	background-color: #fff;
+}
+
+#wrap{
+	width: 100%;
+	min-height: 758px;
+	background-color: #f7f7f7;
+}
+
+#containBg{
+	width: 1182px;
+	min-height:660px;
+	background-color: #fff;
+}
+
+/*-------标志模块----------*/
+#head img{
+	float: left;
+	margin-top:36px;
+}
+
+
+
+
+/*--------列表页样式----------*/
+#containBg #contain{
+	width:1088px;
+	float:left;
+	margin-left:47px;
+}
+
+#contain #title{
+	border-left: 4px solid #007a51;
+	padding-left: 4px;
+	font-size: 20px;
+	color:#007a51;
+}
+/*--------搜索栏---------*/
+#contain #Filters {
+	float: right;
+	margin-top: -46px;
+}
+#filter {
+  float: right;
+  font-size: 10px;
+  color: #007A53;
+}
+#filter input[type='text'] {
+  width: 200px;
+  height: 25px;
+  box-sizing: border-box;
+  outline: none;
+  padding: 0 5px;
+  margin-right: 8px;
+  /*border: none;*/
+}
+#search {
+  cursor: pointer;
+  display: inline-block;
+  height: 25px;
+  line-height: 25px;  
+  background: #007A53;
+  padding: 0 4px;
+  border: none;
+}
+#search a{
+	color: #FFF;
+}
+#contain #list{
+	width: 982px;
+	float: left;
+	margin-left: 53px; 
+}
+
+#list ul{
+	width: 982px;
+	line-height: 58px;
+	float: left;
+}
+
+#list ul li{	
+	height: 58px;
+	line-height: 58px;
+	list-style: none;
+	border-bottom: dashed 1px #333;
+}
+
+#list ul li .name{
+	height:58px;
+	float:left;
+	font-size:16px;
+	color:#333;	
+}
+
+#list ul li .time{
+	height:58px;
+	float: right;
+	margin-right: 35px;
+	font-size:16px;
+	color:#333;
+}
+.hold{
+	height: 30px;
+}
+#test_fanye{
+	height: 20px;
+	background-color: #fff;
+	float: left;
+	margin-left:0px;
+}
+#test a{
+	text-decoration: none;
+	font-size: 14px;
+	height:20px;
+	min-width: 20px;
+	text-align: center;
+	color:#999999;
+	float: left;
+	margin-left: 4px;
+	margin-right:4px;
+	margin-top:5px;
+}
+#test a img{
+	width: 60%;
+	height: 60%;
+	float: left;
+	margin-top: 4px;
+	clear: both;
+}
+
+/* footer */
+#footer{
+  height:71px;
+  background-color: #007a51;
+  text-align: center;
+}
+#footer .copyRight{
+  font-size: 16px;
+  color: #ffffff;
+  height:71px;
+  line-height: 71px;
+}
