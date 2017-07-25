@@ -261,12 +261,14 @@ class BlueMUI_CreateTbody extends React.Component {
 class BlueMUI_CreatePopup extends React.Component {
   constructor(props) {
     super(props);
+    this.shuld_insert=true;
     this.popup_serch=this.popup_serch.bind(this);
     this.popup=document.getElementById('popup');
     this.choose_teachers=[];
     this.serch_name="";
     this.teacher_names={};
     this.Master="";
+    this.xueyuan_name='';
     //用于搜索用的state
     this.state={
       teachers:[],
@@ -282,8 +284,38 @@ class BlueMUI_CreatePopup extends React.Component {
     </div>);
   }
 
+  insert_xueyuan() {
+    if(!this.shuld_insert) {
+      return;
+    } else {
+      this.shuld_insert=false;
+    }
+    ajax({
+      url: courseCenter.host+'getCollege',
+      data: {
+        unifyCode: getCookie("userId")
+      },
+      success: (gets)=>{
+        let datas=JSON.parse(gets);
+        if(datas.meta.result==100) {
+          let CL='<option value="">请选择</option>';
+          datas.data.map(e=>CL+=`<option value=${e.kkxymc}>${e.kkxymc}</option>`);
+          this.xueyuan.innerHTML=CL;
+        }
+      }
+    });
+  }
+
   create_popup_serch() {
     return(<div id="serch">
+      <span id="xueyuan_span">学院：</span>
+      <select 
+        name="xueyuan" 
+        id="xueyuan" 
+        ref={select=>{(this.xueyuan=select)?this.insert_xueyuan():''}}
+      >
+        <option value="">请选择</option>
+      </select>
       <span id="popup_left">查找（姓名）</span>
       <input type="text" id="popup_serch" placeholder="请输入关键字……" ref="serch_value"/>
       <span id="popup_serch_button" ref="serch">搜 &nbsp;索</span>
@@ -343,6 +375,7 @@ class BlueMUI_CreatePopup extends React.Component {
       url:courseCenter.host+'searchTeacherByName',
       data: {
         name: start||that.serch_name,
+        college: this.xueyuan_name,
         page: p,
         count:10
       },
@@ -388,11 +421,12 @@ class BlueMUI_CreatePopup extends React.Component {
     //搜索按钮单击
     this.refs.serch.onclick=function() {
       that.serch_name=that.refs.serch_value.value;
+      that.xueyuan_name=that.xueyuan.value;
       that.popup_serch(1);
     }
 
     //单击确定按钮
-    this.popup_serch(1,'init');
+    this.popup_serch(1,'');
   }
 
   //重新渲染后的执行内容
@@ -486,7 +520,7 @@ class BlueMUI_CreatePopup extends React.Component {
         if(fanye_bar[j].innerText!='...') {
           fanye_bar[j].onclick=e=>{
             let click_page= +e.target.innerText;
-            that.popup_serch(click_page==this.state.page?0:click_page,that.serch_name||'init');
+            that.popup_serch(click_page==this.state.page?0:click_page,that.serch_name||'');
           }
         }
       }
@@ -495,10 +529,10 @@ class BlueMUI_CreatePopup extends React.Component {
     //搜索的前翻和后翻
     if(fanye_in.refs.next&&fanye_in.refs.pre) {
       fanye_in.refs.next.onclick=function() {
-        that.popup_serch(that.state.page+1>that.state.pages?0:that.state.page+1,that.serch_name||'init');
+        that.popup_serch(that.state.page+1>that.state.pages?0:that.state.page+1,that.serch_name||'');
       }
       fanye_in.refs.pre.onclick=function() {
-        that.popup_serch(that.state.page-1<1?0:that.state.page-1,that.serch_name||'init');
+        that.popup_serch(that.state.page-1<1?0:that.state.page-1,that.serch_name||'');
       }
     }
   }

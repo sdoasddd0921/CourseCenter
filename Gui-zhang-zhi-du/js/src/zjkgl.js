@@ -8,12 +8,20 @@ var masters=[];
 class Option extends React.Component {
   constructor(props) {
     super(props);
+    this.search_data={
+      zh: '',
+      xm: '',
+      gzdw: '',
+      ssxy: '',
+      jsxm: '',
+      state: ''
+    };
     this.state = {
       // 取不到当前默认的masterstate就默认为out
       master: sessionStorage.getItem("master")||'out',
       list: [],
       TP: {
-        page:1,
+        page: 1,
         pages:1,
         total:1
       }
@@ -50,7 +58,7 @@ class Option extends React.Component {
     }
     return <div id="down">
           {inputs}
-          <div id="option_serch">
+          <div id="option_search">
             <span>账号状态：</span>
             <input type="checkbox" id="qy" ref={input=>this.qy=input} />
             <label htmlFor="qy"><img src="../../imgs/public/hook.png"/></label>
@@ -58,7 +66,7 @@ class Option extends React.Component {
             <input type="checkbox" id="ty" ref={input=>this.ty=input}/>
             <label htmlFor="ty"><img src="../../imgs/public/hook.png"/></label>
             <span>停用</span>
-            <button ref={serch=>this.serch=serch} id="serch">搜索</button>
+            <button ref={search=>this.search=search} id="search">搜索</button>
           </div>
 
         </div>;
@@ -88,13 +96,24 @@ class Option extends React.Component {
   }
 
   change_master_state(state) {
+    this.search_data={
+      zh: '',
+      xm: '',
+      gzdw: '',
+      ssxy: '',
+      jsxm: '',
+      state: ''
+    };
+    Array.from(document.querySelectorAll("#down input[type='text']"))
+         .map(e=>e.value="");
     if(state==='in') {
       this.insert_xueyuan();
-    } else if(state===this.state.master) {
+    }
+    if(state===this.state.master) {
       return;
     }
-    // console.log("change")
-    // this['master_'+state].checked=false;
+    this.qy.checked=false;
+    this.ty.checked=false;
     sessionStorage.setItem("master", state)
 
     this.setState({
@@ -104,16 +123,16 @@ class Option extends React.Component {
   }
 
   get_list(p) {
-    // console.log("test state:",this.state.master)
     let data={};
+    let session_page=p||+sessionStorage.getItem(this.state.master+"page")||1;
     if(this.state.master==='out') {
       data={
         unifyCode: getCookie("userId"),
-        userId: this.refs.zhanghao.value,
-        userName: this.refs.name.value,
-        department: this.refs.danwei.value,
-        state: this.qy.checked===this.ty.checked?'':+this.qy.checked,
-        page: p||1,
+        userId: this.search_data.zh,
+        userName: this.search_data.xm,
+        department: this.search_data.gzdw,
+        state: this.search_data.state,
+        page: session_page,
         count: _COUNT,
         type: ['in', 'out'].indexOf(this.state.master)
       }
@@ -121,10 +140,10 @@ class Option extends React.Component {
       data={
         unifyCode: getCookie("userId"),
         userId: "",
-        userName: this.refs.jsxm.value,
-        department: this.xueyuan.value,
-        state: this.qy.checked===this.ty.checked?'':+this.qy.checked,
-        page: p||1,
+        userName: this.search_data.jsxm,
+        department: this.search_data.ssxy,
+        state: this.search_data.state,
+        page: session_page,
         count: _COUNT,
         type: ['in', 'out'].indexOf(this.state.master)
       }
@@ -133,11 +152,11 @@ class Option extends React.Component {
       url: courseCenter.host+"getZjList",
       data: data,
       success: (gets)=>{
+        sessionStorage.setItem(this.state.master+"page",session_page);
         let datas=JSON.parse(gets);
-        // console.log(datas)
         this.setState({
           TP: {
-            page:p||1,
+            page: session_page,
             pages: datas.data.totalPages,
             total: datas.data.total
           },
@@ -148,7 +167,7 @@ class Option extends React.Component {
   }
 
   render() {
-    // console.log("渲染")
+    console.log(this.state.TP)
     const {master} = this.state;
     return (
       <div id="Option">
@@ -189,6 +208,13 @@ class Option extends React.Component {
   }
 
   componentDidMount() {
+    let pop = document.getElementById('popup');
+    // first mount insert college list
+    if(this.state.master==='in') {
+      this.insert_xueyuan();
+    }
+
+    // add master
     this.add.onclick=()=>{
       window.location.href="./masterAddEditor.html";
     }
@@ -196,10 +222,35 @@ class Option extends React.Component {
 
     // PiLiangDelete
     this.PLdelete.onclick=()=>{
-      Creat_popup('PLdelete', masters, this.ids)
-      let pop = document.getElementById('popup');
+      Creat_popup('PLdelete', masters, this.refs.list.ids)
       pop.style.display='block';
-      // console.log(popup)
+    };
+
+    // change password
+    this.change.onclick=()=>{
+      Creat_popup('change_PW', masters, this.refs.list.ids)
+      pop.style.display='block';
+    };
+
+    // search
+    this.search.onclick=()=>{
+      switch(this.state.master) {
+        case 'in':
+          this.search_data={
+            ssxy: this.xueyuan.value,
+            jsxm: this.refs.jsxm.value
+          };
+          break;
+        case 'out':
+          this.search_data={
+            zh: this.refs.zhanghao.value,
+            xm: this.refs.name.value,
+            gzdw: this.refs.danwei.value
+          };
+          break;
+      }
+      this.search_data.state=this.qy.checked===this.ty.checked?'':+this.qy.checked;
+      this.get_list(1);
     };
   }
 
@@ -208,8 +259,6 @@ class Option extends React.Component {
       window.frameElement.height=document.body.offsetHeight;
     }
   }
-
-
 }
 
 class List extends React.Component {
@@ -279,32 +328,6 @@ class List extends React.Component {
     }
   }
 
-  option(op,id,eve) {
-    eve.preventDefault();
-    switch(op) {
-      case 'edit':
-        window.location.href="./masterAddEditor.html?isEditor=true&masterId="+id;
-        break;
-      case 'del':
-        // ajax();
-        break;
-      default:
-        break;
-    }
-  }
-
-  check(id,name,eve) {
-    if(eve.target.checked) {
-      // add
-      this.ids.push(id);
-      masters.push(name);
-    } else {
-      // delet
-      this.ids=this.ids.filter(e=>e!==id);
-      masters=masters.filter(e=>e!==name);
-    }
-  }
-
   creat_tbody() {
     const {master}=this.props;
     switch(master) {
@@ -363,9 +386,9 @@ class List extends React.Component {
               <td>{e.xymc}</td>
               <td>{e.zt}</td>
               <td>
-                <a href="#" onClick={this.option.bind(this,'edit', e.id, e.xm)}>编辑</a>
-                <a href="#" onClick={this.option.bind(this,'del', e.id, e.xm)}>删除</a>
-                <a href="#" onClick={this.option.bind(this,'open', e.id, e.xm)}>启用</a>
+                <a href="#" onClick={this.option.bind(this,'edit', e.sfrzh, e.xm)}>编辑</a>
+                <a href="#" onClick={this.option.bind(this,'del', e.sfrzh, e.xm)}>删除</a>
+                <a href="#" onClick={this.option.bind(this,'open', e.sfrzh, e.xm)}>启用</a>
               </td>
               <td></td>
               <td className='righttd'></td>
@@ -373,6 +396,39 @@ class List extends React.Component {
           </tbody>
         );
         break;
+    }
+  }
+
+  option(option,id,name,eve) {
+    eve.preventDefault();
+    switch(option) {
+      case 'edit':
+        window.location.href="./masterAddEditor.html?isEditor=true&masterId="+id;
+        break;
+      case 'del':
+        // ajax();
+        Creat_popup('delete', name, id);
+        document.getElementById('popup').style.display="block";
+        break;
+      case 'open':
+        // ajax();
+        Creat_popup('open', name, id);
+        document.getElementById('popup').style.display="block";
+        break;
+      default:
+        break;
+    }
+  }
+
+  check(id,name,eve) {
+    if(eve.target.checked) {
+      // add
+      this.ids.push(id);
+      masters.push(name);
+    } else {
+      // delet
+      this.ids=this.ids.filter(e=>e!==id);
+      masters=masters.filter(e=>e!==name);
     }
   }
 
@@ -401,6 +457,11 @@ class List extends React.Component {
       });
       console.log(masters.join(","))
     }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    Array.from(document.querySelectorAll('input[type="checkbox"]'))
+         .map(e=>e.checked=false);
   }
 }
 
@@ -436,7 +497,7 @@ class Fanye extends React.Component {
         change_page(i)
         }
       } else if(now>end-3) {
-        for(let i=end-5;i<=end;i++) {
+        for(let i=end-4;i<=end;i++) {
         change_page(i)
         }
       } else {
@@ -491,42 +552,163 @@ class Popup extends React.Component {
 
   render() {
     console.log(this.props)
-    return (
-      <div id="popbody" ref={button=>this.body=button}>
-        <p>this is a msg</p>
-        <button>OK</button>
-        <button ref={button=>this.button=button}>Cancel</button>
-      </div>
-    );
+    const {type,names}=this.props;
+    const MAP={
+      "PLdelete": "删除",
+      "delete": "删除",
+      "open": "启用"
+    };
+
+    switch(type) {
+      case 'PLdelete':
+      case 'delete':
+      case 'open':
+        return(
+          <div id="popbody" ref='pb'>
+            <div id="msg">
+              <p>{`确定要${MAP[type]+names}?`}</p>
+            </div>
+            <div id="popup_option">
+              <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
+              <button id="popup_back" ref={btn=>this.back=btn}>取消</button>
+            </div>
+          </div>
+        );
+        break;
+      case 'change_PW':
+        return(
+          <div id="popbody" style={{height: "350px"}} ref='pb'>
+            <div id="title">
+              <p>修改密码</p>
+            </div>
+            <div id="inputs">
+              <div>
+                <span className="left_span"><span className="warn">*</span>当前密码</span>
+                <input type="password" ref="dqmm" />
+                <span className="tips"></span>
+              </div>
+              <div>
+                <span className="left_span"><span className="warn">*</span>新密码</span>
+                <input type="password" ref="xmm" />
+                <span className="tips">密码长度至少6位</span>
+              </div>
+              <div>
+                <span className="left_span"><span className="warn">*</span>新密码确认</span>
+                <input type="password" ref="xmmqr" />
+                <span className="tips">请再次输入新密码</span>
+              </div>
+            </div>
+            <div id="popup_option">
+              <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
+              <button id="popup_back" ref={btn=>this.back=btn}>取消</button>
+            </div>
+          </div>
+        );
+        break;
+      default: 
+        return(<div></div>);
+        break;
+    }
   }
+
+
   componentDidMount() {
-    this.button.onclick=(e)=>{
+    const {id,type}=this.props;
+    // background click to cancel
+    this.refs.pb.onclick=e=>e.stopPropagation();
+    // back button click to cancel
+    this.back.onclick=cancel_popup;
+    // OK button option
+    let dat={};
+
+    switch(type) {
+      case "PLdelete":
+      case "delete":
+        dat={
+          unifyCode: getCookie("userId"),
+          usersId: id,
+          type: ['in', 'out'].indexOf(OptionComponent.state.master)
+        };
+        break;
+      case "open":
+        dat={
+          unifyCode: getCookie("userId"),
+          userId: id,
+          state: 1,
+          type: ['in', 'out'].indexOf(OptionComponent.state.master)
+        };
+        break;
+      case 'change_PW':
+        dat={
+          unifyCode: getCookie("userId"),
+          userId: getCookie("userId"),
+          oldPassWord: this.refs.dqmm.value,
+          newPassWord: this.refs.xmm.value
+        };
+        break;
+      default:
+        break;
     }
-    this.body.onclick=(e)=>{
-      e.stopPropagation();
-    }
+
+    this.OK.onclick=()=>{
+      let data_map={
+        "PLdelete": "deleteZj",
+        "delete": "deleteZj",
+        "open": "updateZjState",
+        "change_PW": "updateZjPassWord"
+      };
+      if(type=='change_PW') {
+        console.log((this.refs.xmm.value&&this.refs.xmmqr.value&&this.refs.dqmm.value))
+        if(!(this.refs.xmm.value&&this.refs.xmmqr.value&&this.refs.dqmm.value)) {
+          alert("请检查参数！");
+          return;
+        }
+        if(this.refs.xmm.value!==this.refs.xmmqr.value) {
+          alert("新密码确认错误，请检查！");
+          return;
+        }
+      }
+      ajax({
+        url: courseCenter.host+data_map[type],
+        data: dat,
+        success: (gets)=>{
+          let datas=JSON.parse(gets);
+          // if(datas.meta.result==100) {
+            cancel_popup();
+            OptionComponent.get_list();
+          // }
+        }
+      });
+    };
   }
 }
 
-function Creat_popup(type, names) {
+function Creat_popup(type, names, id) {
+  const popup_datas={
+    type: type,
+    names: names,
+    id: id
+  };
   var popup = ReactDOM.render(
-    <Popup {...type}/>,
+    <Popup {...popup_datas}/>,
     document.getElementById('popup')
   );
-  // click to close popup
 
-  document.getElementById('popup').onclick=(e)=>{
-    e.target.style.display="none";
-    ReactDOM.unmountComponentAtNode(e.target);
-  }
+  // click to close popup
+  document.getElementById('popup').onclick=cancel_popup;
+}
+
+function cancel_popup() {
+  let popup=document.getElementById('popup');
+  popup.style.display="none";
+  ReactDOM.unmountComponentAtNode(popup);
 }
 
 
 
 
 
-
-ReactDOM.render(
+var OptionComponent = ReactDOM.render(
   <Option />,
   document.getElementById('zjkgl')
 );

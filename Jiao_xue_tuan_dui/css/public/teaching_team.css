@@ -7,7 +7,6 @@ body {
 }
 table{
   table-layout: fixed;
-  width: 850px;
 }
 #whitebar {
   position: absolute;
@@ -277,7 +276,7 @@ table{
   text-align: center;
   /*padding-left: 70px;*/
 }
-#popup_left {
+#popup_left, #xueyuan_span {
   margin-left: 19px;
   font-size: 14px;
   vertical-align: middle;
@@ -297,18 +296,22 @@ table{
   background: #007A51;
   border-radius: 5px;
 }
-#popup_serch {
-  width: 186px;
+#popup_serch, #xueyuan {
+  width: 110px;
   height: 28px;
   margin-left: 20px;
   border: 1px solid #999;
   vertical-align: middle;
   padding: 0 6px;
 }
+#xueyuan {
+  width: 180px;
+  outline: none;
+}
 
 /*搜索的表格*/
 #serch_table {
-  width: 0;
+  width: 80%;
   text-align: center;
   margin: 0 auto;
   border-collapse: collapse;

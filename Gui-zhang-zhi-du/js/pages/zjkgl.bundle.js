@@ -23,7 +23,9 @@ webpackJsonp([4],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var _COUNT = 10;
 	var ajax = __webpack_require__(160);
+	var masters = [];
 
 	var Option = function (_React$Component) {
 	  _inherits(Option, _React$Component);
@@ -33,6 +35,14 @@ webpackJsonp([4],{
 
 	    var _this = _possibleConstructorReturn(this, (Option.__proto__ || Object.getPrototypeOf(Option)).call(this, props));
 
+	    _this.search_data = {
+	      zh: '',
+	      xm: '',
+	      gzdw: '',
+	      ssxy: '',
+	      jsxm: '',
+	      state: ''
+	    };
 	    _this.state = {
 	      // 取不到当前默认的masterstate就默认为out
 	      master: sessionStorage.getItem("master") || 'out',
@@ -91,8 +101,7 @@ webpackJsonp([4],{
 	            _react2["default"].createElement(
 	              'select',
 	              { id: 'xueyuan', ref: function ref(select) {
-	                  // 存在实例才执行
-	                  (_this2.xueyuan = select) && _this2.insert_xueyuan();
+	                  return _this2.xueyuan = select;
 	                } },
 	              _react2["default"].createElement(
 	                'option',
@@ -118,7 +127,7 @@ webpackJsonp([4],{
 	        inputs,
 	        _react2["default"].createElement(
 	          'div',
-	          { id: 'option_serch' },
+	          { id: 'option_search' },
 	          _react2["default"].createElement(
 	            'span',
 	            null,
@@ -152,9 +161,9 @@ webpackJsonp([4],{
 	          ),
 	          _react2["default"].createElement(
 	            'button',
-	            { ref: function ref(serch) {
-	                return _this2.serch = serch;
-	              }, id: 'serch' },
+	            { ref: function ref(search) {
+	                return _this2.search = search;
+	              }, id: 'search' },
 	            '\u641C\u7D22'
 	          )
 	        )
@@ -165,6 +174,7 @@ webpackJsonp([4],{
 	    value: function insert_xueyuan() {
 	      var _this3 = this;
 
+	      // console.log("insert")
 	      ajax({
 	        url: courseCenter.host + 'getCollege',
 	        data: {
@@ -173,14 +183,14 @@ webpackJsonp([4],{
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
 	          var options = "<option value=''>请选择</option>";
-	          console.log(datas);
+	          // console.log(datas)
 
 	          datas.data.map(function (e) {
 	            options += '<option value=' + e.kkxymc + '>' + e.kkxymc + '</option>';
 	          });
 	          _this3.xueyuan.innerHTML = options;
 	          _this3.xueyuan.onchange = function () {
-	            console.log(_this3.xueyuan.value);
+	            // console.log(this.xueyuan.value)
 	          };
 	        }
 	      });
@@ -188,17 +198,89 @@ webpackJsonp([4],{
 	  }, {
 	    key: 'change_master_state',
 	    value: function change_master_state(state) {
-	      // this['master_'+state].checked=false;
+	      var _this4 = this;
+
+	      this.search_data = {
+	        zh: '',
+	        xm: '',
+	        gzdw: '',
+	        ssxy: '',
+	        jsxm: '',
+	        state: ''
+	      };
+	      Array.from(document.querySelectorAll("#down input[type='text']")).map(function (e) {
+	        return e.value = "";
+	      });
+	      if (state === 'in') {
+	        this.insert_xueyuan();
+	      }
+	      if (state === this.state.master) {
+	        return;
+	      }
+	      this.qy.checked = false;
+	      this.ty.checked = false;
 	      sessionStorage.setItem("master", state);
+
 	      this.setState({
-	        master: state
+	        master: state,
+	        list: []
+	      }, function () {
+	        _this4.get_list(1);
+	      });
+	    }
+	  }, {
+	    key: 'get_list',
+	    value: function get_list(p) {
+	      var _this5 = this;
+
+	      var data = {};
+	      var session_page = p || +sessionStorage.getItem(this.state.master + "page") || 1;
+	      if (this.state.master === 'out') {
+	        data = {
+	          unifyCode: getCookie("userId"),
+	          userId: this.search_data.zh,
+	          userName: this.search_data.xm,
+	          department: this.search_data.gzdw,
+	          state: this.search_data.state,
+	          page: session_page,
+	          count: _COUNT,
+	          type: ['in', 'out'].indexOf(this.state.master)
+	        };
+	      } else if (this.state.master === 'in') {
+	        data = {
+	          unifyCode: getCookie("userId"),
+	          userId: "",
+	          userName: this.search_data.jsxm,
+	          department: this.search_data.ssxy,
+	          state: this.search_data.state,
+	          page: session_page,
+	          count: _COUNT,
+	          type: ['in', 'out'].indexOf(this.state.master)
+	        };
+	      }
+	      ajax({
+	        url: courseCenter.host + "getZjList",
+	        data: data,
+	        success: function success(gets) {
+	          sessionStorage.setItem(_this5.state.master + "page", session_page);
+	          var datas = JSON.parse(gets);
+	          _this5.setState({
+	            TP: {
+	              page: session_page,
+	              pages: datas.data.totalPages,
+	              total: datas.data.total
+	            },
+	            list: datas.data.zjList
+	          });
+	        }
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
+	      var _this6 = this;
 
+	      console.log(this.state.TP);
 	      var master = this.state.master;
 
 	      return _react2["default"].createElement(
@@ -213,21 +295,21 @@ webpackJsonp([4],{
 	            _react2["default"].createElement(
 	              'button',
 	              { className: 'option_big_btn', ref: function ref(button) {
-	                  return _this4.add = button;
+	                  return _this6.add = button;
 	                } },
 	              '\u6DFB\u52A0\u4E13\u5BB6'
 	            ),
 	            _react2["default"].createElement(
 	              'button',
 	              { className: 'option_big_btn', ref: function ref(button) {
-	                  return _this4.PLdelete = button;
+	                  return _this6.PLdelete = button;
 	                } },
 	              '\u6279\u91CF\u5220\u9664'
 	            ),
 	            _react2["default"].createElement(
 	              'button',
 	              { className: 'option_big_btn', ref: function ref(button) {
-	                  return _this4.change = button;
+	                  return _this6.change = button;
 	                } },
 	              '\u4FEE\u6539\u5BC6\u7801'
 	            )
@@ -240,10 +322,10 @@ webpackJsonp([4],{
 	              name: 'master',
 	              id: 'master_in',
 	              ref: function ref(input) {
-	                return _this4.master_out = input;
+	                return _this6.master_out = input;
 	              },
 	              onChange: function onChange() {
-	                _this4.change_master_state('out');
+	                _this6.change_master_state('out');
 	              },
 	              defaultChecked: master === 'out'
 	            }),
@@ -262,10 +344,10 @@ webpackJsonp([4],{
 	              name: 'master',
 	              id: 'master_out',
 	              ref: function ref(input) {
-	                return _this4.master_in = input;
+	                return _this6.master_in = input;
 	              },
 	              onChange: function onChange() {
-	                _this4.change_master_state('in');
+	                _this6.change_master_state('in');
 	              },
 	              defaultChecked: master === 'in'
 	            }),
@@ -282,42 +364,61 @@ webpackJsonp([4],{
 	          ),
 	          this.creat_option_down()
 	        ),
-	        _react2["default"].createElement(List, { list: this.state.list, master: this.state.master })
+	        _react2["default"].createElement(List, { list: this.state.list, master: this.state.master, ref: 'list' }),
+	        _react2["default"].createElement(Fanye, { TP: this.state.TP, callback: function callback(p) {
+	            _this6.get_list(p);
+	          } })
 	      );
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this5 = this;
+	      var _this7 = this;
 
+	      var pop = document.getElementById('popup');
+	      // first mount insert college list
+	      if (this.state.master === 'in') {
+	        this.insert_xueyuan();
+	      }
+
+	      // add master
 	      this.add.onclick = function () {
 	        window.location.href = "./masterAddEditor.html";
 	      };
-	      ajax({
-	        url: courseCenter.host + "getZjList",
-	        data: {
-	          unifyCode: getCookie("userId"),
-	          userId: this.refs.zhanghao.value,
-	          userName: this.refs.name.value,
-	          department: this.refs.danwei.value,
-	          state: this.qy.checked === this.ty.checked ? '' : +this.qy.checked,
-	          page: 1,
-	          count: 10,
-	          type: ['in', 'out'].indexOf(this.state.master)
-	        },
-	        success: function success(gets) {
-	          var datas = JSON.parse(gets);
-	          console.log(datas);
-	          _this5.setState({
-	            TP: {
-	              page: 1,
-	              pages: datas.data.totalPages,
-	              total: datas.data.total
-	            },
-	            list: datas.data.zjList
-	          });
+	      this.get_list();
+
+	      // PiLiangDelete
+	      this.PLdelete.onclick = function () {
+	        Creat_popup('PLdelete', masters, _this7.refs.list.ids);
+	        pop.style.display = 'block';
+	      };
+
+	      // change password
+	      this.change.onclick = function () {
+	        Creat_popup('change_PW', masters, _this7.refs.list.ids);
+	        pop.style.display = 'block';
+	      };
+
+	      // search
+	      this.search.onclick = function () {
+	        switch (_this7.state.master) {
+	          case 'in':
+	            _this7.search_data = {
+	              ssxy: _this7.xueyuan.value,
+	              jsxm: _this7.refs.jsxm.value
+	            };
+	            break;
+	          case 'out':
+	            _this7.search_data = {
+	              zh: _this7.refs.zhanghao.value,
+	              xm: _this7.refs.name.value,
+	              gzdw: _this7.refs.danwei.value
+	            };
+	            break;
 	        }
-	      });
+	        _this7.search_data.state = _this7.qy.checked === _this7.ty.checked ? '' : +_this7.qy.checked;
+	        _this7.get_list(1);
+	      };
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
@@ -337,13 +438,16 @@ webpackJsonp([4],{
 	  function List(props) {
 	    _classCallCheck(this, List);
 
-	    return _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
+	    var _this8 = _possibleConstructorReturn(this, (List.__proto__ || Object.getPrototypeOf(List)).call(this, props));
+
+	    _this8.ids = [];
+	    return _this8;
 	  }
 
 	  _createClass(List, [{
 	    key: 'creat_thead',
 	    value: function creat_thead() {
-	      var _this7 = this;
+	      var _this9 = this;
 
 	      var master = this.props.master;
 
@@ -357,18 +461,18 @@ webpackJsonp([4],{
 	              null,
 	              _react2["default"].createElement(
 	                'td',
-	                { id: 'td_start' },
+	                { className: 'lefttd' },
 	                _react2["default"].createElement('div', null)
 	              ),
-	              _react2["default"].createElement('td', { id: 'td_left' }),
+	              _react2["default"].createElement('td', { width: '5px' }),
 	              _react2["default"].createElement(
 	                'td',
-	                null,
+	                { width: '10%' },
 	                _react2["default"].createElement('input', {
 	                  type: 'checkbox',
 	                  id: 'allcheck',
 	                  ref: function ref(check) {
-	                    return _this7.allcheck = check;
+	                    return _this9.allcheck = check;
 	                  }
 	                }),
 	                _react2["default"].createElement(
@@ -379,12 +483,12 @@ webpackJsonp([4],{
 	              ),
 	              _react2["default"].createElement(
 	                'td',
-	                null,
+	                { width: '15%' },
 	                '\u8D26\u53F7'
 	              ),
 	              _react2["default"].createElement(
 	                'td',
-	                null,
+	                { width: '15%' },
 	                '\u59D3\u540D'
 	              ),
 	              _react2["default"].createElement(
@@ -394,23 +498,82 @@ webpackJsonp([4],{
 	              ),
 	              _react2["default"].createElement(
 	                'td',
-	                null,
+	                { width: '20%' },
 	                '\u8054\u7CFB\u7535\u8BDD'
 	              ),
 	              _react2["default"].createElement(
 	                'td',
-	                null,
+	                { width: '7%' },
 	                '\u8D26\u53F7\u72B6\u6001'
 	              ),
 	              _react2["default"].createElement(
 	                'td',
-	                null,
+	                { width: '15%' },
 	                '\u64CD\u4F5C'
 	              ),
-	              _react2["default"].createElement('td', { id: 'td_right' }),
+	              _react2["default"].createElement('td', { width: '0px' }),
 	              _react2["default"].createElement(
 	                'td',
-	                { id: 'td_end' },
+	                { className: 'righttd' },
+	                _react2["default"].createElement('div', null)
+	              )
+	            )
+	          );
+	          break;
+
+	        case 'in':
+	          return _react2["default"].createElement(
+	            'thead',
+	            null,
+	            _react2["default"].createElement(
+	              'tr',
+	              null,
+	              _react2["default"].createElement(
+	                'td',
+	                { className: 'lefttd' },
+	                _react2["default"].createElement('div', null)
+	              ),
+	              _react2["default"].createElement('td', { width: '5px' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                _react2["default"].createElement('input', {
+	                  type: 'checkbox',
+	                  id: 'allcheck',
+	                  ref: function ref(check) {
+	                    return _this9.allcheck = check;
+	                  }
+	                }),
+	                _react2["default"].createElement(
+	                  'label',
+	                  { htmlFor: 'allcheck' },
+	                  _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
+	                )
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '15%' },
+	                '\u59D3\u540D'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                '\u5B66\u9662'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                '\u8D26\u53F7\u72B6\u6001'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '15%' },
+	                '\u64CD\u4F5C'
+	              ),
+	              _react2["default"].createElement('td', { width: '0px' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { className: 'righttd' },
 	                _react2["default"].createElement('div', null)
 	              )
 	            )
@@ -419,20 +582,9 @@ webpackJsonp([4],{
 	      }
 	    }
 	  }, {
-	    key: 'option',
-	    value: function option(op, id) {
-	      switch (op) {
-	        case 'edit':
-	          window.location.href = "./masterAddEditor.html?isEditor=true&masterId=" + id;
-	          break;
-	        default:
-	          break;
-	      }
-	    }
-	  }, {
 	    key: 'creat_tbody',
 	    value: function creat_tbody() {
-	      var _this8 = this;
+	      var _this10 = this;
 
 	      var master = this.props.master;
 
@@ -445,12 +597,17 @@ webpackJsonp([4],{
 	              return _react2["default"].createElement(
 	                'tr',
 	                { key: index },
-	                _react2["default"].createElement('td', null),
+	                _react2["default"].createElement('td', { className: 'lefttd' }),
 	                _react2["default"].createElement('td', null),
 	                _react2["default"].createElement(
 	                  'td',
 	                  null,
-	                  _react2["default"].createElement('input', { type: 'checkbox', id: "input-" + index }),
+	                  _react2["default"].createElement('input', {
+	                    type: 'checkbox',
+	                    id: "input-" + index,
+	                    value: e.id + "#" + e.xm,
+	                    onChange: _this10.check.bind(_this10, e.id, e.xm)
+	                  }),
 	                  _react2["default"].createElement(
 	                    'label',
 	                    { htmlFor: "input-" + index },
@@ -487,30 +644,138 @@ webpackJsonp([4],{
 	                  null,
 	                  _react2["default"].createElement(
 	                    'a',
-	                    { href: '#', onClick: _this8.option.bind(_this8, 'edit', e.id) },
+	                    { href: '#', onClick: _this10.option.bind(_this10, 'edit', e.id, e.xm) },
 	                    '\u7F16\u8F91'
 	                  ),
 	                  _react2["default"].createElement(
 	                    'a',
-	                    { href: '#', onClick: _this8.option.bind(_this8, 'del', e.id) },
+	                    { href: '#', onClick: _this10.option.bind(_this10, 'del', e.id, e.xm) },
 	                    '\u5220\u9664'
 	                  ),
 	                  _react2["default"].createElement(
 	                    'a',
-	                    { href: '#', onClick: _this8.option.bind(_this8, 'open', e.id) },
+	                    { href: '#', onClick: _this10.option.bind(_this10, 'open', e.id, e.xm) },
 	                    '\u542F\u7528'
 	                  )
 	                ),
 	                _react2["default"].createElement('td', null),
-	                _react2["default"].createElement('td', null)
+	                _react2["default"].createElement('td', { className: 'righttd' })
 	              );
 	            })
 	          );
+	          break;
+
+	        case 'in':
+	          return _react2["default"].createElement(
+	            'tbody',
+	            null,
+	            this.props.list.map(function (e, index) {
+	              return _react2["default"].createElement(
+	                'tr',
+	                { key: index },
+	                _react2["default"].createElement('td', { className: 'lefttd' }),
+	                _react2["default"].createElement('td', null),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  _react2["default"].createElement('input', {
+	                    type: 'checkbox',
+	                    id: "input-" + index,
+	                    value: e.sfrzh + "#" + e.xm,
+	                    onChange: _this10.check.bind(_this10, e.sfrzh, e.xm)
+	                  }),
+	                  _react2["default"].createElement(
+	                    'label',
+	                    { htmlFor: "input-" + index },
+	                    _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
+	                  )
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.xm
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.xymc
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.zt
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  _react2["default"].createElement(
+	                    'a',
+	                    { href: '#', onClick: _this10.option.bind(_this10, 'edit', e.sfrzh, e.xm) },
+	                    '\u7F16\u8F91'
+	                  ),
+	                  _react2["default"].createElement(
+	                    'a',
+	                    { href: '#', onClick: _this10.option.bind(_this10, 'del', e.sfrzh, e.xm) },
+	                    '\u5220\u9664'
+	                  ),
+	                  _react2["default"].createElement(
+	                    'a',
+	                    { href: '#', onClick: _this10.option.bind(_this10, 'open', e.sfrzh, e.xm) },
+	                    '\u542F\u7528'
+	                  )
+	                ),
+	                _react2["default"].createElement('td', null),
+	                _react2["default"].createElement('td', { className: 'righttd' })
+	              );
+	            })
+	          );
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'option',
+	    value: function option(_option, id, name, eve) {
+	      eve.preventDefault();
+	      switch (_option) {
+	        case 'edit':
+	          window.location.href = "./masterAddEditor.html?isEditor=true&masterId=" + id;
+	          break;
+	        case 'del':
+	          // ajax();
+	          Creat_popup('delete', name, id);
+	          document.getElementById('popup').style.display = "block";
+	          break;
+	        case 'open':
+	          // ajax();
+	          Creat_popup('open', name, id);
+	          document.getElementById('popup').style.display = "block";
+	          break;
+	        default:
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'check',
+	    value: function check(id, name, eve) {
+	      if (eve.target.checked) {
+	        // add
+	        this.ids.push(id);
+	        masters.push(name);
+	      } else {
+	        // delet
+	        this.ids = this.ids.filter(function (e) {
+	          return e !== id;
+	        });
+	        masters = masters.filter(function (e) {
+	          return e !== name;
+	        });
 	      }
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      masters = [];
+	      this.ids = [];
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'List' },
@@ -522,12 +787,414 @@ webpackJsonp([4],{
 	        )
 	      );
 	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this11 = this;
+
+	      this.allcheck.onchange = function (eve) {
+	        _this11.ids = [];
+	        masters = [];
+	        var checks = Array.from(document.querySelectorAll('tbody td input[type="checkbox"]'));
+	        checks.map(function (e) {
+	          (e.checked = eve.target.checked) && _this11.ids.push(e.value.split("#")[0]) && masters.push(e.value.split("#")[1]);
+	        });
+	        console.log(masters.join(","));
+	      };
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      Array.from(document.querySelectorAll('input[type="checkbox"]')).map(function (e) {
+	        return e.checked = false;
+	      });
+	    }
 	  }]);
 
 	  return List;
 	}(_react2["default"].Component);
 
-	_reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('zjkgl'));
+	var Fanye = function (_React$Component3) {
+	  _inherits(Fanye, _React$Component3);
+
+	  function Fanye(props) {
+	    _classCallCheck(this, Fanye);
+
+	    return _possibleConstructorReturn(this, (Fanye.__proto__ || Object.getPrototypeOf(Fanye)).call(this, props));
+	  }
+
+	  _createClass(Fanye, [{
+	    key: 'create_popup_fanye',
+	    value: function create_popup_fanye() {
+	      var _this13 = this;
+
+	      var nums = [];
+	      var start = 1;
+	      var end = this.props.TP.pages || 1;
+	      var now = this.props.TP.page || 1;
+	      var page_on = { color: "#007A51" };
+
+	      var change_page = function change_page(p) {
+	        if (p === now) {
+	          nums.push(_react2["default"].createElement(
+	            'li',
+	            { key: p, style: page_on },
+	            p
+	          ));
+	        } else {
+	          nums.push(_react2["default"].createElement(
+	            'li',
+	            { key: p, onClick: _this13.fanye.bind(_this13, p) },
+	            p
+	          ));
+	        }
+	      };
+
+	      if (end < 1) {
+	        nums.push(_react2["default"].createElement(
+	          'li',
+	          { key: 'only', onClick: this.fanye.bind(this, 1) },
+	          '1'
+	        ));
+	      } else if (end <= 5) {
+	        for (var i = 1; i <= end; i++) {
+	          change_page(i);
+	        }
+	      } else {
+	        if (now < 3) {
+	          for (var _i = 1; _i <= 5; _i++) {
+	            change_page(_i);
+	          }
+	        } else if (now > end - 3) {
+	          for (var _i2 = end - 4; _i2 <= end; _i2++) {
+	            change_page(_i2);
+	          }
+	        } else {
+	          for (var _i3 = now - 2; _i3 <= now + 2; _i3++) {
+	            change_page(_i3);
+	          }
+	        }
+	      }
+
+	      return _react2["default"].createElement(
+	        'div',
+	        { id: 'fanye' },
+	        _react2["default"].createElement(
+	          'span',
+	          { id: 'rows' },
+	          '\u5171',
+	          this.props.TP.rows >= 0 ? this.props.TP.rows : 1,
+	          '\u6761\u8BB0\u5F55'
+	        ),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u9996\u9875', id: 'fanye_start', onClick: this.fanye.bind(this, 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0A\u4E00\u9875', id: 'fanye_pre', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
+	        _react2["default"].createElement(
+	          'ul',
+	          { id: 'fanye_nums' },
+	          nums
+	        ),
+	        _react2["default"].createElement('input', { type: 'text', id: 'tp', ref: 'tp', placeholder: this.props.TP.page + '/' + this.props.TP.pages }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0B\u4E00\u9875', id: 'fanye_next', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u5C3E\u9875', id: 'fanye_end', onClick: this.fanye.bind(this, end) })
+	      );
+	    }
+	  }, {
+	    key: 'fanye',
+	    value: function fanye(p) {
+	      this.refs.tp.value = null;
+	      if (p == 0) {
+	        return;
+	      }
+	      this.props.callback(p);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return this.create_popup_fanye();
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this14 = this;
+
+	      // 手动跳转翻页
+	      this.refs.tp.onkeydown = function (eve) {
+	        if (eve.keyCode === 13) {
+	          if (!isNaN(+eve.target.value)) {
+	            _this14.fanye(+eve.target.value);
+	          } else {
+	            eve.target.value = null;
+	            eve.target.blur();
+	          }
+	        }
+	      };
+	    }
+	  }]);
+
+	  return Fanye;
+	}(_react2["default"].Component);
+
+	var Popup = function (_React$Component4) {
+	  _inherits(Popup, _React$Component4);
+
+	  function Popup(props) {
+	    _classCallCheck(this, Popup);
+
+	    return _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this, props));
+	  }
+
+	  _createClass(Popup, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this16 = this;
+
+	      console.log(this.props);
+	      var _props = this.props,
+	          type = _props.type,
+	          names = _props.names;
+
+	      var MAP = {
+	        "PLdelete": "删除",
+	        "delete": "删除",
+	        "open": "启用"
+	      };
+
+	      switch (type) {
+	        case 'PLdelete':
+	        case 'delete':
+	        case 'open':
+	          return _react2["default"].createElement(
+	            'div',
+	            { id: 'popbody', ref: 'pb' },
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'msg' },
+	              _react2["default"].createElement(
+	                'p',
+	                null,
+	                '\u786E\u5B9A\u8981' + (MAP[type] + names) + '?'
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'popup_option' },
+	              _react2["default"].createElement(
+	                'button',
+	                { id: 'popup_OK', ref: function ref(btn) {
+	                    return _this16.OK = btn;
+	                  } },
+	                '\u786E\u5B9A'
+	              ),
+	              _react2["default"].createElement(
+	                'button',
+	                { id: 'popup_back', ref: function ref(btn) {
+	                    return _this16.back = btn;
+	                  } },
+	                '\u53D6\u6D88'
+	              )
+	            )
+	          );
+	          break;
+	        case 'change_PW':
+	          return _react2["default"].createElement(
+	            'div',
+	            { id: 'popbody', style: { height: "350px" }, ref: 'pb' },
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'title' },
+	              _react2["default"].createElement(
+	                'p',
+	                null,
+	                '\u4FEE\u6539\u5BC6\u7801'
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'inputs' },
+	              _react2["default"].createElement(
+	                'div',
+	                null,
+	                _react2["default"].createElement(
+	                  'span',
+	                  { className: 'left_span' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    { className: 'warn' },
+	                    '*'
+	                  ),
+	                  '\u5F53\u524D\u5BC6\u7801'
+	                ),
+	                _react2["default"].createElement('input', { type: 'password', ref: 'dqmm' }),
+	                _react2["default"].createElement('span', { className: 'tips' })
+	              ),
+	              _react2["default"].createElement(
+	                'div',
+	                null,
+	                _react2["default"].createElement(
+	                  'span',
+	                  { className: 'left_span' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    { className: 'warn' },
+	                    '*'
+	                  ),
+	                  '\u65B0\u5BC6\u7801'
+	                ),
+	                _react2["default"].createElement('input', { type: 'password', ref: 'xmm' }),
+	                _react2["default"].createElement(
+	                  'span',
+	                  { className: 'tips' },
+	                  '\u5BC6\u7801\u957F\u5EA6\u81F3\u5C116\u4F4D'
+	                )
+	              ),
+	              _react2["default"].createElement(
+	                'div',
+	                null,
+	                _react2["default"].createElement(
+	                  'span',
+	                  { className: 'left_span' },
+	                  _react2["default"].createElement(
+	                    'span',
+	                    { className: 'warn' },
+	                    '*'
+	                  ),
+	                  '\u65B0\u5BC6\u7801\u786E\u8BA4'
+	                ),
+	                _react2["default"].createElement('input', { type: 'password', ref: 'xmmqr' }),
+	                _react2["default"].createElement(
+	                  'span',
+	                  { className: 'tips' },
+	                  '\u8BF7\u518D\u6B21\u8F93\u5165\u65B0\u5BC6\u7801'
+	                )
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'popup_option' },
+	              _react2["default"].createElement(
+	                'button',
+	                { id: 'popup_OK', ref: function ref(btn) {
+	                    return _this16.OK = btn;
+	                  } },
+	                '\u786E\u5B9A'
+	              ),
+	              _react2["default"].createElement(
+	                'button',
+	                { id: 'popup_back', ref: function ref(btn) {
+	                    return _this16.back = btn;
+	                  } },
+	                '\u53D6\u6D88'
+	              )
+	            )
+	          );
+	          break;
+	        default:
+	          return _react2["default"].createElement('div', null);
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this17 = this;
+
+	      var _props2 = this.props,
+	          id = _props2.id,
+	          type = _props2.type;
+	      // background click to cancel
+
+	      this.refs.pb.onclick = function (e) {
+	        return e.stopPropagation();
+	      };
+	      // back button click to cancel
+	      this.back.onclick = cancel_popup;
+	      // OK button option
+	      var dat = {};
+
+	      switch (type) {
+	        case "PLdelete":
+	        case "delete":
+	          dat = {
+	            unifyCode: getCookie("userId"),
+	            usersId: id,
+	            type: ['in', 'out'].indexOf(OptionComponent.state.master)
+	          };
+	          break;
+	        case "open":
+	          dat = {
+	            unifyCode: getCookie("userId"),
+	            userId: id,
+	            state: 1,
+	            type: ['in', 'out'].indexOf(OptionComponent.state.master)
+	          };
+	          break;
+	        case 'change_PW':
+	          dat = {
+	            unifyCode: getCookie("userId"),
+	            userId: getCookie("userId"),
+	            oldPassWord: this.refs.dqmm.value,
+	            newPassWord: this.refs.xmm.value
+	          };
+	          break;
+	        default:
+	          break;
+	      }
+
+	      this.OK.onclick = function () {
+	        var data_map = {
+	          "PLdelete": "deleteZj",
+	          "delete": "deleteZj",
+	          "open": "updateZjState",
+	          "change_PW": "updateZjPassWord"
+	        };
+	        if (type == 'change_PW') {
+	          console.log(_this17.refs.xmm.value && _this17.refs.xmmqr.value && _this17.refs.dqmm.value);
+	          if (!(_this17.refs.xmm.value && _this17.refs.xmmqr.value && _this17.refs.dqmm.value)) {
+	            alert("请检查参数！");
+	            return;
+	          }
+	          if (_this17.refs.xmm.value !== _this17.refs.xmmqr.value) {
+	            alert("新密码确认错误，请检查！");
+	            return;
+	          }
+	        }
+	        ajax({
+	          url: courseCenter.host + data_map[type],
+	          data: dat,
+	          success: function success(gets) {
+	            var datas = JSON.parse(gets);
+	            // if(datas.meta.result==100) {
+	            cancel_popup();
+	            OptionComponent.get_list();
+	            // }
+	          }
+	        });
+	      };
+	    }
+	  }]);
+
+	  return Popup;
+	}(_react2["default"].Component);
+
+	function Creat_popup(type, names, id) {
+	  var popup_datas = {
+	    type: type,
+	    names: names,
+	    id: id
+	  };
+	  var popup = _reactDom2["default"].render(_react2["default"].createElement(Popup, popup_datas), document.getElementById('popup'));
+
+	  // click to close popup
+	  document.getElementById('popup').onclick = cancel_popup;
+	}
+
+	function cancel_popup() {
+	  var popup = document.getElementById('popup');
+	  popup.style.display = "none";
+	  _reactDom2["default"].unmountComponentAtNode(popup);
+	}
+
+	var OptionComponent = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('zjkgl'));
 
 /***/ },
 

@@ -2,6 +2,7 @@ var webpack = require('webpack');
 var path = require('path');
 module.exports = {
    entry:{
+    fzgl: './js/src/fzgl.js',
     zjkgl: './js/src/zjkgl.js',
     gzzd:'./js/src/gzzd.js',
     guizhang_home:'./js/src/guizhang_home.js',

@@ -527,12 +527,14 @@ webpackJsonp([0],{
 
 	    var _this3 = _possibleConstructorReturn(this, (BlueMUI_CreatePopup.__proto__ || Object.getPrototypeOf(BlueMUI_CreatePopup)).call(this, props));
 
+	    _this3.shuld_insert = true;
 	    _this3.popup_serch = _this3.popup_serch.bind(_this3);
 	    _this3.popup = document.getElementById('popup');
 	    _this3.choose_teachers = [];
 	    _this3.serch_name = "";
 	    _this3.teacher_names = {};
 	    _this3.Master = "";
+	    _this3.xueyuan_name = '';
 	    //用于搜索用的state
 	    _this3.state = {
 	      teachers: [],
@@ -561,11 +563,60 @@ webpackJsonp([0],{
 	      );
 	    }
 	  }, {
+	    key: 'insert_xueyuan',
+	    value: function insert_xueyuan() {
+	      var _this4 = this;
+
+	      if (!this.shuld_insert) {
+	        return;
+	      } else {
+	        this.shuld_insert = false;
+	      }
+	      ajax({
+	        url: courseCenter.host + 'getCollege',
+	        data: {
+	          unifyCode: getCookie("userId")
+	        },
+	        success: function success(gets) {
+	          var datas = JSON.parse(gets);
+	          if (datas.meta.result == 100) {
+	            var CL = '<option value="">请选择</option>';
+	            datas.data.map(function (e) {
+	              return CL += '<option value=' + e.kkxymc + '>' + e.kkxymc + '</option>';
+	            });
+	            _this4.xueyuan.innerHTML = CL;
+	          }
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'create_popup_serch',
 	    value: function create_popup_serch() {
+	      var _this5 = this;
+
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'serch' },
+	        _react2["default"].createElement(
+	          'span',
+	          { id: 'xueyuan_span' },
+	          '\u5B66\u9662\uFF1A'
+	        ),
+	        _react2["default"].createElement(
+	          'select',
+	          {
+	            name: 'xueyuan',
+	            id: 'xueyuan',
+	            ref: function ref(select) {
+	              (_this5.xueyuan = select) ? _this5.insert_xueyuan() : '';
+	            }
+	          },
+	          _react2["default"].createElement(
+	            'option',
+	            { value: '' },
+	            '\u8BF7\u9009\u62E9'
+	          )
+	        ),
 	        _react2["default"].createElement(
 	          'span',
 	          { id: 'popup_left' },
@@ -687,6 +738,7 @@ webpackJsonp([0],{
 	        url: courseCenter.host + 'searchTeacherByName',
 	        data: {
 	          name: start || that.serch_name,
+	          college: this.xueyuan_name,
 	          page: p,
 	          count: 10
 	        },
@@ -735,11 +787,12 @@ webpackJsonp([0],{
 	      //搜索按钮单击
 	      this.refs.serch.onclick = function () {
 	        that.serch_name = that.refs.serch_value.value;
+	        that.xueyuan_name = that.xueyuan.value;
 	        that.popup_serch(1);
 	      };
 
 	      //单击确定按钮
-	      this.popup_serch(1, 'init');
+	      this.popup_serch(1, '');
 	    }
 
 	    //重新渲染后的执行内容
@@ -747,7 +800,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      var _this4 = this;
+	      var _this6 = this;
 
 	      var that = this;
 
@@ -842,7 +895,7 @@ webpackJsonp([0],{
 	          if (fanye_bar[_j].innerText != '...') {
 	            fanye_bar[_j].onclick = function (e) {
 	              var click_page = +e.target.innerText;
-	              that.popup_serch(click_page == _this4.state.page ? 0 : click_page, that.serch_name || 'init');
+	              that.popup_serch(click_page == _this6.state.page ? 0 : click_page, that.serch_name || '');
 	            };
 	          }
 	        }
@@ -851,10 +904,10 @@ webpackJsonp([0],{
 	      //搜索的前翻和后翻
 	      if (fanye_in.refs.next && fanye_in.refs.pre) {
 	        fanye_in.refs.next.onclick = function () {
-	          that.popup_serch(that.state.page + 1 > that.state.pages ? 0 : that.state.page + 1, that.serch_name || 'init');
+	          that.popup_serch(that.state.page + 1 > that.state.pages ? 0 : that.state.page + 1, that.serch_name || '');
 	        };
 	        fanye_in.refs.pre.onclick = function () {
-	          that.popup_serch(that.state.page - 1 < 1 ? 0 : that.state.page - 1, that.serch_name || 'init');
+	          that.popup_serch(that.state.page - 1 < 1 ? 0 : that.state.page - 1, that.serch_name || '');
 	        };
 	      }
 	    }
@@ -888,17 +941,17 @@ webpackJsonp([0],{
 	  function BlueMUI_CreateAdding(props) {
 	    _classCallCheck(this, BlueMUI_CreateAdding);
 
-	    var _this5 = _possibleConstructorReturn(this, (BlueMUI_CreateAdding.__proto__ || Object.getPrototypeOf(BlueMUI_CreateAdding)).call(this, props));
+	    var _this7 = _possibleConstructorReturn(this, (BlueMUI_CreateAdding.__proto__ || Object.getPrototypeOf(BlueMUI_CreateAdding)).call(this, props));
 
-	    _this5.del_teacher = _this5.del_teacher.bind(_this5);
-	    _this5.save_adding = _this5.save_adding.bind(_this5);
-	    _this5.back = _this5.back.bind(_this5);
-	    _this5.create_tdjs = _this5.create_tdjs.bind(_this5);
-	    _this5.state = {
-	      teachers: _this5.props.Teachers || _this5.props.Leaders,
-	      master: _this5.props.Master
+	    _this7.del_teacher = _this7.del_teacher.bind(_this7);
+	    _this7.save_adding = _this7.save_adding.bind(_this7);
+	    _this7.back = _this7.back.bind(_this7);
+	    _this7.create_tdjs = _this7.create_tdjs.bind(_this7);
+	    _this7.state = {
+	      teachers: _this7.props.Teachers || _this7.props.Leaders,
+	      master: _this7.props.Master
 	    };
-	    return _this5;
+	    return _this7;
 	  }
 
 	  _createClass(BlueMUI_CreateAdding, [{
@@ -1222,7 +1275,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this6 = this;
+	      var _this8 = this;
 
 	      document.getElementById('list').style.minHeight = "738px";
 	      if (this.props.Rank == 3) {
@@ -1276,9 +1329,9 @@ webpackJsonp([0],{
 	      if (this.props.Rank == 3) {
 	        this.refs.Js.onchange = function (e) {
 	          if (e.target.value === '') {
-	            _this6.refs.Js_warn.innerText = '请输入团队介绍！';
+	            _this8.refs.Js_warn.innerText = '请输入团队介绍！';
 	          } else {
-	            _this6.refs.Js_warn.innerText = '';
+	            _this8.refs.Js_warn.innerText = '';
 	          }
 	        };
 	      }
@@ -1481,26 +1534,26 @@ webpackJsonp([0],{
 	  function BlueMUI_CreateTab(props) {
 	    _classCallCheck(this, BlueMUI_CreateTab);
 
-	    var _this8 = _possibleConstructorReturn(this, (BlueMUI_CreateTab.__proto__ || Object.getPrototypeOf(BlueMUI_CreateTab)).call(this, props));
+	    var _this10 = _possibleConstructorReturn(this, (BlueMUI_CreateTab.__proto__ || Object.getPrototypeOf(BlueMUI_CreateTab)).call(this, props));
 
-	    _this8.state = {
-	      Rank: +_this8.props.role[0].subModule
+	    _this10.state = {
+	      Rank: +_this10.props.role[0].subModule
 	    };
-	    _this8.show_list = _this8.show_list.bind(_this8);
-	    return _this8;
+	    _this10.show_list = _this10.show_list.bind(_this10);
+	    return _this10;
 	  }
 
 	  _createClass(BlueMUI_CreateTab, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this9 = this;
+	      var _this11 = this;
 
 	      //改变第一个tab标签的字体为粗体
 	      this.refs['Rank-' + this.state.Rank].style.borderBottomColor = '#009361';
 	      var that = this;
 
 	      var _loop = function _loop(i) {
-	        _this9.refs['Rank-' + _this9.props.role[i].subModule].onclick = function (e) {
+	        _this11.refs['Rank-' + _this11.props.role[i].subModule].onclick = function (e) {
 	          document.getElementById('jxtdss').value = '';
 	          that.setState({ Rank: +that.props.role[i].subModule }, tab_change);
 	        };
