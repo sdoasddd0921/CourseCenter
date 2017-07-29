@@ -1,9 +1,9 @@
-
 import ReactDOM from 'react-dom';
 import React from 'react';
 
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
+const Popup_edit=require('../libs/masterAddZb.js');
 
 const _COUNT = 10;
 
@@ -11,7 +11,7 @@ class Option extends React.Component {
   constructor(props) {
     super(props);
     this.pici_insert=[];
-    this.fzpc=sessionStorage.getItem("fzgl-fzpc")||'';
+    this.zbpc=sessionStorage.getItem("pjzbgl-zbpc")||'';
     this.state={
       TP: {
         page: 1,
@@ -19,42 +19,42 @@ class Option extends React.Component {
         total: 1
       },
       list: [],
-      fzpc_select: []
+      zbpc_select: []
     };
   }
 
   insert_pici() {
     let pc=`<option value="">请选择</option>`;
-    this.state.fzpc_select.map(e=>pc+=`<option ${(this.fzpc===e.fzpc)?"selected":''} value=${e.fzpc} >${e.fzpc}</option>`);
+    this.state.zbpc_select.map(e=>pc+=`<option ${(this.zbpc===e.zbpc)?"selected":''} value=${e.zbpc} >${e.zbpc}</option>`);
     this.pici.innerHTML=pc;
   }
 
   search() {
-    this.fzpc=this.pici.value;
-    sessionStorage.setItem("fzgl-fzpc", this.fzpc);
+    this.zbpc=this.pici.value;
+    sessionStorage.setItem("pjzbgl-zbpc", this.zbpc);
     this.get_list(1);
   }
 
   get_list(p) {
-    let page=p||+sessionStorage.getItem("fzgl-page")||1;
+    let page=p||+sessionStorage.getItem("pjzbgl-page")||1;
     ajax({
-      url: courseCenter.host+"getFzList",
+      url: courseCenter.host+"getPjzbList",
       data: {
         unifyCode: getCookie('userId'),
-        groupBatch: this.fzpc,
+        indexBatch: this.zbpc,
         count: _COUNT,
         page: page
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        sessionStorage.setItem("fzgl-page", page);
+        sessionStorage.setItem("pjzbgl-page", page);
         this.setState({
           TP: {
             page: page,
             pages: datas.data.totalPages,
             total:datas.data.total
           },
-          list: datas.data.groupList
+          list: datas.data.indexList
         })
       }
     });
@@ -65,20 +65,20 @@ class Option extends React.Component {
       <div id="Option_react">
         <div id="option">
           <div id="up">
-            <button id="add" ref={btn=>this.add=btn}>添加分组</button>
+            <button id="add" ref={btn=>this.add=btn}>添加指标</button>
           </div>
           <div id="down">
-            <span>分组批次：</span>
+            <span>指标批次：</span>
             <select 
-              name="fzpc" 
-              id="fzpc_select" 
+              name="zbpc" 
+              id="zbpc_select" 
               ref={sel=>(this.pici=sel)} 
-              defaultValue={this.fzpc}
+              defaultValue={this.zbpc}
             >
               {
-                this.state.fzpc_select.length
+                this.state.zbpc_select.length
                 ?this.insert_pici()
-                :<option value="">{this.fzpc||"请选择"}</option>
+                :<option value="">{this.zbpc||"请选择"}</option>
               }
             </select>
             <button ref={btn=>this.search_btn=btn}>搜索</button>
@@ -93,14 +93,14 @@ class Option extends React.Component {
 
   componentDidMount() {
     ajax({
-      url: courseCenter.host+"getFzpc",
+      url: courseCenter.host+"getPjzbpc",
       data: {
         unifyCode: getCookie('userId')
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
         this.setState({
-          fzpc_select: datas.data
+          zbpc_select: datas.data
         })
       }
     });
@@ -124,9 +124,9 @@ class List extends React.Component {
         <tr>
           <td className="lefttd"><div></div></td>
           <td width="5px"></td>
-          <td width="20%">分组批次</td>
-          <td width="55%">分组项</td>
-          <td width="20%">操作</td>
+          <td width="30%">分组批次</td>
+          <td width="30%">分组项</td>
+          <td width="30%">操作</td>
           <td width="5px"></td>
           <td className="righttd"><div></div></td>
         </tr>
@@ -134,14 +134,14 @@ class List extends React.Component {
     );
   }
 
-  option(type, fzpc, eve) {
+  option(type, zbpc, eve) {
     eve.preventDefault();
     switch(type) {
       case 'edit': 
-        window.location.href='./masterSortEditor.html?isEditor=true&groupBatch='+fzpc;
+        Creat_popup('edit', zbpc);
         break;
       case 'delete':
-        Creat_popup('delete', fzpc);
+        Creat_popup('delete', zbpc);
         break;
     }
   }
@@ -152,11 +152,11 @@ class List extends React.Component {
         {this.props.list.map((e,index)=><tr key={index}>
           <td className="lefttd"></td>
           <td></td>
-          <td>{e.fzpc}</td>
-          <td>{e.fzx}</td>
+          <td>{e.zbpc}</td>
+          <td>{e.zblb}</td>
           <td>
-            <a href="#" onClick={this.option.bind(this,'edit',e.fzpc)} >编辑</a>
-            <a href="#" onClick={this.option.bind(this,'delete',e.fzpc)} >删除</a>
+            <a href="#" onClick={this.option.bind(this,'edit',e.zbpc)} >编辑</a>
+            <a href="#" onClick={this.option.bind(this,'delete',e.zbpc)} >删除</a>
           </td>
           <td></td>
           <td className='righttd'></td>
@@ -211,6 +211,14 @@ class Popup extends React.Component {
           </div>
         );
         break;
+      case 'edit':
+        return(
+          <div>
+            <dev ref="pb"></dev>
+            <Popup_edit/>
+          </div>
+        );
+        break;
       default: 
         return(<div></div>);
         break;
@@ -218,28 +226,36 @@ class Popup extends React.Component {
   }
 
   componentDidMount() {
-    const {id,type}=this.props;
+    console.log("popup di mount",document.body.offsetHeight)
+    if(window.frameElement) {
+      window.frameElement.height=document.body.offsetHeight;
+    }
+    console.log(this.refs.pb)
     // background click to cancel
-    this.refs.pb.onclick=e=>e.stopPropagation();
-    // back button click to cancel
-    this.back.onclick=cancel_popup;
-    // OK button option
+    this.refs.pb.onclick=e=>{e.stopPropagation();console.log("stop")};
+    const {id,type}=this.props;
     let dat={};
 
     switch(type) {
       case "delete":
         dat={
           unifyCode: getCookie("userId"),
-          groupBatch: id
+          indexBatch: id
         };
+        break;
+      case 'edit':
+        return;
         break;
       default:
         break;
     }
 
+    // back button click to cancel
+    this.back.onclick=cancel_popup;
+    // OK button option
     this.OK.onclick=()=>{
       let data_map={
-        "delete": "deleteFz"
+        "delete": "deletePjzb"
       };
       ajax({
         url: courseCenter.host+data_map[type],
@@ -248,7 +264,7 @@ class Popup extends React.Component {
           let datas=JSON.parse(gets);
           if(datas.meta.result==100) {
             cancel_popup();
-            Fzgl_option.get_list();
+            pjzbgl_option.get_list();
           }
         }
       });
@@ -277,7 +293,7 @@ function cancel_popup() {
   ReactDOM.unmountComponentAtNode(popup);
 }
 
-var Fzgl_option=ReactDOM.render(
+var pjzbgl_option=ReactDOM.render(
   <Option />,
-  document.getElementById('fzgl')
+  document.getElementById('pjzbgl')
 );

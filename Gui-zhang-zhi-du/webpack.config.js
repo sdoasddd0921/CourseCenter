@@ -4,10 +4,14 @@ module.exports = {
    entry:{
     fzgl: './js/src/fzgl.js',
     zjkgl: './js/src/zjkgl.js',
+    wpgl: './js/src/wpgl.js',
+    pjzbgl: './js/src/pjzbgl.js',
+    zjfzgl: './js/src/zjfzgl.js',
+    kcfzgl: './js/src/kcfzgl.js',
+
     gzzd:'./js/src/gzzd.js',
     guizhang_home:'./js/src/guizhang_home.js',
-    wpgl: './js/src/wpgl.js',
-    vendor: ['react', 'react-dom']
+    "vendor-zq-gzzd": ['react', 'react-dom']
   },
   output:{
       path: path.resolve(__dirname),
@@ -21,7 +25,7 @@ module.exports = {
   },
   plugins: [
       new webpack.optimize.CommonsChunkPlugin({
-            names: ['react']
+            names: ['react-zq-gzzd']
         })
   ],
   module: {

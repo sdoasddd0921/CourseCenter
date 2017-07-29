@@ -8,7 +8,7 @@ var jsSrc = './js/pages/*.js',
 gulp.task('connect', function() {
   connect.server({
     root: __dirname,
-    port: 8080,
+    port: 9000,
     livereload: true
   })
 })

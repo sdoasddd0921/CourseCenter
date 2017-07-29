@@ -3,22 +3,32 @@ import ReactDOM from 'react-dom';
 
 const _COUNT = 10;
 const ajax=require('../libs/post_ajax.js');
+const Fanye=require('../libs/fanye');
 var masters=[];
+
+function SET(key,value) {
+  sessionStorage.setItem(key,value);
+  return value;
+}
+
+function GET(key) {
+  return sessionStorage.getItem(key);
+}
 
 class Option extends React.Component {
   constructor(props) {
     super(props);
     this.search_data={
-      zh: '',
-      xm: '',
-      gzdw: '',
-      ssxy: '',
-      jsxm: '',
-      state: ''
+      zh: GET('zh')||'',
+      xm: GET('xm')||'',
+      gzdw: GET('gzdw')||'',
+      ssxy: GET('ssxy')||'',
+      jsxm: GET('jsxm')||'',
+      state: +GET('qy')===+GET('ty')?'':+GET('qy')
     };
     this.state = {
       // 取不到当前默认的masterstate就默认为out
-      master: sessionStorage.getItem("master")||'out',
+      master: GET("master")||'out',
       list: [],
       TP: {
         page: 1,
@@ -46,7 +56,7 @@ class Option extends React.Component {
         inputs = <div id="option_input">
           <span>所属学院：</span>
           <select id="xueyuan" ref={select=>this.xueyuan=select}>
-            <option value="">请选择</option>
+            <option value="">{"请选择"}</option>
           </select>
           <span>教师姓名：</span>
           <input type="text" ref="jsxm"/>
@@ -63,17 +73,15 @@ class Option extends React.Component {
             <input type="checkbox" id="qy" ref={input=>this.qy=input} />
             <label htmlFor="qy"><img src="../../imgs/public/hook.png"/></label>
             <span>启用</span>
-            <input type="checkbox" id="ty" ref={input=>this.ty=input}/>
+            <input type="checkbox" id="ty" ref={input=>this.ty=input} />
             <label htmlFor="ty"><img src="../../imgs/public/hook.png"/></label>
             <span>停用</span>
             <button ref={search=>this.search=search} id="search">搜索</button>
           </div>
-
         </div>;
   }
 
   insert_xueyuan() {
-    // console.log("insert")
     ajax({
       url: courseCenter.host+'getCollege',
       data: {
@@ -82,10 +90,9 @@ class Option extends React.Component {
       success: (gets) => {
         let datas = JSON.parse(gets);
         let options = "<option value=''>请选择</option>";
-        // console.log(datas)
 
         datas.data.map(e=>{
-          options+=`<option value=${e.kkxymc}>${e.kkxymc}</option>`;
+          options+=`<option value=${e.kkxymc} ${e.kkxymc==GET('ssxy')?"selected":''}>${e.kkxymc}</option>`;
         });
         this.xueyuan.innerHTML=options;
         this.xueyuan.onchange=()=>{
@@ -96,25 +103,23 @@ class Option extends React.Component {
   }
 
   change_master_state(state) {
-    this.search_data={
-      zh: '',
-      xm: '',
-      gzdw: '',
-      ssxy: '',
-      jsxm: '',
-      state: ''
-    };
-    Array.from(document.querySelectorAll("#down input[type='text']"))
-         .map(e=>e.value="");
     if(state==='in') {
       this.insert_xueyuan();
     }
     if(state===this.state.master) {
       return;
     }
+
+    Array.from(document.querySelectorAll("#down input[type='text']"))
+         .map(e=>e.value="");
+
+    sessionStorage.clear();
+    SET("master", state);
+
     this.qy.checked=false;
     this.ty.checked=false;
-    sessionStorage.setItem("master", state)
+    Array.from(document.querySelectorAll("#down input[type='text']"))
+         .map(e=>e.value="");
 
     this.setState({
       master: state,
@@ -122,9 +127,32 @@ class Option extends React.Component {
     },()=>{this.get_list(1)});
   }
 
+  search_handler() {
+    switch(this.state.master) {
+      case 'in':
+        this.search_data={
+          ssxy: SET('ssxy',this.xueyuan.value),
+          jsxm: SET("jsxm",this.refs.jsxm.value)
+        };
+        break;
+      case 'out':
+        this.search_data={
+          zh: SET('zh',this.refs.zhanghao.value),
+          xm: SET('xm',this.refs.name.value),
+          gzdw: SET('gzdw',this.refs.danwei.value)
+        };
+        break;
+    }
+    SET('qy',+this.qy.checked);
+    SET('ty',+this.ty.checked);
+    this.search_data.state=this.qy.checked===this.ty.checked?'':+this.qy.checked;
+    this.get_list(1);
+  }
+
+  // get datas from this.search_data
   get_list(p) {
     let data={};
-    let session_page=p||+sessionStorage.getItem(this.state.master+"page")||1;
+    let session_page=p||+GET(this.state.master+"page")||1;
     if(this.state.master==='out') {
       data={
         unifyCode: getCookie("userId"),
@@ -152,7 +180,7 @@ class Option extends React.Component {
       url: courseCenter.host+"getZjList",
       data: data,
       success: (gets)=>{
-        sessionStorage.setItem(this.state.master+"page",session_page);
+        SET(this.state.master+"page",session_page);
         let datas=JSON.parse(gets);
         this.setState({
           TP: {
@@ -166,8 +194,32 @@ class Option extends React.Component {
     });
   }
 
+  set_default() {
+    this.qy.checked=+GET('qy');
+    this.ty.checked=+GET('ty');
+    switch(this.state.master) {
+      case 'in':
+        this.refs.jsxm.value=GET('jsxm')||'';
+        this.search_data={
+          ssxy: GET('ssxy')||'',
+          jsxm: GET('jsxm')||''
+        };
+        break;
+      case 'out':
+        this.refs.zhanghao.value=GET('zh')||'';
+        this.refs.name.value=GET('xm')||'';
+        this.refs.danwei.value=GET('gzdw')||'';
+        this.search_data={
+          zh: GET('zh')||'',
+          xm: GET('xm')||'',
+          gzdw: GET('gzdw')||''
+        };
+        break;
+    }
+    this.search_data.state=this.qy.checked===this.ty.checked?'':+this.qy.checked;
+  }
+
   render() {
-    console.log(this.state.TP)
     const {master} = this.state;
     return (
       <div id="Option">
@@ -208,6 +260,7 @@ class Option extends React.Component {
   }
 
   componentDidMount() {
+    this.set_default();
     let pop = document.getElementById('popup');
     // first mount insert college list
     if(this.state.master==='in') {
@@ -233,28 +286,11 @@ class Option extends React.Component {
     };
 
     // search
-    this.search.onclick=()=>{
-      switch(this.state.master) {
-        case 'in':
-          this.search_data={
-            ssxy: this.xueyuan.value,
-            jsxm: this.refs.jsxm.value
-          };
-          break;
-        case 'out':
-          this.search_data={
-            zh: this.refs.zhanghao.value,
-            xm: this.refs.name.value,
-            gzdw: this.refs.danwei.value
-          };
-          break;
-      }
-      this.search_data.state=this.qy.checked===this.ty.checked?'':+this.qy.checked;
-      this.get_list(1);
-    };
+    this.search.onclick=this.search_handler.bind(this);
   }
 
   componentDidUpdate(prevProps, prevState) {
+    this.set_default();
     if(window.frameElement) {
       window.frameElement.height=document.body.offsetHeight;
     }
@@ -465,85 +501,6 @@ class List extends React.Component {
   }
 }
 
-class Fanye extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  create_popup_fanye() {
-    let nums=[];
-    let start=1;
-    let end=this.props.TP.pages||1;
-    let now=this.props.TP.page||1;
-    let page_on={color:"#007A51"};
-
-    let change_page=(p)=>{
-      if(p===now) {
-        nums.push(<li key={p} style={page_on}>{p}</li>);
-      } else {
-        nums.push(<li key={p} onClick={this.fanye.bind(this,p)}>{p}</li>);
-      }
-    }
-
-    if(end<1) {
-      nums.push(<li key="only" onClick={this.fanye.bind(this,1)}>1</li>)
-    } else if(end<=5) {
-      for(let i=1;i<=end;i++) {
-        change_page(i)
-      }
-    } else {
-      if(now<3) {
-        for(let i=1;i<=5;i++) {
-        change_page(i)
-        }
-      } else if(now>end-3) {
-        for(let i=end-4;i<=end;i++) {
-        change_page(i)
-        }
-      } else {
-        for(let i=now-2;i<=now+2;i++) {
-        change_page(i)
-        }
-      }
-    }
-
-    return (<div id="fanye">
-      <span id="rows">共{this.props.TP.rows>=0?this.props.TP.rows:1}条记录</span>
-      <input className="fanye_options" type="button" value="首页"   id="fanye_start" onClick={this.fanye.bind(this,1)} />
-      <input className="fanye_options" type="button" value="上一页" id="fanye_pre"   onClick={this.fanye.bind(this,now===1?0:now-1)} />
-      <ul id="fanye_nums">{nums}</ul>
-      <input type="text" id="tp" ref="tp" placeholder={`${this.props.TP.page}/${this.props.TP.pages}`} />
-      <input className="fanye_options" type="button" value="下一页" id="fanye_next"  onClick={this.fanye.bind(this,now===end?0:now+1)} />
-      <input className="fanye_options" type="button" value="尾页"   id="fanye_end"   onClick={this.fanye.bind(this,end)} />
-    </div>);
-  }
-
-  fanye(p) {
-    this.refs.tp.value=null;
-    if(p==0) {
-      return;
-    }
-    this.props.callback(p);
-  }
-
-  render() {
-    return this.create_popup_fanye();
-  }
-
-  componentDidMount() {
-    // 手动跳转翻页
-    this.refs.tp.onkeydown=(eve)=>{
-      if(eve.keyCode===13) {
-        if(!isNaN(+eve.target.value)) {
-          this.fanye(+eve.target.value);
-        } else {
-          eve.target.value=null;
-          eve.target.blur();
-        }
-      }
-    }
-  }
-}
 
 class Popup extends React.Component {
   constructor(props) {

@@ -1,4 +1,4 @@
-webpackJsonp([4],{
+webpackJsonp([7],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
@@ -7,11 +7,11 @@ webpackJsonp([4],{
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _react = __webpack_require__(2);
+	var _react = __webpack_require__(147);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(159);
+	var _reactDom = __webpack_require__(1);
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
@@ -24,8 +24,18 @@ webpackJsonp([4],{
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var _COUNT = 10;
-	var ajax = __webpack_require__(160);
+	var ajax = __webpack_require__(159);
+	var Fanye = __webpack_require__(160);
 	var masters = [];
+
+	function SET(key, value) {
+	  sessionStorage.setItem(key, value);
+	  return value;
+	}
+
+	function GET(key) {
+	  return sessionStorage.getItem(key);
+	}
 
 	var Option = function (_React$Component) {
 	  _inherits(Option, _React$Component);
@@ -36,16 +46,16 @@ webpackJsonp([4],{
 	    var _this = _possibleConstructorReturn(this, (Option.__proto__ || Object.getPrototypeOf(Option)).call(this, props));
 
 	    _this.search_data = {
-	      zh: '',
-	      xm: '',
-	      gzdw: '',
-	      ssxy: '',
-	      jsxm: '',
-	      state: ''
+	      zh: GET('zh') || '',
+	      xm: GET('xm') || '',
+	      gzdw: GET('gzdw') || '',
+	      ssxy: GET('ssxy') || '',
+	      jsxm: GET('jsxm') || '',
+	      state: +GET('qy') === +GET('ty') ? '' : +GET('qy')
 	    };
 	    _this.state = {
 	      // 取不到当前默认的masterstate就默认为out
-	      master: sessionStorage.getItem("master") || 'out',
+	      master: GET("master") || 'out',
 	      list: [],
 	      TP: {
 	        page: 1,
@@ -106,7 +116,7 @@ webpackJsonp([4],{
 	              _react2["default"].createElement(
 	                'option',
 	                { value: '' },
-	                '\u8BF7\u9009\u62E9'
+	                "请选择"
 	              )
 	            ),
 	            _react2["default"].createElement(
@@ -174,7 +184,6 @@ webpackJsonp([4],{
 	    value: function insert_xueyuan() {
 	      var _this3 = this;
 
-	      // console.log("insert")
 	      ajax({
 	        url: courseCenter.host + 'getCollege',
 	        data: {
@@ -183,10 +192,9 @@ webpackJsonp([4],{
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
 	          var options = "<option value=''>请选择</option>";
-	          // console.log(datas)
 
 	          datas.data.map(function (e) {
-	            options += '<option value=' + e.kkxymc + '>' + e.kkxymc + '</option>';
+	            options += '<option value=' + e.kkxymc + ' ' + (e.kkxymc == GET('ssxy') ? "selected" : '') + '>' + e.kkxymc + '</option>';
 	          });
 	          _this3.xueyuan.innerHTML = options;
 	          _this3.xueyuan.onchange = function () {
@@ -200,26 +208,25 @@ webpackJsonp([4],{
 	    value: function change_master_state(state) {
 	      var _this4 = this;
 
-	      this.search_data = {
-	        zh: '',
-	        xm: '',
-	        gzdw: '',
-	        ssxy: '',
-	        jsxm: '',
-	        state: ''
-	      };
-	      Array.from(document.querySelectorAll("#down input[type='text']")).map(function (e) {
-	        return e.value = "";
-	      });
 	      if (state === 'in') {
 	        this.insert_xueyuan();
 	      }
 	      if (state === this.state.master) {
 	        return;
 	      }
+
+	      Array.from(document.querySelectorAll("#down input[type='text']")).map(function (e) {
+	        return e.value = "";
+	      });
+
+	      sessionStorage.clear();
+	      SET("master", state);
+
 	      this.qy.checked = false;
 	      this.ty.checked = false;
-	      sessionStorage.setItem("master", state);
+	      Array.from(document.querySelectorAll("#down input[type='text']")).map(function (e) {
+	        return e.value = "";
+	      });
 
 	      this.setState({
 	        master: state,
@@ -229,12 +236,38 @@ webpackJsonp([4],{
 	      });
 	    }
 	  }, {
+	    key: 'search_handler',
+	    value: function search_handler() {
+	      switch (this.state.master) {
+	        case 'in':
+	          this.search_data = {
+	            ssxy: SET('ssxy', this.xueyuan.value),
+	            jsxm: SET("jsxm", this.refs.jsxm.value)
+	          };
+	          break;
+	        case 'out':
+	          this.search_data = {
+	            zh: SET('zh', this.refs.zhanghao.value),
+	            xm: SET('xm', this.refs.name.value),
+	            gzdw: SET('gzdw', this.refs.danwei.value)
+	          };
+	          break;
+	      }
+	      SET('qy', +this.qy.checked);
+	      SET('ty', +this.ty.checked);
+	      this.search_data.state = this.qy.checked === this.ty.checked ? '' : +this.qy.checked;
+	      this.get_list(1);
+	    }
+
+	    // get datas from this.search_data
+
+	  }, {
 	    key: 'get_list',
 	    value: function get_list(p) {
 	      var _this5 = this;
 
 	      var data = {};
-	      var session_page = p || +sessionStorage.getItem(this.state.master + "page") || 1;
+	      var session_page = p || +GET(this.state.master + "page") || 1;
 	      if (this.state.master === 'out') {
 	        data = {
 	          unifyCode: getCookie("userId"),
@@ -262,7 +295,7 @@ webpackJsonp([4],{
 	        url: courseCenter.host + "getZjList",
 	        data: data,
 	        success: function success(gets) {
-	          sessionStorage.setItem(_this5.state.master + "page", session_page);
+	          SET(_this5.state.master + "page", session_page);
 	          var datas = JSON.parse(gets);
 	          _this5.setState({
 	            TP: {
@@ -276,11 +309,36 @@ webpackJsonp([4],{
 	      });
 	    }
 	  }, {
+	    key: 'set_default',
+	    value: function set_default() {
+	      this.qy.checked = +GET('qy');
+	      this.ty.checked = +GET('ty');
+	      switch (this.state.master) {
+	        case 'in':
+	          this.refs.jsxm.value = GET('jsxm') || '';
+	          this.search_data = {
+	            ssxy: GET('ssxy') || '',
+	            jsxm: GET('jsxm') || ''
+	          };
+	          break;
+	        case 'out':
+	          this.refs.zhanghao.value = GET('zh') || '';
+	          this.refs.name.value = GET('xm') || '';
+	          this.refs.danwei.value = GET('gzdw') || '';
+	          this.search_data = {
+	            zh: GET('zh') || '',
+	            xm: GET('xm') || '',
+	            gzdw: GET('gzdw') || ''
+	          };
+	          break;
+	      }
+	      this.search_data.state = this.qy.checked === this.ty.checked ? '' : +this.qy.checked;
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var _this6 = this;
 
-	      console.log(this.state.TP);
 	      var master = this.state.master;
 
 	      return _react2["default"].createElement(
@@ -375,6 +433,7 @@ webpackJsonp([4],{
 	    value: function componentDidMount() {
 	      var _this7 = this;
 
+	      this.set_default();
 	      var pop = document.getElementById('popup');
 	      // first mount insert college list
 	      if (this.state.master === 'in') {
@@ -400,29 +459,12 @@ webpackJsonp([4],{
 	      };
 
 	      // search
-	      this.search.onclick = function () {
-	        switch (_this7.state.master) {
-	          case 'in':
-	            _this7.search_data = {
-	              ssxy: _this7.xueyuan.value,
-	              jsxm: _this7.refs.jsxm.value
-	            };
-	            break;
-	          case 'out':
-	            _this7.search_data = {
-	              zh: _this7.refs.zhanghao.value,
-	              xm: _this7.refs.name.value,
-	              gzdw: _this7.refs.danwei.value
-	            };
-	            break;
-	        }
-	        _this7.search_data.state = _this7.qy.checked === _this7.ty.checked ? '' : +_this7.qy.checked;
-	        _this7.get_list(1);
-	      };
+	      this.search.onclick = this.search_handler.bind(this);
 	    }
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate(prevProps, prevState) {
+	      this.set_default();
 	      if (window.frameElement) {
 	        window.frameElement.height = document.body.offsetHeight;
 	      }
@@ -814,128 +856,8 @@ webpackJsonp([4],{
 	  return List;
 	}(_react2["default"].Component);
 
-	var Fanye = function (_React$Component3) {
-	  _inherits(Fanye, _React$Component3);
-
-	  function Fanye(props) {
-	    _classCallCheck(this, Fanye);
-
-	    return _possibleConstructorReturn(this, (Fanye.__proto__ || Object.getPrototypeOf(Fanye)).call(this, props));
-	  }
-
-	  _createClass(Fanye, [{
-	    key: 'create_popup_fanye',
-	    value: function create_popup_fanye() {
-	      var _this13 = this;
-
-	      var nums = [];
-	      var start = 1;
-	      var end = this.props.TP.pages || 1;
-	      var now = this.props.TP.page || 1;
-	      var page_on = { color: "#007A51" };
-
-	      var change_page = function change_page(p) {
-	        if (p === now) {
-	          nums.push(_react2["default"].createElement(
-	            'li',
-	            { key: p, style: page_on },
-	            p
-	          ));
-	        } else {
-	          nums.push(_react2["default"].createElement(
-	            'li',
-	            { key: p, onClick: _this13.fanye.bind(_this13, p) },
-	            p
-	          ));
-	        }
-	      };
-
-	      if (end < 1) {
-	        nums.push(_react2["default"].createElement(
-	          'li',
-	          { key: 'only', onClick: this.fanye.bind(this, 1) },
-	          '1'
-	        ));
-	      } else if (end <= 5) {
-	        for (var i = 1; i <= end; i++) {
-	          change_page(i);
-	        }
-	      } else {
-	        if (now < 3) {
-	          for (var _i = 1; _i <= 5; _i++) {
-	            change_page(_i);
-	          }
-	        } else if (now > end - 3) {
-	          for (var _i2 = end - 4; _i2 <= end; _i2++) {
-	            change_page(_i2);
-	          }
-	        } else {
-	          for (var _i3 = now - 2; _i3 <= now + 2; _i3++) {
-	            change_page(_i3);
-	          }
-	        }
-	      }
-
-	      return _react2["default"].createElement(
-	        'div',
-	        { id: 'fanye' },
-	        _react2["default"].createElement(
-	          'span',
-	          { id: 'rows' },
-	          '\u5171',
-	          this.props.TP.rows >= 0 ? this.props.TP.rows : 1,
-	          '\u6761\u8BB0\u5F55'
-	        ),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u9996\u9875', id: 'fanye_start', onClick: this.fanye.bind(this, 1) }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0A\u4E00\u9875', id: 'fanye_pre', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
-	        _react2["default"].createElement(
-	          'ul',
-	          { id: 'fanye_nums' },
-	          nums
-	        ),
-	        _react2["default"].createElement('input', { type: 'text', id: 'tp', ref: 'tp', placeholder: this.props.TP.page + '/' + this.props.TP.pages }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0B\u4E00\u9875', id: 'fanye_next', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u5C3E\u9875', id: 'fanye_end', onClick: this.fanye.bind(this, end) })
-	      );
-	    }
-	  }, {
-	    key: 'fanye',
-	    value: function fanye(p) {
-	      this.refs.tp.value = null;
-	      if (p == 0) {
-	        return;
-	      }
-	      this.props.callback(p);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return this.create_popup_fanye();
-	    }
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this14 = this;
-
-	      // 手动跳转翻页
-	      this.refs.tp.onkeydown = function (eve) {
-	        if (eve.keyCode === 13) {
-	          if (!isNaN(+eve.target.value)) {
-	            _this14.fanye(+eve.target.value);
-	          } else {
-	            eve.target.value = null;
-	            eve.target.blur();
-	          }
-	        }
-	      };
-	    }
-	  }]);
-
-	  return Fanye;
-	}(_react2["default"].Component);
-
-	var Popup = function (_React$Component4) {
-	  _inherits(Popup, _React$Component4);
+	var Popup = function (_React$Component3) {
+	  _inherits(Popup, _React$Component3);
 
 	  function Popup(props) {
 	    _classCallCheck(this, Popup);
@@ -946,7 +868,7 @@ webpackJsonp([4],{
 	  _createClass(Popup, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this16 = this;
+	      var _this13 = this;
 
 	      console.log(this.props);
 	      var _props = this.props,
@@ -981,14 +903,14 @@ webpackJsonp([4],{
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_OK', ref: function ref(btn) {
-	                    return _this16.OK = btn;
+	                    return _this13.OK = btn;
 	                  } },
 	                '\u786E\u5B9A'
 	              ),
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_back', ref: function ref(btn) {
-	                    return _this16.back = btn;
+	                    return _this13.back = btn;
 	                  } },
 	                '\u53D6\u6D88'
 	              )
@@ -1074,14 +996,14 @@ webpackJsonp([4],{
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_OK', ref: function ref(btn) {
-	                    return _this16.OK = btn;
+	                    return _this13.OK = btn;
 	                  } },
 	                '\u786E\u5B9A'
 	              ),
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_back', ref: function ref(btn) {
-	                    return _this16.back = btn;
+	                    return _this13.back = btn;
 	                  } },
 	                '\u53D6\u6D88'
 	              )
@@ -1096,7 +1018,7 @@ webpackJsonp([4],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this17 = this;
+	      var _this14 = this;
 
 	      var _props2 = this.props,
 	          id = _props2.id,
@@ -1148,12 +1070,12 @@ webpackJsonp([4],{
 	          "change_PW": "updateZjPassWord"
 	        };
 	        if (type == 'change_PW') {
-	          console.log(_this17.refs.xmm.value && _this17.refs.xmmqr.value && _this17.refs.dqmm.value);
-	          if (!(_this17.refs.xmm.value && _this17.refs.xmmqr.value && _this17.refs.dqmm.value)) {
+	          console.log(_this14.refs.xmm.value && _this14.refs.xmmqr.value && _this14.refs.dqmm.value);
+	          if (!(_this14.refs.xmm.value && _this14.refs.xmmqr.value && _this14.refs.dqmm.value)) {
 	            alert("请检查参数！");
 	            return;
 	          }
-	          if (_this17.refs.xmm.value !== _this17.refs.xmmqr.value) {
+	          if (_this14.refs.xmm.value !== _this14.refs.xmmqr.value) {
 	            alert("新密码确认错误，请检查！");
 	            return;
 	          }
@@ -1198,7 +1120,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 160:
+/***/ 159:
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1269,6 +1191,159 @@ webpackJsonp([4],{
 	};
 
 	exports["default"] = post_ajax;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 160:
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(147);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Fanye = function (_React$Component) {
+	  _inherits(Fanye, _React$Component);
+
+	  function Fanye(props) {
+	    _classCallCheck(this, Fanye);
+
+	    return _possibleConstructorReturn(this, (Fanye.__proto__ || Object.getPrototypeOf(Fanye)).call(this, props));
+	  }
+
+	  _createClass(Fanye, [{
+	    key: "create_popup_fanye",
+	    value: function create_popup_fanye() {
+	      var _this2 = this;
+
+	      var nums = [];
+	      var start = 1;
+	      var end = this.props.TP.pages || 1;
+	      var now = this.props.TP.page || 1;
+	      var page_on = { color: "#007A51" };
+
+	      var change_page = function change_page(p) {
+	        if (p === now) {
+	          nums.push(_react2["default"].createElement(
+	            "li",
+	            { key: p, style: page_on },
+	            p
+	          ));
+	        } else {
+	          nums.push(_react2["default"].createElement(
+	            "li",
+	            { key: p, onClick: _this2.fanye.bind(_this2, p) },
+	            p
+	          ));
+	        }
+	      };
+
+	      if (end < 1) {
+	        nums.push(_react2["default"].createElement(
+	          "li",
+	          { key: "only", onClick: this.fanye.bind(this, 1) },
+	          "1"
+	        ));
+	      } else if (end <= 5) {
+	        for (var i = 1; i <= end; i++) {
+	          change_page(i);
+	        }
+	      } else {
+	        if (now < 3) {
+	          for (var _i = 1; _i <= 5; _i++) {
+	            change_page(_i);
+	          }
+	        } else if (now > end - 3) {
+	          for (var _i2 = end - 4; _i2 <= end; _i2++) {
+	            change_page(_i2);
+	          }
+	        } else {
+	          for (var _i3 = now - 2; _i3 <= now + 2; _i3++) {
+	            change_page(_i3);
+	          }
+	        }
+	      }
+
+	      return _react2["default"].createElement(
+	        "div",
+	        { id: "fanye" },
+	        _react2["default"].createElement(
+	          "span",
+	          { id: "rows" },
+	          "\u5171",
+	          this.props.TP.rows >= 0 ? this.props.TP.rows : 1,
+	          "\u6761\u8BB0\u5F55"
+	        ),
+	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u9996\u9875", id: "fanye_start", onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),
+	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u4E0A\u4E00\u9875", id: "fanye_pre", onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
+	        _react2["default"].createElement(
+	          "ul",
+	          { id: "fanye_nums" },
+	          nums
+	        ),
+	        _react2["default"].createElement("input", { type: "text", id: "tp", ref: "tp", placeholder: this.props.TP.page + "/" + this.props.TP.pages }),
+	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u4E0B\u4E00\u9875", id: "fanye_next", onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
+	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u5C3E\u9875", id: "fanye_end", onClick: this.fanye.bind(this, now === end ? 0 : end) })
+	      );
+	    }
+	  }, {
+	    key: "fanye",
+	    value: function fanye(p) {
+	      this.refs.tp.value = null;
+	      if (p == 0) {
+	        return;
+	      }
+	      this.props.callback(p);
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      return this.create_popup_fanye();
+	    }
+	  }, {
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      var _this3 = this;
+
+	      // 手动跳转翻页
+	      this.refs.tp.onkeydown = function (eve) {
+	        if (eve.keyCode === 13) {
+	          var newpage = +eve.target.value;
+	          if (!isNaN(newpage)) {
+	            if (newpage >= 1 && newpage <= _this3.props.TP.pages) {
+	              _this3.fanye(newpage);
+	            } else {
+	              eve.target.value = null;
+	            }
+	          } else {
+	            eve.target.value = null;
+	          }
+	          eve.target.blur();
+	        }
+	      };
+	    }
+	  }]);
+
+	  return Fanye;
+	}(_react2["default"].Component);
+
+	exports["default"] = Fanye;
 	module.exports = exports['default'];
 
 /***/ }
