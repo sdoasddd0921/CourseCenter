@@ -1,4 +1,4 @@
-webpackJsonp([8],{
+webpackJsonp([3],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
@@ -29,12 +29,12 @@ webpackJsonp([8],{
 	var _COUNT = 10;
 
 	var SET = function SET(key, value) {
-	  sessionStorage.setItem("zjfzgl-" + key, value);
+	  sessionStorage.setItem("kcfzgl-" + key, value);
 	  return value;
 	};
 
 	var GET = function GET(key) {
-	  return sessionStorage.getItem("zjfzgl-" + key) || '';
+	  return sessionStorage.getItem("kcfzgl-" + key) || '';
 	};
 
 	var Option = function (_React$Component) {
@@ -47,9 +47,9 @@ webpackJsonp([8],{
 	    var _this = _possibleConstructorReturn(this, (Option.__proto__ || Object.getPrototypeOf(Option)).call(this, props));
 
 	    _this.search_cache = {
-	      zjfzpc: GET("zjfzpc"),
+	      wppc: GET("wppc"),
 	      fzx: GET("fzx"),
-	      zj: GET("zj")
+	      kcmc: GET("kcmc")
 	    };
 
 	    _this.state = {
@@ -60,10 +60,10 @@ webpackJsonp([8],{
 	      },
 	      list: [],
 
-	      zjfzpc: GET("zjfzpc"),
+	      wppc: GET("wppc"),
 	      fzx: GET("fzx"),
-	      zj: GET("zj"),
-	      zjfzpc_select: [],
+	      kcmc: GET("kcmc"),
+	      wppc_select: [],
 	      fzx_select: []
 	    };
 	    return _this;
@@ -74,9 +74,9 @@ webpackJsonp([8],{
 	    value: function search() {
 	      // cache search datas
 	      this.search_cache = {
-	        zjfzpc: SET('zjfzpc', this.state.zjfzpc),
+	        wppc: SET('wppc', this.state.wppc),
 	        fzx: SET('fzx', this.state.fzx),
-	        zj: SET('zj', this.state.zj)
+	        kcmc: SET('kcmc', this.state.kcmc)
 	      };
 	      this._get_list(1);
 	    }
@@ -88,11 +88,11 @@ webpackJsonp([8],{
 	      var page = p || +GET("page") || 1;
 
 	      ajax({
-	        url: courseCenter.host + "getZjfzList",
+	        url: courseCenter.host + "getKcfzList",
 	        data: {
 	          unifyCode: getCookie('userId'),
-	          evaluateName: this.search_cache.zj,
-	          evaluateGroupBatch: this.search_cache.zjfzpc,
+	          reviewBatch: this.search_cache.wppc,
+	          courseName: this.search_cache.kcmc,
 	          group: this.search_cache.fzx,
 	          count: _COUNT,
 	          page: page
@@ -106,38 +106,38 @@ webpackJsonp([8],{
 	              pages: datas.data.totalPages,
 	              total: datas.data.total
 	            },
-	            list: datas.data.evaluateGroupList
+	            list: datas.data.courseGroupList
 	          });
 	        }
 	      });
 	    }
 	  }, {
-	    key: 'change_zjfzpc',
-	    value: function change_zjfzpc(e) {
+	    key: 'change_wppc',
+	    value: function change_wppc(e) {
 	      var _this3 = this;
 
-	      var evaluateGroupBatch = void 0,
+	      var reviewBatch = void 0,
 	          fzx = void 0;
 	      if (e) {
 	        // handle trriger
 	        fzx = "";
-	        evaluateGroupBatch = e.target.value;
+	        reviewBatch = e.target.value;
 	        // sessionStorage.removeItem("fzx");
 	      } else {
 	        // auto trriger
 	        fzx = this.search_cache.fzx;
-	        evaluateGroupBatch = this.state.zjfzpc;
+	        reviewBatch = this.state.wppc;
 	      }
 	      this.setState({
-	        zjfzpc: evaluateGroupBatch
+	        wppc: reviewBatch
 	      });
 
 	      // charge fzx select list
 	      ajax({
-	        url: courseCenter.host + "getFzxByZjfzpc",
+	        url: courseCenter.host + "getFzxByWppc",
 	        data: {
 	          unifyCode: getCookie("userId"),
-	          evaluateGroupBatch: evaluateGroupBatch
+	          reviewBatch: reviewBatch
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
@@ -163,10 +163,10 @@ webpackJsonp([8],{
 	      });
 	    }
 	  }, {
-	    key: 'change_zj',
-	    value: function change_zj(e) {
+	    key: 'change_kcmc',
+	    value: function change_kcmc(e) {
 	      this.setState({
-	        zj: e.target.value
+	        kcmc: e.target.value
 	      });
 	    }
 	  }, {
@@ -174,6 +174,7 @@ webpackJsonp([8],{
 	    value: function render() {
 	      var _this4 = this;
 
+	      // console.log("TP:",this.state.TP)
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'Option_react' },
@@ -182,43 +183,32 @@ webpackJsonp([8],{
 	          { id: 'option' },
 	          _react2["default"].createElement(
 	            'div',
-	            { id: 'up' },
-	            _react2["default"].createElement(
-	              'button',
-	              { id: 'add', ref: function ref(btn) {
-	                  return _this4.add_btn = btn;
-	                } },
-	              '\u6DFB\u52A0\u5206\u7EC4'
-	            )
-	          ),
-	          _react2["default"].createElement(
-	            'div',
 	            { id: 'down' },
 	            _react2["default"].createElement(
 	              'span',
 	              null,
-	              '\u4E13\u5BB6\u5206\u7EC4\u6279\u6B21\uFF1A'
+	              '\u7F51\u8BC4\u6279\u6B21\uFF1A'
 	            ),
 	            _react2["default"].createElement(
 	              'select',
 	              {
-	                name: 'zjfzpc_select',
-	                id: 'zjfzpc_select',
+	                name: 'wppc_select',
+	                id: 'wppc_select',
 	                ref: function ref(sel) {
-	                  return _this4.zjfzpc_select = sel;
+	                  return _this4.wppc_select = sel;
 	                },
-	                value: this.state.zjfzpc,
-	                onChange: this.change_zjfzpc.bind(this)
+	                value: this.state.wppc,
+	                onChange: this.change_wppc.bind(this)
 	              },
 	              [_react2["default"].createElement(
 	                'option',
 	                { value: '', key: 'default' },
 	                '\u8BF7\u9009\u62E9'
-	              )].concat(this.state.zjfzpc_select.map(function (op, index) {
+	              )].concat(this.state.wppc_select.map(function (op, index) {
 	                return _react2["default"].createElement(
 	                  'option',
-	                  { value: op.zjfzpc, key: index },
-	                  op.zjfzpc
+	                  { value: op.wppc, key: index },
+	                  op.wppc
 	                );
 	              }))
 	            ),
@@ -253,16 +243,16 @@ webpackJsonp([8],{
 	            _react2["default"].createElement(
 	              'span',
 	              null,
-	              '\u4E13\u5BB6\uFF1A'
+	              '\u8BFE\u7A0B\u540D\u79F0\uFF1A'
 	            ),
 	            _react2["default"].createElement('input', {
 	              type: 'text',
 	              ref: function ref(input) {
-	                return _this4.zj_input = input;
+	                return _this4.kcmc_input = input;
 	              },
-	              id: 'zj_input',
-	              value: this.state.zj,
-	              onChange: this.change_zj.bind(this)
+	              id: 'kcmc_input',
+	              value: this.state.kcmc,
+	              onChange: this.change_kcmc.bind(this)
 	            }),
 	            _react2["default"].createElement(
 	              'button',
@@ -284,27 +274,30 @@ webpackJsonp([8],{
 	    value: function componentDidMount() {
 	      var _this5 = this;
 
-	      // charge zjfzpc select
+	      // charge wppc select
 	      ajax({
-	        url: courseCenter.host + "getZjfzpc",
+	        url: courseCenter.host + "reviewBriefList",
 	        data: {
-	          unifyCode: getCookie('userId')
+	          userID: getCookie('userId'),
+	          state: 1,
+	          expGroup: ''
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          _this5.setState({
-	            zjfzpc_select: datas.data
-	          });
+	          if (datas.meta.result === 100) {
+	            _this5.setState({
+	              wppc_select: datas.data.list
+	            });
+	          } else {
+	            _this5.setState({
+	              wppc_select: []
+	            });
+	          }
 	        }
 	      });
-	      this.change_zjfzpc();
+	      this.change_wppc();
 
 	      this._get_list();
-
-	      // bind add option
-	      this.add_btn.onclick = function () {
-	        window.location.href = './masterSortEditor.html';
-	      };
 	    }
 	  }]);
 
@@ -334,11 +327,11 @@ webpackJsonp([8],{
 	            { className: 'lefttd' },
 	            _react2["default"].createElement('div', null)
 	          ),
-	          _react2["default"].createElement('td', { width: '5px' }),
+	          _react2["default"].createElement('td', { width: '0px' }),
 	          _react2["default"].createElement(
 	            'td',
-	            { width: '20%' },
-	            '\u4E13\u5BB6\u5206\u7EC4\u6279\u6B21'
+	            { width: '10%' },
+	            '\u7F51\u8BC4\u6279\u6B21'
 	          ),
 	          _react2["default"].createElement(
 	            'td',
@@ -352,15 +345,15 @@ webpackJsonp([8],{
 	          ),
 	          _react2["default"].createElement(
 	            'td',
-	            { width: '30%' },
-	            '\u4E13\u5BB6\u5217\u8868'
+	            null,
+	            '\u8BFE\u7A0B\u5217\u8868'
 	          ),
 	          _react2["default"].createElement(
 	            'td',
 	            { width: '15%' },
 	            '\u64CD\u4F5C'
 	          ),
-	          _react2["default"].createElement('td', { width: '5px' }),
+	          _react2["default"].createElement('td', { width: '0px' }),
 	          _react2["default"].createElement(
 	            'td',
 	            { className: 'righttd' },
@@ -371,18 +364,18 @@ webpackJsonp([8],{
 	    }
 	  }, {
 	    key: 'option',
-	    value: function option(type, zjfzpc, eve) {
+	    value: function option(type, data, eve) {
 	      eve.preventDefault();
 	      switch (type) {
 	        case 'edit':
-	          window.location.href = './masterSortEditor.html?groupBatch=' + zjfzpc;
+	          window.location.href = './masterSortEditor.html?groupBatch=' + data;
 	          break;
 	        case 'delete':
-	          Creat_popup('delete', zjfzpc);
+	          Creat_popup('delete', data);
 	          break;
 	        case 'show':
-	          Creat_popup('show', zjfzpc.map(function (e) {
-	            return e.xm;
+	          Creat_popup('show', data.map(function (e) {
+	            return e.kcmc;
 	          }));
 	          break;
 	        default:
@@ -406,7 +399,7 @@ webpackJsonp([8],{
 	            _react2["default"].createElement(
 	              'td',
 	              null,
-	              e.zjfzpc
+	              e.wppc
 	            ),
 	            _react2["default"].createElement(
 	              'td',
@@ -423,27 +416,27 @@ webpackJsonp([8],{
 	              null,
 	              _react2["default"].createElement(
 	                'span',
-	                { className: 'zj_list', onClick: _this7.option.bind(_this7, 'show', e.evaluates) },
-	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'zj_num' },
-	                  '[' + e.zjs + ']'
-	                ),
-	                +e.zjs > 4 ? e.evaluates.map(function (zj, zjNo) {
-	                  return zjNo < 4 && _react2["default"].createElement(
+	                { className: 'kcmc_num' },
+	                '[' + e.kcs + ']'
+	              ),
+	              _react2["default"].createElement(
+	                'span',
+	                { className: 'kcmc_list', onClick: _this7.option.bind(_this7, 'show', e.courseList) },
+	                +e.kcmcs > 3 ? e.courseList.map(function (kcmc, kcmcNo) {
+	                  return kcmcNo < 3 && _react2["default"].createElement(
 	                    'span',
-	                    { key: zjNo, className: 'zj_name' },
-	                    zj.xm
+	                    { key: kcmcNo, className: 'kcmc_name' },
+	                    kcmc.xm
 	                  );
 	                }).concat(_react2["default"].createElement(
 	                  'span',
 	                  { key: 'dot' },
 	                  '\u2026\u2026'
-	                )) : e.evaluates.map(function (zj, zjNo) {
+	                )) : e.courseList.map(function (kcmc, kcmcNo) {
 	                  return _react2["default"].createElement(
 	                    'span',
-	                    { key: zjNo, className: 'zj_name' },
-	                    zj.xm
+	                    { key: kcmcNo, className: 'kcmc_name' },
+	                    kcmc.kcmc
 	                  );
 	                })
 	              )
@@ -453,13 +446,8 @@ webpackJsonp([8],{
 	              null,
 	              _react2["default"].createElement(
 	                'a',
-	                { href: '#', onClick: _this7.option.bind(_this7, 'edit', e.zjfzpc) },
+	                { href: '#', onClick: _this7.option.bind(_this7, 'edit', e.wppc) },
 	                '\u7F16\u8F91'
-	              ),
-	              _react2["default"].createElement(
-	                'a',
-	                { href: '#', onClick: _this7.option.bind(_this7, 'delete', e.zjfzpc) },
-	                '\u5220\u9664'
 	              )
 	            ),
 	            _react2["default"].createElement('td', null),
@@ -557,12 +545,12 @@ webpackJsonp([8],{
 	            { id: 'popbody', ref: 'pb' },
 	            _react2["default"].createElement(
 	              'div',
-	              { id: 'zjs' },
-	              id.map(function (zj, index) {
+	              { id: 'kcmcs' },
+	              id.map(function (kcmc, index) {
 	                return _react2["default"].createElement(
 	                  'span',
-	                  { key: index, className: 'zj' },
-	                  zj
+	                  { key: index, className: 'kcmc' },
+	                  kcmc
 	                );
 	              })
 	            )
@@ -590,7 +578,7 @@ webpackJsonp([8],{
 	        case "delete":
 	          dat = {
 	            unifyCode: getCookie("userId"),
-	            groupBatch: id
+	            reviewId: id
 	          };
 	          break;
 	        default:
@@ -602,7 +590,7 @@ webpackJsonp([8],{
 	      // OK button option
 	      this.OK && (this.OK.onclick = function () {
 	        var data_map = {
-	          "delete": "deleteFz"
+	          "delete": "deleteKcfz"
 	        };
 	        ajax({
 	          url: courseCenter.host + data_map[type],
@@ -611,7 +599,7 @@ webpackJsonp([8],{
 	            var datas = JSON.parse(gets);
 	            if (datas.meta.result == 100) {
 	              cancel_popup();
-	              Zjfzgl_option._get_list();
+	              Kcfzgl_option._get_list();
 	            }
 	          }
 	        });
@@ -640,7 +628,7 @@ webpackJsonp([8],{
 	  _reactDom2["default"].unmountComponentAtNode(popup);
 	}
 
-	var Zjfzgl_option = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('zjfzgl'));
+	var Kcfzgl_option = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('kcfzgl'));
 
 /***/ },
 

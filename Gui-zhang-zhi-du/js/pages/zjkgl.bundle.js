@@ -1,4 +1,4 @@
-webpackJsonp([7],{
+webpackJsonp([9],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
@@ -29,12 +29,12 @@ webpackJsonp([7],{
 	var masters = [];
 
 	function SET(key, value) {
-	  sessionStorage.setItem(key, value);
+	  sessionStorage.setItem("zjkgl-" + key, value);
 	  return value;
 	}
 
 	function GET(key) {
-	  return sessionStorage.getItem(key);
+	  return sessionStorage.getItem("zjkgl-" + key);
 	}
 
 	var Option = function (_React$Component) {
@@ -799,6 +799,7 @@ webpackJsonp([7],{
 	  }, {
 	    key: 'check',
 	    value: function check(id, name, eve) {
+	      this.allcheck.checked = false;
 	      if (eve.target.checked) {
 	        // add
 	        this.ids.push(id);
@@ -1285,9 +1286,9 @@ webpackJsonp([7],{
 	        { id: "fanye" },
 	        _react2["default"].createElement(
 	          "span",
-	          { id: "rows" },
+	          { id: "total" },
 	          "\u5171",
-	          this.props.TP.rows >= 0 ? this.props.TP.rows : 1,
+	          this.props.TP.total >= 0 ? this.props.TP.total : 1,
 	          "\u6761\u8BB0\u5F55"
 	        ),
 	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u9996\u9875", id: "fanye_start", onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),

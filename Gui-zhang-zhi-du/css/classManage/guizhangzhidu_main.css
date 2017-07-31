@@ -4,7 +4,7 @@
 }
 html { font-family: "YaHei UI"; background-color: #F7F6F6; }
 body {
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 li { list-style: none; }
 a { text-decoration: none; color:inherit; }
@@ -17,7 +17,7 @@ iframe {
 /* head */
 #head {
   width: 100%;
-  min-width: 1920px;
+  /*min-width: 1920px;*/
   height: 100px;
   background-color: #fff;
   margin-bottom: 20px;
@@ -46,8 +46,9 @@ iframe {
 /* main-body */
 #body {
   width: 100%;
-  min-width: 1920px;
+  min-width: 1280px;
   min-height: 743px;
+  /*margin-left: calc(100vw - 100%);*/
 }
 
 
@@ -55,7 +56,7 @@ iframe {
 /* menu */
 #menu {
   float: left;
-  width: 300px;
+  width: 280px;
   min-width: 200px;
   height: 661px;
   display: inline-block;
@@ -102,7 +103,8 @@ iframe {
 /* content */
 #content {
   float: left;
-  min-width: 1620px;
+  width: calc(100% - 280px);
+  min-width: 1000px;
   min-height: 600px;
   display: inline-block;
   padding-left: 25px;
@@ -150,7 +152,7 @@ iframe {
 
 /* footer */
 #footer {
-  width: 1920px;
+  width: 100%;
   height: 75px;
   line-height: 75px;
   color: #FFF;

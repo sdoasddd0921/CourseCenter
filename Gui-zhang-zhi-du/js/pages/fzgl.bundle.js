@@ -28,6 +28,15 @@ webpackJsonp([0],{
 
 	var _COUNT = 10;
 
+	var SET = function SET(key, value) {
+	  sessionStorage.setItem("fzgl-" + key, value);
+	  return value;
+	};
+
+	var GET = function GET(key) {
+	  return sessionStorage.getItem("fzgl-" + key) || '';
+	};
+
 	var Option = function (_React$Component) {
 	  _inherits(Option, _React$Component);
 
@@ -37,7 +46,7 @@ webpackJsonp([0],{
 	    var _this = _possibleConstructorReturn(this, (Option.__proto__ || Object.getPrototypeOf(Option)).call(this, props));
 
 	    _this.pici_insert = [];
-	    _this.fzpc = sessionStorage.getItem("fzgl-fzpc") || '';
+	    _this.fzpc = GET("fzpc") || '';
 	    _this.state = {
 	      TP: {
 	        page: 1,
@@ -65,7 +74,7 @@ webpackJsonp([0],{
 	    key: 'search',
 	    value: function search() {
 	      this.fzpc = this.pici.value;
-	      sessionStorage.setItem("fzgl-fzpc", this.fzpc);
+	      SET("fzpc", this.fzpc);
 	      this.get_list(1);
 	    }
 	  }, {
@@ -73,7 +82,7 @@ webpackJsonp([0],{
 	    value: function get_list(p) {
 	      var _this3 = this;
 
-	      var page = p || +sessionStorage.getItem("fzgl-page") || 1;
+	      var page = p || +GET("page") || 1;
 	      ajax({
 	        url: courseCenter.host + "getFzList",
 	        data: {
@@ -84,7 +93,7 @@ webpackJsonp([0],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          sessionStorage.setItem("fzgl-page", page);
+	          SET("page", page);
 	          _this3.setState({
 	            TP: {
 	              page: page,
@@ -617,9 +626,9 @@ webpackJsonp([0],{
 	        { id: "fanye" },
 	        _react2["default"].createElement(
 	          "span",
-	          { id: "rows" },
+	          { id: "total" },
 	          "\u5171",
-	          this.props.TP.rows >= 0 ? this.props.TP.rows : 1,
+	          this.props.TP.total >= 0 ? this.props.TP.total : 1,
 	          "\u6761\u8BB0\u5F55"
 	        ),
 	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u9996\u9875", id: "fanye_start", onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),

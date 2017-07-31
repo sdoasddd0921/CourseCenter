@@ -1,4 +1,4 @@
-webpackJsonp([6],{
+webpackJsonp([7],{
 
 /***/ 0:
 /***/ function(module, exports, __webpack_require__) {
@@ -25,16 +25,15 @@ webpackJsonp([6],{
 
 	var ajax = __webpack_require__(159);
 	var Fanye = __webpack_require__(160);
-	var _prefix = "wpgl-";
 	var _COUNT = 2;
 
 	var SET = function SET(key, value) {
-	  sessionStorage.setItem(_prefix + key, value);
+	  sessionStorage.setItem("wpgl-jieguo-" + key, value);
 	  return value;
 	};
 
 	var GET = function GET(key) {
-	  return sessionStorage.getItem(_prefix + key) || '';
+	  return sessionStorage.getItem("wpgl-jieguo-" + key) || '';
 	};
 
 	var WPPCS = [];
@@ -47,8 +46,14 @@ webpackJsonp([6],{
 
 	    var _this = _possibleConstructorReturn(this, (Option.__proto__ || Object.getPrototypeOf(Option)).call(this, props));
 
+	    _this.model = GET("model") || "zj";
 	    _this.search_cache = {
-	      wppc: GET("wppc")
+	      byzj: Boolean(+GET("byzj")) === Boolean(+GET("bykc")) ? true : Boolean(+GET("byzj")),
+	      bykc: Boolean(+GET("bykc")) || false,
+	      yfp: Boolean(+GET("yfp")),
+	      wfp: Boolean(+GET("wfp")),
+	      fzx: GET("fzx"),
+	      name: GET("name")
 	    };
 	    _this.state = {
 	      TP: {
@@ -57,8 +62,15 @@ webpackJsonp([6],{
 	        total: 1
 	      },
 	      list: [],
-	      wppc: GET("wppc"),
-	      wppc_select: []
+
+	      byzj: _this.search_cache.byzj,
+	      bykc: _this.search_cache.bykc,
+	      yfp: _this.search_cache.yfp,
+	      wfp: _this.search_cache.wfp,
+	      fzx: _this.search_cache.fzx,
+	      name: _this.search_cache.name,
+	      fzx_select: [],
+	      zjxm_input: ""
 	    };
 	    return _this;
 	  }
@@ -71,12 +83,16 @@ webpackJsonp([6],{
 	      var page = p || +GET("page") || 1;
 
 	      ajax({
-	        url: courseCenter.host + "reviewList",
+	        url: courseCenter.host + "reviewAllocateResult",
 	        data: {
 	          unifyCode: getCookie("userId"),
-	          name: this.search_cache.wppc,
+	          ID: parseHash(window.location.href).id,
 	          page: page,
-	          count: _COUNT
+	          count: _COUNT,
+	          type: ['zj', 'kc'].indexOf(this.model) + 1,
+	          allocateStatus: '[' + +this.yfp.checked + ',' + +this.wfp.checked + ']',
+	          selectItem: this.search_cache.fzx,
+	          selectName: this.search_cache.name
 	        },
 	        success: function success(gets) {
 	          SET("page", page);
@@ -87,22 +103,48 @@ webpackJsonp([6],{
 	              pages: datas.data.totalPages,
 	              total: datas.data.total
 	            },
-	            list: datas.data.list
+	            list: datas.data.allocateList
 	          });
 	        }
 	      });
 	    }
 	  }, {
-	    key: 'change_wppc',
-	    value: function change_wppc(e) {
+	    key: 'change_fzx',
+	    value: function change_fzx(e) {
 	      this.setState({
-	        wppc: e ? e.target.value : this.state.wppc
+	        fzx: e ? e.target.value : this.state.fzx
 	      });
 	    }
 	  }, {
+	    key: 'change_name',
+	    value: function change_name(e) {}
+	  }, {
 	    key: 'search',
 	    value: function search() {
-	      this.search_cache.wppc = SET("wppc", this.state.wppc);
+	      this.search_cache.wppc = SET("yfp", this.yfp.checked);
+	      this.search_cache.wppc = SET("wfp", this.wfp.checked);
+	      this.search_cache.wppc = SET("fzx", this.state.fzx);
+	      this.search_cache.wppc = SET("zjxm", this.state.zjxm);
+	      // this._get_list(1);
+	    }
+	  }, {
+	    key: 'model_change',
+	    value: function model_change(model, eve) {
+	      // limit request of check way
+	      if (['kc', 'zj'].indexOf(model) === -1 || eve.target.checked === this.state['by' + model]) {
+	        return;
+	      }
+	      this.model = SET("model", model);
+	      this.search_cache.byzj = Boolean(+SET("byzj", +(model === 'zj')));
+	      this.search_cache.bykc = Boolean(+SET("bykc", +(model === 'kc')));
+	      this.setState({
+	        fzx: '',
+	        list: [],
+	        byzj: this.search_cache.byzj,
+	        bykc: this.search_cache.bykc
+	      });
+	      this.name_input.value = '';
+	      console.log("model:", model);
 	      this._get_list(1);
 	    }
 	  }, {
@@ -118,29 +160,105 @@ webpackJsonp([6],{
 	          { id: 'option' },
 	          _react2["default"].createElement(
 	            'div',
-	            { id: 'big_btns' },
+	            { id: 'up' },
 	            _react2["default"].createElement(
 	              'button',
 	              { className: 'big_btn', ref: function ref(btn) {
-	                  return _this3.fqwp = btn;
+	                  return _this3.back = btn;
 	                } },
-	              '\u53D1\u8D77\u7F51\u8BC4'
-	            ),
-	            _react2["default"].createElement(
-	              'button',
-	              { className: 'big_btn', ref: function ref(btn) {
-	                  return _this3.PLdelete = btn;
-	                } },
-	              '\u6279\u91CF\u5220\u9664'
+	              '\u8FD4\u56DE'
 	            )
 	          ),
 	          _react2["default"].createElement(
 	            'div',
-	            { id: 'filter_bar' },
+	            { id: 'mid' },
+	            _react2["default"].createElement('input', {
+	              name: 'check_way',
+	              type: 'radio',
+	              id: 'byzj',
+	              defaultChecked: this.state.byzj,
+	              onChange: this.model_change.bind(this, 'zj'),
+	              ref: function ref(check) {
+	                return _this3.byzj = check;
+	              }
+	            }),
+	            _react2["default"].createElement(
+	              'label',
+	              { htmlFor: 'byzj' },
+	              _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
+	            ),
+	            _react2["default"].createElement(
+	              'span',
+	              null,
+	              '\u6309\u4E13\u5BB6\u67E5\u770B'
+	            ),
+	            _react2["default"].createElement('input', {
+	              name: 'check_way',
+	              type: 'radio',
+	              id: 'bykc',
+	              defaultChecked: this.state.bykc,
+	              onChange: this.model_change.bind(this, 'kc'),
+	              ref: function ref(check) {
+	                return _this3.bykc = check;
+	              }
+	            }),
+	            _react2["default"].createElement(
+	              'label',
+	              { htmlFor: 'bykc' },
+	              _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
+	            ),
+	            _react2["default"].createElement(
+	              'span',
+	              null,
+	              '\u6309\u8BFE\u7A0B\u67E5\u770B'
+	            )
+	          ),
+	          _react2["default"].createElement(
+	            'div',
+	            { id: 'down' },
+	            _react2["default"].createElement(
+	              'span',
+	              null,
+	              (this.state.byzj ? '专家' : '课程') + '\u5206\u914D' + (this.state.byzj ? '课程' : '专家') + '\u72B6\u6001\uFF1A'
+	            ),
+	            _react2["default"].createElement('input', {
+	              type: 'checkbox',
+	              id: 'yfp',
+	              ref: function ref(check) {
+	                return _this3.yfp = check;
+	              }
+	            }),
+	            _react2["default"].createElement(
+	              'label',
+	              { htmlFor: 'yfp' },
+	              _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
+	            ),
+	            _react2["default"].createElement(
+	              'span',
+	              null,
+	              '\u5DF2\u5206\u914D'
+	            ),
+	            _react2["default"].createElement('input', {
+	              type: 'checkbox',
+	              id: 'wfp',
+	              ref: function ref(check) {
+	                return _this3.wfp = check;
+	              }
+	            }),
+	            _react2["default"].createElement(
+	              'label',
+	              { htmlFor: 'wfp' },
+	              _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
+	            ),
+	            _react2["default"].createElement(
+	              'span',
+	              null,
+	              '\u672A\u5206\u914D'
+	            ),
 	            _react2["default"].createElement(
 	              'span',
 	              { id: 'wppc' },
-	              '\u7F51\u8BC4\u6279\u6B21\uFF1A'
+	              (this.state.byzj ? '专家' : '课程') + '\u5206\u7EC4\u9879\uFF1A'
 	            ),
 	            _react2["default"].createElement(
 	              'select',
@@ -150,21 +268,34 @@ webpackJsonp([6],{
 	                ref: function ref(sel) {
 	                  return _this3.wppc_select = sel;
 	                },
-	                value: this.state.wppc,
-	                onChange: this.change_wppc.bind(this)
+	                value: this.state.fzx,
+	                onChange: this.change_fzx.bind(this)
 	              },
 	              [_react2["default"].createElement(
 	                'option',
 	                { value: '', key: 'default' },
 	                '\u8BF7\u9009\u62E9'
-	              )].concat(this.state.wppc_select.map(function (op, index) {
+	              )].concat(this.state.fzx_select.map(function (op, index) {
 	                return _react2["default"].createElement(
 	                  'option',
-	                  { value: op.wppc, key: index },
-	                  op.wppc
+	                  { value: op.fzx, key: index },
+	                  op.fzx
 	                );
 	              }))
 	            ),
+	            _react2["default"].createElement(
+	              'span',
+	              { id: 'wppc' },
+	              (this.state.byzj ? '专家姓名' : '课程名') + '\uFF1A'
+	            ),
+	            _react2["default"].createElement('input', {
+	              name: 'zjxm_input',
+	              id: 'zjxm_input',
+	              ref: function ref(input) {
+	                return _this3.name_input = input;
+	              },
+	              defaultValue: this.state.name
+	            }),
 	            _react2["default"].createElement(
 	              'button',
 	              { id: 'serch', onClick: this.search.bind(this) },
@@ -172,7 +303,7 @@ webpackJsonp([6],{
 	            )
 	          )
 	        ),
-	        _react2["default"].createElement(Lists, { ref: 'list', Lists: this.state.list }),
+	        _react2["default"].createElement(Lists, { ref: 'list', Lists: this.state.list, model: this.model }),
 	        _react2["default"].createElement(Fanye, { TP: this.state.TP, callback: function callback(p) {
 	            _this3._get_list(p);
 	          } })
@@ -183,13 +314,12 @@ webpackJsonp([6],{
 	    value: function componentDidMount() {
 	      var _this4 = this;
 
-	      // 填充网评批次下拉菜单
+	      // 填充分组项次下拉菜单
 	      ajax({
-	        url: courseCenter.host + "reviewBriefList",
+	        url: courseCenter.host + "getFzxByWppc",
 	        data: {
-	          userID: getCookie("userId"),
-	          state: 1,
-	          expGroup: ""
+	          unifyCode: getCookie("userId"),
+	          reviewBatch: parseHash(window.location.href).wppc
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
@@ -198,32 +328,26 @@ webpackJsonp([6],{
 	            return;
 	          }
 	          _this4.setState({
-	            wppc_select: JSON.parse(gets).data.list
+	            fzx_select: JSON.parse(gets).data
 	          });
 	        }
 	      });
 
-	      // // 首次查询列表并填充
-	      this._get_list();
+	      // 首次查询列表并填充
+	      this._get_list(1);
 
-	      var pop = document.getElementById('popup');
-	      // PiLiangDelete
-	      this.PLdelete.onclick = function () {
-	        console.log(_this4.refs.list);
-	        Creat_popup('PLdelete', WPPCS, _this4.refs.list.ids);
-	        pop.style.display = 'block';
+	      // back button click options
+	      this.back.onclick = function () {
+	        window.location.href = "./wpgl.html";
+	        // clear tab sessionStorage
+	        var delet_tag_prefix = new RegExp('^wpgl-jieguo-');
+	        for (var end = window.sessionStorage.length; end > 0; end--) {
+	          if (delet_tag_prefix.test(window.sessionStorage.key(end - 1))) {
+	            sessionStorage.removeItem(window.sessionStorage.key(end - 1));
+	          }
+	        }
 	      };
 	    }
-
-	    // componentWillUnmount() {
-	    //   let del = new RegExp(`^${_prefix}`)
-	    //   for(let i in sessionStorage) {
-	    //     if(del.test(i)) {
-	    //       console.log("should be deleted!")
-	    //     }
-	    //   }
-	    // }
-
 	  }]);
 
 	  return Option;
@@ -235,88 +359,106 @@ webpackJsonp([6],{
 	  function Lists(props) {
 	    _classCallCheck(this, Lists);
 
-	    var _this5 = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
-
-	    _this5.ids = [];
-	    return _this5;
+	    return _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
 	  }
 
 	  _createClass(Lists, [{
 	    key: 'create_head',
 	    value: function create_head() {
-	      var _this6 = this;
-
-	      return _react2["default"].createElement(
-	        'thead',
-	        null,
-	        _react2["default"].createElement(
-	          'tr',
-	          null,
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '25px', className: 'td_head' },
-	            _react2["default"].createElement('div', null)
-	          ),
-	          _react2["default"].createElement('td', { width: '0px', className: 'td_left_space' }),
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '20px' },
-	            _react2["default"].createElement('input', {
-	              type: 'checkbox',
-	              id: 'allcheck',
-	              ref: function ref(check) {
-	                return _this6.allcheck = check;
-	              }
-	            }),
+	      switch (this.props.model) {
+	        case 'zj':
+	          return _react2["default"].createElement(
+	            'thead',
+	            null,
 	            _react2["default"].createElement(
-	              'label',
-	              { htmlFor: 'allcheck' },
-	              _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
+	              'tr',
+	              null,
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '25px', className: 'td_head' },
+	                _react2["default"].createElement('div', null)
+	              ),
+	              _react2["default"].createElement('td', { width: '0px', className: 'td_left_space' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                '\u4E13\u5BB6\u59D3\u540D'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '15%' },
+	                '\u6240\u5C5E\u4E13\u5BB6\u5206\u7EC4\u9879'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                '\u5DF2\u5206\u914D\u8BFE\u7A0B'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '8%' },
+	                '\u64CD\u4F5C'
+	              ),
+	              _react2["default"].createElement('td', { width: '0px', className: 'td_right_space' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '25px', className: 'td_end' },
+	                _react2["default"].createElement('div', null)
+	              )
 	            )
-	          ),
-	          _react2["default"].createElement(
-	            'td',
+	          );
+	          break;
+
+	        case 'kc':
+	          return _react2["default"].createElement(
+	            'thead',
 	            null,
-	            '\u7F51\u8BC4\u6279\u6B21'
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '10%' },
-	            '\u5206\u7EC4\u6279\u6B21'
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '10%' },
-	            '\u6307\u6807\u6279\u6B21'
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '13%' },
-	            '\u4E13\u5BB6\u5206\u7EC4\u6279\u6B21'
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            null,
-	            '\u8D77\u6B62\u65F6\u95F4'
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '10%' },
-	            '\u5206\u914D\u8BFE\u7A0B'
-	          ),
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '10%' },
-	            '\u64CD\u4F5C'
-	          ),
-	          _react2["default"].createElement('td', { width: '0px', className: 'td_right_space' }),
-	          _react2["default"].createElement(
-	            'td',
-	            { width: '25px', className: 'td_end' },
-	            _react2["default"].createElement('div', null)
-	          )
-	        )
-	      );
+	            _react2["default"].createElement(
+	              'tr',
+	              null,
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '25px', className: 'td_head' },
+	                _react2["default"].createElement('div', null)
+	              ),
+	              _react2["default"].createElement('td', { width: '0px', className: 'td_left_space' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                '\u8BFE\u7A0B\u540D\u79F0'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '10%' },
+	                '\u8BFE\u7A0B\u7F16\u53F7'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '15%' },
+	                '\u6240\u5C5E\u8BFE\u7A0B\u5206\u7EC4\u9879'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                '\u5DF2\u5206\u914D\u4E13\u5BB6'
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '8%' },
+	                '\u64CD\u4F5C'
+	              ),
+	              _react2["default"].createElement('td', { width: '0px', className: 'td_right_space' }),
+	              _react2["default"].createElement(
+	                'td',
+	                { width: '25px', className: 'td_end' },
+	                _react2["default"].createElement('div', null)
+	              )
+	            )
+	          );
+	          break;
+	        default:
+	          return _react2["default"].createElement('thead', null);
+	      }
 	    }
 	  }, {
 	    key: 'option',
@@ -333,7 +475,7 @@ webpackJsonp([6],{
 	          window.location.href = './wpgl-fenpei.html';
 	          break;
 	        case 'jieguo':
-	          window.location.href = './wpgl-jieguo.html?wppc=' + wppc + '&id=' + id;
+	          window.location.href = './wpgl-jieguo.html';
 	          break;
 	        case 'edit':
 	          break;
@@ -362,98 +504,119 @@ webpackJsonp([6],{
 	  }, {
 	    key: 'create_body',
 	    value: function create_body() {
-	      var _this7 = this;
+	      var _this6 = this;
 
-	      return _react2["default"].createElement(
-	        'tbody',
-	        null,
-	        this.props.Lists.map(function (e, index) {
+	      switch (this.props.model) {
+	        case 'zj':
 	          return _react2["default"].createElement(
-	            'tr',
-	            { key: index },
-	            _react2["default"].createElement('td', { className: 'td_head' }),
-	            _react2["default"].createElement('td', null),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              _react2["default"].createElement('input', {
-	                type: 'checkbox',
-	                id: "input-" + index,
-	                value: e.id + "#" + e.wppc,
-	                onChange: _this7.check.bind(_this7, e.id, e.wppc)
-	              }),
-	              _react2["default"].createElement(
-	                'label',
-	                { htmlFor: "input-" + index },
-	                _react2["default"].createElement('img', { src: '../../imgs/public/hook.png' })
-	              )
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              e.wppc
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              e.fzpc
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              e.zbpc
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              e.zjfzpc
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              e.kssj + "-" + e.jssj
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              _react2["default"].createElement(
-	                'div',
-	                null,
+	            'tbody',
+	            null,
+	            this.props.Lists.map(function (e, index) {
+	              return _react2["default"].createElement(
+	                'tr',
+	                { key: index },
+	                _react2["default"].createElement('td', { className: 'td_head' }),
+	                _react2["default"].createElement('td', null),
 	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'green_btn', onClick: _this7.option.bind(_this7, "fenpei", e.id, e.wppc) },
-	                  '\u5206\u914D'
+	                  'td',
+	                  null,
+	                  e.itemName
 	                ),
 	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'green_btn', onClick: _this7.option.bind(_this7, "jieguo", e.id, e.wppc) },
-	                  '\u7ED3\u679C'
-	                )
-	              )
-	            ),
-	            _react2["default"].createElement(
-	              'td',
-	              null,
-	              _react2["default"].createElement(
-	                'div',
-	                null,
-	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'green_btn', onClick: _this7.option.bind(_this7, "edit", e.id, e.wppc) },
-	                  '\u7F16\u8F91'
+	                  'td',
+	                  null,
+	                  e.groupItem
 	                ),
 	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'yellow_btn', onClick: _this7.option.bind(_this7, "delete", e.id, e.wppc) },
-	                  '\u5220\u9664'
-	                )
-	              )
-	            ),
-	            _react2["default"].createElement('td', null),
-	            _react2["default"].createElement('td', { className: 'td_end' })
+	                  'td',
+	                  null,
+	                  e.list.map(function (e, index) {
+	                    return _react2["default"].createElement(
+	                      'span',
+	                      { key: index },
+	                      e.name
+	                    );
+	                  })
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.ableModify ? _react2["default"].createElement(
+	                    'div',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'span',
+	                      { className: 'green_btn', onClick: _this6.option.bind(_this6, "edit", e.id, e.wppc) },
+	                      '\u4FEE\u6539'
+	                    )
+	                  ) : ''
+	                ),
+	                _react2["default"].createElement('td', null),
+	                _react2["default"].createElement('td', { className: 'td_end' })
+	              );
+	            })
 	          );
-	        })
-	      );
+	          break;
+
+	        case 'kc':
+	          return _react2["default"].createElement(
+	            'tbody',
+	            null,
+	            this.props.Lists.map(function (e, index) {
+	              return _react2["default"].createElement(
+	                'tr',
+	                { key: index },
+	                _react2["default"].createElement('td', { className: 'td_head' }),
+	                _react2["default"].createElement('td', null),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.itemName
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.itemID
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.groupItem
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.list.map(function (e, index) {
+	                    return _react2["default"].createElement(
+	                      'span',
+	                      { key: index },
+	                      e.name
+	                    );
+	                  })
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  null,
+	                  e.ableModify ? _react2["default"].createElement(
+	                    'div',
+	                    null,
+	                    _react2["default"].createElement(
+	                      'span',
+	                      { className: 'green_btn', onClick: _this6.option.bind(_this6, "edit", e.id, e.wppc) },
+	                      '\u4FEE\u6539'
+	                    )
+	                  ) : ''
+	                ),
+	                _react2["default"].createElement('td', null),
+	                _react2["default"].createElement('td', { className: 'td_end' })
+	              );
+	            })
+	          );
+	          break;
+	        default:
+	          return _react2["default"].createElement('tbody', null);
+	          break;
+	      }
 	    }
 	  }, {
 	    key: 'render',
@@ -471,19 +634,7 @@ webpackJsonp([6],{
 	    }
 	  }, {
 	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this8 = this;
-
-	      this.allcheck.onchange = function (eve) {
-	        _this8.ids = [];
-	        WPPCS = [];
-	        var checks = Array.from(document.querySelectorAll('tbody td input[type="checkbox"]'));
-	        checks.map(function (e) {
-	          (e.checked = eve.target.checked) && _this8.ids.push(e.value.split("#")[0]) && WPPCS.push(e.value.split("#")[1]);
-	        });
-	        console.log(WPPCS.join(","));
-	      };
-	    }
+	    value: function componentDidMount() {}
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate(prevProps, prevState) {
@@ -508,7 +659,7 @@ webpackJsonp([6],{
 	  _createClass(Popup, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this10 = this;
+	      var _this8 = this;
 
 	      console.log(this.props);
 	      var _props = this.props,
@@ -541,14 +692,14 @@ webpackJsonp([6],{
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_OK', ref: function ref(btn) {
-	                    return _this10.OK = btn;
+	                    return _this8.OK = btn;
 	                  } },
 	                '\u786E\u5B9A'
 	              ),
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_back', ref: function ref(btn) {
-	                    return _this10.back = btn;
+	                    return _this8.back = btn;
 	                  } },
 	                '\u53D6\u6D88'
 	              )

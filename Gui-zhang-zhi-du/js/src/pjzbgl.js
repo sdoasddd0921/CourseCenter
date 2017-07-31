@@ -3,15 +3,23 @@ import React from 'react';
 
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
-const Popup_edit=require('../libs/masterAddZb.js');
 
 const _COUNT = 10;
+
+const SET = (key, value) => {
+  sessionStorage.setItem("pjzbgl-"+key, value);
+  return value;
+}
+
+const GET = (key) => {
+  return sessionStorage.getItem("pjzbgl-"+key) || '';
+}
 
 class Option extends React.Component {
   constructor(props) {
     super(props);
     this.pici_insert=[];
-    this.zbpc=sessionStorage.getItem("pjzbgl-zbpc")||'';
+    this.zbpc=GET("zbpc")||'';
     this.state={
       TP: {
         page: 1,
@@ -31,12 +39,12 @@ class Option extends React.Component {
 
   search() {
     this.zbpc=this.pici.value;
-    sessionStorage.setItem("pjzbgl-zbpc", this.zbpc);
+    SET("zbpc", this.zbpc);
     this.get_list(1);
   }
 
   get_list(p) {
-    let page=p||+sessionStorage.getItem("pjzbgl-page")||1;
+    let page=p||+GET("page")||1;
     ajax({
       url: courseCenter.host+"getPjzbList",
       data: {
@@ -47,7 +55,7 @@ class Option extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        sessionStorage.setItem("pjzbgl-page", page);
+        SET("page", page);
         this.setState({
           TP: {
             page: page,

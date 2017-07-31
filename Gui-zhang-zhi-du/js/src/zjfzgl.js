@@ -7,12 +7,12 @@ const Fanye=require('../libs/fanye.js');
 const _COUNT = 10;
 
 const SET = (key, value) => {
-  sessionStorage.setItem(key, value);
+  sessionStorage.setItem("zjfzgl-"+key, value);
   return value;
 }
 
 const GET = (key) => {
-  return sessionStorage.getItem(key) || '';
+  return sessionStorage.getItem("zjfzgl-"+key) || '';
 }
 
 class Option extends React.Component {

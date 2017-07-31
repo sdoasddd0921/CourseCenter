@@ -156,22 +156,23 @@ class Tab_head extends React.Component {
     Menu_this.tab_change(tab_name)
   }
 
-  del(tab_name,eve) {
-    eve.nativeEvent.preventDefault()
-    let tabs=this.state.tabs;
-    let index=tabs.indexOf(tab_name);
-    let new_on;
-    tabs.splice(index,1);
-    if(index<1) {
-      new_on = tabs[index+1];
-    } else {
-      new_on = tabs[index-1];
-    }
-    this.setState({
-      tabs:tabs,
-      on:new_on
-    });
-  }
+  // del(tab_name,eve) {
+  //   console.log("del:",tab_name)
+  //   eve.nativeEvent.preventDefault();
+  //   let tabs=this.state.tabs;
+  //   let index=tabs.indexOf(tab_name);
+  //   let new_on;
+  //   tabs.splice(index,1);
+  //   if(index<1) {
+  //     new_on = tabs[index+1];
+  //   } else {
+  //     new_on = tabs[index-1];
+  //   }
+  //   this.setState({
+  //     tabs:tabs,
+  //     on:new_on
+  //   });
+  // }
 
   render() {
     //需要this.state向下传递信息，包括tab[]和on
@@ -227,6 +228,14 @@ class Tab_head extends React.Component {
         } else {
           tabs.splice(index,1);
         }
+        // clear tab sessionStorage
+        let delet_tag_prefix=new RegExp(`^${this.state.on}-`);
+        for(let end=window.sessionStorage.length;end>0;end--) {
+          if(delet_tag_prefix.test(window.sessionStorage.key(end-1))) {
+            sessionStorage.removeItem(window.sessionStorage.key(end-1));
+          }
+        }
+
         this.setState({
           tabs:tabs,
           on:new_on
@@ -239,7 +248,6 @@ class Tab_head extends React.Component {
 
 
 function Create_tabs(tab) {
-  console.log("Tab:",tab)
   BluMUI.create({
     Tab:tab
   },'Create_tab',document.getElementById('tabs'))

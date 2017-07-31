@@ -1,4 +1,3 @@
-
 import ReactDOM from 'react-dom';
 import React from 'react';
 
@@ -7,11 +6,20 @@ const Fanye=require('../libs/fanye.js');
 
 const _COUNT = 10;
 
+const SET = (key, value) => {
+  sessionStorage.setItem("fzgl-"+key, value);
+  return value;
+}
+
+const GET = (key) => {
+  return sessionStorage.getItem("fzgl-"+key) || '';
+}
+
 class Option extends React.Component {
   constructor(props) {
     super(props);
     this.pici_insert=[];
-    this.fzpc=sessionStorage.getItem("fzgl-fzpc")||'';
+    this.fzpc=GET("fzpc")||'';
     this.state={
       TP: {
         page: 1,
@@ -31,12 +39,12 @@ class Option extends React.Component {
 
   search() {
     this.fzpc=this.pici.value;
-    sessionStorage.setItem("fzgl-fzpc", this.fzpc);
+    SET("fzpc", this.fzpc);
     this.get_list(1);
   }
 
   get_list(p) {
-    let page=p||+sessionStorage.getItem("fzgl-page")||1;
+    let page=p||+GET("page")||1;
     ajax({
       url: courseCenter.host+"getFzList",
       data: {
@@ -47,7 +55,7 @@ class Option extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        sessionStorage.setItem("fzgl-page", page);
+        SET("page", page);
         this.setState({
           TP: {
             page: page,

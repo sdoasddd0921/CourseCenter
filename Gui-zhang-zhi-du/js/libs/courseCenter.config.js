@@ -19,7 +19,7 @@ function parseHash(URL) {
 		}
 
 	}
-	return {classId:'A2040100'};
+	return result;
 }
 
 // 获取cookie

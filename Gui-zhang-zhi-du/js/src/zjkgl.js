@@ -7,12 +7,12 @@ const Fanye=require('../libs/fanye');
 var masters=[];
 
 function SET(key,value) {
-  sessionStorage.setItem(key,value);
+  sessionStorage.setItem("zjkgl-"+key,value);
   return value;
 }
 
 function GET(key) {
-  return sessionStorage.getItem(key);
+  return sessionStorage.getItem("zjkgl-"+key);
 }
 
 class Option extends React.Component {
@@ -457,6 +457,7 @@ class List extends React.Component {
   }
 
   check(id,name,eve) {
+    this.allcheck.checked=false;
     if(eve.target.checked) {
       // add
       this.ids.push(id);

@@ -7,12 +7,12 @@ const Fanye=require('../libs/fanye.js');
 const _COUNT = 10;
 
 const SET = (key, value) => {
-  sessionStorage.setItem(key, value);
+  sessionStorage.setItem("kcfzgl-"+key, value);
   return value;
 }
 
 const GET = (key) => {
-  return sessionStorage.getItem(key) || '';
+  return sessionStorage.getItem("kcfzgl-"+key) || '';
 }
 
 class Option extends React.Component {
@@ -136,9 +136,6 @@ class Option extends React.Component {
     return (
       <div id="Option_react">
         <div id="option">
-          <div id="up">
-            <button id="add" ref={btn=>this.add_btn=btn}>添加课程分组</button>
-          </div>
           <div id="down">
             <span>网评批次：</span>
             <select 
@@ -214,9 +211,6 @@ class Option extends React.Component {
     this.change_wppc();    
 
     this._get_list();
-
-    // bind add option
-    this.add_btn.onclick=()=>{window.location.href='./masterSortEditor.html'};
   }
 }
 
@@ -281,7 +275,6 @@ class List extends React.Component {
           </td>
           <td>
             <a href="#" onClick={this.option.bind(this,'edit',e.wppc)} >编辑</a>
-            <a href="#" onClick={this.option.bind(this,'delete',e.wppc)} >删除</a>
           </td>
           <td></td>
           <td className='righttd'></td>
@@ -359,7 +352,7 @@ class Popup extends React.Component {
       case "delete":
         dat={
           unifyCode: getCookie("userId"),
-          groupBatch: id
+          reviewId: id
         };
         break;
       default:
@@ -371,7 +364,7 @@ class Popup extends React.Component {
     // OK button option
     this.OK&&(this.OK.onclick=()=>{
       let data_map={
-        "delete": "deleteFz"
+        "delete": "deleteKcfz"
       };
       ajax({
         url: courseCenter.host+data_map[type],

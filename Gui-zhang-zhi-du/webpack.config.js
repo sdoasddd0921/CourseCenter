@@ -5,6 +5,7 @@ module.exports = {
     fzgl: './js/src/fzgl.js',
     zjkgl: './js/src/zjkgl.js',
     wpgl: './js/src/wpgl.js',
+    "wpgl-jieguo": './js/src/wpgl-jieguo.js',
     pjzbgl: './js/src/pjzbgl.js',
     zjfzgl: './js/src/zjfzgl.js',
     kcfzgl: './js/src/kcfzgl.js',

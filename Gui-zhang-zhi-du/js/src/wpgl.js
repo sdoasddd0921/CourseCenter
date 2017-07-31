@@ -2,301 +2,259 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const ajax=require('../libs/post_ajax.js');
-const _COUNT=10;
+const Fanye=require('../libs/fanye.js');
+const _prefix="wpgl-";
+const _COUNT=2;
+
+const SET = (key, value) => {
+  sessionStorage.setItem(_prefix+key, value);
+  return value;
+}
+
+const GET = (key) => {
+  return sessionStorage.getItem(_prefix+key) || '';
+}
+
+var WPPCS=[];
 
 class Option extends React.Component {
   constructor(props) {
     super(props);
-    this._modeChange=this._modeChange.bind(this);
-    this.shuldUp=true;
-    this.other_args="";
-    this.state={
-      page:1,
-      pages:1,
-      total:1,
-      // modes
-      mode: 1,
-      list: []
-    }
-  }
-
-  _modeChange(mode,id) {
-    sessionStorage.setItem("mode"+this.state.mode+"page",this.state.page);
-    this.other_args=id;
-    this.state={
-      page:+sessionStorage.getItem("mode"+mode+"page")||1,
-      pages:1,
-      total:1,
-      mode: mode,
-      list: []
+    this.search_cache={
+      wppc: GET("wppc")
     };
-    this._getLists();
+    this.state={
+      TP: {
+        page:1,
+        pages:1,
+        total:1
+      },
+      list: [],
+      wppc: GET("wppc"),
+      wppc_select: []
+    }
   }
 
-  _getLists(eve, p) {
-    switch(this.state.mode) {
-      case 1:
-      console.log("serch")
-        ajax({
-          url: courseCenter.host+"reviewList",
-          data: {
-            unifyCode: getCookie("userId"),
-            name: this.refs.wppc?this.refs.wppc.value:"",
-            page: p||this.state.page,
-            count: _COUNT
+  _get_list(p) {
+    let page=p||+GET("page")||1;
+
+    ajax({
+      url: courseCenter.host+"reviewList",
+      data: {
+        unifyCode: getCookie("userId"),
+        name: this.search_cache.wppc,
+        page: page,
+        count: _COUNT
+      },
+      success: (gets)=>{
+        SET("page", page);
+        let datas=JSON.parse(gets);
+        this.setState({
+          TP: {
+            page: page,
+            pages: datas.data.totalPages,
+            total:datas.data.total
           },
-          success: (gets)=>{
-            let datas=JSON.parse(gets);
-            this.setState({
-              list: datas.data.list,
-              page: p||this.state.page,
-              pages: datas.data.totalPages,
-              total: datas.data.total
-            });
-          }
+          list: datas.data.list
         });
-        break;
-      case 2:
-        break;
-      case 3:
-        ajax({
-          url: courseCenter.host+"reviewList",
-          data: {
-            unifyCode: getCookie("userId"),
-            page: p||this.state.page,
-            count: _COUNT
-          },
-          success: (gets)=>{
-            let datas=JSON.parse(gets);
-            this.setState({
-              list: datas.data.list,
-              page: p||this.state.page,
-              pages: datas.data.totalPages,
-              total: datas.data.total
-            });
-          }
-        });
-        break;
-    }
+      }
+    });
+  }
+
+  change_wppc(e) {
+    this.setState({
+      wppc: e?e.target.value:this.state.wppc
+    });
+  }
+
+  search() {
+    this.search_cache.wppc=SET("wppc",this.state.wppc);
+    this._get_list(1);
   }
 
   render() {
-    switch(this.state.mode) {
-      case 1:
-        return (
-          <div id="wpgl_option">
-            <div id="option">
-              <div id="big_btns">
-                <button className="big_btn" ref="fqwp">发起网评</button>
-                <button className="big_btn" ref="plsc">批量删除</button>
-              </div>
-              <div id="filter_bar">
-                <span id="wppc">网评批次：</span>
-                <select name="wppc" ref="wppc">
-                  <option value="">请选择</option>
-                </select>
-                <button id="serch" ref="btn">搜索</button>
-              </div>
-            </div>
-            <Lists ref="list" Lists={this.state.list} Mode={this.state.mode} callback={this._modeChange} />
-            <Fanye
-              ref="fanye"
-              TP={{
-                total:this.state.total,
-                page:this.state.page,
-                pages: this.state.pages
-              }}
-              callback={(num)=>{this._getLists.call(this, num)}}
-            />
+    return (
+      <div id="wpgl_option">
+        <div id="option">
+          <div id="big_btns">
+            <button className="big_btn" ref={btn=>this.fqwp=btn} >发起网评</button>
+            <button className="big_btn" ref={btn=>this.PLdelete=btn}>批量删除</button>
           </div>
-        );
-        break;
+          <div id="filter_bar">
+            <span id="wppc">网评批次：</span>
 
-      case 2:
-        break;
-      case 3:
-        return (<div id="wpgl_option3">
-          <div id="option">
-            <button id="back" ref="back">返回</button>
-            <input type="checkbox" defaultChecked id="zj" ref="zj"/>
-            <label htmlFor="zj" ref="zj_label"><img src="../../imgs/public/hook.png"/></label>
-            <span>按专家查看</span>
-            <input type="checkbox" id="kc" ref="kc"/>
-            <label htmlFor="kc" ref="kc_label"><img src="../../imgs/public/hook.png"/></label>
-            <span>按课程查看</span>
-            <div id="filter_bar">
-              <span>专家分配课程状态：</span>
-              <input type="checkbox" defaultChecked id="yes" ref="yes"/>
-              <label htmlFor="yes" ref="yes_label"><img src="../../imgs/public/hook.png"/></label>
-              <span className="fenpei">已分配</span>
-              <input type="checkbox" defaultChecked id="no" ref="no"/>
-              <label htmlFor="no" ref="no_label"><img src="../../imgs/public/hook.png"/></label>
-              <span className="fenpei">未分配</span>
-              <span id="zjfz">专家分组：</span>
-              <select id="zjfz_select" ref="zjfz">
-                <option value="">请选择</option>
-              </select>
-              <span id="zjmc">专家名称：</span>
-              <input type="text" ref="name" id="zjname"/>
-              <button id="serch" ref="serch">搜索</button>
-            </div>
+            <select 
+              name="wppc_select" 
+              id="wppc_select" 
+              ref={sel=>this.wppc_select=sel}
+              value={this.state.wppc}
+              onChange={this.change_wppc.bind(this)}
+            >
+              {
+                [<option value="" key="default">请选择</option>].concat(
+                  this.state.wppc_select.map((op,index)=><option value={op.wppc} key={index} >{op.wppc}</option>)
+                )
+              }
+            </select>
+
+            <button id="serch" onClick={this.search.bind(this)}>搜索</button>
           </div>
-          <Lists ref="list" Lists={this.state.list} Mode={this.state.mode} callback={this._modeChange} />
-          <Fanye
-            ref="fanye"
-            TP={{
-              total:this.state.total,
-              page:this.state.page,
-              pages: this.state.pages
-            }}
-            callback={(num)=>{this._getLists.call(this, num)}}
-          />
-        </div>);
-        break;
-    }
+        </div>
+        <Lists ref="list" Lists={this.state.list} />
+        <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
+      </div>
+    );
   }
 
   componentDidMount() {
     // 填充网评批次下拉菜单
-    // ajax({
-    //   url: courseCenter.host+"reviewBriefList",
-    //   data: {
-    //     userID: getCookie("userId"),
-    //     state: 1
-    //   },
-    //   success: (gets)=>{
-    //     let datas=JSON.parse(gets);
-    //     if(datas.meta.result==100) {
-    //       let ops="<option value=''>请选择</option>";
-    //       datas.data.list.map((e,index)=>{
-    //         ops+=`<option value=${e.id}>${e.wppc}</option>`;
-    //       });
-    //       this.refs.wppc.innerHTML=ops;
-    //     }
-    //   }
-    // });
+    ajax({
+      url: courseCenter.host+"reviewBriefList",
+      data: {
+        userID: getCookie("userId"),
+        state: 1,
+        expGroup: ""
+      },
+      success: (gets)=>{
+        let datas=JSON.parse(gets);
+        if(datas.meta.result!==100) {
+          alert("下拉菜单获取失败！");
+          return;
+        }
+        this.setState({
+          wppc_select: JSON.parse(gets).data.list
+        });
+      }
+    });
 
     // // 首次查询列表并填充
-    this._getLists();
-    // this.refs.btn.onclick=this._getLists;
+    this._get_list();
+
+    let pop = document.getElementById('popup');
+    // PiLiangDelete
+    this.PLdelete.onclick=()=>{
+      console.log(this.refs.list)
+      Creat_popup('PLdelete', WPPCS, this.refs.list.ids)
+      pop.style.display='block';
+    };
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    switch(this.state.mode) {
-      case 3:
-        this.refs.back.onclick=this._modeChange.bind(this,1,"");
-        // 填充下拉菜单
-        ajax({
-          url: courseCenter.host+"getFzxByWppc",
-          data: {
-            unifyCode: getCookie("userId"),
-            reviewBatch: this.other_args
-          },
-          success: (gets)=>{
-            let datas=JSON.parse(gets);
-            console.log(datas)
-            if(datas.meta.result==100) {
-              let ops="<option value=''>请选择</option>";
-              datas.data.map((e,index)=>{
-                ops+=`<option value=${e.fzx}>${e.fzx}</option>`;
-              });
-              this.refs.zjfz.innerHTML=ops;
-            }
-          }
-        });
-
-        break;
-
-      case 1:
-        // 填充网评批次下拉菜单
-        ajax({
-          url: courseCenter.host+"reviewBriefList",
-          data: {
-            userID: getCookie("userId"),
-            state: 1
-          },
-          success: (gets)=>{
-            let datas=JSON.parse(gets);
-            if(datas.meta.result==100) {
-              let ops="<option value=''>请选择</option>";
-              datas.data.list.map((e,index)=>{
-                ops+=`<option value=${e.id}>${e.wppc}</option>`;
-              });
-              this.refs.wppc.innerHTML=ops;
-            }
-          }
-        });
-        // 绑定搜索事件
-        this.refs.btn.onclick=this._getLists.bind(this);
-        break;
-    }
-  }
-
+  // componentWillUnmount() {
+  //   let del = new RegExp(`^${_prefix}`)
+  //   for(let i in sessionStorage) {
+  //     if(del.test(i)) {
+  //       console.log("should be deleted!")
+  //     }
+  //   }
+  // }
 }
 
 class Lists extends React.Component {
   constructor(props) {
     super(props);
+    this.ids=[];
   }
 
   create_head() {
-    switch(this.props.Mode) {
-      case 1:
-        return (<thead>
-          <tr>
-            <td width="30px" className="td_head">
-              <div></div>
-            </td>
-            <td width="59px" className="td_left_space"></td>
-            <td width="19px"><input type="checkbox" ref="allcheck" /></td>
-            <td>网评批次</td>
-            <td width="13.54839%">分组批次</td>
-            <td width="13.54839%">指标批次</td>
-            <td width="13.54839%">专家分组批次</td>
-            <td width="13.54839%">起止时间</td>
-            <td width="13.54839%">分配课程</td>
-            <td width="13.54839%">操作</td>
-            <td width="11px" className="td_right_space"></td>
-            <td width="30px" className="td_end">
-              <div></div>
-            </td>
-          </tr>
-        </thead>);
+    return (<thead>
+      <tr>
+        <td width="25px" className="td_head">
+          <div></div>
+        </td>
+        <td width="0px" className="td_left_space"></td>
+        <td width="20px">
+          <input 
+            type="checkbox" 
+            id="allcheck" 
+            ref={check=>this.allcheck=check} 
+          />
+          <label htmlFor="allcheck">
+            <img src="../../imgs/public/hook.png"/>
+          </label>
+        </td>
+        <td>网评批次</td>
+        <td width="10%">分组批次</td>
+        <td width="10%">指标批次</td>
+        <td width="13%">专家分组批次</td>
+        <td>起止时间</td>
+        <td width="10%">分配课程</td>
+        <td width="10%">操作</td>
+        <td width="0px" className="td_right_space"></td>
+        <td width="25px" className="td_end">
+          <div></div>
+        </td>
+      </tr>
+    </thead>);
+  }
+
+  option(type, id, wppc,eve) {
+    eve.preventDefault();
+
+    console.log("option:",type);
+    switch(type) {
+      case 'delete':
+        Creat_popup('delete', wppc, id);
+        document.getElementById('popup').style.display="block";
         break;
+      case 'fenpei':
+        window.location.href=`./wpgl-fenpei.html`;
+        break;
+      case 'jieguo':
+        window.location.href=`./wpgl-jieguo.html?wppc=${wppc}&id=${id}`;
+        break;
+      case 'edit':
+        break;
+      default:
+        break;
+    }
+  }
+
+  check(id,wppc,eve) {
+    this.allcheck.checked=false;
+    if(eve.target.checked) {
+      // add
+      this.ids.push(id);
+      WPPCS.push(name);
+    } else {
+      // delet
+      this.ids=this.ids.filter(e=>e!==id);
+      WPPCS=WPPCS.filter(e=>e!==name);
     }
   }
 
   create_body() {
-    switch(this.props.Mode) {
-      case 1:
-        return (<tbody>
-          {this.props.Lists.map((e,index)=><tr key={index}>
-            <td className="td_head"></td>
-            <td></td>
-            <td><input type="checkbox" value={e.id}/></td>
-            <td>{e.wppc}</td>
-            <td>{e.fzpc}</td>
-            <td>{e.zbpc}</td>
-            <td>{e.zjfzpc}</td>
-            <td>{e.kssj+"-"+e.jssj}</td>
-            <td>{<div>
-              <span className="green_btn">分配</span>
-              <span className="green_btn" onClick={this._modeChange.bind(this,3, e.wppc)}>结果</span>
-            </div>}</td>
-            <td>{<div>
-              <span className="green_btn">编辑</span>
-              <span className="yellow_btn">删除</span>
-            </div>}</td>
-            <td></td>
-            <td className="td_end"></td>
-          </tr>)}
-        </tbody>);
-        break;
-    }
-  }
-
-  _modeChange(mode, id) {
-    this.props.callback(mode,id);
+    return (<tbody>
+      {this.props.Lists.map((e,index)=><tr key={index}>
+        <td className="td_head"></td>
+        <td></td>
+        <td>
+          <input 
+            type="checkbox" 
+            id={"input-"+index} 
+            value={e.id+"#"+e.wppc}
+            onChange={this.check.bind(this,e.id,e.wppc)} 
+          />
+          <label htmlFor={"input-"+index} >
+            <img src="../../imgs/public/hook.png"/>
+          </label>
+        </td>
+        <td>{e.wppc}</td>
+        <td>{e.fzpc}</td>
+        <td>{e.zbpc}</td>
+        <td>{e.zjfzpc}</td>
+        <td>{e.kssj+"-"+e.jssj}</td>
+        <td>{<div>
+          <span className="green_btn" onClick={this.option.bind(this,"fenpei", e.id, e.wppc)}>分配</span>
+          <span className="green_btn" onClick={this.option.bind(this,"jieguo", e.id, e.wppc)}>结果</span>
+        </div>}</td>
+        <td>{<div>
+          <span className="green_btn" onClick={this.option.bind(this,"edit", e.id, e.wppc)}>编辑</span>
+          <span className="yellow_btn" onClick={this.option.bind(this,"delete", e.id, e.wppc)}>删除</span>
+        </div>}</td>
+        <td></td>
+        <td className="td_end"></td>
+      </tr>)}
+    </tbody>);
   }
 
   render() {
@@ -308,6 +266,20 @@ class Lists extends React.Component {
     </div>);
   }
 
+  componentDidMount() {
+    this.allcheck.onchange=(eve)=>{
+      this.ids=[];
+      WPPCS=[];
+      let checks=Array.from(document.querySelectorAll('tbody td input[type="checkbox"]'));
+      checks.map(e=>{
+        (e.checked=eve.target.checked)
+        && this.ids.push(e.value.split("#")[0])
+        && WPPCS.push(e.value.split("#")[1]);
+      });
+      console.log(WPPCS.join(","))
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if(window.frameElement) {
       window.frameElement.height=document.body.offsetHeight;
@@ -316,94 +288,108 @@ class Lists extends React.Component {
 }
 
 
-class Fanye extends React.Component {
+class Popup extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  create_popup_fanye() {
-    let nums=[];
-    let start=1;
-    let end=this.props.TP.pages||1;
-    let now=this.props.TP.page||1;
-    let page_on={color:"#007A51"};
-
-    let change_page=(p)=>{
-      if(p===now) {
-        nums.push(<li key={p} style={page_on}>{p}</li>);
-      } else {
-        nums.push(<li key={p} onClick={this.fanye.bind(this,p)}>{p}</li>);
-      }
-    }
-
-    if(end<1) {
-      nums.push(<li key="only" onClick={this.fanye.bind(this,1)}>1</li>)
-    } else if(end<=5) {
-      for(let i=1;i<=end;i++) {
-        change_page(i)
-      }
-    } else {
-      if(now<3) {
-        for(let i=1;i<=5;i++) {
-        change_page(i)
-        }
-      } else if(now>end-3) {
-        for(let i=end-5;i<=end;i++) {
-        change_page(i)
-        }
-      } else {
-        for(let i=now-2;i<=now+2;i++) {
-        change_page(i)
-        }
-      }
-    }
-    return (<div id="kczttj_fanye">
-      <span id="rows">共{this.props.TP.total?this.props.TP.total:1}条记录</span>
-      <input className="fanye_options" type="button" value="首页"   id="fanye_start" onClick={this.fanye.bind(this,1)} />
-      <input className="fanye_options" type="button" value="上一页" id="fanye_pre"   onClick={this.fanye.bind(this,now===1?0:now-1)} />
-      <ul id="fanye_nums">{nums}</ul>
-      <input type="text" id="tp" ref="tp" placeholder={`${this.props.TP.page}/${this.props.TP.pages}`} />
-      <input className="fanye_options" type="button" value="下一页" id="fanye_next"  onClick={this.fanye.bind(this,now===end?0:now+1)} />
-      <input className="fanye_options" type="button" value="尾页"   id="fanye_end"   onClick={this.fanye.bind(this,end)} />
-    </div>);
-  }
-
-  fanye(p) {
-    this.refs.tp.value=null;
-    if(p==0) {
-      return;
-    }
-    this.props.callback(p);
-  }
-
   render() {
-    return this.create_popup_fanye();
+    console.log(this.props)
+    const {type,names}=this.props;
+    const MAP={
+      "PLdelete": "删除",
+      "delete": "删除",
+    };
+
+    switch(type) {
+      case 'PLdelete':
+      case 'delete':
+        return(
+          <div id="popbody" ref='pb'>
+            <div id="msg">
+              <p>{`确定要${MAP[type]+names}?`}</p>
+            </div>
+            <div id="popup_option">
+              <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
+              <button id="popup_back" ref={btn=>this.back=btn}>取消</button>
+            </div>
+          </div>
+        );
+        break;
+      default: 
+        return(<div></div>);
+        break;
+    }
   }
+
 
   componentDidMount() {
-    // 手动跳转翻页
-    this.refs.tp.onkeydown=(eve)=>{
-      if(eve.keyCode===13) {
-        if(!isNaN(+eve.target.value)) {
-          this.fanye(+eve.target.value);
-        } else {
-          eve.target.value=null;
-          eve.target.blur();
-        }
-      }
+    const {id,type}=this.props;
+    // background click to cancel
+    this.refs.pb.onclick=e=>e.stopPropagation();
+    // back button click to cancel
+    this.back.onclick=cancel_popup;
+    // OK button option
+    let dat={};
+
+    switch(type) {
+      case "PLdelete":
+      case "delete":
+        dat={
+          unifyCode: getCookie("userId"),
+          ID: id
+        };
+        break;
+      default:
+        break;
     }
+
+    this.OK.onclick=()=>{
+      let data_map={
+        "PLdelete": "deleteReview",
+        "delete": "deleteReview",
+      };
+      ajax({
+        url: courseCenter.host+data_map[type],
+        data: dat,
+        success: (gets)=>{
+          let datas=JSON.parse(gets);
+          if(datas.meta.result!==100) {
+            alert("删除失败!");
+            return;
+          }
+          cancel_popup();
+          WPGL._get_list();
+        }
+      });
+    };
   }
 }
 
+function Creat_popup(type, names, id) {
+  console.log(id)
+  const popup_datas={
+    type: type,
+    names: names,
+    id: id
+  };
+  var popup = ReactDOM.render(
+    <Popup {...popup_datas}/>,
+    document.getElementById('popup')
+  );
+
+  // click to close popup
+  document.getElementById('popup').onclick=cancel_popup;
+}
+
+function cancel_popup() {
+  let popup=document.getElementById('popup');
+  popup.style.display="none";
+  ReactDOM.unmountComponentAtNode(popup);
+}
 
 
-
-
-
-
-
-
-ReactDOM.render(
+var WPGL=ReactDOM.render(
   <Option />,
   document.getElementById('wpgl')
 );

@@ -373,24 +373,25 @@ webpackJsonp([1],{
 	      this.setState({ on: tab_name });
 	      Menu_this.tab_change(tab_name);
 	    }
-	  }, {
-	    key: 'del',
-	    value: function del(tab_name, eve) {
-	      eve.nativeEvent.preventDefault();
-	      var tabs = this.state.tabs;
-	      var index = tabs.indexOf(tab_name);
-	      var new_on = void 0;
-	      tabs.splice(index, 1);
-	      if (index < 1) {
-	        new_on = tabs[index + 1];
-	      } else {
-	        new_on = tabs[index - 1];
-	      }
-	      this.setState({
-	        tabs: tabs,
-	        on: new_on
-	      });
-	    }
+
+	    // del(tab_name,eve) {
+	    //   console.log("del:",tab_name)
+	    //   eve.nativeEvent.preventDefault();
+	    //   let tabs=this.state.tabs;
+	    //   let index=tabs.indexOf(tab_name);
+	    //   let new_on;
+	    //   tabs.splice(index,1);
+	    //   if(index<1) {
+	    //     new_on = tabs[index+1];
+	    //   } else {
+	    //     new_on = tabs[index-1];
+	    //   }
+	    //   this.setState({
+	    //     tabs:tabs,
+	    //     on:new_on
+	    //   });
+	    // }
+
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -463,6 +464,14 @@ webpackJsonp([1],{
 	          } else {
 	            tabs.splice(index, 1);
 	          }
+	          // clear tab sessionStorage
+	          var delet_tag_prefix = new RegExp('^' + _this8.state.on + '-');
+	          for (var end = window.sessionStorage.length; end > 0; end--) {
+	            if (delet_tag_prefix.test(window.sessionStorage.key(end - 1))) {
+	              sessionStorage.removeItem(window.sessionStorage.key(end - 1));
+	            }
+	          }
+
 	          _this8.setState({
 	            tabs: tabs,
 	            on: new_on
@@ -477,7 +486,6 @@ webpackJsonp([1],{
 	}(_react2["default"].Component);
 
 	function Create_tabs(tab) {
-	  console.log("Tab:", tab);
 	  BluMUI.create({
 	    Tab: tab
 	  }, 'Create_tab', document.getElementById('tabs'));

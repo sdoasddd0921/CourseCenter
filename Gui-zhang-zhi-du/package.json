@@ -4,7 +4,7 @@
   "description": "a React component library",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --host=0.0.0.0",
+    "dev": "webpack-dev-server --hot --inline",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
