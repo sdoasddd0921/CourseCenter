@@ -96,7 +96,7 @@ class Option extends React.Component {
         });
         this.xueyuan.innerHTML=options;
         this.xueyuan.onchange=()=>{
-          // console.log(this.xueyuan.value)
+          this.search_handler()
         }
       }
     });
@@ -365,6 +365,21 @@ class List extends React.Component {
   }
 
   creat_tbody() {
+    if(this.props.list.length===0) {
+      return (
+        <tbody>
+          <tr>
+            <td className="lefttd"></td>
+            <td colSpan="7" style={{borderBottom: 'none'}}>
+              <img id="err_img" src="../../imgs/public/error.png"/>
+              <div>没有数据</div>
+            </td>
+            <td className="righttd"></td>
+          </tr>
+        </tbody>
+      );
+    }
+
     const {master}=this.props;
     switch(master) {
       case 'out':
@@ -392,7 +407,11 @@ class List extends React.Component {
               <td>
                 <a href="#" onClick={this.option.bind(this,'edit', e.id, e.xm)}>编辑</a>
                 <a href="#" onClick={this.option.bind(this,'del', e.id, e.xm)}>删除</a>
-                <a href="#" onClick={this.option.bind(this,'open', e.id, e.xm)}>启用</a>
+                {
+                  e.zt==='可用' ?
+                  <a href="#" onClick={this.option.bind(this,'stop', e.id, e.xm)}>停用</a> :
+                  <a href="#" onClick={this.option.bind(this,'open', e.id, e.xm)}>启用</a>
+                }
               </td>
               <td></td>
               <td className='righttd'></td>
@@ -424,7 +443,11 @@ class List extends React.Component {
               <td>
                 <a href="#" onClick={this.option.bind(this,'edit', e.sfrzh, e.xm)}>编辑</a>
                 <a href="#" onClick={this.option.bind(this,'del', e.sfrzh, e.xm)}>删除</a>
-                <a href="#" onClick={this.option.bind(this,'open', e.sfrzh, e.xm)}>启用</a>
+                {
+                  e.zt==='可用' ?
+                  <a href="#" onClick={this.option.bind(this,'stop', e.sfrzh, e.xm)}>停用</a> :
+                  <a href="#" onClick={this.option.bind(this,'open', e.sfrzh, e.xm)}>启用</a>
+                }
               </td>
               <td></td>
               <td className='righttd'></td>
@@ -449,6 +472,11 @@ class List extends React.Component {
       case 'open':
         // ajax();
         Creat_popup('open', name, id);
+        document.getElementById('popup').style.display="block";
+        break;
+      case 'stop':
+        // ajax();
+        Creat_popup('stop', name, id);
         document.getElementById('popup').style.display="block";
         break;
       default:
@@ -514,13 +542,15 @@ class Popup extends React.Component {
     const MAP={
       "PLdelete": "删除",
       "delete": "删除",
-      "open": "启用"
+      "open": "启用",
+      "stop": "停用"
     };
 
     switch(type) {
       case 'PLdelete':
       case 'delete':
       case 'open':
+      case 'stop':
         return(
           <div id="popbody" ref='pb'>
             <div id="msg">
@@ -569,7 +599,6 @@ class Popup extends React.Component {
     }
   }
 
-
   componentDidMount() {
     const {id,type}=this.props;
     // background click to cancel
@@ -596,6 +625,14 @@ class Popup extends React.Component {
           type: ['in', 'out'].indexOf(OptionComponent.state.master)
         };
         break;
+      case "stop":
+        dat={
+          unifyCode: getCookie("userId"),
+          userId: id,
+          state: 0,
+          type: ['in', 'out'].indexOf(OptionComponent.state.master)
+        };
+        break;
       case 'change_PW':
         dat={
           unifyCode: getCookie("userId"),
@@ -613,6 +650,7 @@ class Popup extends React.Component {
         "PLdelete": "deleteZj",
         "delete": "deleteZj",
         "open": "updateZjState",
+        "stop": "updateZjState",
         "change_PW": "updateZjPassWord"
       };
       if(type=='change_PW') {
@@ -631,10 +669,13 @@ class Popup extends React.Component {
         data: dat,
         success: (gets)=>{
           let datas=JSON.parse(gets);
-          // if(datas.meta.result==100) {
+          if(datas.meta.result==100) {
+            alert("操作成功！");
             cancel_popup();
             OptionComponent.get_list();
-          // }
+          } else {
+            alert("操作失败");
+          }
         }
       });
     };

@@ -108,12 +108,12 @@ class Option extends React.Component {
           this.setState({
             fzx: fzx,
             fzx_select: []
-          });
+          },this.search);
         } else {
           this.setState({
             fzx: fzx,
             fzx_select: datas.data
-          });
+          },this.search);
         }
       }
     });
@@ -122,7 +122,7 @@ class Option extends React.Component {
   change_fzx(e) {
     this.setState({
       fzx: e.target.value
-    });
+    },this.search);
   }
 
   change_zj(e) {
@@ -234,11 +234,11 @@ class List extends React.Component {
     );
   }
 
-  option(type, zjfzpc, eve) {
+  option(type, zjfzpc, fzpc, fzx, eve) {
     eve.preventDefault();
     switch(type) {
       case 'edit': 
-        window.location.href='./masterSortEditor.html?groupBatch='+zjfzpc;
+        window.location.href=`./masterSortTeam.html?masterPC=${zjfzpc}&groupPC=${fzpc}&groupItem=${fzx}`;
         break;
       case 'delete':
         Creat_popup('delete', zjfzpc);
@@ -261,7 +261,7 @@ class List extends React.Component {
           <td>{e.fzpc}</td>
           <td>{e.fzx}</td>
           <td>
-            <span className="zj_list" onClick={this.option.bind(this,'show',e.evaluates)}>
+            <span className="zj_list" onClick={this.option.bind(this,'show',e.evaluates,'','')}>
               <span className="zj_num">{`[${e.zjs}]`}</span>
               {
                 (+e.zjs)>4 ?
@@ -271,8 +271,8 @@ class List extends React.Component {
             </span>
           </td>
           <td>
-            <a href="#" onClick={this.option.bind(this,'edit',e.zjfzpc)} >编辑</a>
-            <a href="#" onClick={this.option.bind(this,'delete',e.zjfzpc)} >删除</a>
+            <a href="#" onClick={this.option.bind(this,'edit',e.zjfzpc,e.fzpc,e.fzx)} >编辑</a>
+            <a href="#" onClick={this.option.bind(this,'delete',e.zjfzpc,e.fzpc,e.fzx)} >删除</a>
           </td>
           <td></td>
           <td className='righttd'></td>

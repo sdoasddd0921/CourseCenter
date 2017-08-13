@@ -237,11 +237,11 @@ class List extends React.Component {
     );
   }
 
-  option(type, data, eve) {
+  option(type, data, data2, data3, eve) {
     eve.preventDefault();
     switch(type) {
       case 'edit': 
-        window.location.href='./masterSortEditor.html?groupBatch='+data;
+        window.location.href=`./materCourseSort.html?fzx=${data2}&wppc=${data}&wppcId=${data3}`;
         break;
       case 'delete':
         Creat_popup('delete', data);
@@ -265,7 +265,7 @@ class List extends React.Component {
           <td>{e.fzx}</td>
           <td>
             <span className="kcmc_num">{`[${e.kcs}]`}</span>
-            <span className="kcmc_list" onClick={this.option.bind(this,'show',e.courseList)}>
+            <span className="kcmc_list" onClick={this.option.bind(this,'show',e.courseList,e.fzx,e.wpid)}>
               {
                 (+e.kcmcs)>3 ?
                 e.courseList.map((kcmc,kcmcNo)=>kcmcNo<3&&<span key={kcmcNo} className="kcmc_name">{kcmc.xm}</span>).concat(<span key="dot">……</span>) :
@@ -274,7 +274,7 @@ class List extends React.Component {
             </span>
           </td>
           <td>
-            <a href="#" onClick={this.option.bind(this,'edit',e.wppc)} >编辑</a>
+            <a href="#" onClick={this.option.bind(this,'edit',e.wppc,e.fzx,e.wpid)} >编辑</a>
           </td>
           <td></td>
           <td className='righttd'></td>

@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
 const _prefix="wpgl-";
-const _COUNT=2;
+const _COUNT=10;
 
 const SET = (key, value) => {
   sessionStorage.setItem(_prefix+key, value);
@@ -64,7 +64,7 @@ class Option extends React.Component {
   change_wppc(e) {
     this.setState({
       wppc: e?e.target.value:this.state.wppc
-    });
+    },this.search);
   }
 
   search() {
@@ -96,8 +96,6 @@ class Option extends React.Component {
                 )
               }
             </select>
-
-            <button id="serch" onClick={this.search.bind(this)}>搜索</button>
           </div>
         </div>
         <Lists ref="list" Lists={this.state.list} />
@@ -107,6 +105,9 @@ class Option extends React.Component {
   }
 
   componentDidMount() {
+    this.fqwp.onclick=()=>{
+      window.location.href=`./masterPublishWp.html`;
+    };
     // 填充网评批次下拉菜单
     ajax({
       url: courseCenter.host+"reviewBriefList",
@@ -203,6 +204,7 @@ class Lists extends React.Component {
         window.location.href=`./wpgl-jieguo.html?wppc=${wppc}&id=${id}`;
         break;
       case 'edit':
+        window.location.href=`./masterPublishWp.html?wpId=${id}&isEditor=true`;
         break;
       default:
         break;
@@ -223,6 +225,19 @@ class Lists extends React.Component {
   }
 
   create_body() {
+    if(this.props.Lists.length===0) {
+      return (<tbody>
+        <tr>
+          <td className="lefttd"></td>
+          <td colSpan="7" style={{borderBottom: 'none'}}>
+            <img id="err_img" src="../../imgs/public/error.png"/>
+            <div>没有数据</div>
+          </td>
+          <td className="righttd"></td>
+        </tr>
+      </tbody>);
+    }
+
     return (<tbody>
       {this.props.Lists.map((e,index)=><tr key={index}>
         <td className="td_head"></td>
@@ -363,7 +378,33 @@ class Popup extends React.Component {
         }
       });
     };
+
+    if(window.frameElement) {
+      let H=document.body.offsetHeight;
+      if(650>parseInt(document.body.offsetHeight)) {
+        H=650;
+      }
+      window.frameElement.height=H;
+    }
   }
+
+  componentWillUnmount() {
+    if(window.frameElement) {
+      window.frameElement.height=document.body.offsetHeight;
+    }
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   if(window.frameElement) {
+  //     let H=document.body.offsetHeight;
+  //     if(this.refs.pb.offsetHeight>parseInt(document.body.offsetHeight)) {
+  //       H=this.refs.pb.offsetHeight;
+  //     }
+  //     console.log("height:",this.refs.pb.parentNode.clientHeight)
+  //     console.log(document.getElementById('popup').offsetHeight)
+  //     window.frameElement.height=H;
+  //   }
+  // }
 }
 
 function Creat_popup(type, names, id) {

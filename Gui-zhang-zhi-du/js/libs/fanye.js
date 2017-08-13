@@ -6,6 +6,10 @@ export default class Fanye extends React.Component {
   }
 
   create_popup_fanye() {
+    if(this.props.TP.total===0) {
+      return <div style={{height:'21px',padding: '30px 0'}}></div>;
+    }
+
     let nums=[];
     let start=1;
     let end=this.props.TP.pages||1;

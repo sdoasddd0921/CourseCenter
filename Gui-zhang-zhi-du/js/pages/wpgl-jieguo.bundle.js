@@ -25,7 +25,7 @@ webpackJsonp([7],{
 
 	var ajax = __webpack_require__(159);
 	var Fanye = __webpack_require__(160);
-	var _COUNT = 2;
+	var _COUNT = 10;
 
 	var SET = function SET(key, value) {
 	  sessionStorage.setItem("wpgl-jieguo-" + key, value);
@@ -122,10 +122,10 @@ webpackJsonp([7],{
 	    key: 'search',
 	    value: function search() {
 	      this.search_cache.wppc = SET("yfp", this.yfp.checked);
-	      this.search_cache.wppc = SET("wfp", this.wfp.checked);
-	      this.search_cache.wppc = SET("fzx", this.state.fzx);
-	      this.search_cache.wppc = SET("zjxm", this.state.zjxm);
-	      // this._get_list(1);
+	      this.search_cache.wfp = SET("wfp", this.wfp.checked);
+	      this.search_cache.fzx = SET("fzx", this.state.fzx);
+	      this.search_cache.zjxm = SET("zjxm", this.state.zjxm);
+	      this._get_list(1);
 	    }
 	  }, {
 	    key: 'model_change',
@@ -338,7 +338,6 @@ webpackJsonp([7],{
 
 	      // back button click options
 	      this.back.onclick = function () {
-	        window.location.href = "./wpgl.html";
 	        // clear tab sessionStorage
 	        var delet_tag_prefix = new RegExp('^wpgl-jieguo-');
 	        for (var end = window.sessionStorage.length; end > 0; end--) {
@@ -346,6 +345,7 @@ webpackJsonp([7],{
 	            sessionStorage.removeItem(window.sessionStorage.key(end - 1));
 	          }
 	        }
+	        window.history.back();
 	      };
 	    }
 	  }]);
@@ -421,10 +421,10 @@ webpackJsonp([7],{
 	                { width: '25px', className: 'td_head' },
 	                _react2["default"].createElement('div', null)
 	              ),
-	              _react2["default"].createElement('td', { width: '0px', className: 'td_left_space' }),
+	              _react2["default"].createElement('td', { width: '20px', className: 'td_left_space' }),
 	              _react2["default"].createElement(
 	                'td',
-	                { width: '10%' },
+	                null,
 	                '\u8BFE\u7A0B\u540D\u79F0'
 	              ),
 	              _react2["default"].createElement(
@@ -439,7 +439,7 @@ webpackJsonp([7],{
 	              ),
 	              _react2["default"].createElement(
 	                'td',
-	                null,
+	                { width: '45%' },
 	                '\u5DF2\u5206\u914D\u4E13\u5BB6'
 	              ),
 	              _react2["default"].createElement(
@@ -462,49 +462,54 @@ webpackJsonp([7],{
 	    }
 	  }, {
 	    key: 'option',
-	    value: function option(type, id, wppc, eve) {
+	    value: function option(type, id, wpid, groupItem, itemName, eve) {
 	      eve.preventDefault();
 
 	      console.log("option:", type);
 	      switch (type) {
-	        case 'delete':
-	          Creat_popup('delete', wppc, id);
+	        case 'show':
+	          Creat_popup('show', groupItem, id);
 	          document.getElementById('popup').style.display = "block";
 	          break;
-	        case 'fenpei':
-	          window.location.href = './wpgl-fenpei.html';
-	          break;
-	        case 'jieguo':
-	          window.location.href = './wpgl-jieguo.html';
-	          break;
 	        case 'edit':
+	          console.log("修改");
+	          if (this.props.model === 'zj') {
+	            window.location.href = './masterWPEditorBymaster.html?wpId=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem;
+	          } else {
+	            window.location.href = './masterWPEditor.html?wpId=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem;
+	          }
 	          break;
 	        default:
 	          break;
 	      }
 	    }
 	  }, {
-	    key: 'check',
-	    value: function check(id, wppc, eve) {
-	      this.allcheck.checked = false;
-	      if (eve.target.checked) {
-	        // add
-	        this.ids.push(id);
-	        WPPCS.push(name);
-	      } else {
-	        // delet
-	        this.ids = this.ids.filter(function (e) {
-	          return e !== id;
-	        });
-	        WPPCS = WPPCS.filter(function (e) {
-	          return e !== name;
-	        });
-	      }
-	    }
-	  }, {
 	    key: 'create_body',
 	    value: function create_body() {
 	      var _this6 = this;
+
+	      if (this.props.Lists.length === 0) {
+	        return _react2["default"].createElement(
+	          'tbody',
+	          null,
+	          _react2["default"].createElement(
+	            'tr',
+	            null,
+	            _react2["default"].createElement('td', { className: 'lefttd' }),
+	            _react2["default"].createElement(
+	              'td',
+	              { colSpan: '7', style: { borderBottom: 'none' } },
+	              _react2["default"].createElement('img', { id: 'err_img', src: '../../imgs/public/error.png' }),
+	              _react2["default"].createElement(
+	                'div',
+	                null,
+	                '\u6CA1\u6709\u6570\u636E'
+	              )
+	            ),
+	            _react2["default"].createElement('td', { className: 'righttd' })
+	          )
+	        );
+	      }
 
 	      switch (this.props.model) {
 	        case 'zj':
@@ -530,13 +535,32 @@ webpackJsonp([7],{
 	                _react2["default"].createElement(
 	                  'td',
 	                  null,
-	                  e.list.map(function (e, index) {
-	                    return _react2["default"].createElement(
+	                  _react2["default"].createElement(
+	                    'span',
+	                    { className: 'num' },
+	                    '[' + e.count + ']'
+	                  ),
+	                  _react2["default"].createElement(
+	                    'a',
+	                    { href: '#', onClick: _this6.option.bind(_this6, "show", e.itemID, e.wpid, e.groupItem, e.itemName) },
+	                    e.count < 4 ? e.list.map(function (m, index) {
+	                      return _react2["default"].createElement(
+	                        'span',
+	                        { key: index },
+	                        m.name
+	                      );
+	                    }) : e.list.map(function (m, index) {
+	                      return index < 3 && _react2["default"].createElement(
+	                        'span',
+	                        { key: index },
+	                        m.name
+	                      );
+	                    }).concat(_react2["default"].createElement(
 	                      'span',
-	                      { key: index },
-	                      e.name
-	                    );
-	                  })
+	                      { key: 'dot' },
+	                      '\u2026\u2026'
+	                    ))
+	                  )
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
@@ -546,7 +570,7 @@ webpackJsonp([7],{
 	                    null,
 	                    _react2["default"].createElement(
 	                      'span',
-	                      { className: 'green_btn', onClick: _this6.option.bind(_this6, "edit", e.id, e.wppc) },
+	                      { className: 'green_btn', onClick: _this6.option.bind(_this6, "edit", e.itemID, e.wpid, e.groupItem, e.itemName) },
 	                      '\u4FEE\u6539'
 	                    )
 	                  ) : ''
@@ -586,13 +610,32 @@ webpackJsonp([7],{
 	                _react2["default"].createElement(
 	                  'td',
 	                  null,
-	                  e.list.map(function (e, index) {
-	                    return _react2["default"].createElement(
+	                  _react2["default"].createElement(
+	                    'span',
+	                    { className: 'num' },
+	                    '[' + e.count + ']'
+	                  ),
+	                  _react2["default"].createElement(
+	                    'span',
+	                    null,
+	                    e.count < 6 ? e.list.map(function (m, index) {
+	                      return _react2["default"].createElement(
+	                        'span',
+	                        { key: index },
+	                        m.name
+	                      );
+	                    }) : e.list.map(function (m, index) {
+	                      return index < 5 && _react2["default"].createElement(
+	                        'span',
+	                        { key: index },
+	                        m.name
+	                      );
+	                    }).concat(_react2["default"].createElement(
 	                      'span',
-	                      { key: index },
-	                      e.name
-	                    );
-	                  })
+	                      { key: 'dot' },
+	                      '\u2026\u2026'
+	                    ))
+	                  )
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
@@ -647,8 +690,137 @@ webpackJsonp([7],{
 	  return Lists;
 	}(_react2["default"].Component);
 
-	var Popup = function (_React$Component3) {
-	  _inherits(Popup, _React$Component3);
+	var Poplist = function (_React$Component3) {
+	  _inherits(Poplist, _React$Component3);
+
+	  function Poplist(props) {
+	    _classCallCheck(this, Poplist);
+
+	    var _this7 = _possibleConstructorReturn(this, (Poplist.__proto__ || Object.getPrototypeOf(Poplist)).call(this, props));
+
+	    _this7.state = {
+	      list: [],
+	      TP: {
+	        page: 1,
+	        pages: 1,
+	        total: 1
+	      }
+	    };
+	    return _this7;
+	  }
+
+	  _createClass(Poplist, [{
+	    key: '_get_list',
+	    value: function _get_list(p) {
+	      var _this8 = this;
+
+	      ajax({
+	        url: courseCenter.host + 'queryExpAllocDetail',
+	        data: {
+	          unifyCode: getCookie("userId"),
+	          ID: parseHash(window.location.href).id,
+	          expID: this.props.id,
+	          groupItem: this.props.fzx,
+	          page: p || 1,
+	          count: _COUNT
+	        },
+	        success: function success(gets) {
+	          var datas = JSON.parse(gets);
+	          if (datas.meta.result !== 100) {
+	            return;
+	          }
+	          _this8.setState({
+	            list: datas.data.list,
+	            TP: {
+	              page: p || 1,
+	              pages: datas.data.totalPages,
+	              total: datas.data.total
+	            }
+	          });
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this9 = this;
+
+	      return _react2["default"].createElement(
+	        'div',
+	        null,
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'pop_table_body' },
+	          _react2["default"].createElement(
+	            'table',
+	            null,
+	            _react2["default"].createElement(
+	              'thead',
+	              null,
+	              _react2["default"].createElement(
+	                'tr',
+	                null,
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '30%' },
+	                  '\u8BFE\u7A0B\u540D\u79F0'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '30%' },
+	                  '\u8BFE\u7A0B\u7F16\u53F7'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '40%' },
+	                  '\u5F00\u8BFE\u5B66\u9662'
+	                )
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'tbody',
+	              null,
+	              this.state.list.map(function (e, index) {
+	                return _react2["default"].createElement(
+	                  'tr',
+	                  { key: index },
+	                  _react2["default"].createElement(
+	                    'td',
+	                    null,
+	                    e.courseName
+	                  ),
+	                  _react2["default"].createElement(
+	                    'td',
+	                    null,
+	                    e.courseNo
+	                  ),
+	                  _react2["default"].createElement(
+	                    'td',
+	                    null,
+	                    e.unit
+	                  )
+	                );
+	              })
+	            )
+	          )
+	        ),
+	        _react2["default"].createElement(Fanye, { TP: this.state.TP, callback: function callback(p) {
+	            _this9._get_list(p);
+	          } })
+	      );
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      this._get_list(1);
+	    }
+	  }]);
+
+	  return Poplist;
+	}(_react2["default"].Component);
+
+	var Popup = function (_React$Component4) {
+	  _inherits(Popup, _React$Component4);
 
 	  function Popup(props) {
 	    _classCallCheck(this, Popup);
@@ -657,9 +829,16 @@ webpackJsonp([7],{
 	  }
 
 	  _createClass(Popup, [{
+	    key: 'delete_popup',
+	    value: function delete_popup(e) {
+	      if (e.target === this.background) {
+	        _reactDom2["default"].unmountComponentAtNode(e.target.parentNode);
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this8 = this;
+	      var _this11 = this;
 
 	      console.log(this.props);
 	      var _props = this.props,
@@ -692,39 +871,65 @@ webpackJsonp([7],{
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_OK', ref: function ref(btn) {
-	                    return _this8.OK = btn;
+	                    return _this11.OK = btn;
 	                  } },
 	                '\u786E\u5B9A'
 	              ),
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_back', ref: function ref(btn) {
-	                    return _this8.back = btn;
+	                    return _this11.back = btn;
 	                  } },
 	                '\u53D6\u6D88'
 	              )
 	            )
 	          );
 	          break;
+	        case 'show':
+	          return _react2["default"].createElement(
+	            'div',
+	            {
+	              id: 'background',
+	              ref: function ref(div) {
+	                return _this11.background = div;
+	              },
+	              onClick: function onClick(e) {
+	                return _this11.delete_popup(e);
+	              }
+	            },
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'poplist', ref: 'pb', onClick: function onClick(e) {
+	                  return e.stopPropagation;
+	                } },
+	              _react2["default"].createElement(Poplist, { id: this.props.id, fzx: this.props.names })
+	            )
+	          );
 	        default:
-	          return _react2["default"].createElement('div', null);
+	          return _react2["default"].createElement(
+	            'div',
+	            null,
+	            'error'
+	          );
 	          break;
 	      }
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      if (window.frameElement) {
+	        var H = document.body.offsetHeight;
+	        if (this.background.offsetHeight > parseInt(document.body.offsetHeight)) {
+	          H = this.background.offsetHeight;
+	        }
+	        console.log("height:", this.background.offsetHeight);
+	        window.frameElement.height = H;
+	      }
+
 	      var _props2 = this.props,
 	          id = _props2.id,
 	          type = _props2.type;
-	      // background click to cancel
 
-	      this.refs.pb.onclick = function (e) {
-	        return e.stopPropagation();
-	      };
-	      // back button click to cancel
-	      this.back.onclick = cancel_popup;
-	      // OK button option
 	      var dat = {};
 
 	      switch (type) {
@@ -738,26 +943,24 @@ webpackJsonp([7],{
 	        default:
 	          break;
 	      }
-
-	      this.OK.onclick = function () {
-	        var data_map = {
-	          "PLdelete": "deleteReview",
-	          "delete": "deleteReview"
-	        };
-	        ajax({
-	          url: courseCenter.host + data_map[type],
-	          data: dat,
-	          success: function success(gets) {
-	            var datas = JSON.parse(gets);
-	            if (datas.meta.result !== 100) {
-	              alert("删除失败!");
-	              return;
-	            }
-	            cancel_popup();
-	            WPGL._get_list();
-	          }
-	        });
-	      };
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      if (window.frameElement) {
+	        var H = document.body.offsetHeight;
+	        if (this.background.style.height.split('px')[0] > parseInt(document.body.offsetHeight)) {
+	          H = this.background.style.height.split('px')[0];
+	        }
+	        window.frameElement.height = H;
+	      }
+	    }
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      if (window.frameElement) {
+	        window.frameElement.height = document.body.offsetHeight;
+	      }
 	    }
 	  }]);
 
@@ -772,15 +975,6 @@ webpackJsonp([7],{
 	    id: id
 	  };
 	  var popup = _reactDom2["default"].render(_react2["default"].createElement(Popup, popup_datas), document.getElementById('popup'));
-
-	  // click to close popup
-	  document.getElementById('popup').onclick = cancel_popup;
-	}
-
-	function cancel_popup() {
-	  var popup = document.getElementById('popup');
-	  popup.style.display = "none";
-	  _reactDom2["default"].unmountComponentAtNode(popup);
 	}
 
 	var WPGL = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('wpgl'));
@@ -865,7 +1059,7 @@ webpackJsonp([7],{
 /***/ 160:
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -895,9 +1089,13 @@ webpackJsonp([7],{
 	  }
 
 	  _createClass(Fanye, [{
-	    key: "create_popup_fanye",
+	    key: 'create_popup_fanye',
 	    value: function create_popup_fanye() {
 	      var _this2 = this;
+
+	      if (this.props.TP.total === 0) {
+	        return _react2["default"].createElement('div', { style: { height: '21px', padding: '30px 0' } });
+	      }
 
 	      var nums = [];
 	      var start = 1;
@@ -908,13 +1106,13 @@ webpackJsonp([7],{
 	      var change_page = function change_page(p) {
 	        if (p === now) {
 	          nums.push(_react2["default"].createElement(
-	            "li",
+	            'li',
 	            { key: p, style: page_on },
 	            p
 	          ));
 	        } else {
 	          nums.push(_react2["default"].createElement(
-	            "li",
+	            'li',
 	            { key: p, onClick: _this2.fanye.bind(_this2, p) },
 	            p
 	          ));
@@ -923,9 +1121,9 @@ webpackJsonp([7],{
 
 	      if (end < 1) {
 	        nums.push(_react2["default"].createElement(
-	          "li",
-	          { key: "only", onClick: this.fanye.bind(this, 1) },
-	          "1"
+	          'li',
+	          { key: 'only', onClick: this.fanye.bind(this, 1) },
+	          '1'
 	        ));
 	      } else if (end <= 5) {
 	        for (var i = 1; i <= end; i++) {
@@ -948,29 +1146,29 @@ webpackJsonp([7],{
 	      }
 
 	      return _react2["default"].createElement(
-	        "div",
-	        { id: "fanye" },
+	        'div',
+	        { id: 'fanye' },
 	        _react2["default"].createElement(
-	          "span",
-	          { id: "total" },
-	          "\u5171",
+	          'span',
+	          { id: 'total' },
+	          '\u5171',
 	          this.props.TP.total >= 0 ? this.props.TP.total : 1,
-	          "\u6761\u8BB0\u5F55"
+	          '\u6761\u8BB0\u5F55'
 	        ),
-	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u9996\u9875", id: "fanye_start", onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),
-	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u4E0A\u4E00\u9875", id: "fanye_pre", onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u9996\u9875', id: 'fanye_start', onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0A\u4E00\u9875', id: 'fanye_pre', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
 	        _react2["default"].createElement(
-	          "ul",
-	          { id: "fanye_nums" },
+	          'ul',
+	          { id: 'fanye_nums' },
 	          nums
 	        ),
-	        _react2["default"].createElement("input", { type: "text", id: "tp", ref: "tp", placeholder: this.props.TP.page + "/" + this.props.TP.pages }),
-	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u4E0B\u4E00\u9875", id: "fanye_next", onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
-	        _react2["default"].createElement("input", { className: "fanye_options", type: "button", value: "\u5C3E\u9875", id: "fanye_end", onClick: this.fanye.bind(this, now === end ? 0 : end) })
+	        _react2["default"].createElement('input', { type: 'text', id: 'tp', ref: 'tp', placeholder: this.props.TP.page + '/' + this.props.TP.pages }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0B\u4E00\u9875', id: 'fanye_next', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u5C3E\u9875', id: 'fanye_end', onClick: this.fanye.bind(this, now === end ? 0 : end) })
 	      );
 	    }
 	  }, {
-	    key: "fanye",
+	    key: 'fanye',
 	    value: function fanye(p) {
 	      this.refs.tp.value = null;
 	      if (p == 0) {
@@ -979,12 +1177,12 @@ webpackJsonp([7],{
 	      this.props.callback(p);
 	    }
 	  }, {
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      return this.create_popup_fanye();
 	    }
 	  }, {
-	    key: "componentDidMount",
+	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var _this3 = this;
 

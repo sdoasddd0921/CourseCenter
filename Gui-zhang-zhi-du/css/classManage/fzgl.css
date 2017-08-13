@@ -101,7 +101,9 @@ tbody tr td.righttd {
 tbody tr.noborder td {
   border-bottom: none;
 }
-
+tbody td span {
+  margin: 0 5px;
+}
 /*=====================================*/
 
 /* Fanye */

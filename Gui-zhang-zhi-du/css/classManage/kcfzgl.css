@@ -217,14 +217,14 @@ tbody td .kcmc_list>span {
   background: #FFF;
 }
 
-#popbody #zjs {
-  width: 80%;
+#popbody #kcmcs {
+  width: 95%;
   text-align: left;
   margin: 30px auto 0 auto;
 }
-#popbody #zjs .zj {
+#popbody #kcmcs .kcmc {
   display: inline-block;
-  width: 61px;
+  /*width: 61px;*/
   margin: 8px 15px;
   text-align: center;
   /*text-align: left;*/

@@ -89,7 +89,6 @@ class Option extends React.Component {
                 :<option value="">{this.fzpc||"请选择"}</option>
               }
             </select>
-            <button ref={btn=>this.search_btn=btn}>搜索</button>
           </div>
         </div>
 
@@ -113,9 +112,9 @@ class Option extends React.Component {
       }
     });
 
+    this.pici.onchange=this.search.bind(this);
+
     this.get_list();
-    // bind search option
-    this.search_btn.onclick=this.search.bind(this);
     // bind search option
     this.add.onclick=()=>{window.location.href='./masterSortEditor.html'};
   }
@@ -155,13 +154,31 @@ class List extends React.Component {
   }
 
   creat_tbody() {
+    if(this.props.list.length===0) {
+      return (
+        <tbody>
+          <tr>
+            <td className="lefttd"></td>
+            <td colSpan="7" style={{borderBottom: 'none'}}>
+              <img id="err_img" src="../../imgs/public/error.png"/>
+              <div>没有数据</div>
+            </td>
+            <td className="righttd"></td>
+          </tr>
+        </tbody>
+      )
+    }
     return(
       <tbody>
         {this.props.list.map((e,index)=><tr key={index}>
           <td className="lefttd"></td>
           <td></td>
           <td>{e.fzpc}</td>
-          <td>{e.fzx}</td>
+          <td>
+            {
+              e.groups.map((fzx,index)=><span key={index}>{fzx.fzx}</span>)
+            }
+          </td>
           <td>
             <a href="#" onClick={this.option.bind(this,'edit',e.fzpc)} >编辑</a>
             <a href="#" onClick={this.option.bind(this,'delete',e.fzpc)} >删除</a>

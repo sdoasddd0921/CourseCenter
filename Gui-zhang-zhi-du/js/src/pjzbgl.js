@@ -38,8 +38,7 @@ class Option extends React.Component {
   }
 
   search() {
-    this.zbpc=this.pici.value;
-    SET("zbpc", this.zbpc);
+    this.zbpc=SET("zbpc", this.pici.value);
     this.get_list(1);
   }
 
@@ -80,7 +79,7 @@ class Option extends React.Component {
             <select 
               name="zbpc" 
               id="zbpc_select" 
-              ref={sel=>(this.pici=sel)} 
+              ref={sel=>this.pici=sel} 
               defaultValue={this.zbpc}
             >
               {
@@ -89,7 +88,6 @@ class Option extends React.Component {
                 :<option value="">{this.zbpc||"请选择"}</option>
               }
             </select>
-            <button ref={btn=>this.search_btn=btn}>搜索</button>
           </div>
         </div>
 
@@ -115,9 +113,9 @@ class Option extends React.Component {
 
     this.get_list();
     // bind search option
-    this.search_btn.onclick=this.search.bind(this);
+    this.pici.onchange=this.search.bind(this);
     // bind search option
-    this.add.onclick=()=>{window.location.href='./masterSortEditor.html'};
+    this.add.onclick=()=>{window.location.href='./masterAddZbEditor.html'};
   }
 }
 
@@ -132,8 +130,8 @@ class List extends React.Component {
         <tr>
           <td className="lefttd"><div></div></td>
           <td width="5px"></td>
-          <td width="30%">分组批次</td>
-          <td width="30%">分组项</td>
+          <td width="30%">指标批次</td>
+          <td width="30%">指标类别</td>
           <td width="30%">操作</td>
           <td width="5px"></td>
           <td className="righttd"><div></div></td>
@@ -142,11 +140,11 @@ class List extends React.Component {
     );
   }
 
-  option(type, zbpc, eve) {
+  option(type, zbpc, lb, eve) {
     eve.preventDefault();
     switch(type) {
       case 'edit': 
-        Creat_popup('edit', zbpc);
+        window.location.href=`./masterAddZbEditor.html?isEditor=true&type=${+(lb==="通用")}&indexBatch=${zbpc}`;
         break;
       case 'delete':
         Creat_popup('delete', zbpc);
@@ -155,6 +153,20 @@ class List extends React.Component {
   }
 
   creat_tbody() {
+    if(this.props.list.length===0) {
+      return (
+        <tbody>
+          <tr>
+            <td className="lefttd"></td>
+            <td colSpan="7" style={{borderBottom: 'none'}}>
+              <img id="err_img" src="../../imgs/public/error.png"/>
+              <div>没有数据</div>
+            </td>
+            <td className="righttd"></td>
+          </tr>
+        </tbody>
+      )
+    }
     return(
       <tbody>
         {this.props.list.map((e,index)=><tr key={index}>
@@ -163,8 +175,8 @@ class List extends React.Component {
           <td>{e.zbpc}</td>
           <td>{e.zblb}</td>
           <td>
-            <a href="#" onClick={this.option.bind(this,'edit',e.zbpc)} >编辑</a>
-            <a href="#" onClick={this.option.bind(this,'delete',e.zbpc)} >删除</a>
+            <a href="#" onClick={this.option.bind(this,'edit',e.zbpc,e.zblb)} >编辑</a>
+            <a href="#" onClick={this.option.bind(this,'delete',e.zbpc,e.zblb)} >删除</a>
           </td>
           <td></td>
           <td className='righttd'></td>

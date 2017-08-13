@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
-const _COUNT=2;
+const _COUNT=10;
 
 const SET = (key, value) => {
   sessionStorage.setItem("wpgl-jieguo-"+key, value);
@@ -87,10 +87,10 @@ class Option extends React.Component {
 
   search() {
     this.search_cache.wppc=SET("yfp",this.yfp.checked);
-    this.search_cache.wppc=SET("wfp",this.wfp.checked);
-    this.search_cache.wppc=SET("fzx",this.state.fzx);
-    this.search_cache.wppc=SET("zjxm",this.state.zjxm);
-    // this._get_list(1);
+    this.search_cache.wfp=SET("wfp",this.wfp.checked);
+    this.search_cache.fzx=SET("fzx",this.state.fzx);
+    this.search_cache.zjxm=SET("zjxm",this.state.zjxm);
+    this._get_list(1);
   }
 
   model_change(model,eve) {
@@ -230,7 +230,6 @@ class Option extends React.Component {
 
     // back button click options
     this.back.onclick=()=>{
-      window.location.href="./wpgl.html";
       // clear tab sessionStorage
       let delet_tag_prefix=new RegExp(`^wpgl-jieguo-`);
       for(let end=window.sessionStorage.length;end>0;end--) {
@@ -238,6 +237,7 @@ class Option extends React.Component {
           sessionStorage.removeItem(window.sessionStorage.key(end-1));
         }
       }
+      window.history.back();
     };
   }
 }
@@ -274,11 +274,11 @@ class Lists extends React.Component {
             <td width="25px" className="td_head">
               <div></div>
             </td>
-            <td width="0px" className="td_left_space"></td>
-            <td width="10%">课程名称</td>
+            <td width="20px" className="td_left_space"></td>
+            <td>课程名称</td>
             <td width="10%">课程编号</td>
             <td width="15%">所属课程分组项</td>
-            <td>已分配专家</td>
+            <td width="45%">已分配专家</td>
             <td width="8%">操作</td>
             <td width="0px" className="td_right_space"></td>
             <td width="25px" className="td_end">
@@ -292,42 +292,44 @@ class Lists extends React.Component {
     }
   }
 
-  option(type, id, wppc,eve) {
+  option(type, id, wpid, groupItem, itemName, eve) {
     eve.preventDefault();
 
     console.log("option:",type);
     switch(type) {
-      case 'delete':
-        Creat_popup('delete', wppc, id);
+      case 'show':
+        Creat_popup('show', groupItem, id);
         document.getElementById('popup').style.display="block";
         break;
-      case 'fenpei':
-        window.location.href=`./wpgl-fenpei.html`;
-        break;
-      case 'jieguo':
-        window.location.href=`./wpgl-jieguo.html`;
-        break;
       case 'edit':
+        console.log("修改");
+        if(this.props.model==='zj') {
+          window.location.href=`./masterWPEditorBymaster.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}`;
+        } else {
+          window.location.href=`./masterWPEditor.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}`;
+        }
         break;
       default:
         break;
     }
   }
 
-  check(id,wppc,eve) {
-    this.allcheck.checked=false;
-    if(eve.target.checked) {
-      // add
-      this.ids.push(id);
-      WPPCS.push(name);
-    } else {
-      // delet
-      this.ids=this.ids.filter(e=>e!==id);
-      WPPCS=WPPCS.filter(e=>e!==name);
-    }
-  }
-
   create_body() {
+    if(this.props.Lists.length===0) {
+      return (
+        <tbody>
+          <tr>
+            <td className="lefttd"></td>
+            <td colSpan="7" style={{borderBottom: 'none'}}>
+              <img id="err_img" src="../../imgs/public/error.png"/>
+              <div>没有数据</div>
+            </td>
+            <td className="righttd"></td>
+          </tr>
+        </tbody>
+      );
+    }
+
     switch(this.props.model) {
       case 'zj':
         return (<tbody>
@@ -336,12 +338,21 @@ class Lists extends React.Component {
             <td></td>
             <td>{e.itemName}</td>
             <td>{e.groupItem}</td>
-            <td>{e.list.map((e,index)=><span key={index}>{e.name}</span>)}</td>
+            <td>
+              <span className="num">{`[${e.count}]`}</span>
+              <a href="#" onClick={this.option.bind(this,"show",e.itemID, e.wpid, e.groupItem, e.itemName)}>
+                {
+                  e.count<4
+                  ?e.list.map((m,index)=><span key={index}>{m.name}</span>)
+                  :e.list.map((m,index)=>index<3&&<span key={index}>{m.name}</span>).concat(<span key="dot">……</span>)
+                }
+              </a>
+            </td>
             <td>
               {
                 e.ableModify?
                 <div>
-                  <span className="green_btn" onClick={this.option.bind(this,"edit", e.id, e.wppc)}>修改</span>
+                  <span className="green_btn" onClick={this.option.bind(this,"edit", e.itemID, e.wpid, e.groupItem, e.itemName)}>修改</span>
                 </div>: ''
               }
             </td>
@@ -359,7 +370,16 @@ class Lists extends React.Component {
             <td>{e.itemName}</td>
             <td>{e.itemID}</td>
             <td>{e.groupItem}</td>
-            <td>{e.list.map((e,index)=><span key={index}>{e.name}</span>)}</td>
+            <td>
+              <span className="num">{`[${e.count}]`}</span>
+              <span>
+                {
+                  e.count<6
+                  ?e.list.map((m,index)=><span key={index}>{m.name}</span>)
+                  :e.list.map((m,index)=>index<5&&<span key={index}>{m.name}</span>).concat(<span key="dot">……</span>)
+                }
+              </span>
+            </td>
             <td>
               {
                 e.ableModify?
@@ -399,10 +419,89 @@ class Lists extends React.Component {
   }
 }
 
+class Poplist extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state={
+      list: [],
+      TP: {
+        page: 1,
+        pages: 1,
+        total: 1
+      }
+    };
+  }
+
+  _get_list(p) {
+    ajax({
+      url: courseCenter.host+'queryExpAllocDetail',
+      data: {
+        unifyCode: getCookie("userId"),
+        ID: parseHash(window.location.href).id,
+        expID: this.props.id,
+        groupItem: this.props.fzx,
+        page: p||1,
+        count: _COUNT
+      },
+      success: (gets) => {
+        let datas=JSON.parse(gets);
+        if(datas.meta.result!==100) {
+          return;
+        }
+        this.setState({
+          list: datas.data.list,
+          TP: {
+            page: p||1,
+            pages: datas.data.totalPages,
+            total: datas.data.total
+          }
+        });
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <div id="pop_table_body">
+          <table>
+            <thead>
+              <tr>
+                <td width="30%">课程名称</td>
+                <td width="30%">课程编号</td>
+                <td width="40%">开课学院</td>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                this.state.list.map((e,index)=><tr key={index}>
+                  <td>{e.courseName}</td>
+                  <td>{e.courseNo}</td>
+                  <td>{e.unit}</td>
+                </tr>)
+              }
+            </tbody>
+          </table>
+        </div>
+        <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    this._get_list(1);
+  }
+}
 
 class Popup extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  delete_popup(e) {
+    if(e.target===this.background) {
+      ReactDOM.unmountComponentAtNode(e.target.parentNode);
+    }
   }
 
   render() {
@@ -428,20 +527,36 @@ class Popup extends React.Component {
           </div>
         );
         break;
+      case 'show':
+        return(
+          <div 
+            id="background" 
+            ref={div=>this.background=div}
+            onClick={e=>this.delete_popup(e)}
+          >
+          <div id="poplist" ref="pb" onClick={e=>e.stopPropagation}>
+            <Poplist id={this.props.id} fzx={this.props.names} />
+          </div>
+          </div>
+        );
       default: 
-        return(<div></div>);
+        return(<div>error</div>);
         break;
     }
   }
 
-
   componentDidMount() {
+    if(window.frameElement) {
+      let H=document.body.offsetHeight;
+      if(this.background.offsetHeight>parseInt(document.body.offsetHeight)) {
+        H=this.background.offsetHeight;
+      }
+      console.log("height:",this.background.offsetHeight)
+      window.frameElement.height=H;
+    }
+
+
     const {id,type}=this.props;
-    // background click to cancel
-    this.refs.pb.onclick=e=>e.stopPropagation();
-    // back button click to cancel
-    this.back.onclick=cancel_popup;
-    // OK button option
     let dat={};
 
     switch(type) {
@@ -455,26 +570,22 @@ class Popup extends React.Component {
       default:
         break;
     }
+  }
 
-    this.OK.onclick=()=>{
-      let data_map={
-        "PLdelete": "deleteReview",
-        "delete": "deleteReview",
-      };
-      ajax({
-        url: courseCenter.host+data_map[type],
-        data: dat,
-        success: (gets)=>{
-          let datas=JSON.parse(gets);
-          if(datas.meta.result!==100) {
-            alert("删除失败!");
-            return;
-          }
-          cancel_popup();
-          WPGL._get_list();
-        }
-      });
-    };
+  componentDidUpdate(prevProps, prevState) {
+    if(window.frameElement) {
+      let H=document.body.offsetHeight;
+      if(this.background.style.height.split('px')[0]>parseInt(document.body.offsetHeight)) {
+        H=this.background.style.height.split('px')[0];
+      }
+      window.frameElement.height=H;
+    }
+  }
+
+  componentWillUnmount() {
+    if(window.frameElement) {
+      window.frameElement.height=document.body.offsetHeight;
+    }
   }
 }
 
@@ -489,24 +600,9 @@ function Creat_popup(type, names, id) {
     <Popup {...popup_datas}/>,
     document.getElementById('popup')
   );
-
-  // click to close popup
-  document.getElementById('popup').onclick=cancel_popup;
 }
-
-function cancel_popup() {
-  let popup=document.getElementById('popup');
-  popup.style.display="none";
-  ReactDOM.unmountComponentAtNode(popup);
-}
-
 
 var WPGL=ReactDOM.render(
   <Option />,
   document.getElementById('wpgl')
 );
-
-
-
-
-
