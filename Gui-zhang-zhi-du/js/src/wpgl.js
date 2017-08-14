@@ -198,7 +198,7 @@ class Lists extends React.Component {
         document.getElementById('popup').style.display="block";
         break;
       case 'fenpei':
-        window.location.href=`./wpgl-fenpei.html`;
+        window.location.href=`./wpgl-fenpei.html?wppc=${wppc}`;
         break;
       case 'jieguo':
         window.location.href=`./wpgl-jieguo.html?wppc=${wppc}&id=${id}`;

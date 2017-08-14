@@ -67,8 +67,14 @@ label>img {
   line-height: 30px;
   font-size: 14px;
 }
+#wpgl_option #mid>div {
+  display: inline-block;
+}
 #wpgl_option #mid span {
   margin-right: 20px;
+}
+#wpgl_option #mid select {
+  width: 90px;
 }
 
 #wpgl_option #down {
