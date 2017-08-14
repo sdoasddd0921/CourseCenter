@@ -252,6 +252,21 @@ class List extends React.Component {
   }
 
   creat_tbody() {
+    if(this.props.list.length===0) {
+      return (
+        <tbody>
+          <tr>
+            <td className="lefttd"></td>
+            <td colSpan="7" style={{borderBottom: 'none'}}>
+              <img id="err_img" src="../../imgs/public/error.png"/>
+              <div>没有数据</div>
+            </td>
+            <td className="righttd"></td>
+          </tr>
+        </tbody>
+      );
+    }
+
     return(
       <tbody>
         {this.props.list.map((e,index)=><tr key={index}>

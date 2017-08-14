@@ -394,6 +394,29 @@ webpackJsonp([8],{
 	    value: function creat_tbody() {
 	      var _this7 = this;
 
+	      if (this.props.list.length === 0) {
+	        return _react2["default"].createElement(
+	          'tbody',
+	          null,
+	          _react2["default"].createElement(
+	            'tr',
+	            null,
+	            _react2["default"].createElement('td', { className: 'lefttd' }),
+	            _react2["default"].createElement(
+	              'td',
+	              { colSpan: '7', style: { borderBottom: 'none' } },
+	              _react2["default"].createElement('img', { id: 'err_img', src: '../../imgs/public/error.png' }),
+	              _react2["default"].createElement(
+	                'div',
+	                null,
+	                '\u6CA1\u6709\u6570\u636E'
+	              )
+	            ),
+	            _react2["default"].createElement('td', { className: 'righttd' })
+	          )
+	        );
+	      }
+
 	      return _react2["default"].createElement(
 	        'tbody',
 	        null,
