@@ -80,40 +80,25 @@ class Option extends React.Component {
     // this._get_list(1);
   }
 
-  create_fzx() {
-    let change_fzx = (eve) => {
-      // eve.target.value
-      this.search_cache.fzx = SET("fzx", eve.target.value)
-      // this._get_list(1)
+  create_fzx_select() {
+    let change_fzx=(eve)=>{
+      this.search_cache.fzx=SET('fzx', eve.target.value)
       console.log(eve.target.value)
     }
-
-    let set_select = (ops) => {
-      return (
-        <select 
-          name="fzx" 
-          id="fenpei-fzx"
-          defaultValue={this.search_cache.fzx}
-          onChange={change_fzx}
-        >
-        {ops}
-        </select>
-      )
-    }
-
-    let ops = null
-    if(this.state.fzx_select.length!==0) {
-      ops=[<option value="" key="def">请选择</option>]
-        .concat(this.state.fzx_select.map(
-          (e,index)=><option key={index} value={e.fzx} >{e.fzx}</option>
-        ))
-    return set_select(ops)
-    } else {
-      ops = <option value={this.search_cache.fzx}>{this.search_cache.fzx}</option>
-    return set_select(ops)
-    }
-
+    console.log('fzx:',this.search_cache.fzx)
+    return (
+      <select
+        name="fzx" 
+        id="fenpei-fzx"
+        ref={sel=>this.fzx_select=sel}
+        defaultValue={this.search_cache.fzx}
+        onChange={change_fzx}
+      >
+      <option value=''>{this.search_cache.fzx||'请选择a'}</option>
+      </select>
+    )
   }
+
 
 
   render() {
@@ -154,7 +139,7 @@ class Option extends React.Component {
             </div>
             <div id="searchs">
               <span>分组项：</span>
-              {this.create_fzx()}
+              {this.create_fzx_select()}
             </div>
           </div>
 
@@ -186,9 +171,15 @@ class Option extends React.Component {
           alert("下拉菜单获取失败！");
           return;
         }
-        this.setState({
-          fzx_select: JSON.parse(gets).data
-        });
+
+        let ops=`<option value="">请选择</option>`
+        JSON.parse(gets).data.forEach(
+          e=>ops+=`<option ${e.fzx===this.search_cache.fzx?'selected':null} value=${e.fzx}>${e.fzx}</option>`
+        )
+        this.fzx_select.innerHTML = ops
+        // this.setState({
+        //   fzx_select: JSON.parse(gets).data
+        // });
       }
     });
 
