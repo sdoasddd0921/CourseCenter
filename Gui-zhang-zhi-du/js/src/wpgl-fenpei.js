@@ -1,6 +1,92 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+
+function SET(key, val) {
+  sessionStorage.setItem(key,val)
+  return val
+}
+
+function GET(key) {
+  return sessionStorage.getItem(key)
+}
+
+const dt = [
+  {a:'啊'},
+  {a:'啊呀'},
+  {a:'3333'},
+  {a:'cacaca'},
+  {a:'123321'},
+  {a:'暗算'},
+  {a:'额'},
+]
+
+// dt.forEach(e=>{})
+
+
+class Test extends React.Component {
+  constructor(props) {
+    super(props);
+    this.cache = {
+      fzx: GET('fzx')
+    }
+    this.state = {
+      list: [],
+      fzx: this.cache.fzx
+    }
+  }
+
+  create() {
+    let style={
+      width: '200px',
+      margin: '300px auto',
+      display: 'block'
+    }
+    let change=(eve)=>{
+      console.log(eve.target.value)
+      this.cache.fzx = SET('fzx',eve.target.value)
+    }
+    return (
+      <select 
+        style={style}
+        name="a" 
+        ref={sel=>this.sel=sel}
+        defaultValue={this.cache.fzx}
+        onChange={change}
+      >
+        <option value="">{this.cache.fzx||'请选择'}</option>
+      </select>
+    )
+  }
+
+  render() {
+    return this.create();
+  }
+
+  componentDidMount() {
+    setTimeout(()=>{
+      console.log("after finish")
+      // this.setState({
+      //   list: dt
+      // })
+      let ops=`<option value="">请选择</option>`
+      dt.forEach((e,index)=>ops+=`<option ${e.a===this.cache.fzx?'selected':null} value=${e.a}>${e.a}</option>`)
+      this.sel.innerHTML = ops
+    },400)
+    console.log('finish')
+  }
+}
+
+
+
+
+ReactDOM.render(<Test />, document.getElementById('wpgl'));
+
+
+// ----------------------------------------------------------
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
 const _COUNT=10;
@@ -81,6 +167,7 @@ class Option extends React.Component {
   }
 
   create_fzx() {
+    console.log(this.state.fzx_select)
     let change_fzx = (eve) => {
       // eve.target.value
       this.search_cache.fzx = SET("fzx", eve.target.value)
@@ -88,18 +175,6 @@ class Option extends React.Component {
       console.log(eve.target.value)
     }
 
-    let set_select = (ops) => {
-      return (
-        <select 
-          name="fzx" 
-          id="fenpei-fzx"
-          defaultValue={this.search_cache.fzx}
-          onChange={change_fzx}
-        >
-        {ops}
-        </select>
-      )
-    }
 
     let ops = null
     if(this.state.fzx_select.length!==0) {
@@ -107,12 +182,20 @@ class Option extends React.Component {
         .concat(this.state.fzx_select.map(
           (e,index)=><option key={index} value={e.fzx} >{e.fzx}</option>
         ))
-    return set_select(ops)
     } else {
       ops = <option value={this.search_cache.fzx}>{this.search_cache.fzx}</option>
-    return set_select(ops)
     }
 
+    return (
+      <select 
+        name="fzx" 
+        id="fenpei-fzx"
+        defaultValue={this.search_cache.fzx}
+        onChange={change_fzx}
+      >
+      {ops}
+      </select>
+    )
   }
 
 
