@@ -1,92 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
-function SET(key, val) {
-  sessionStorage.setItem(key,val)
-  return val
-}
-
-function GET(key) {
-  return sessionStorage.getItem(key)
-}
-
-const dt = [
-  {a:'啊'},
-  {a:'啊呀'},
-  {a:'3333'},
-  {a:'cacaca'},
-  {a:'123321'},
-  {a:'暗算'},
-  {a:'额'},
-]
-
-// dt.forEach(e=>{})
-
-
-class Test extends React.Component {
-  constructor(props) {
-    super(props);
-    this.cache = {
-      fzx: GET('fzx')
-    }
-    this.state = {
-      list: [],
-      fzx: this.cache.fzx
-    }
-  }
-
-  create() {
-    let style={
-      width: '200px',
-      margin: '300px auto',
-      display: 'block'
-    }
-    let change=(eve)=>{
-      console.log(eve.target.value)
-      this.cache.fzx = SET('fzx',eve.target.value)
-    }
-    return (
-      <select 
-        style={style}
-        name="a" 
-        ref={sel=>this.sel=sel}
-        defaultValue={this.cache.fzx}
-        onChange={change}
-      >
-        <option value="">{this.cache.fzx||'请选择'}</option>
-      </select>
-    )
-  }
-
-  render() {
-    return this.create();
-  }
-
-  componentDidMount() {
-    setTimeout(()=>{
-      console.log("after finish")
-      // this.setState({
-      //   list: dt
-      // })
-      let ops=`<option value="">请选择</option>`
-      dt.forEach((e,index)=>ops+=`<option ${e.a===this.cache.fzx?'selected':null} value=${e.a}>${e.a}</option>`)
-      this.sel.innerHTML = ops
-    },400)
-    console.log('finish')
-  }
-}
-
-
-
-
-ReactDOM.render(<Test />, document.getElementById('wpgl'));
-
-
-// ----------------------------------------------------------
-import React from 'react';
-import ReactDOM from 'react-dom';
-
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
 const _COUNT=10;
@@ -113,7 +27,9 @@ class Option extends React.Component {
       // fzx: GET("fzx"),
       // name: GET("name"),
 
-      fzx: GET("fzx")
+      fzx: GET("fzx"),
+      yfp: GET("yfp")||SET("yfp","true"),
+      wfp: GET("wfp")||SET("wfp","true")
 
     };
     this.state={
@@ -162,41 +78,35 @@ class Option extends React.Component {
 
 
   search() {
+    console.log("搜索")
     // this.search_cache.zjxm=SET("zjxm",this.state.zjxm);
     // this._get_list(1);
   }
 
-  create_fzx() {
-    console.log(this.state.fzx_select)
-    let change_fzx = (eve) => {
-      // eve.target.value
-      this.search_cache.fzx = SET("fzx", eve.target.value)
-      // this._get_list(1)
+  create_fzx_select() {
+    let change_fzx=(eve)=>{
+      this.search_cache.fzx=SET('fzx', eve.target.value)
       console.log(eve.target.value)
     }
-
-
-    let ops = null
-    if(this.state.fzx_select.length!==0) {
-      ops=[<option value="" key="def">请选择</option>]
-        .concat(this.state.fzx_select.map(
-          (e,index)=><option key={index} value={e.fzx} >{e.fzx}</option>
-        ))
-    } else {
-      ops = <option value={this.search_cache.fzx}>{this.search_cache.fzx}</option>
-    }
-
+    console.log('fzx:',this.search_cache.fzx)
     return (
-      <select 
+      <select
         name="fzx" 
         id="fenpei-fzx"
+        ref={sel=>this.fzx_select=sel}
         defaultValue={this.search_cache.fzx}
         onChange={change_fzx}
       >
-      {ops}
+        <option value=''>{this.search_cache.fzx||'请选择'}</option>
       </select>
     )
   }
+
+  change_state(state,eve) {
+    this.search_cache[state]=SET(state,eve.target.checked)
+    console.log("after:",state,eve.target.checked,this.search_cache[state])
+  }
+
 
 
   render() {
@@ -215,11 +125,13 @@ class Option extends React.Component {
               <button className="big_btn" ref={btn=>this.fpjg=btn}>分配结果</button>
             </div>
             <div id="state">
-              <span>专家课程分配状态：</span>
+              <span id="zj_state">专家课程分配状态：</span>
               <input 
                 type="checkbox" 
                 id="yfp" 
-                ref={check=>this.yfp=check} 
+                defaultChecked={this.search_cache.yfp=="true"}
+                onChange={this.change_state.bind(this,'yfp')}
+                ref={check=>this.yfp=check}
               />
               <label htmlFor="yfp">
                 <img src="../../imgs/public/hook.png"/>
@@ -228,6 +140,8 @@ class Option extends React.Component {
               <input 
                 type="checkbox" 
                 id="wfp" 
+                defaultChecked={this.search_cache.wfp=="true"}
+                onChange={this.change_state.bind(this,'wfp')}
                 ref={check=>this.wfp=check} 
               />
               <label htmlFor="wfp">
@@ -236,13 +150,15 @@ class Option extends React.Component {
               <span>未分配</span>
             </div>
             <div id="searchs">
-              <span>分组项：</span>
-              {this.create_fzx()}
+              <span id="fzx">分组项：</span>
+              {this.create_fzx_select()}
             </div>
           </div>
 
           <div id="down">
-            <span>注：</span>
+            <div>
+              <span>注：</span>
+            </div>
             <div>
               <p>分组数量决定专家评价的课程数和课程评价的专家数。</p>
               <p>如专家15人，课程数30门，分组数量5，则每个专家评价的课程数=30/5=6，每门课程评价的专家数=15/5=3。</p>
@@ -256,6 +172,7 @@ class Option extends React.Component {
         // <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
 
   componentDidMount() {
+    console.log('moren:',this.fzx_select.value)
     // 填充分组项次下拉菜单
     ajax({
       url: courseCenter.host+"getFzxByWppc",
@@ -269,9 +186,15 @@ class Option extends React.Component {
           alert("下拉菜单获取失败！");
           return;
         }
-        this.setState({
-          fzx_select: JSON.parse(gets).data
-        });
+
+        let ops=`<option value="">请选择</option>`
+        JSON.parse(gets).data.forEach(
+          e=>ops+=`<option ${e.fzx===this.search_cache.fzx?'selected':null} value=${e.fzx}>${e.fzx}</option>`
+        )
+        this.fzx_select.innerHTML = ops
+        // this.setState({
+        //   fzx_select: JSON.parse(gets).data
+        // });
       }
     });
 
