@@ -20,17 +20,9 @@ class Option extends React.Component {
   constructor(props) {
     super(props);
     this.search_cache={
-      // byzj: Boolean(+GET("byzj"))===Boolean(+GET("bykc"))?true:Boolean(+GET("byzj")),
-      // bykc: Boolean(+GET("bykc"))||false,
-      // yfp:  Boolean(+GET("yfp")),
-      // wfp:  Boolean(+GET("wfp")),
-      // fzx: GET("fzx"),
-      // name: GET("name"),
-
       fzx: GET("fzx"),
       yfp: GET("yfp")||SET("yfp","true"),
       wfp: GET("wfp")||SET("wfp","true")
-
     };
     this.state={
       TP: {
@@ -38,44 +30,38 @@ class Option extends React.Component {
         pages:1,
         total:1
       },
-      list: [],
-
-      fzx_select: [],
-      // fzx_select: [{fzx:1},{fzx:2},{fzx:3},{fzx:4}]
-
-
+      list: []
     }
   }
 
   _get_list(p) {
     let page=p||+GET("page")||1;
 
-  //   ajax({
-  //     url: courseCenter.host+"",
-  //     data: {
-  //       unifyCode: getCookie("userId"),
-  //       ID: parseHash(window.location.href).id,
-  //       page: page,
-  //       count: _COUNT
-  //     },
-  //     success: (gets)=>{
-  //       SET("page", page);
-  //       let datas=JSON.parse(gets);
-  //       // this.setState({
-  //       //   TP: {
-  //       //     page: page,
-  //       //     pages: datas.data.totalPages,
-  //       //     total:datas.data.total
-  //       //   },
-  //       //   list: datas.data.allocateList
-  //       // });
-  //     }
-  //   });
+    ajax({
+      url: courseCenter.host+"reviewAlloc",
+      data: {
+        unifyCode: getCookie("userId"),
+        ID: parseHash(window.location.href).id,
+        page: page,
+        count: _COUNT,
+        groupItem: this.search_cache.fzx,
+        assignState: `[${+this.yfp.checked}, ${+this.wfp.checked}]`
+      },
+      success: (gets)=>{
+        SET("page", page);
+        let datas=JSON.parse(gets);
+        console.log(datas.data.list)
+        this.setState({
+          TP: {
+            page: page,
+            pages: datas.data.totalPages,
+            total:datas.data.total
+          },
+          list: datas.data.list
+        });
+      }
+    });
   }
-
-
-
-
 
   search() {
     console.log("搜索")
@@ -104,7 +90,6 @@ class Option extends React.Component {
 
   change_state(state,eve) {
     this.search_cache[state]=SET(state,eve.target.checked)
-    console.log("after:",state,eve.target.checked,this.search_cache[state])
   }
 
 
@@ -165,6 +150,7 @@ class Option extends React.Component {
             </div>
           </div>
         </div>
+        <Lists ref="list" Lists={this.state.list} model={this.model} />
       </div>
     );
   }
@@ -191,10 +177,7 @@ class Option extends React.Component {
         JSON.parse(gets).data.forEach(
           e=>ops+=`<option ${e.fzx===this.search_cache.fzx?'selected':null} value=${e.fzx}>${e.fzx}</option>`
         )
-        this.fzx_select.innerHTML = ops
-        // this.setState({
-        //   fzx_select: JSON.parse(gets).data
-        // });
+        this.fzx_select.innerHTML = ops;
       }
     });
 
@@ -221,48 +204,33 @@ class Lists extends React.Component {
   }
 
   create_head() {
-    switch(this.props.model) {
-      case 'zj':
-        return (<thead>
-          <tr>
-            <td width="25px" className="td_head">
-              <div></div>
-            </td>
-            <td width="0px" className="td_left_space"></td>
-            <td width="10%">专家姓名</td>
-            <td width="15%">所属专家分组项</td>
-            <td>已分配课程</td>
-            <td width="8%">操作</td>
-            <td width="0px" className="td_right_space"></td>
-            <td width="25px" className="td_end">
-              <div></div>
-            </td>
-          </tr>
-        </thead>);
-        break;
-
-      case 'kc':
-        return (<thead>
-          <tr>
-            <td width="25px" className="td_head">
-              <div></div>
-            </td>
-            <td width="20px" className="td_left_space"></td>
-            <td>课程名称</td>
-            <td width="10%">课程编号</td>
-            <td width="15%">所属课程分组项</td>
-            <td width="45%">已分配专家</td>
-            <td width="8%">操作</td>
-            <td width="0px" className="td_right_space"></td>
-            <td width="25px" className="td_end">
-              <div></div>
-            </td>
-          </tr>
-        </thead>);
-        break;
-      default:
-        return(<thead></thead>);
-    }
+    return (<thead>
+      <tr>
+        <td width="25px" className="td_head">
+          <div></div>
+        </td>
+        <td width="20px" className="td_left_space"></td>
+        <td width="10px">
+          <input 
+            type="checkbox" 
+            id="allCheck" 
+            ref={check=>this.allCheck=check} 
+          />
+          <label htmlFor="allCheck">
+            <img src="../../imgs/public/hook.png"/>
+          </label>
+        </td>
+        <td width="22%">专家分组项</td>
+        <td width="22%">课程分组项</td>
+        <td width="15%">分组数量</td>
+        <td width="15%">状态</td>
+        <td>操作</td>
+        <td width="0px" className="td_right_space"></td>
+        <td width="25px" className="td_end">
+          <div></div>
+        </td>
+      </tr>
+    </thead>);
   }
 
   option(type, id, wpid, groupItem, itemName, eve) {
@@ -303,73 +271,32 @@ class Lists extends React.Component {
       );
     }
 
-    switch(this.props.model) {
-      case 'zj':
-        return (<tbody>
-          {this.props.Lists.map((e,index)=><tr key={index}>
+    return (
+      <tbody>
+        {this.props.Lists.map(
+          (list, index) => <tr key={index}>
             <td className="td_head"></td>
             <td></td>
-            <td>{e.itemName}</td>
-            <td>{e.groupItem}</td>
             <td>
-              <span className="num">{`[${e.count}]`}</span>
-              <a href="#" onClick={this.option.bind(this,"show",e.itemID, e.wpid, e.groupItem, e.itemName)}>
-                {
-                  e.count<4
-                  ?e.list.map((m,index)=><span key={index}>{m.name}</span>)
-                  :e.list.map((m,index)=>index<3&&<span key={index}>{m.name}</span>).concat(<span key="dot">……</span>)
-                }
-              </a>
+              <input 
+                type="checkbox" 
+                id={'list-'+index} 
+              />
+              <label htmlFor={'list-'+index}>
+                <img src="../../imgs/public/hook.png"/>
+              </label>
             </td>
-            <td>
-              {
-                e.ableModify?
-                <div>
-                  <span className="green_btn" onClick={this.option.bind(this,"edit", e.itemID, e.wpid, e.groupItem, e.itemName)}>修改</span>
-                </div>: ''
-              }
-            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
             <td></td>
             <td className="td_end"></td>
-          </tr>)}
-        </tbody>);
-        break;
-
-      case 'kc':
-        return (<tbody>
-          {this.props.Lists.map((e,index)=><tr key={index}>
-            <td className="td_head"></td>
-            <td></td>
-            <td>{e.itemName}</td>
-            <td>{e.itemID}</td>
-            <td>{e.groupItem}</td>
-            <td>
-              <span className="num">{`[${e.count}]`}</span>
-              <span>
-                {
-                  e.count<6
-                  ?e.list.map((m,index)=><span key={index}>{m.name}</span>)
-                  :e.list.map((m,index)=>index<5&&<span key={index}>{m.name}</span>).concat(<span key="dot">……</span>)
-                }
-              </span>
-            </td>
-            <td>
-              {
-                e.ableModify?
-                <div>
-                  <span className="green_btn" onClick={this.option.bind(this,"edit", e.id, e.wppc)}>修改</span>
-                </div>: ''
-              }
-            </td>
-            <td></td>
-            <td className="td_end"></td>
-          </tr>)}
-        </tbody>);
-        break;
-      default:
-        return(<tbody></tbody>);
-        break;
-    }
+          </tr>
+        )}
+      </tbody>
+    );
   }
 
   render() {
