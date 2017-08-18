@@ -151,6 +151,7 @@ class Option extends React.Component {
           </div>
         </div>
         <Lists ref="list" Lists={this.state.list} model={this.model} />
+        <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
       </div>
     );
   }
@@ -286,11 +287,33 @@ class Lists extends React.Component {
                 <img src="../../imgs/public/hook.png"/>
               </label>
             </td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>
+              <div className="show_fzx">
+                <span>{list.groupItem}</span>
+                <br/>
+                <span>{`(${list.expertNum})`}</span>
+              </div>
+            </td>
+            <td>
+              <div className="show_fzx">
+                <span>{list.groupItem}</span>
+                <br/>
+                <span>{`(${list.courseNum})`}</span>
+              </div>
+            </td>
+            <td>
+              <input type="text" disabled={list.state===1} defaultValue={list.groupNum}/>
+            </td>
+            <td>
+              <span>{list.state===1?'已分配':'未分配'}</span>
+            </td>
+            <td>
+              {
+                list.cz.map(
+                  (e,index)=><span key={index} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
+                )
+              }
+            </td>
             <td></td>
             <td className="td_end"></td>
           </tr>

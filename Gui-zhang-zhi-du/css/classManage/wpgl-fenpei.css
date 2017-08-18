@@ -187,15 +187,35 @@ label>img {
  tbody td.td_end {
   border-bottom: none;
 }
- tbody td div span {
+ tbody td span {
+  font-size: 14px;
   margin: 0 7px;
   cursor: pointer;
+}
+ tbody td input[type="text"]{
+  height: 25px;
+  width: 39px;
+  text-align: center;
+}
+.able {
+  color: #009261;
+}
+.disable {
+  color: #000;
+  cursor: default;
 }
 .green_btn {
   color: #009361;
 }
 .yellow_btn {
   color: #ff9b29;
+}
+.show_fzx {
+  color: #007A53;
+  font-size: 14px;
+}
+.show_fzx>span {
+  /*display: block;*/
 }
 /*===================================================*/
 
