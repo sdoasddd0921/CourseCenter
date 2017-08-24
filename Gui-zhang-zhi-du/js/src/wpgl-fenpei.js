@@ -30,8 +30,9 @@ class Option extends React.Component {
         pages:1,
         total:1
       },
-      list: []
-    }
+      list: [],
+      dangerHTML: ''
+    };
   }
 
   _get_list(p) {
@@ -45,7 +46,7 @@ class Option extends React.Component {
         page: page,
         count: _COUNT,
         groupItem: this.search_cache.fzx,
-        assignState: `[${+this.yfp.checked}, ${+this.wfp.checked}]`
+        assignState: `[${+this.search_cache.yfp}, ${+this.search_cachewfp}]`
       },
       success: (gets)=>{
         SET("page", page);
@@ -66,12 +67,13 @@ class Option extends React.Component {
   search() {
     console.log("搜索")
     // this.search_cache.zjxm=SET("zjxm",this.state.zjxm);
-    // this._get_list(1);
+    this._get_list(1);
   }
 
   create_fzx_select() {
     let change_fzx=(eve)=>{
-      this.search_cache.fzx=SET('fzx', eve.target.value)
+      this.search_cache.fzx=SET('fzx', eve.target.value);
+      this._get_list(1);
       console.log(eve.target.value)
     }
     console.log('fzx:',this.search_cache.fzx)
@@ -82,6 +84,7 @@ class Option extends React.Component {
         ref={sel=>this.fzx_select=sel}
         defaultValue={this.search_cache.fzx}
         onChange={change_fzx}
+        // dangerouslySetInnerHTML = {this.state.dangerHTML}
       >
         <option value=''>{this.search_cache.fzx||'请选择'}</option>
       </select>
@@ -89,7 +92,8 @@ class Option extends React.Component {
   }
 
   change_state(state,eve) {
-    this.search_cache[state]=SET(state,eve.target.checked)
+    this.search_cache[state]=SET(state,eve.target.checked);
+    this.search();
   }
 
 
@@ -112,8 +116,8 @@ class Option extends React.Component {
             <div id="state">
               <span id="zj_state">专家课程分配状态：</span>
               <input 
-                type="checkbox" 
-                id="yfp" 
+                type="checkbox"
+                id="yfp"
                 defaultChecked={this.search_cache.yfp=="true"}
                 onChange={this.change_state.bind(this,'yfp')}
                 ref={check=>this.yfp=check}
@@ -159,6 +163,7 @@ class Option extends React.Component {
         // <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
 
   componentDidMount() {
+    // document.getElementById('fenpei-fzx').onchange=this.search.bind(this);
     console.log('moren:',this.fzx_select.value)
     // 填充分组项次下拉菜单
     ajax({
@@ -176,9 +181,10 @@ class Option extends React.Component {
 
         let ops=`<option value="">请选择</option>`
         JSON.parse(gets).data.forEach(
-          e=>ops+=`<option ${e.fzx===this.search_cache.fzx?'selected':null} value=${e.fzx}>${e.fzx}</option>`
+          (e, index)=>ops+=`<option data-reactid=".0.0.1.2.1.${index}" ${e.fzx===this.search_cache.fzx?'selected':null} value=${e.fzx}>${e.fzx}</option>`
         )
         this.fzx_select.innerHTML = ops;
+        // this.setState({dangerHTML: ops});
       }
     });
 
@@ -196,12 +202,24 @@ class Option extends React.Component {
       }
       window.location.href=''
     };
+
+    this.PLcx.onclick=()=>{
+      Creat_popup('批量撤销', this.refs.list.nums.toString, this.refs.list.lists.toString());
+      document.getElementById('popup').style.display="block";
+    }
+    this.PLfp.onclick=()=>{
+      Creat_popup('批量分配', this.refs.list.nums.toString, this.refs.list.lists.toString());
+      document.getElementById('popup').style.display="block";
+    }
   }
 }
 
 class Lists extends React.Component {
   constructor(props) {
     super(props);
+    this.lists=[];
+    this.nums=[];
+    this.num = [];
   }
 
   create_head() {
@@ -234,25 +252,53 @@ class Lists extends React.Component {
     </thead>);
   }
 
-  option(type, id, wpid, groupItem, itemName, eve) {
+  option(type, id, num, eve) {
     eve.preventDefault();
 
     console.log("option:",type);
     switch(type) {
-      case 'show':
-        Creat_popup('show', groupItem, id);
+      case '撤销':
+        Creat_popup('撤销', num, id);
         document.getElementById('popup').style.display="block";
         break;
-      case 'edit':
-        console.log("修改");
-        if(this.props.model==='zj') {
-          window.location.href=`./masterWPEditorBymaster.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}`;
-        } else {
-          window.location.href=`./masterWPEditor.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}`;
-        }
+      case '自动分配':
+        Creat_popup('自动分配', num, id);
+        document.getElementById('popup').style.display="block";
+        break;
+      case 'showZJ':
+        Creat_popup('showZJ', num, id);
+        document.getElementById('popup').style.display="block";
+        break;
+      case 'showKC':
+        Creat_popup('showKC', num, id);
+        document.getElementById('popup').style.display="block";
         break;
       default:
         break;
+    }
+  }
+
+  check(id, num, index, eve) {
+    if(eve.target.checked) {
+      this.lists.push(id);
+      this.nums.push(num||this.num[index]);
+    } else {
+      this.lists = this.lists.filter(
+        e => e !== id
+      );
+      this.nums = this.nums.filter(
+        e => e !== num
+      );
+    }
+    console.log(this.nums,this.lists)
+  }
+
+  input_num(index, eve) {
+    if(/^\d*$/.test(eve.target.value)) {
+      this.num[index] = +eve.target.value;
+    } else {
+      eve.target.value = '';
+      return;
     }
   }
 
@@ -281,7 +327,8 @@ class Lists extends React.Component {
             <td>
               <input 
                 type="checkbox" 
-                id={'list-'+index} 
+                id={'list-'+index}
+                onChange = {this.check.bind(this, list.expertGroup, list.expertNum, index)}
               />
               <label htmlFor={'list-'+index}>
                 <img src="../../imgs/public/hook.png"/>
@@ -289,30 +336,32 @@ class Lists extends React.Component {
             </td>
             <td>
               <div className="show_fzx">
-                <span>{list.groupItem}</span>
+                <span onClick={this.option.bind(this,'showZJ',list.expertGroup,list.groupItem)}>{list.groupItem}</span>
                 <br/>
-                <span>{`(${list.expertNum})`}</span>
+                <span onClick={this.option.bind(this,'showZJ',list.expertGroup,list.groupItem)}>{`(${list.expertNum})`}</span>
               </div>
             </td>
             <td>
               <div className="show_fzx">
-                <span>{list.groupItem}</span>
+                <span onClick={this.option.bind(this,'showKC',list.expertGroup,list.groupItem)}>{list.groupItem}</span>
                 <br/>
-                <span>{`(${list.courseNum})`}</span>
+                <span onClick={this.option.bind(this,'showKC',list.expertGroup,list.groupItem)}>{`(${list.courseNum})`}</span>
               </div>
             </td>
             <td>
-              <input type="text" disabled={list.state===1} defaultValue={list.groupNum}/>
+              <input type="text" disabled={list.state===1} onChange={this.input_num.bind(this,index)} defaultValue={list.groupNum}/>
             </td>
             <td>
               <span>{list.state===1?'已分配':'未分配'}</span>
             </td>
             <td>
+            <div>
               {
                 list.cz.map(
-                  (e,index)=><span key={index} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
+                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,list.expertNum||this.num[index]):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
                 )
               }
+            </div>
             </td>
             <td></td>
             <td className="td_end"></td>
@@ -332,7 +381,22 @@ class Lists extends React.Component {
   }
 
   componentDidMount() {
-
+    this.allCheck.onclick=(eve)=>{
+      if(eve.target.checked) {
+        this.props.Lists.forEach(
+          (e, index) => {
+            this.lists.push(e.expertGroup);
+            this.nums.push(e.expertNum||this.num[index]);
+          }
+        );
+      } else {
+        this.lists = [];
+        this.nums = [];
+      }
+      Array.from(document.querySelectorAll('tbody input[type="checkbox"]')).forEach(
+        e=>e.checked = eve.target.checked
+      );
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -348,44 +412,52 @@ class Poplist extends React.Component {
     this.state={
       list: [],
       TP: {
-        page: 1,
-        pages: 1,
-        total: 1
+        page: 0,
+        pages: 0,
+        total: 0
       }
     };
   }
 
   _get_list(p) {
-    ajax({
-      url: courseCenter.host+'queryExpAllocDetail',
-      data: {
-        unifyCode: getCookie("userId"),
-        ID: parseHash(window.location.href).id,
-        expID: this.props.id,
-        groupItem: this.props.fzx,
-        page: p||1,
-        count: _COUNT
-      },
-      success: (gets) => {
-        let datas=JSON.parse(gets);
-        if(datas.meta.result!==100) {
-          return;
-        }
-        this.setState({
-          list: datas.data.list,
-          TP: {
-            page: p||1,
-            pages: datas.data.totalPages,
-            total: datas.data.total
-          }
-        });
-      }
-    });
+    // ajax({
+    //   url: courseCenter.host+'queryExpAllocDetail',
+    //   data: {
+    //     unifyCode: getCookie("userId"),
+    //     ID: parseHash(window.location.href).id,
+    //     expID: this.props.id,
+    //     groupItem: this.props.fzx,
+    //     page: p||1,
+    //     count: _COUNT
+    //   },
+    //   success: (gets) => {
+    //     let datas=JSON.parse(gets);
+    //     if(datas.meta.result!==100) {
+    //       return;
+    //     }
+    //     this.setState({
+    //       list: datas.data.list,
+    //       TP: {
+    //         page: p||1,
+    //         pages: datas.data.totalPages,
+    //         total: datas.data.total
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   render() {
     return (
-      <div>
+      <div style={{padding:'0 40px'}}>
+        <div id="ops">
+        <p>{this.props.fzx}</p>
+        <div id="searchZJ">
+          <span>专家姓名：</span>
+          <input type="text" ref={inp=>this.ZJ=inp}/>
+          <button ref={btn=>this.btn=btn}>搜索</button>
+        </div>
+        </div>
         <div id="pop_table_body">
           <table>
             <thead>
@@ -433,9 +505,17 @@ class Popup extends React.Component {
     const MAP={
       "PLdelete": "删除",
       "delete": "删除",
+      "撤销": "撤销",
+      "自动分配": "自动分配",
+      "批量分配": "批量分配",
+      "批量撤销": "批量撤销",
     };
 
     switch(type) {
+      case '撤销':
+      case '自动分配':
+      case '批量分配':
+      case '批量撤销':
       case 'PLdelete':
       case 'delete':
         return(
@@ -450,7 +530,9 @@ class Popup extends React.Component {
           </div>
         );
         break;
-      case 'show':
+      case 'showZJ':
+      case 'showKC':
+      console.log("show")
         return(
           <div 
             id="background" 
@@ -458,7 +540,7 @@ class Popup extends React.Component {
             onClick={e=>this.delete_popup(e)}
           >
           <div id="poplist" ref="pb" onClick={e=>e.stopPropagation}>
-            <Poplist id={this.props.id} fzx={this.props.names} />
+            <Poplist fzpc={this.props.id} fzx={this.props.names} />
           </div>
           </div>
         );
@@ -490,9 +572,44 @@ class Popup extends React.Component {
           ID: id
         };
         break;
+      case "撤销":
+      case '批量撤销':
+        dat={
+          unifyCode: getCookie("userId"),
+          ID: id,
+          expertGroupItem: this.props.id
+        };
+        break;
+      case "自动分配":
+      case '批量分配':
+        dat={
+          unifyCode: getCookie("userId"),
+          ID: id,
+          expertGroupItem: this.props.id,
+          groupNum: num
+        };
+        break;
       default:
         break;
     }
+    this.OK&&(this.OK.onclick=()=>{
+      let data_map={
+        "delete": "deleteKcfz",
+        "撤销": "reviewUndo",
+        "自动分配": "reviewAutoAlloc"
+      };
+      ajax({
+        url: courseCenter.host+data_map[type],
+        data: dat,
+        success: (gets)=>{
+          let datas=JSON.parse(gets);
+          if(datas.meta.result==100) {
+            cancel_popup();
+            Kcfzgl_option._get_list();
+          }
+        }
+      });
+    });
   }
 
   componentDidUpdate(prevProps, prevState) {

@@ -18,7 +18,7 @@ body {
   outline: none;
   cursor: pointer;
   background: #FFF;
-  margin: 21px 10px 21px 0;
+  margin: 21px 10px 10px 0;
   border: 1px solid #007A51;
 }
 .option_big_btn:hover {
@@ -83,7 +83,7 @@ label>img {
 }
 
 #option_search {
-  float: right;
+  /*float: right;*/
 }
 #option_search span {
   margin-right: 10px;

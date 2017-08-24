@@ -43,19 +43,20 @@ label>img {
   background: #FFF;
 }
 #wpgl_option #big_btns {
-  padding-top: 16px;
-  padding-left: 21px;
+  padding-top: 21px;
+  padding-left: 15px;
 }
 #wpgl_option .big_btn {
   width: 89px;
-  height: 29px;
+  height: 31px;
   color: #007A51;
   font-size: 16px;
-  line-height: 29px;
+  line-height: 31px;
   background: #FFF;
   cursor: pointer;
   border: 1px solid #007A51;
-  margin-left: 97px;
+  /*margin-left: 97px;*/
+  margin-right: 20px;
 }
 #wpgl_option .big_btn:hover {
   color: #FFF;
@@ -72,7 +73,7 @@ label>img {
   line-height: 42px;
 }
 #wpgl_option #wppc {
-  margin-left: 118px;
+  margin-left: 15px;
 }
 
 #wpgl_option #filter_bar select {
