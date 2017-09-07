@@ -1,14 +1,14 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var BluMUI = __webpack_require__(1);
 	var ajax = __webpack_require__(160);
 
-	var menues = BluMUI.menues;
+	var menues = [];
 	var menue_names = BluMUI.menue_names;
 
 	ajax({
@@ -33,10 +33,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -366,7 +366,6 @@ webpackJsonp([0],{
 
 	var BluMUI = {
 	  result: {},
-	  menues: [],
 	  menue_names: {},
 	  create: function create(data, type, elem) {
 	    var props = data,
@@ -378,10 +377,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -453,6 +452,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

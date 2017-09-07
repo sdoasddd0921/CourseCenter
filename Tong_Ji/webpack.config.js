@@ -3,6 +3,7 @@ module.exports = {
   entry: {
     tongji_kczystj: './js/src/tongji_kczystj.js',
     tongji_kczttj: './js/src/tongji_kczttj.js',
+    tongji_wpjgcx: './js/src/tongji_wpjgcx.js',
     tongJi: './js/src/tongJi.js',
     vendor: ['react', 'react-dom']
   },

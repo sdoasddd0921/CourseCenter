@@ -1,23 +1,23 @@
 webpackJsonp([1],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var BluMUI = __webpack_require__(161);
 	var ajax = __webpack_require__(160);
 
-	// ����ҳ���Ȼ�ȡѧԺ����Ϣ��Ȼ�����䵽��ȡ��Դ���Ľӿ�
+	// 
 
 	BluMUI.create({
 	    id: 'filter'
 	}, 'BluMUI_Filter', document.getElementById('TJ'));
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -89,10 +89,10 @@ webpackJsonp([1],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 161:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -570,6 +570,6 @@ webpackJsonp([1],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });
