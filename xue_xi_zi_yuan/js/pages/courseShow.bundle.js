@@ -225,6 +225,7 @@ webpackJsonp([0],{
 	      kcbh: BluMUI.result.config.course_id,
 	      place: Place,
 	      zylb: prop == 'b' ? 21 : 1 + num.indexOf(prop)
+	      // zylb: 21
 	    };
 	  }
 
@@ -346,6 +347,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log('视频', this.props);
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'right' },
@@ -419,7 +421,7 @@ webpackJsonp([0],{
 	      var back = [];
 
 	      this.jiangyi = check.call(this);
-	      console.log("讲义：", this.props);
+	      console.log("讲义-", this.jiangyi);
 	      back.push(Create_tab('讲义'));
 	      if (this.jiangyi) {
 	        back.push(_react2["default"].createElement('div', { key: 'no_data', style: { width: "100%", height: "100px" } }));
@@ -460,6 +462,7 @@ webpackJsonp([0],{
 	          var datas = JSON.parse(xmlhttp.responseText);
 	          _this6.other = datas.meta.result;
 	          if (_this6.other == 101 || _this6.other == 102) {
+	            console.log('22无数据');
 	            back.push(_react2["default"].createElement('div', { key: 'no_data', style: { width: "100%", height: "100px" } }));
 	          } else {
 	            console.log('success', datas);
@@ -493,6 +496,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log('讲义', this.props);
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'right', ref: 'right' },
@@ -516,7 +520,7 @@ webpackJsonp([0],{
 	    value: function componentDidMount() {
 	      console.log('___247', this.jiangyi, this.other);
 	      var error_msg = "";
-	      if (this.other !== 100) {
+	      if (this.jiangyi && this.other !== 100) {
 	        if (this.other === 101) {
 	          error_msg = "该模块暂无数据";
 	        } else if (this.other == 102) {

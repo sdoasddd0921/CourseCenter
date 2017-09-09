@@ -82,6 +82,7 @@ var Show_nav_item=function(prop) {
       kcbh:BluMUI.result.config.course_id,
       place:Place,
       zylb:prop=='b'?21:1+num.indexOf(prop)
+      // zylb: 21
     };
   }
 
@@ -175,6 +176,7 @@ class BlueMUI_Create_a extends React.Component {
   }
 
   render() {
+    console.log('视频',this.props)
     return(<div id='right'>
       {this.create_shipin()}
       {this.create_other_shipin()}
@@ -227,7 +229,7 @@ class BlueMUI_Create_b extends React.Component {
     let back = [];
 
     this.jiangyi = check.call(this);
-    console.log("讲义：",this.props)
+    console.log("讲义-",this.jiangyi)
     back.push(Create_tab('讲义'));
     if(this.jiangyi) {
       back.push(<div key="no_data" style={{width:"100%",height:"100px"}}></div>);
@@ -261,6 +263,7 @@ class BlueMUI_Create_b extends React.Component {
         let datas=JSON.parse(xmlhttp.responseText);
         this.other = datas.meta.result;
         if(this.other==101||this.other==102) {
+          console.log('22无数据')
           back.push(<div key="no_data" style={{width:"100%",height:"100px"}}></div>);
         } else {
           console.log('success',datas)
@@ -283,6 +286,7 @@ class BlueMUI_Create_b extends React.Component {
   }
 
   render() {
+    console.log('讲义', this.props)
     return(<div id='right' ref='right'>
       <div id="jiangyi">
         {this.create_jiangyi()}
@@ -299,7 +303,7 @@ class BlueMUI_Create_b extends React.Component {
   componentDidMount() {
     console.log('___247',this.jiangyi,this.other)
     let error_msg="";
-    if(this.other!==100) {
+    if(this.jiangyi&&this.other!==100) {
       if(this.other===101) {
         error_msg="该模块暂无数据";
       } else if(this.other==102) {

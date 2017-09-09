@@ -1,6 +1,6 @@
 var courseCenter = {
-	// host:'http://cc.cqupt.edu.cn/',
-	host:'http://172.20.2.139/',
+	host:'http://cc.cqupt.edu.cn/',
+	// host:'http://172.20.2.139/',
 	// host:'http://172.22.114.135:6535/',
 }
 function parseHash(URL) {
@@ -18,7 +18,7 @@ function parseHash(URL) {
 		}
 
 	}
-	result.classId='A1040080';
+	result.classId='A2080900';
 	return result;
 }
 
