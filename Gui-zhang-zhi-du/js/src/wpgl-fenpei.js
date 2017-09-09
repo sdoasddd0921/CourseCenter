@@ -596,6 +596,7 @@ class Popup extends React.Component {
       let data_map={
         "delete": "deleteKcfz",
         "撤销": "reviewUndo",
+        "批量撤销": "reviewUndo",
         "自动分配": "reviewAutoAlloc"
       };
       ajax({
