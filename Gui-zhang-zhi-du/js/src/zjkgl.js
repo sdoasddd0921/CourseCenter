@@ -633,14 +633,6 @@ class Popup extends React.Component {
           type: ['in', 'out'].indexOf(OptionComponent.state.master)
         };
         break;
-      case 'change_PW':
-        dat={
-          unifyCode: getCookie("userId"),
-          userId: getCookie("userId"),
-          oldPassWord: this.refs.dqmm.value,
-          newPassWord: this.refs.xmm.value
-        };
-        break;
       default:
         break;
     }
@@ -654,7 +646,6 @@ class Popup extends React.Component {
         "change_PW": "updateZjPassWord"
       };
       if(type=='change_PW') {
-        console.log((this.refs.xmm.value&&this.refs.xmmqr.value&&this.refs.dqmm.value))
         if(!(this.refs.xmm.value&&this.refs.xmmqr.value&&this.refs.dqmm.value)) {
           alert("请检查参数！");
           return;
@@ -662,6 +653,13 @@ class Popup extends React.Component {
         if(this.refs.xmm.value!==this.refs.xmmqr.value) {
           alert("新密码确认错误，请检查！");
           return;
+        } else {
+          dat={
+            unifyCode: getCookie("userId"),
+            userId: getCookie("userId"),
+            oldPassWord: this.refs.dqmm.value,
+            newPassWord: this.refs.xmm.value
+          };
         }
       }
       ajax({
@@ -674,7 +672,7 @@ class Popup extends React.Component {
             cancel_popup();
             OptionComponent.get_list();
           } else {
-            alert("操作失败");
+            // alert("操作失败");
           }
         }
       });

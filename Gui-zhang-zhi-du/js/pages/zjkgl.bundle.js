@@ -1,7 +1,7 @@
 webpackJsonp([10],{
 
 /***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1097,14 +1097,6 @@ webpackJsonp([10],{
 	            type: ['in', 'out'].indexOf(OptionComponent.state.master)
 	          };
 	          break;
-	        case 'change_PW':
-	          dat = {
-	            unifyCode: getCookie("userId"),
-	            userId: getCookie("userId"),
-	            oldPassWord: this.refs.dqmm.value,
-	            newPassWord: this.refs.xmm.value
-	          };
-	          break;
 	        default:
 	          break;
 	      }
@@ -1118,7 +1110,6 @@ webpackJsonp([10],{
 	          "change_PW": "updateZjPassWord"
 	        };
 	        if (type == 'change_PW') {
-	          console.log(_this14.refs.xmm.value && _this14.refs.xmmqr.value && _this14.refs.dqmm.value);
 	          if (!(_this14.refs.xmm.value && _this14.refs.xmmqr.value && _this14.refs.dqmm.value)) {
 	            alert("请检查参数！");
 	            return;
@@ -1126,6 +1117,13 @@ webpackJsonp([10],{
 	          if (_this14.refs.xmm.value !== _this14.refs.xmmqr.value) {
 	            alert("新密码确认错误，请检查！");
 	            return;
+	          } else {
+	            dat = {
+	              unifyCode: getCookie("userId"),
+	              userId: getCookie("userId"),
+	              oldPassWord: _this14.refs.dqmm.value,
+	              newPassWord: _this14.refs.xmm.value
+	            };
 	          }
 	        }
 	        ajax({
@@ -1138,7 +1136,7 @@ webpackJsonp([10],{
 	              cancel_popup();
 	              OptionComponent.get_list();
 	            } else {
-	              alert("操作失败");
+	              // alert("操作失败");
 	            }
 	          }
 	        });
@@ -1169,10 +1167,10 @@ webpackJsonp([10],{
 
 	var OptionComponent = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('zjkgl'));
 
-/***/ }),
+/***/ },
 
 /***/ 159:
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	"use strict";
 
@@ -1244,10 +1242,10 @@ webpackJsonp([10],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }),
+/***/ },
 
 /***/ 160:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1401,6 +1399,6 @@ webpackJsonp([10],{
 	exports["default"] = Fanye;
 	module.exports = exports['default'];
 
-/***/ })
+/***/ }
 
 });

@@ -1,7 +1,7 @@
 webpackJsonp([8],{
 
 /***/ 0:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -345,7 +345,7 @@ webpackJsonp([8],{
 	            sessionStorage.removeItem(window.sessionStorage.key(end - 1));
 	          }
 	        }
-	        window.history.back();
+	        window.location.href = 'wpgl.html';
 	      };
 	    }
 	  }]);
@@ -474,9 +474,9 @@ webpackJsonp([8],{
 	        case 'edit':
 	          console.log("修改");
 	          if (this.props.model === 'zj') {
-	            window.location.href = './masterWPEditorBymaster.html?wpId=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem;
+	            window.location.href = './masterWPEditorBymaster.html?wpId=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem + '&wppc=' + parseHash(window.location.href).wppc;
 	          } else {
-	            window.location.href = './masterWPEditor.html?wpId=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem;
+	            window.location.href = './masterWPEditor.html?wpId=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem + '&wppc=' + parseHash(window.location.href).wppc;
 	          }
 	          break;
 	        default:
@@ -979,10 +979,10 @@ webpackJsonp([8],{
 
 	var WPGL = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('wpgl'));
 
-/***/ }),
+/***/ },
 
 /***/ 159:
-/***/ (function(module, exports) {
+/***/ function(module, exports) {
 
 	"use strict";
 
@@ -1054,10 +1054,10 @@ webpackJsonp([8],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }),
+/***/ },
 
 /***/ 160:
-/***/ (function(module, exports, __webpack_require__) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1211,6 +1211,6 @@ webpackJsonp([8],{
 	exports["default"] = Fanye;
 	module.exports = exports['default'];
 
-/***/ })
+/***/ }
 
 });

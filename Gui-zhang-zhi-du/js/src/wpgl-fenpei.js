@@ -15,6 +15,16 @@ const GET = (key) => {
 }
 
 var WPPCS=[];
+// 每组输入的数据
+var Nums=[];
+// 每组输入数据的缓存
+var NumsCache=[];
+// 每一条分组的分组数量
+var FenzuNum=(new Array(10)).fill(0);
+// 每一条分组的专家数量
+var ZhuanjiaNum=(new Array(10)).fill(0);
+// 选中的条目
+var Checks=[];
 
 class Option extends React.Component {
   constructor(props) {
@@ -24,6 +34,8 @@ class Option extends React.Component {
       yfp: GET("yfp")||SET("yfp","true"),
       wfp: GET("wfp")||SET("wfp","true")
     };
+    this.title=parseHash(window.location.href)['wppc'];
+    console.log(this.title);
     this.state={
       TP: {
         page:1,
@@ -46,7 +58,7 @@ class Option extends React.Component {
         page: page,
         count: _COUNT,
         groupItem: this.search_cache.fzx,
-        assignState: `[${+this.search_cache.yfp}, ${+this.search_cachewfp}]`
+        assignState: `[${this.search_cache.yfp==='true'}, ${this.search_cache.wfp==='true'}]`
       },
       success: (gets)=>{
         SET("page", page);
@@ -92,6 +104,7 @@ class Option extends React.Component {
   }
 
   change_state(state,eve) {
+    console.log(state,eve.target.checked)
     this.search_cache[state]=SET(state,eve.target.checked);
     this.search();
   }
@@ -104,7 +117,7 @@ class Option extends React.Component {
         <div id="option">
           <div id="up">
             <button className="big_btn" ref={btn=>this.back=btn} >返回</button>
-            <p>2017年XXX专家网评</p>
+            <p>网评批次名称：{this.title}</p>
           </div>
 
           <div id="mid">
@@ -159,8 +172,6 @@ class Option extends React.Component {
       </div>
     );
   }
-        // <Lists ref="list" Lists={this.state.list} model={this.model} />
-        // <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
 
   componentDidMount() {
     // document.getElementById('fenpei-fzx').onchange=this.search.bind(this);
@@ -200,15 +211,15 @@ class Option extends React.Component {
           sessionStorage.removeItem(window.sessionStorage.key(end-1));
         }
       }
-      window.location.href=''
+      window.location.href='wpgl.html';
     };
 
     this.PLcx.onclick=()=>{
-      Creat_popup('批量撤销', this.refs.list.nums.toString, this.refs.list.lists.toString());
+      Creat_popup('批量撤销', Nums.toString(), this.refs.list.lists.toString());
       document.getElementById('popup').style.display="block";
     }
     this.PLfp.onclick=()=>{
-      Creat_popup('批量分配', this.refs.list.nums.toString, this.refs.list.lists.toString());
+      Creat_popup('批量分配', Nums.toString(), this.refs.list.lists.toString());
       document.getElementById('popup').style.display="block";
     }
   }
@@ -218,8 +229,6 @@ class Lists extends React.Component {
   constructor(props) {
     super(props);
     this.lists=[];
-    this.nums=[];
-    this.num = [];
   }
 
   create_head() {
@@ -252,17 +261,21 @@ class Lists extends React.Component {
     </thead>);
   }
 
-  option(type, id, num, eve) {
-    eve.preventDefault();
+  option(type, id, num, groupItem, eve) {
+    if(eve) {
+      eve.preventDefault();
+    } else {
+      groupItem.preventDefault();
+    }
 
     console.log("option:",type);
     switch(type) {
       case '撤销':
-        Creat_popup('撤销', num, id);
+        Creat_popup('撤销', num, id, groupItem);
         document.getElementById('popup').style.display="block";
         break;
       case '自动分配':
-        Creat_popup('自动分配', num, id);
+        Creat_popup('自动分配', num, id, groupItem);
         document.getElementById('popup').style.display="block";
         break;
       case 'showZJ':
@@ -281,21 +294,26 @@ class Lists extends React.Component {
   check(id, num, index, eve) {
     if(eve.target.checked) {
       this.lists.push(id);
-      this.nums.push(num||this.num[index]);
+      Nums.push(num||0);
+      Checks.push(index);
     } else {
       this.lists = this.lists.filter(
         e => e !== id
       );
-      this.nums = this.nums.filter(
+      Nums = Nums.filter(
         e => e !== num
       );
+      Checks = Checks.filter(
+        e => e !== index
+      );
     }
-    console.log(this.nums,this.lists)
+    this.allCheck.checked=false;
+    console.log(Nums,this.lists)
   }
 
   input_num(index, eve) {
     if(/^\d*$/.test(eve.target.value)) {
-      this.num[index] = +eve.target.value;
+      FenzuNum[index] = +eve.target.value;
     } else {
       eve.target.value = '';
       return;
@@ -322,7 +340,11 @@ class Lists extends React.Component {
       <tbody>
         {this.props.Lists.map(
           (list, index) => <tr key={index}>
-            <td className="td_head"></td>
+            <td className="td_head">{()=>{
+              // 储存每条信息里需要用到的数据
+              FenzuNum[index]=list.groupNum;
+              ZhuanjiaNum[index]=list.expertNum;
+            }}</td>
             <td></td>
             <td>
               <input 
@@ -358,8 +380,11 @@ class Lists extends React.Component {
             <div>
               {
                 list.cz.map(
-                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,list.expertNum||this.num[index]):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
+                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,Nums[index]||list.expertNum,list.groupItem):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
                 )
+              }
+              {
+                list.cz[0].able?'': <div style={{fontSize:'12px',color:'red'}}>{list.cz[0].tips}</div>
               }
             </div>
             </td>
@@ -383,15 +408,19 @@ class Lists extends React.Component {
   componentDidMount() {
     this.allCheck.onclick=(eve)=>{
       if(eve.target.checked) {
+        // 情况选中的项
+        Checks=[];
         this.props.Lists.forEach(
           (e, index) => {
+            // 填充被选中的项（所有）
+            Checks.push(index);
             this.lists.push(e.expertGroup);
-            this.nums.push(e.expertNum||this.num[index]);
+            Nums.push(NumsCache[index]||e.expertNum);
           }
         );
       } else {
         this.lists = [];
-        this.nums = [];
+        Nums = [];
       }
       Array.from(document.querySelectorAll('tbody input[type="checkbox"]')).forEach(
         e=>e.checked = eve.target.checked
@@ -501,10 +530,8 @@ class Popup extends React.Component {
 
   render() {
     console.log(this.props)
-    const {type,names}=this.props;
+    const {type,names,groupItem}=this.props;
     const MAP={
-      "PLdelete": "删除",
-      "delete": "删除",
       "撤销": "撤销",
       "自动分配": "自动分配",
       "批量分配": "批量分配",
@@ -514,25 +541,39 @@ class Popup extends React.Component {
     switch(type) {
       case '撤销':
       case '自动分配':
+        return(
+          <div id="background" ref={div=>this.background=div}>
+            <div id="popbody" ref='pb'>
+              <div id="msg">
+                <p>{`确定要${MAP[type]+groupItem}?`}</p>
+              </div>
+              <div id="popup_option">
+                <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
+                <button id="popup_back" ref={btn=>this.back=btn}>取消</button>
+              </div>
+            </div>
+          </div>
+        );
+        break;
       case '批量分配':
       case '批量撤销':
-      case 'PLdelete':
-      case 'delete':
         return(
-          <div id="popbody" ref='pb'>
-            <div id="msg">
-              <p>{`确定要${MAP[type]+names}?`}</p>
-            </div>
-            <div id="popup_option">
-              <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
-              <button id="popup_back" ref={btn=>this.back=btn}>取消</button>
+          <div id="background" ref={div=>this.background=div}>
+            <div id="popbody" ref='pb'>
+              <div id="msg">
+                <p>{`确定要${MAP[type]}?`}</p>
+              </div>
+              <div id="popup_option">
+                <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
+                <button id="popup_back" ref={btn=>this.back=btn}>取消</button>
+              </div>
             </div>
           </div>
         );
         break;
       case 'showZJ':
       case 'showKC':
-      console.log("show")
+        console.log("show")
         return(
           <div 
             id="background" 
@@ -552,11 +593,12 @@ class Popup extends React.Component {
 
   componentDidMount() {
     if(window.frameElement) {
-      let H=document.body.offsetHeight;
-      if(this.background.offsetHeight>parseInt(document.body.offsetHeight)) {
-        H=this.background.offsetHeight;
+      console.log('558--',document.body.scrollHeight)
+      let H=document.body.scrollHeight;
+      if(this.background.height>parseInt(document.body.scrollHeight)) {
+        H=this.background.scrollHeight;
       }
-      console.log("height:",this.background.offsetHeight)
+      console.log("height:",this.background.scrollHeight)
       window.frameElement.height=H;
     }
 
@@ -565,13 +607,6 @@ class Popup extends React.Component {
     let dat={};
 
     switch(type) {
-      case "PLdelete":
-      case "delete":
-        dat={
-          unifyCode: getCookie("userId"),
-          ID: id
-        };
-        break;
       case "撤销":
       case '批量撤销':
         dat={
@@ -586,7 +621,7 @@ class Popup extends React.Component {
           unifyCode: getCookie("userId"),
           ID: id,
           expertGroupItem: this.props.id,
-          groupNum: num
+          groupNum: Nums.join(',')
         };
         break;
       default:
@@ -594,9 +629,10 @@ class Popup extends React.Component {
     }
     this.OK&&(this.OK.onclick=()=>{
       let data_map={
-        "delete": "deleteKcfz",
         "撤销": "reviewUndo",
-        "自动分配": "reviewAutoAlloc"
+        "批量撤销": "reviewUndo",
+        "自动分配": "reviewAutoAlloc",
+        "批量分配": "reviewAutoAlloc"
       };
       ajax({
         url: courseCenter.host+data_map[type],
@@ -610,6 +646,9 @@ class Popup extends React.Component {
         }
       });
     });
+    this.back&&(this.back.onclick=()=>{
+      ReactDOM.unmountComponentAtNode(document.getElementById('popup'));
+    })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -629,12 +668,13 @@ class Popup extends React.Component {
   }
 }
 
-function Creat_popup(type, names, id) {
+function Creat_popup(type, names, id, groupItem) {
   console.log(id)
   const popup_datas={
     type: type,
     names: names,
-    id: id
+    id: id,
+    groupItem: groupItem
   };
   var popup = ReactDOM.render(
     <Popup {...popup_datas}/>,
