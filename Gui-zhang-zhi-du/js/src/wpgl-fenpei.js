@@ -262,11 +262,11 @@ class Lists extends React.Component {
   }
 
   option(type, id, num, groupItem, eve) {
-    if(eve) {
-      eve.preventDefault();
-    } else {
-      groupItem.preventDefault();
-    }
+    // if(eve) {
+    //   eve.preventDefault();
+    // } else {
+    //   groupItem.preventDefault();
+    // }
 
     console.log("option:",type);
     switch(type) {
@@ -283,6 +283,7 @@ class Lists extends React.Component {
         document.getElementById('popup').style.display="block";
         break;
       case 'showKC':
+        console.log('ttttttt',eve)
         Creat_popup('showKC', num, id);
         document.getElementById('popup').style.display="block";
         break;
@@ -311,12 +312,21 @@ class Lists extends React.Component {
     console.log(Nums,this.lists)
   }
 
+  // 输入数字检测
   input_num(index, eve) {
     if(/^\d*$/.test(eve.target.value)) {
       FenzuNum[index] = +eve.target.value;
+      console.log('ok');
     } else {
       eve.target.value = '';
       return;
+    }
+  }
+  // 离开输入框检测
+  num_input_blur(index, eve) {
+    if(eve.target.value==='') {
+      eve.target.value=0;
+      FenzuNum[index] = 0;
     }
   }
 
@@ -371,7 +381,7 @@ class Lists extends React.Component {
               </div>
             </td>
             <td>
-              <input type="text" disabled={list.state===1} onChange={this.input_num.bind(this,index)} defaultValue={list.groupNum}/>
+              <input type="text" disabled={list.state===1} onBlur={this.num_input_blur.bind(this,index)} onChange={this.input_num.bind(this,index)} defaultValue={list.groupNum}/>
             </td>
             <td>
               <span>{list.state===1?'已分配':'未分配'}</span>
@@ -477,12 +487,13 @@ class Poplist extends React.Component {
   }
 
   render() {
+    console.log('poplist:',this.props)
     return (
       <div style={{padding:'0 40px'}}>
         <div id="ops">
         <p>{this.props.fzx}</p>
         <div id="searchZJ">
-          <span>专家姓名：</span>
+          <span>{this.props.type.indexOf('ZJ')===-1?'课程名称：':'专家姓名：'}</span>
           <input type="text" ref={inp=>this.ZJ=inp}/>
           <button ref={btn=>this.btn=btn}>搜索</button>
         </div>
@@ -491,8 +502,8 @@ class Poplist extends React.Component {
           <table>
             <thead>
               <tr>
-                <td width="30%">课程名称</td>
                 <td width="30%">课程编号</td>
+                <td width="30%">课程名称</td>
                 <td width="40%">开课学院</td>
               </tr>
             </thead>
@@ -507,7 +518,7 @@ class Poplist extends React.Component {
             </tbody>
           </table>
         </div>
-        <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
+        {/* <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} /> */}
       </div>
     );
   }
@@ -581,7 +592,7 @@ class Popup extends React.Component {
             onClick={e=>this.delete_popup(e)}
           >
           <div id="poplist" ref="pb" onClick={e=>e.stopPropagation}>
-            <Poplist fzpc={this.props.id} fzx={this.props.names} />
+            <Poplist fzpc={this.props.id} fzx={this.props.names} type={type} />
           </div>
           </div>
         );
