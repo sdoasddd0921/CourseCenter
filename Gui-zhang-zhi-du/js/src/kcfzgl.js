@@ -93,6 +93,12 @@ class Option extends React.Component {
     }
     this.setState({
       wppc: reviewBatch
+    }, () => {
+      console.log('test:', this.wppc_select.value);
+      if (e && !this.wppc_select.value) {
+        console.log('tttt');
+        this.search();
+      }
     });
 
     // charge fzx select list
@@ -122,12 +128,8 @@ class Option extends React.Component {
   change_fzx(e) {
     this.setState({
       fzx: e.target.value
-    });
-  }
-
-  change_kcmc(e) {
-    this.setState({
-      kcmc: e.target.value
+    }, () => {
+      this.search();
     });
   }
 
@@ -167,16 +169,6 @@ class Option extends React.Component {
               }
             </select>
 
-            <span>课程名称：</span>
-            <input 
-              type="text" 
-              ref={input=>this.kcmc_input=input} 
-              id="kcmc_input" 
-              value={this.state.kcmc} 
-              onChange={this.change_kcmc.bind(this)}
-            />
-
-            <button ref={btn=>this.search_btn=btn} onClick={this.search.bind(this)} >搜索</button>
           </div>
         </div>
 

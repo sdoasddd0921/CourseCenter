@@ -1,7 +1,7 @@
 webpackJsonp([10],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -364,13 +364,13 @@ webpackJsonp([10],{
 	                } },
 	              '\u6279\u91CF\u5220\u9664'
 	            ),
-	            _react2["default"].createElement(
+	            this.state.master === 'out' ? _react2["default"].createElement(
 	              'button',
 	              { className: 'option_big_btn', ref: function ref(button) {
 	                  return _this6.change = button;
 	                } },
 	              '\u4FEE\u6539\u5BC6\u7801'
-	            )
+	            ) : ''
 	          ),
 	          _react2["default"].createElement(
 	            'div',
@@ -453,10 +453,12 @@ webpackJsonp([10],{
 	      };
 
 	      // change password
-	      this.change.onclick = function () {
-	        Creat_popup('change_PW', masters, _this7.refs.list.ids);
-	        pop.style.display = 'block';
-	      };
+	      if (this.state.master === 'out') {
+	        this.change.onclick = function () {
+	          Creat_popup('change_PW', masters, _this7.refs.list.ids);
+	          pop.style.display = 'block';
+	        };
+	      }
 
 	      // search
 	      this.search.onclick = this.search_handler.bind(this);
@@ -779,11 +781,6 @@ webpackJsonp([10],{
 	                  null,
 	                  _react2["default"].createElement(
 	                    'a',
-	                    { href: '#', onClick: _this10.option.bind(_this10, 'edit', e.sfrzh, e.xm) },
-	                    '\u7F16\u8F91'
-	                  ),
-	                  _react2["default"].createElement(
-	                    'a',
 	                    { href: '#', onClick: _this10.option.bind(_this10, 'del', e.sfrzh, e.xm) },
 	                    '\u5220\u9664'
 	                  ),
@@ -983,22 +980,6 @@ webpackJsonp([10],{
 	                    { className: 'warn' },
 	                    '*'
 	                  ),
-	                  '\u5F53\u524D\u5BC6\u7801'
-	                ),
-	                _react2["default"].createElement('input', { type: 'password', ref: 'dqmm' }),
-	                _react2["default"].createElement('span', { className: 'tips' })
-	              ),
-	              _react2["default"].createElement(
-	                'div',
-	                null,
-	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'left_span' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    { className: 'warn' },
-	                    '*'
-	                  ),
 	                  '\u65B0\u5BC6\u7801'
 	                ),
 	                _react2["default"].createElement('input', { type: 'password', ref: 'xmm' }),
@@ -1110,7 +1091,7 @@ webpackJsonp([10],{
 	          "change_PW": "updateZjPassWord"
 	        };
 	        if (type == 'change_PW') {
-	          if (!(_this14.refs.xmm.value && _this14.refs.xmmqr.value && _this14.refs.dqmm.value)) {
+	          if (!(_this14.refs.xmm.value && _this14.refs.xmmqr.value)) {
 	            alert("请检查参数！");
 	            return;
 	          }
@@ -1121,7 +1102,7 @@ webpackJsonp([10],{
 	            dat = {
 	              unifyCode: getCookie("userId"),
 	              userId: getCookie("userId"),
-	              oldPassWord: _this14.refs.dqmm.value,
+	              // oldPassWord: this.refs.dqmm.value,
 	              newPassWord: _this14.refs.xmm.value
 	            };
 	          }
@@ -1167,10 +1148,10 @@ webpackJsonp([10],{
 
 	var OptionComponent = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('zjkgl'));
 
-/***/ },
+/***/ }),
 
 /***/ 159:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1242,10 +1223,10 @@ webpackJsonp([10],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1399,6 +1380,6 @@ webpackJsonp([10],{
 	exports["default"] = Fanye;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

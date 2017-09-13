@@ -122,7 +122,9 @@ function check() {
 
 // 下载函数，用于下载文件
 function xiazai(name,down) {
-  this.refs.DOWNLOAD.src=`${courseCenter.host}fileDownLoad?name=${name}&oName=${down}&unifyCode=${BluMUI.result.config.user_id}`;
+  let codedName = encodeURI(name);
+  let codedDown = encodeURI(down);
+  this.refs.DOWNLOAD.src=`${courseCenter.host}fileDownLoad?name=${codedName}&oName=${codedDown}&unifyCode=${BluMUI.result.config.user_id}`;
 }
 
 // 导航的子项目
@@ -418,7 +420,11 @@ class BlueMUI_Create_e extends React.Component {
 
     this.props.data.map(e=>{
       if(e.ywjm!='') {
-        Xiazai=<span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>;
+        if(e.sfnxz==1) {
+          Xiazai=<span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>;
+        } else {
+          Xiazai='';
+        }
         back.push(<div className="ziyuan_item" key={e.id}>
           <img src="../../imgs/classListInfShow/courseShow/ziyuan.png"/>
           <br/>

@@ -1,7 +1,7 @@
 webpackJsonp([6],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -692,10 +692,10 @@ webpackJsonp([6],{
 
 	var WPGL = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('wpgl'));
 
-/***/ },
+/***/ }),
 
 /***/ 159:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -767,10 +767,10 @@ webpackJsonp([6],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -924,6 +924,6 @@ webpackJsonp([6],{
 	exports["default"] = Fanye;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

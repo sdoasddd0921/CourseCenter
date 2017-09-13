@@ -316,7 +316,7 @@ class Lists extends React.Component {
   input_num(index, eve) {
     if(/^\d*$/.test(eve.target.value)) {
       FenzuNum[index] = +eve.target.value;
-      console.log('ok');
+      console.log('ok,',FenzuNum[index]);
     } else {
       eve.target.value = '';
       return;
@@ -381,7 +381,7 @@ class Lists extends React.Component {
               </div>
             </td>
             <td>
-              <input type="text" disabled={list.state===1} onBlur={this.num_input_blur.bind(this,index)} onChange={this.input_num.bind(this,index)} defaultValue={list.groupNum}/>
+              <input type="text" disabled={list.state===1 || !list.cz[0].able} onBlur={this.num_input_blur.bind(this,index)} onChange={this.input_num.bind(this,index)} defaultValue={list.groupNum}/>
             </td>
             <td>
               <span>{list.state===1?'已分配':'未分配'}</span>
@@ -390,7 +390,7 @@ class Lists extends React.Component {
             <div>
               {
                 list.cz.map(
-                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,Nums[index]||list.expertNum,list.groupItem):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
+                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,FenzuNum[index]||list.expertNum,list.groupItem):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
                 )
               }
               {
@@ -622,17 +622,18 @@ class Popup extends React.Component {
       case '批量撤销':
         dat={
           unifyCode: getCookie("userId"),
-          ID: id,
-          expertGroupItem: this.props.id
+          ID: parseHash(window.location.href).id,
+          expertGroupItem: this.props.groupItem
         };
         break;
       case "自动分配":
       case '批量分配':
         dat={
           unifyCode: getCookie("userId"),
-          ID: id,
-          expertGroupItem: this.props.id,
-          groupNum: Nums.join(',')
+          ID: parseHash(window.location.href).id,
+          expertGroupItem: this.props.groupItem,
+          // groupNum: FenzuNum.join(',')
+          groupNum: this.props.names
         };
         break;
       default:
@@ -691,6 +692,12 @@ function Creat_popup(type, names, id, groupItem) {
     <Popup {...popup_datas}/>,
     document.getElementById('popup')
   );
+}
+
+function cancel_popup() {
+  let popup=document.getElementById('popup');
+  popup.style.display="none";
+  ReactDOM.unmountComponentAtNode(popup);
 }
 
 var WPGL=ReactDOM.render(

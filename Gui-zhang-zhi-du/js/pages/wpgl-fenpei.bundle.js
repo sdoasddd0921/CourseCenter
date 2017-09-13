@@ -1,7 +1,7 @@
 webpackJsonp([7],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -439,17 +439,21 @@ webpackJsonp([7],{
 	    }
 	  }, {
 	    key: 'option',
-	    value: function option(type, id, num, eve) {
-	      eve.preventDefault();
+	    value: function option(type, id, num, groupItem, eve) {
+	      // if(eve) {
+	      //   eve.preventDefault();
+	      // } else {
+	      //   groupItem.preventDefault();
+	      // }
 
 	      console.log("option:", type);
 	      switch (type) {
 	        case '撤销':
-	          Creat_popup('撤销', num, id);
+	          Creat_popup('撤销', num, id, groupItem);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case '自动分配':
-	          Creat_popup('自动分配', num, id);
+	          Creat_popup('自动分配', num, id, groupItem);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case 'showZJ':
@@ -457,6 +461,7 @@ webpackJsonp([7],{
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case 'showKC':
+	          console.log('ttttttt', eve);
 	          Creat_popup('showKC', num, id);
 	          document.getElementById('popup').style.display = "block";
 	          break;
@@ -485,14 +490,28 @@ webpackJsonp([7],{
 	      this.allCheck.checked = false;
 	      console.log(Nums, this.lists);
 	    }
+
+	    // 输入数字检测
+
 	  }, {
 	    key: 'input_num',
 	    value: function input_num(index, eve) {
 	      if (/^\d*$/.test(eve.target.value)) {
 	        FenzuNum[index] = +eve.target.value;
+	        console.log('ok,', FenzuNum[index]);
 	      } else {
 	        eve.target.value = '';
 	        return;
+	      }
+	    }
+	    // 离开输入框检测
+
+	  }, {
+	    key: 'num_input_blur',
+	    value: function num_input_blur(index, eve) {
+	      if (eve.target.value === '') {
+	        eve.target.value = 0;
+	        FenzuNum[index] = 0;
 	      }
 	    }
 	  }, {
@@ -595,7 +614,7 @@ webpackJsonp([7],{
 	            _react2["default"].createElement(
 	              'td',
 	              null,
-	              _react2["default"].createElement('input', { type: 'text', disabled: list.state === 1, onChange: _this8.input_num.bind(_this8, index), defaultValue: list.groupNum })
+	              _react2["default"].createElement('input', { type: 'text', disabled: list.state === 1 || !list.cz[0].able, onBlur: _this8.num_input_blur.bind(_this8, index), onChange: _this8.input_num.bind(_this8, index), defaultValue: list.groupNum })
 	            ),
 	            _react2["default"].createElement(
 	              'td',
@@ -615,7 +634,7 @@ webpackJsonp([7],{
 	                list.cz.map(function (e, innerIndex) {
 	                  return _react2["default"].createElement(
 	                    'span',
-	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, Nums[index] || list.expertNum) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
+	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, FenzuNum[index] || list.expertNum, list.groupItem) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
 	                    e.name
 	                  );
 	                }),
@@ -735,6 +754,7 @@ webpackJsonp([7],{
 	    value: function render() {
 	      var _this11 = this;
 
+	      console.log('poplist:', this.props);
 	      return _react2["default"].createElement(
 	        'div',
 	        { style: { padding: '0 40px' } },
@@ -752,7 +772,7 @@ webpackJsonp([7],{
 	            _react2["default"].createElement(
 	              'span',
 	              null,
-	              '\u4E13\u5BB6\u59D3\u540D\uFF1A'
+	              this.props.type.indexOf('ZJ') === -1 ? '课程名称：' : '专家姓名：'
 	            ),
 	            _react2["default"].createElement('input', { type: 'text', ref: function ref(inp) {
 	                return _this11.ZJ = inp;
@@ -781,12 +801,12 @@ webpackJsonp([7],{
 	                _react2["default"].createElement(
 	                  'td',
 	                  { width: '30%' },
-	                  '\u8BFE\u7A0B\u540D\u79F0'
+	                  '\u8BFE\u7A0B\u7F16\u53F7'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
 	                  { width: '30%' },
-	                  '\u8BFE\u7A0B\u7F16\u53F7'
+	                  '\u8BFE\u7A0B\u540D\u79F0'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
@@ -821,10 +841,7 @@ webpackJsonp([7],{
 	              })
 	            )
 	          )
-	        ),
-	        _react2["default"].createElement(Fanye, { TP: this.state.TP, callback: function callback(p) {
-	            _this11._get_list(p);
-	          } })
+	        )
 	      );
 	    }
 	  }, {
@@ -861,11 +878,10 @@ webpackJsonp([7],{
 	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
-	          names = _props.names;
+	          names = _props.names,
+	          groupItem = _props.groupItem;
 
 	      var MAP = {
-	        "PLdelete": "删除",
-	        "delete": "删除",
 	        "撤销": "撤销",
 	        "自动分配": "自动分配",
 	        "批量分配": "批量分配",
@@ -875,10 +891,6 @@ webpackJsonp([7],{
 	      switch (type) {
 	        case '撤销':
 	        case '自动分配':
-	        case '批量分配':
-	        case '批量撤销':
-	        case 'PLdelete':
-	        case 'delete':
 	          return _react2["default"].createElement(
 	            'div',
 	            { id: 'background', ref: function ref(div) {
@@ -893,7 +905,47 @@ webpackJsonp([7],{
 	                _react2["default"].createElement(
 	                  'p',
 	                  null,
-	                  '\u786E\u5B9A\u8981' + (MAP[type] + names) + '?'
+	                  '\u786E\u5B9A\u8981' + (MAP[type] + groupItem) + '?'
+	                )
+	              ),
+	              _react2["default"].createElement(
+	                'div',
+	                { id: 'popup_option' },
+	                _react2["default"].createElement(
+	                  'button',
+	                  { id: 'popup_OK', ref: function ref(btn) {
+	                      return _this13.OK = btn;
+	                    } },
+	                  '\u786E\u5B9A'
+	                ),
+	                _react2["default"].createElement(
+	                  'button',
+	                  { id: 'popup_back', ref: function ref(btn) {
+	                      return _this13.back = btn;
+	                    } },
+	                  '\u53D6\u6D88'
+	                )
+	              )
+	            )
+	          );
+	          break;
+	        case '批量分配':
+	        case '批量撤销':
+	          return _react2["default"].createElement(
+	            'div',
+	            { id: 'background', ref: function ref(div) {
+	                return _this13.background = div;
+	              } },
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'popbody', ref: 'pb' },
+	              _react2["default"].createElement(
+	                'div',
+	                { id: 'msg' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  null,
+	                  '\u786E\u5B9A\u8981' + MAP[type] + '?'
 	                )
 	              ),
 	              _react2["default"].createElement(
@@ -936,7 +988,7 @@ webpackJsonp([7],{
 	              { id: 'poplist', ref: 'pb', onClick: function onClick(e) {
 	                  return e.stopPropagation;
 	                } },
-	              _react2["default"].createElement(Poplist, { fzpc: this.props.id, fzx: this.props.names })
+	              _react2["default"].createElement(Poplist, { fzpc: this.props.id, fzx: this.props.names, type: type })
 	            )
 	          );
 	        default:
@@ -968,28 +1020,22 @@ webpackJsonp([7],{
 	      var dat = {};
 
 	      switch (type) {
-	        case "PLdelete":
-	        case "delete":
-	          dat = {
-	            unifyCode: getCookie("userId"),
-	            ID: id
-	          };
-	          break;
 	        case "撤销":
 	        case '批量撤销':
 	          dat = {
 	            unifyCode: getCookie("userId"),
-	            ID: id,
-	            expertGroupItem: this.props.id
+	            ID: parseHash(window.location.href).id,
+	            expertGroupItem: this.props.groupItem
 	          };
 	          break;
 	        case "自动分配":
 	        case '批量分配':
 	          dat = {
 	            unifyCode: getCookie("userId"),
-	            ID: id,
-	            expertGroupItem: this.props.id,
-	            groupNum: Nums.join(',')
+	            ID: parseHash(window.location.href).id,
+	            expertGroupItem: this.props.groupItem,
+	            // groupNum: FenzuNum.join(',')
+	            groupNum: this.props.names
 	          };
 	          break;
 	        default:
@@ -997,8 +1043,8 @@ webpackJsonp([7],{
 	      }
 	      this.OK && (this.OK.onclick = function () {
 	        var data_map = {
-	          "delete": "deleteKcfz",
 	          "撤销": "reviewUndo",
+	          "批量撤销": "reviewUndo",
 	          "自动分配": "reviewAutoAlloc",
 	          "批量分配": "reviewAutoAlloc"
 	        };
@@ -1041,22 +1087,29 @@ webpackJsonp([7],{
 	  return Popup;
 	}(_react2["default"].Component);
 
-	function Creat_popup(type, names, id) {
+	function Creat_popup(type, names, id, groupItem) {
 	  console.log(id);
 	  var popup_datas = {
 	    type: type,
 	    names: names,
-	    id: id
+	    id: id,
+	    groupItem: groupItem
 	  };
 	  var popup = _reactDom2["default"].render(_react2["default"].createElement(Popup, popup_datas), document.getElementById('popup'));
 	}
 
+	function cancel_popup() {
+	  var popup = document.getElementById('popup');
+	  popup.style.display = "none";
+	  _reactDom2["default"].unmountComponentAtNode(popup);
+	}
+
 	var WPGL = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('wpgl'));
 
-/***/ },
+/***/ }),
 
 /***/ 159:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1128,10 +1181,10 @@ webpackJsonp([7],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -1285,6 +1338,6 @@ webpackJsonp([7],{
 	exports["default"] = Fanye;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

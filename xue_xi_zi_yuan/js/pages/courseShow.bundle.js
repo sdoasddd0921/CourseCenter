@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -46,10 +46,10 @@ webpackJsonp([0],{
 	  module: parseHash(window.location.href).module || 'a'
 	}, 'CreateNav', document.getElementById('React_left'));
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -268,7 +268,9 @@ webpackJsonp([0],{
 
 	// 下载函数，用于下载文件
 	function xiazai(name, down) {
-	  this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + name + '&oName=' + down + '&unifyCode=' + BluMUI.result.config.user_id;
+	  var codedName = encodeURI(name);
+	  var codedDown = encodeURI(down);
+	  this.refs.DOWNLOAD.src = courseCenter.host + 'fileDownLoad?name=' + codedName + '&oName=' + codedDown + '&unifyCode=' + BluMUI.result.config.user_id;
 	}
 
 	// 导航的子项目
@@ -703,11 +705,15 @@ webpackJsonp([0],{
 
 	      this.props.data.map(function (e) {
 	        if (e.ywjm != '') {
-	          Xiazai = _react2["default"].createElement(
-	            'span',
-	            { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this12, e.ywjm, e.xywjm) },
-	            '\u4E0B\u8F7D'
-	          );
+	          if (e.sfnxz == 1) {
+	            Xiazai = _react2["default"].createElement(
+	              'span',
+	              { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this12, e.ywjm, e.xywjm) },
+	              '\u4E0B\u8F7D'
+	            );
+	          } else {
+	            Xiazai = '';
+	          }
 	          back.push(_react2["default"].createElement(
 	            'div',
 	            { className: 'ziyuan_item', key: e.id },
@@ -908,10 +914,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -983,6 +989,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });
