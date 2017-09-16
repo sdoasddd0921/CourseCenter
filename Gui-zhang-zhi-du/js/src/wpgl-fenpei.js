@@ -261,7 +261,7 @@ class Lists extends React.Component {
     </thead>);
   }
 
-  option(type, id, num, groupItem, eve) {
+  option(type, id, num, groupItem, index, eve) {
     // if(eve) {
     //   eve.preventDefault();
     // } else {
@@ -271,11 +271,11 @@ class Lists extends React.Component {
     console.log("option:",type);
     switch(type) {
       case '撤销':
-        Creat_popup('撤销', num, id, groupItem);
+        Creat_popup('撤销', num, id, groupItem, index);
         document.getElementById('popup').style.display="block";
         break;
       case '自动分配':
-        Creat_popup('自动分配', num, id, groupItem);
+        Creat_popup('自动分配', num, id, groupItem, index);
         document.getElementById('popup').style.display="block";
         break;
       case 'showZJ':
@@ -318,14 +318,14 @@ class Lists extends React.Component {
       FenzuNum[index] = +eve.target.value;
       console.log('ok,',FenzuNum[index]);
     } else {
-      eve.target.value = '';
+      eve.target.value = 0;
       return;
     }
   }
   // 离开输入框检测
   num_input_blur(index, eve) {
     if(eve.target.value==='') {
-      eve.target.value=0;
+      eve.target.value = 0;
       FenzuNum[index] = 0;
     }
   }
@@ -390,7 +390,7 @@ class Lists extends React.Component {
             <div>
               {
                 list.cz.map(
-                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,FenzuNum[index]||list.expertNum,list.groupItem):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
+                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,FenzuNum[index]||list.expertNum,list.groupItem,index):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
                 )
               }
               {
@@ -627,6 +627,14 @@ class Popup extends React.Component {
         };
         break;
       case "自动分配":
+        dat={
+          unifyCode: getCookie("userId"),
+          ID: parseHash(window.location.href).id,
+          expertGroupItem: this.props.groupItem,
+          // groupNum: FenzuNum.join(',')
+          groupNum: FenzuNum[this.props.index]
+        };
+        break;
       case '批量分配':
         dat={
           unifyCode: getCookie("userId"),
@@ -653,7 +661,7 @@ class Popup extends React.Component {
           let datas=JSON.parse(gets);
           if(datas.meta.result==100) {
             cancel_popup();
-            Kcfzgl_option._get_list();
+            WPGL._get_list();
           }
         }
       });
@@ -680,13 +688,14 @@ class Popup extends React.Component {
   }
 }
 
-function Creat_popup(type, names, id, groupItem) {
+function Creat_popup(type, names, id, groupItem, index) {
   console.log(id)
   const popup_datas={
     type: type,
     names: names,
     id: id,
-    groupItem: groupItem
+    groupItem: groupItem,
+    index: index
   };
   var popup = ReactDOM.render(
     <Popup {...popup_datas}/>,

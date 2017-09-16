@@ -374,7 +374,6 @@ class Popup extends React.Component {
         success: (gets)=>{
           let datas=JSON.parse(gets);
           if(datas.meta.result!==100) {
-            alert("删除失败!");
             return;
           }
           cancel_popup();
