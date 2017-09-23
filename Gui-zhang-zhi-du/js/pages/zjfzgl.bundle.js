@@ -303,7 +303,7 @@ webpackJsonp([9],{
 
 	      // bind add option
 	      this.add_btn.onclick = function () {
-	        window.location.href = './masterSortEditor.html';
+	        window.location.href = './masterSortMasterEditor.html';
 	      };
 	    }
 	  }]);

@@ -207,7 +207,7 @@ class Option extends React.Component {
     this._get_list();
 
     // bind add option
-    this.add_btn.onclick=()=>{window.location.href='./masterSortEditor.html'};
+    this.add_btn.onclick=()=>{window.location.href='./masterSortMasterEditor.html'};
   }
 }
 
