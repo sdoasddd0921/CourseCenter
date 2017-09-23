@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 const _COUNT = 10;
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye');
-var masters=[];
+var masterNames=[];
 
 function SET(key,value) {
   sessionStorage.setItem("zjkgl-"+key,value);
@@ -276,14 +276,22 @@ class Option extends React.Component {
 
     // PiLiangDelete
     this.PLdelete.onclick=()=>{
-      Creat_popup('PLdelete', masters, this.refs.list.ids)
+      Creat_popup('PLdelete', masterNames, this.refs.list.ids)
       pop.style.display='block';
     };
 
     // change password
-    if (this.state.master === 'out') {
-      this.change.onclick=()=>{
-        Creat_popup('change_PW', masters, this.refs.list.ids)
+    this.change.onclick=()=>{
+      if (this.state.master === 'out') {
+        if (this.refs.list.ids.length > 1) {
+          alert('一次只能修改一个专家的密码！');
+          return;
+        }
+        if (this.refs.list.ids.length === 0) {
+          alert('请先选中要修改密码的专家！');
+          return;
+        }
+        Creat_popup('change_PW', masterNames, this.refs.list.ids[0])
         pop.style.display='block';
       };
     }
@@ -491,16 +499,16 @@ class List extends React.Component {
     if(eve.target.checked) {
       // add
       this.ids.push(id);
-      masters.push(name);
+      masterNames.push(name);
     } else {
       // delet
       this.ids=this.ids.filter(e=>e!==id);
-      masters=masters.filter(e=>e!==name);
+      masterNames=masterNames.filter(e=>e!==name);
     }
   }
 
   render() {
-    masters=[];
+    masterNames=[];
     this.ids=[];
     return (
       <div id="List">
@@ -515,14 +523,14 @@ class List extends React.Component {
   componentDidMount() {
     this.allcheck.onchange=(eve)=>{
       this.ids=[];
-      masters=[];
+      masterNames=[];
       let checks=Array.from(document.querySelectorAll('tbody td input[type="checkbox"]'));
       checks.map(e=>{
         (e.checked=eve.target.checked)
         && this.ids.push(e.value.split("#")[0])
-        && masters.push(e.value.split("#")[1]);
+        && masterNames.push(e.value.split("#")[1]);
       });
-      console.log(masters.join(","))
+      console.log(masterNames.join(","))
     }
   }
 
@@ -658,7 +666,8 @@ class Popup extends React.Component {
         } else {
           dat={
             unifyCode: getCookie("userId"),
-            userId: getCookie("userId"),
+            userId: this.props.id,
+            oldPassWord: '',
             // oldPassWord: this.refs.dqmm.value,
             newPassWord: this.refs.xmm.value
           };

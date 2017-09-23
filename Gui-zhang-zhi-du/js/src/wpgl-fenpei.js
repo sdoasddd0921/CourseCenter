@@ -25,6 +25,8 @@ var FenzuNum=(new Array(10)).fill(0);
 var ZhuanjiaNum=(new Array(10)).fill(0);
 // 选中的条目
 var Checks=[];
+// 每条信息条目
+var Items = (new Array(10)).fill('');
 
 class Option extends React.Component {
   constructor(props) {
@@ -215,6 +217,20 @@ class Option extends React.Component {
     };
 
     this.PLcx.onclick=()=>{
+      let flag = true;
+      // 检查数据是否都合法？state=1
+      Items.forEach((e) => {
+        if (e) {
+          if (e.state === 2 || !flag) {
+            flag = false;
+            return;
+          }
+        }
+      });
+      if (!flag) {
+        console.log('只能撤销已分配的项目，请检查！');
+        return;
+      }
       Creat_popup('批量撤销', Nums.toString(), this.refs.list.lists.toString());
       document.getElementById('popup').style.display="block";
     }
@@ -222,6 +238,10 @@ class Option extends React.Component {
       Creat_popup('批量分配', Nums.toString(), this.refs.list.lists.toString());
       document.getElementById('popup').style.display="block";
     }
+    // 分配结果跳转
+    this.fpjg.onclick = () => {
+      window.location.href = `./wpgl-jieguo.html?wppc=${parseHash(window.location.href).wppc}&id=${parseHash(window.location.href).id}`;
+    };
   }
 }
 
@@ -261,13 +281,7 @@ class Lists extends React.Component {
     </thead>);
   }
 
-  option(type, id, num, groupItem, index, eve) {
-    // if(eve) {
-    //   eve.preventDefault();
-    // } else {
-    //   groupItem.preventDefault();
-    // }
-
+  option(type, id, num, groupItem, index) {
     console.log("option:",type);
     switch(type) {
       case '撤销':
@@ -283,7 +297,6 @@ class Lists extends React.Component {
         document.getElementById('popup').style.display="block";
         break;
       case 'showKC':
-        console.log('ttttttt',eve)
         Creat_popup('showKC', num, id);
         document.getElementById('popup').style.display="block";
         break;
@@ -292,11 +305,12 @@ class Lists extends React.Component {
     }
   }
 
-  check(id, num, index, eve) {
+  check(id, num, list, index, eve) {
     if(eve.target.checked) {
       this.lists.push(id);
       Nums.push(num||0);
       Checks.push(index);
+      Items[index] = list;
     } else {
       this.lists = this.lists.filter(
         e => e !== id
@@ -307,9 +321,10 @@ class Lists extends React.Component {
       Checks = Checks.filter(
         e => e !== index
       );
+      Items[index] = '';
     }
     this.allCheck.checked=false;
-    console.log(Nums,this.lists)
+    console.log(Nums,this.lists, Items);
   }
 
   // 输入数字检测
@@ -360,7 +375,7 @@ class Lists extends React.Component {
               <input 
                 type="checkbox" 
                 id={'list-'+index}
-                onChange = {this.check.bind(this, list.expertGroup, list.expertNum, index)}
+                onChange = {this.check.bind(this, list.expertGroup, list.expertNum, list, index)}
               />
               <label htmlFor={'list-'+index}>
                 <img src="../../imgs/public/hook.png"/>
@@ -428,10 +443,15 @@ class Lists extends React.Component {
             Nums.push(NumsCache[index]||e.expertNum);
           }
         );
+        for (let i=0, end=this.props.Lists.length; i<end; i++) {
+          Items[i] = this.props.Lists[i];
+        }
       } else {
         this.lists = [];
         Nums = [];
+        Items.fill('');
       }
+      console.log(Items);
       Array.from(document.querySelectorAll('tbody input[type="checkbox"]')).forEach(
         e=>e.checked = eve.target.checked
       );
