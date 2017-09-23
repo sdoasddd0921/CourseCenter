@@ -104,10 +104,7 @@ class Option extends React.Component {
     );
   }
 
-  componentDidMount() {
-    this.fqwp.onclick=()=>{
-      window.location.href=`./masterPublishWp.html`;
-    };
+  get_wppc_select() {
     // 填充网评批次下拉菜单
     ajax({
       url: courseCenter.host+"reviewBriefList",
@@ -118,23 +115,30 @@ class Option extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        if(datas.meta.result!==100) {
-          alert("下拉菜单获取失败！");
-          return;
-        }
+        // if(datas.meta.result!==100) {
+        //   alert("下拉菜单获取失败！");
+        //   return;
+        // }
         this.setState({
           wppc_select: JSON.parse(gets).data.list
         });
       }
     });
+  }
 
+  componentDidMount() {
+    this.fqwp.onclick=()=>{
+      window.location.href=`./masterPublishWp.html`;
+    };
+
+    this.get_wppc_select();
     // // 首次查询列表并填充
     this._get_list();
 
     let pop = document.getElementById('popup');
     // PiLiangDelete
     this.PLdelete.onclick=()=>{
-      console.log(this.refs.list)
+      console.log(WPPCS)
       Creat_popup('PLdelete', WPPCS, this.refs.list.ids)
       pop.style.display='block';
     };
@@ -216,11 +220,11 @@ class Lists extends React.Component {
     if(eve.target.checked) {
       // add
       this.ids.push(id);
-      WPPCS.push(name);
+      WPPCS.push(wppc);
     } else {
       // delet
       this.ids=this.ids.filter(e=>e!==id);
-      WPPCS=WPPCS.filter(e=>e!==name);
+      WPPCS=WPPCS.filter(e=>e!==wppc);
     }
   }
 
@@ -370,11 +374,11 @@ class Popup extends React.Component {
         success: (gets)=>{
           let datas=JSON.parse(gets);
           if(datas.meta.result!==100) {
-            alert("删除失败!");
             return;
           }
           cancel_popup();
           WPGL._get_list();
+          WPGL.get_wppc_select();
         }
       });
     };

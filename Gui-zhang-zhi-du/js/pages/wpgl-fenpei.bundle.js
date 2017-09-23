@@ -37,6 +37,16 @@ webpackJsonp([7],{
 	};
 
 	var WPPCS = [];
+	// 每组输入的数据
+	var Nums = [];
+	// 每组输入数据的缓存
+	var NumsCache = [];
+	// 每一条分组的分组数量
+	var FenzuNum = new Array(10).fill(0);
+	// 每一条分组的专家数量
+	var ZhuanjiaNum = new Array(10).fill(0);
+	// 选中的条目
+	var Checks = [];
 
 	var Option = function (_React$Component) {
 	  _inherits(Option, _React$Component);
@@ -51,6 +61,8 @@ webpackJsonp([7],{
 	      yfp: GET("yfp") || SET("yfp", "true"),
 	      wfp: GET("wfp") || SET("wfp", "true")
 	    };
+	    _this.title = parseHash(window.location.href)['wppc'];
+	    console.log(_this.title);
 	    _this.state = {
 	      TP: {
 	        page: 1,
@@ -78,7 +90,7 @@ webpackJsonp([7],{
 	          page: page,
 	          count: _COUNT,
 	          groupItem: this.search_cache.fzx,
-	          assignState: '[' + +this.search_cache.yfp + ', ' + +this.search_cachewfp + ']'
+	          assignState: '[' + (this.search_cache.yfp === 'true') + ', ' + (this.search_cache.wfp === 'true') + ']'
 	        },
 	        success: function success(gets) {
 	          SET("page", page);
@@ -135,6 +147,7 @@ webpackJsonp([7],{
 	  }, {
 	    key: 'change_state',
 	    value: function change_state(state, eve) {
+	      console.log(state, eve.target.checked);
 	      this.search_cache[state] = SET(state, eve.target.checked);
 	      this.search();
 	    }
@@ -162,7 +175,8 @@ webpackJsonp([7],{
 	            _react2["default"].createElement(
 	              'p',
 	              null,
-	              '2017\u5E74XXX\u4E13\u5BB6\u7F51\u8BC4'
+	              '\u7F51\u8BC4\u6279\u6B21\u540D\u79F0\uFF1A',
+	              this.title
 	            )
 	          ),
 	          _react2["default"].createElement(
@@ -285,9 +299,6 @@ webpackJsonp([7],{
 	          } })
 	      );
 	    }
-	    // <Lists ref="list" Lists={this.state.list} model={this.model} />
-	    // <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
-
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
@@ -330,15 +341,15 @@ webpackJsonp([7],{
 	            sessionStorage.removeItem(window.sessionStorage.key(end - 1));
 	          }
 	        }
-	        window.location.href = '';
+	        window.location.href = 'wpgl.html';
 	      };
 
 	      this.PLcx.onclick = function () {
-	        Creat_popup('批量撤销', _this5.refs.list.nums.toString, _this5.refs.list.lists.toString());
+	        Creat_popup('批量撤销', Nums.toString(), _this5.refs.list.lists.toString());
 	        document.getElementById('popup').style.display = "block";
 	      };
 	      this.PLfp.onclick = function () {
-	        Creat_popup('批量分配', _this5.refs.list.nums.toString, _this5.refs.list.lists.toString());
+	        Creat_popup('批量分配', Nums.toString(), _this5.refs.list.lists.toString());
 	        document.getElementById('popup').style.display = "block";
 	      };
 	    }
@@ -356,8 +367,6 @@ webpackJsonp([7],{
 	    var _this6 = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
 
 	    _this6.lists = [];
-	    _this6.nums = [];
-	    _this6.num = [];
 	    return _this6;
 	  }
 
@@ -430,17 +439,21 @@ webpackJsonp([7],{
 	    }
 	  }, {
 	    key: 'option',
-	    value: function option(type, id, num, eve) {
-	      eve.preventDefault();
+	    value: function option(type, id, num, groupItem, eve) {
+	      // if(eve) {
+	      //   eve.preventDefault();
+	      // } else {
+	      //   groupItem.preventDefault();
+	      // }
 
 	      console.log("option:", type);
 	      switch (type) {
 	        case '撤销':
-	          Creat_popup('撤销', num, id);
+	          Creat_popup('撤销', num, id, groupItem);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case '自动分配':
-	          Creat_popup('自动分配', num, id);
+	          Creat_popup('自动分配', num, id, groupItem);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case 'showZJ':
@@ -448,6 +461,7 @@ webpackJsonp([7],{
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case 'showKC':
+	          console.log('ttttttt', eve);
 	          Creat_popup('showKC', num, id);
 	          document.getElementById('popup').style.display = "block";
 	          break;
@@ -460,25 +474,44 @@ webpackJsonp([7],{
 	    value: function check(id, num, index, eve) {
 	      if (eve.target.checked) {
 	        this.lists.push(id);
-	        this.nums.push(num || this.num[index]);
+	        Nums.push(num || 0);
+	        Checks.push(index);
 	      } else {
 	        this.lists = this.lists.filter(function (e) {
 	          return e !== id;
 	        });
-	        this.nums = this.nums.filter(function (e) {
+	        Nums = Nums.filter(function (e) {
 	          return e !== num;
 	        });
+	        Checks = Checks.filter(function (e) {
+	          return e !== index;
+	        });
 	      }
-	      console.log(this.nums, this.lists);
+	      this.allCheck.checked = false;
+	      console.log(Nums, this.lists);
 	    }
+
+	    // 输入数字检测
+
 	  }, {
 	    key: 'input_num',
 	    value: function input_num(index, eve) {
 	      if (/^\d*$/.test(eve.target.value)) {
-	        this.num[index] = +eve.target.value;
+	        FenzuNum[index] = +eve.target.value;
+	        console.log('ok,', FenzuNum[index]);
 	      } else {
 	        eve.target.value = '';
 	        return;
+	      }
+	    }
+	    // 离开输入框检测
+
+	  }, {
+	    key: 'num_input_blur',
+	    value: function num_input_blur(index, eve) {
+	      if (eve.target.value === '') {
+	        eve.target.value = 0;
+	        FenzuNum[index] = 0;
 	      }
 	    }
 	  }, {
@@ -516,7 +549,15 @@ webpackJsonp([7],{
 	          return _react2["default"].createElement(
 	            'tr',
 	            { key: index },
-	            _react2["default"].createElement('td', { className: 'td_head' }),
+	            _react2["default"].createElement(
+	              'td',
+	              { className: 'td_head' },
+	              function () {
+	                // 储存每条信息里需要用到的数据
+	                FenzuNum[index] = list.groupNum;
+	                ZhuanjiaNum[index] = list.expertNum;
+	              }
+	            ),
 	            _react2["default"].createElement('td', null),
 	            _react2["default"].createElement(
 	              'td',
@@ -573,7 +614,7 @@ webpackJsonp([7],{
 	            _react2["default"].createElement(
 	              'td',
 	              null,
-	              _react2["default"].createElement('input', { type: 'text', disabled: list.state === 1, onChange: _this8.input_num.bind(_this8, index), defaultValue: list.groupNum })
+	              _react2["default"].createElement('input', { type: 'text', disabled: list.state === 1 || !list.cz[0].able, onBlur: _this8.num_input_blur.bind(_this8, index), onChange: _this8.input_num.bind(_this8, index), defaultValue: list.groupNum })
 	            ),
 	            _react2["default"].createElement(
 	              'td',
@@ -593,10 +634,15 @@ webpackJsonp([7],{
 	                list.cz.map(function (e, innerIndex) {
 	                  return _react2["default"].createElement(
 	                    'span',
-	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, list.expertNum || _this8.num[index]) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
+	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, FenzuNum[index] || list.expertNum, list.groupItem) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
 	                    e.name
 	                  );
-	                })
+	                }),
+	                list.cz[0].able ? '' : _react2["default"].createElement(
+	                  'div',
+	                  { style: { fontSize: '12px', color: 'red' } },
+	                  list.cz[0].tips
+	                )
 	              )
 	            ),
 	            _react2["default"].createElement('td', null),
@@ -626,13 +672,17 @@ webpackJsonp([7],{
 
 	      this.allCheck.onclick = function (eve) {
 	        if (eve.target.checked) {
+	          // 情况选中的项
+	          Checks = [];
 	          _this9.props.Lists.forEach(function (e, index) {
+	            // 填充被选中的项（所有）
+	            Checks.push(index);
 	            _this9.lists.push(e.expertGroup);
-	            _this9.nums.push(e.expertNum || _this9.num[index]);
+	            Nums.push(NumsCache[index] || e.expertNum);
 	          });
 	        } else {
 	          _this9.lists = [];
-	          _this9.nums = [];
+	          Nums = [];
 	        }
 	        Array.from(document.querySelectorAll('tbody input[type="checkbox"]')).forEach(function (e) {
 	          return e.checked = eve.target.checked;
@@ -704,6 +754,7 @@ webpackJsonp([7],{
 	    value: function render() {
 	      var _this11 = this;
 
+	      console.log('poplist:', this.props);
 	      return _react2["default"].createElement(
 	        'div',
 	        { style: { padding: '0 40px' } },
@@ -721,7 +772,7 @@ webpackJsonp([7],{
 	            _react2["default"].createElement(
 	              'span',
 	              null,
-	              '\u4E13\u5BB6\u59D3\u540D\uFF1A'
+	              this.props.type.indexOf('ZJ') === -1 ? '课程名称：' : '专家姓名：'
 	            ),
 	            _react2["default"].createElement('input', { type: 'text', ref: function ref(inp) {
 	                return _this11.ZJ = inp;
@@ -750,12 +801,12 @@ webpackJsonp([7],{
 	                _react2["default"].createElement(
 	                  'td',
 	                  { width: '30%' },
-	                  '\u8BFE\u7A0B\u540D\u79F0'
+	                  '\u8BFE\u7A0B\u7F16\u53F7'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
 	                  { width: '30%' },
-	                  '\u8BFE\u7A0B\u7F16\u53F7'
+	                  '\u8BFE\u7A0B\u540D\u79F0'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
@@ -790,10 +841,7 @@ webpackJsonp([7],{
 	              })
 	            )
 	          )
-	        ),
-	        _react2["default"].createElement(Fanye, { TP: this.state.TP, callback: function callback(p) {
-	            _this11._get_list(p);
-	          } })
+	        )
 	      );
 	    }
 	  }, {
@@ -830,11 +878,10 @@ webpackJsonp([7],{
 	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
-	          names = _props.names;
+	          names = _props.names,
+	          groupItem = _props.groupItem;
 
 	      var MAP = {
-	        "PLdelete": "删除",
-	        "delete": "删除",
 	        "撤销": "撤销",
 	        "自动分配": "自动分配",
 	        "批量分配": "批量分配",
@@ -844,38 +891,80 @@ webpackJsonp([7],{
 	      switch (type) {
 	        case '撤销':
 	        case '自动分配':
-	        case '批量分配':
-	        case '批量撤销':
-	        case 'PLdelete':
-	        case 'delete':
 	          return _react2["default"].createElement(
 	            'div',
-	            { id: 'popbody', ref: 'pb' },
+	            { id: 'background', ref: function ref(div) {
+	                return _this13.background = div;
+	              } },
 	            _react2["default"].createElement(
 	              'div',
-	              { id: 'msg' },
+	              { id: 'popbody', ref: 'pb' },
 	              _react2["default"].createElement(
-	                'p',
-	                null,
-	                '\u786E\u5B9A\u8981' + (MAP[type] + names) + '?'
-	              )
-	            ),
-	            _react2["default"].createElement(
-	              'div',
-	              { id: 'popup_option' },
-	              _react2["default"].createElement(
-	                'button',
-	                { id: 'popup_OK', ref: function ref(btn) {
-	                    return _this13.OK = btn;
-	                  } },
-	                '\u786E\u5B9A'
+	                'div',
+	                { id: 'msg' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  null,
+	                  '\u786E\u5B9A\u8981' + (MAP[type] + groupItem) + '?'
+	                )
 	              ),
 	              _react2["default"].createElement(
-	                'button',
-	                { id: 'popup_back', ref: function ref(btn) {
-	                    return _this13.back = btn;
-	                  } },
-	                '\u53D6\u6D88'
+	                'div',
+	                { id: 'popup_option' },
+	                _react2["default"].createElement(
+	                  'button',
+	                  { id: 'popup_OK', ref: function ref(btn) {
+	                      return _this13.OK = btn;
+	                    } },
+	                  '\u786E\u5B9A'
+	                ),
+	                _react2["default"].createElement(
+	                  'button',
+	                  { id: 'popup_back', ref: function ref(btn) {
+	                      return _this13.back = btn;
+	                    } },
+	                  '\u53D6\u6D88'
+	                )
+	              )
+	            )
+	          );
+	          break;
+	        case '批量分配':
+	        case '批量撤销':
+	          return _react2["default"].createElement(
+	            'div',
+	            { id: 'background', ref: function ref(div) {
+	                return _this13.background = div;
+	              } },
+	            _react2["default"].createElement(
+	              'div',
+	              { id: 'popbody', ref: 'pb' },
+	              _react2["default"].createElement(
+	                'div',
+	                { id: 'msg' },
+	                _react2["default"].createElement(
+	                  'p',
+	                  null,
+	                  '\u786E\u5B9A\u8981' + MAP[type] + '?'
+	                )
+	              ),
+	              _react2["default"].createElement(
+	                'div',
+	                { id: 'popup_option' },
+	                _react2["default"].createElement(
+	                  'button',
+	                  { id: 'popup_OK', ref: function ref(btn) {
+	                      return _this13.OK = btn;
+	                    } },
+	                  '\u786E\u5B9A'
+	                ),
+	                _react2["default"].createElement(
+	                  'button',
+	                  { id: 'popup_back', ref: function ref(btn) {
+	                      return _this13.back = btn;
+	                    } },
+	                  '\u53D6\u6D88'
+	                )
 	              )
 	            )
 	          );
@@ -899,7 +988,7 @@ webpackJsonp([7],{
 	              { id: 'poplist', ref: 'pb', onClick: function onClick(e) {
 	                  return e.stopPropagation;
 	                } },
-	              _react2["default"].createElement(Poplist, { fzpc: this.props.id, fzx: this.props.names })
+	              _react2["default"].createElement(Poplist, { fzpc: this.props.id, fzx: this.props.names, type: type })
 	            )
 	          );
 	        default:
@@ -915,11 +1004,12 @@ webpackJsonp([7],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      if (window.frameElement) {
-	        var H = document.body.offsetHeight;
-	        if (this.background.offsetHeight > parseInt(document.body.offsetHeight)) {
-	          H = this.background.offsetHeight;
+	        console.log('558--', document.body.scrollHeight);
+	        var H = document.body.scrollHeight;
+	        if (this.background.height > parseInt(document.body.scrollHeight)) {
+	          H = this.background.scrollHeight;
 	        }
-	        console.log("height:", this.background.offsetHeight);
+	        console.log("height:", this.background.scrollHeight);
 	        window.frameElement.height = H;
 	      }
 
@@ -930,28 +1020,22 @@ webpackJsonp([7],{
 	      var dat = {};
 
 	      switch (type) {
-	        case "PLdelete":
-	        case "delete":
-	          dat = {
-	            unifyCode: getCookie("userId"),
-	            ID: id
-	          };
-	          break;
 	        case "撤销":
 	        case '批量撤销':
 	          dat = {
 	            unifyCode: getCookie("userId"),
-	            ID: id,
-	            expertGroupItem: this.props.id
+	            ID: parseHash(window.location.href).id,
+	            expertGroupItem: this.props.groupItem
 	          };
 	          break;
 	        case "自动分配":
 	        case '批量分配':
 	          dat = {
 	            unifyCode: getCookie("userId"),
-	            ID: id,
-	            expertGroupItem: this.props.id,
-	            groupNum: num
+	            ID: parseHash(window.location.href).id,
+	            expertGroupItem: this.props.groupItem,
+	            // groupNum: FenzuNum.join(',')
+	            groupNum: this.props.names
 	          };
 	          break;
 	        default:
@@ -959,10 +1043,10 @@ webpackJsonp([7],{
 	      }
 	      this.OK && (this.OK.onclick = function () {
 	        var data_map = {
-	          "delete": "deleteKcfz",
 	          "撤销": "reviewUndo",
 	          "批量撤销": "reviewUndo",
-	          "自动分配": "reviewAutoAlloc"
+	          "自动分配": "reviewAutoAlloc",
+	          "批量分配": "reviewAutoAlloc"
 	        };
 	        ajax({
 	          url: courseCenter.host + data_map[type],
@@ -975,6 +1059,9 @@ webpackJsonp([7],{
 	            }
 	          }
 	        });
+	      });
+	      this.back && (this.back.onclick = function () {
+	        _reactDom2["default"].unmountComponentAtNode(document.getElementById('popup'));
 	      });
 	    }
 	  }, {
@@ -1000,14 +1087,21 @@ webpackJsonp([7],{
 	  return Popup;
 	}(_react2["default"].Component);
 
-	function Creat_popup(type, names, id) {
+	function Creat_popup(type, names, id, groupItem) {
 	  console.log(id);
 	  var popup_datas = {
 	    type: type,
 	    names: names,
-	    id: id
+	    id: id,
+	    groupItem: groupItem
 	  };
 	  var popup = _reactDom2["default"].render(_react2["default"].createElement(Popup, popup_datas), document.getElementById('popup'));
+	}
+
+	function cancel_popup() {
+	  var popup = document.getElementById('popup');
+	  popup.style.display = "none";
+	  _reactDom2["default"].unmountComponentAtNode(popup);
 	}
 
 	var WPGL = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('wpgl'));

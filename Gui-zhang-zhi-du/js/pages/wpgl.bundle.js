@@ -174,13 +174,10 @@ webpackJsonp([6],{
 	      );
 	    }
 	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
+	    key: 'get_wppc_select',
+	    value: function get_wppc_select() {
 	      var _this4 = this;
 
-	      this.fqwp.onclick = function () {
-	        window.location.href = './masterPublishWp.html';
-	      };
 	      // 填充网评批次下拉菜单
 	      ajax({
 	        url: courseCenter.host + "reviewBriefList",
@@ -191,24 +188,34 @@ webpackJsonp([6],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          if (datas.meta.result !== 100) {
-	            alert("下拉菜单获取失败！");
-	            return;
-	          }
+	          // if(datas.meta.result!==100) {
+	          //   alert("下拉菜单获取失败！");
+	          //   return;
+	          // }
 	          _this4.setState({
 	            wppc_select: JSON.parse(gets).data.list
 	          });
 	        }
 	      });
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this5 = this;
 
+	      this.fqwp.onclick = function () {
+	        window.location.href = './masterPublishWp.html';
+	      };
+
+	      this.get_wppc_select();
 	      // // 首次查询列表并填充
 	      this._get_list();
 
 	      var pop = document.getElementById('popup');
 	      // PiLiangDelete
 	      this.PLdelete.onclick = function () {
-	        console.log(_this4.refs.list);
-	        Creat_popup('PLdelete', WPPCS, _this4.refs.list.ids);
+	        console.log(WPPCS);
+	        Creat_popup('PLdelete', WPPCS, _this5.refs.list.ids);
 	        pop.style.display = 'block';
 	      };
 	    }
@@ -233,16 +240,16 @@ webpackJsonp([6],{
 	  function Lists(props) {
 	    _classCallCheck(this, Lists);
 
-	    var _this5 = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
+	    var _this6 = _possibleConstructorReturn(this, (Lists.__proto__ || Object.getPrototypeOf(Lists)).call(this, props));
 
-	    _this5.ids = [];
-	    return _this5;
+	    _this6.ids = [];
+	    return _this6;
 	  }
 
 	  _createClass(Lists, [{
 	    key: 'create_head',
 	    value: function create_head() {
-	      var _this6 = this;
+	      var _this7 = this;
 
 	      return _react2["default"].createElement(
 	        'thead',
@@ -263,7 +270,7 @@ webpackJsonp([6],{
 	              type: 'checkbox',
 	              id: 'allcheck',
 	              ref: function ref(check) {
-	                return _this6.allcheck = check;
+	                return _this7.allcheck = check;
 	              }
 	            }),
 	            _react2["default"].createElement(
@@ -347,21 +354,21 @@ webpackJsonp([6],{
 	      if (eve.target.checked) {
 	        // add
 	        this.ids.push(id);
-	        WPPCS.push(name);
+	        WPPCS.push(wppc);
 	      } else {
 	        // delet
 	        this.ids = this.ids.filter(function (e) {
 	          return e !== id;
 	        });
 	        WPPCS = WPPCS.filter(function (e) {
-	          return e !== name;
+	          return e !== wppc;
 	        });
 	      }
 	    }
 	  }, {
 	    key: 'create_body',
 	    value: function create_body() {
-	      var _this7 = this;
+	      var _this8 = this;
 
 	      if (this.props.Lists.length === 0) {
 	        return _react2["default"].createElement(
@@ -402,7 +409,7 @@ webpackJsonp([6],{
 	                type: 'checkbox',
 	                id: "input-" + index,
 	                value: e.id + "#" + e.wppc,
-	                onChange: _this7.check.bind(_this7, e.id, e.wppc)
+	                onChange: _this8.check.bind(_this8, e.id, e.wppc)
 	              }),
 	              _react2["default"].createElement(
 	                'label',
@@ -443,12 +450,12 @@ webpackJsonp([6],{
 	                null,
 	                _react2["default"].createElement(
 	                  'span',
-	                  { className: 'green_btn', onClick: _this7.option.bind(_this7, "fenpei", e.id, e.wppc) },
+	                  { className: 'green_btn', onClick: _this8.option.bind(_this8, "fenpei", e.id, e.wppc) },
 	                  '\u5206\u914D'
 	                ),
 	                _react2["default"].createElement(
 	                  'span',
-	                  { className: 'green_btn', onClick: _this7.option.bind(_this7, "jieguo", e.id, e.wppc) },
+	                  { className: 'green_btn', onClick: _this8.option.bind(_this8, "jieguo", e.id, e.wppc) },
 	                  '\u7ED3\u679C'
 	                )
 	              )
@@ -461,12 +468,12 @@ webpackJsonp([6],{
 	                null,
 	                _react2["default"].createElement(
 	                  'span',
-	                  { className: 'green_btn', onClick: _this7.option.bind(_this7, "edit", e.id, e.wppc) },
+	                  { className: 'green_btn', onClick: _this8.option.bind(_this8, "edit", e.id, e.wppc) },
 	                  '\u7F16\u8F91'
 	                ),
 	                _react2["default"].createElement(
 	                  'span',
-	                  { className: 'yellow_btn', onClick: _this7.option.bind(_this7, "delete", e.id, e.wppc) },
+	                  { className: 'yellow_btn', onClick: _this8.option.bind(_this8, "delete", e.id, e.wppc) },
 	                  '\u5220\u9664'
 	                )
 	              )
@@ -494,14 +501,14 @@ webpackJsonp([6],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this8 = this;
+	      var _this9 = this;
 
 	      this.allcheck.onchange = function (eve) {
-	        _this8.ids = [];
+	        _this9.ids = [];
 	        WPPCS = [];
 	        var checks = Array.from(document.querySelectorAll('tbody td input[type="checkbox"]'));
 	        checks.map(function (e) {
-	          (e.checked = eve.target.checked) && _this8.ids.push(e.value.split("#")[0]) && WPPCS.push(e.value.split("#")[1]);
+	          (e.checked = eve.target.checked) && _this9.ids.push(e.value.split("#")[0]) && WPPCS.push(e.value.split("#")[1]);
 	        });
 	        console.log(WPPCS.join(","));
 	      };
@@ -530,7 +537,7 @@ webpackJsonp([6],{
 	  _createClass(Popup, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this10 = this;
+	      var _this11 = this;
 
 	      console.log(this.props);
 	      var _props = this.props,
@@ -563,14 +570,14 @@ webpackJsonp([6],{
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_OK', ref: function ref(btn) {
-	                    return _this10.OK = btn;
+	                    return _this11.OK = btn;
 	                  } },
 	                '\u786E\u5B9A'
 	              ),
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_back', ref: function ref(btn) {
-	                    return _this10.back = btn;
+	                    return _this11.back = btn;
 	                  } },
 	                '\u53D6\u6D88'
 	              )
@@ -626,6 +633,7 @@ webpackJsonp([6],{
 	            }
 	            cancel_popup();
 	            WPGL._get_list();
+	            WPGL.get_wppc_select();
 	          }
 	        });
 	      };

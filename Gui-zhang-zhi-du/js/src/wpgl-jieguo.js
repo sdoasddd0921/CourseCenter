@@ -237,7 +237,7 @@ class Option extends React.Component {
           sessionStorage.removeItem(window.sessionStorage.key(end-1));
         }
       }
-      window.history.back();
+      window.location.href='wpgl.html';
     };
   }
 }
@@ -292,8 +292,8 @@ class Lists extends React.Component {
     }
   }
 
-  option(type, id, wpid, groupItem, itemName, eve) {
-    eve.preventDefault();
+  option(type, id, wpid, groupItem, itemName, courseId, eve) {
+    // eve.preventDefault();
 
     console.log("option:",type);
     switch(type) {
@@ -304,9 +304,11 @@ class Lists extends React.Component {
       case 'edit':
         console.log("修改");
         if(this.props.model==='zj') {
-          window.location.href=`./masterWPEditorBymaster.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}`;
+          window.location.href=`./masterWPEditorBymaster.html?wpID=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`;
+          // console.log(`./masterWPEditorBymaster.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`)
         } else {
-          window.location.href=`./masterWPEditor.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}`;
+          window.location.href=`./masterWPEditor.html?courseNo=${courseId}&wpID=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`;
+          // console.log(`./masterWPEditor.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`)
         }
         break;
       default:
@@ -384,7 +386,7 @@ class Lists extends React.Component {
               {
                 e.ableModify?
                 <div>
-                  <span className="green_btn" onClick={this.option.bind(this,"edit", e.id, e.wppc)}>修改</span>
+                  <span className="green_btn" onClick={this.option.bind(this,"edit", e.itemID, e.wpid, e.groupItem, e.itemName,e.itemID)}>修改</span>
                 </div>: ''
               }
             </td>

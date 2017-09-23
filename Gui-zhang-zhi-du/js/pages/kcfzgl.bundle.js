@@ -130,6 +130,12 @@ webpackJsonp([3],{
 	      }
 	      this.setState({
 	        wppc: reviewBatch
+	      }, function () {
+	        console.log('test:', _this3.wppc_select.value);
+	        if (e && !_this3.wppc_select.value) {
+	          console.log('tttt');
+	          _this3.search();
+	        }
 	      });
 
 	      // charge fzx select list
@@ -158,21 +164,18 @@ webpackJsonp([3],{
 	  }, {
 	    key: 'change_fzx',
 	    value: function change_fzx(e) {
+	      var _this4 = this;
+
 	      this.setState({
 	        fzx: e.target.value
-	      });
-	    }
-	  }, {
-	    key: 'change_kcmc',
-	    value: function change_kcmc(e) {
-	      this.setState({
-	        kcmc: e.target.value
+	      }, function () {
+	        _this4.search();
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      // console.log("TP:",this.state.TP)
 	      return _react2["default"].createElement(
@@ -195,7 +198,7 @@ webpackJsonp([3],{
 	                name: 'wppc_select',
 	                id: 'wppc_select',
 	                ref: function ref(sel) {
-	                  return _this4.wppc_select = sel;
+	                  return _this5.wppc_select = sel;
 	                },
 	                value: this.state.wppc,
 	                onChange: this.change_wppc.bind(this)
@@ -223,7 +226,7 @@ webpackJsonp([3],{
 	                name: 'fzx_select',
 	                id: 'fzx_select',
 	                ref: function ref(sel) {
-	                  return _this4.fzx_select = sel;
+	                  return _this5.fzx_select = sel;
 	                },
 	                value: this.state.fzx,
 	                onChange: this.change_fzx.bind(this)
@@ -239,40 +242,19 @@ webpackJsonp([3],{
 	                  op.fzx
 	                );
 	              }))
-	            ),
-	            _react2["default"].createElement(
-	              'span',
-	              null,
-	              '\u8BFE\u7A0B\u540D\u79F0\uFF1A'
-	            ),
-	            _react2["default"].createElement('input', {
-	              type: 'text',
-	              ref: function ref(input) {
-	                return _this4.kcmc_input = input;
-	              },
-	              id: 'kcmc_input',
-	              value: this.state.kcmc,
-	              onChange: this.change_kcmc.bind(this)
-	            }),
-	            _react2["default"].createElement(
-	              'button',
-	              { ref: function ref(btn) {
-	                  return _this4.search_btn = btn;
-	                }, onClick: this.search.bind(this) },
-	              '\u641C\u7D22'
 	            )
 	          )
 	        ),
 	        _react2["default"].createElement(List, { list: this.state.list }),
 	        _react2["default"].createElement(Fanye, { TP: this.state.TP, callback: function callback(p) {
-	            _this4._get_list(p);
+	            _this5._get_list(p);
 	          } })
 	      );
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this5 = this;
+	      var _this6 = this;
 
 	      // charge wppc select
 	      ajax({
@@ -285,11 +267,11 @@ webpackJsonp([3],{
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
 	          if (datas.meta.result === 100) {
-	            _this5.setState({
+	            _this6.setState({
 	              wppc_select: datas.data.list
 	            });
 	          } else {
-	            _this5.setState({
+	            _this6.setState({
 	              wppc_select: []
 	            });
 	          }
@@ -385,7 +367,7 @@ webpackJsonp([3],{
 	  }, {
 	    key: 'creat_tbody',
 	    value: function creat_tbody() {
-	      var _this7 = this;
+	      var _this8 = this;
 
 	      return _react2["default"].createElement(
 	        'tbody',
@@ -421,7 +403,7 @@ webpackJsonp([3],{
 	              ),
 	              _react2["default"].createElement(
 	                'span',
-	                { className: 'kcmc_list', onClick: _this7.option.bind(_this7, 'show', e.courseList, e.fzx, e.wpid) },
+	                { className: 'kcmc_list', onClick: _this8.option.bind(_this8, 'show', e.courseList, e.fzx, e.wpid) },
 	                +e.kcmcs > 3 ? e.courseList.map(function (kcmc, kcmcNo) {
 	                  return kcmcNo < 3 && _react2["default"].createElement(
 	                    'span',
@@ -446,7 +428,7 @@ webpackJsonp([3],{
 	              null,
 	              _react2["default"].createElement(
 	                'a',
-	                { href: '#', onClick: _this7.option.bind(_this7, 'edit', e.wppc, e.fzx, e.wpid) },
+	                { href: '#', onClick: _this8.option.bind(_this8, 'edit', e.wppc, e.fzx, e.wpid) },
 	                '\u7F16\u8F91'
 	              )
 	            ),
@@ -494,7 +476,7 @@ webpackJsonp([3],{
 	  _createClass(Popup, [{
 	    key: 'render',
 	    value: function render() {
-	      var _this9 = this;
+	      var _this10 = this;
 
 	      console.log(this.props);
 	      var _props = this.props,
@@ -525,14 +507,14 @@ webpackJsonp([3],{
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_OK', ref: function ref(btn) {
-	                    return _this9.OK = btn;
+	                    return _this10.OK = btn;
 	                  } },
 	                '\u786E\u5B9A'
 	              ),
 	              _react2["default"].createElement(
 	                'button',
 	                { id: 'popup_back', ref: function ref(btn) {
-	                    return _this9.back = btn;
+	                    return _this10.back = btn;
 	                  } },
 	                '\u53D6\u6D88'
 	              )

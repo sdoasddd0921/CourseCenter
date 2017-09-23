@@ -227,7 +227,8 @@ class Option extends React.Component {
           <div id="top">
             <button className="option_big_btn" ref={button=>this.add=button}>添加专家</button>
             <button className="option_big_btn" ref={button=>this.PLdelete=button}>批量删除</button>
-            <button className="option_big_btn" ref={button=>this.change=button}>修改密码</button>
+            { this.state.master === 'out' ? <button className="option_big_btn" ref={button=>this.change=button}>修改密码</button> : '' }
+            
           </div>
           <div id="mid">
             <input
@@ -280,10 +281,12 @@ class Option extends React.Component {
     };
 
     // change password
-    this.change.onclick=()=>{
-      Creat_popup('change_PW', masters, this.refs.list.ids)
-      pop.style.display='block';
-    };
+    if (this.state.master === 'out') {
+      this.change.onclick=()=>{
+        Creat_popup('change_PW', masters, this.refs.list.ids)
+        pop.style.display='block';
+      };
+    }
 
     // search
     this.search.onclick=this.search_handler.bind(this);
@@ -441,7 +444,6 @@ class List extends React.Component {
               <td>{e.xymc}</td>
               <td>{e.zt}</td>
               <td>
-                <a href="#" onClick={this.option.bind(this,'edit', e.sfrzh, e.xm)}>编辑</a>
                 <a href="#" onClick={this.option.bind(this,'del', e.sfrzh, e.xm)}>删除</a>
                 {
                   e.zt==='可用' ?
@@ -570,11 +572,11 @@ class Popup extends React.Component {
               <p>修改密码</p>
             </div>
             <div id="inputs">
-              <div>
+              {/* <div>
                 <span className="left_span"><span className="warn">*</span>当前密码</span>
                 <input type="password" ref="dqmm" />
                 <span className="tips"></span>
-              </div>
+              </div> */}
               <div>
                 <span className="left_span"><span className="warn">*</span>新密码</span>
                 <input type="password" ref="xmm" />
@@ -633,14 +635,6 @@ class Popup extends React.Component {
           type: ['in', 'out'].indexOf(OptionComponent.state.master)
         };
         break;
-      case 'change_PW':
-        dat={
-          unifyCode: getCookie("userId"),
-          userId: getCookie("userId"),
-          oldPassWord: this.refs.dqmm.value,
-          newPassWord: this.refs.xmm.value
-        };
-        break;
       default:
         break;
     }
@@ -654,14 +648,20 @@ class Popup extends React.Component {
         "change_PW": "updateZjPassWord"
       };
       if(type=='change_PW') {
-        console.log((this.refs.xmm.value&&this.refs.xmmqr.value&&this.refs.dqmm.value))
-        if(!(this.refs.xmm.value&&this.refs.xmmqr.value&&this.refs.dqmm.value)) {
+        if(!(this.refs.xmm.value&&this.refs.xmmqr.value)) {
           alert("请检查参数！");
           return;
         }
         if(this.refs.xmm.value!==this.refs.xmmqr.value) {
           alert("新密码确认错误，请检查！");
           return;
+        } else {
+          dat={
+            unifyCode: getCookie("userId"),
+            userId: getCookie("userId"),
+            // oldPassWord: this.refs.dqmm.value,
+            newPassWord: this.refs.xmm.value
+          };
         }
       }
       ajax({
@@ -674,7 +674,7 @@ class Popup extends React.Component {
             cancel_popup();
             OptionComponent.get_list();
           } else {
-            alert("操作失败");
+            // alert("操作失败");
           }
         }
       });

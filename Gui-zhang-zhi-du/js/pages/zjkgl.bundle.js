@@ -364,13 +364,13 @@ webpackJsonp([10],{
 	                } },
 	              '\u6279\u91CF\u5220\u9664'
 	            ),
-	            _react2["default"].createElement(
+	            this.state.master === 'out' ? _react2["default"].createElement(
 	              'button',
 	              { className: 'option_big_btn', ref: function ref(button) {
 	                  return _this6.change = button;
 	                } },
 	              '\u4FEE\u6539\u5BC6\u7801'
-	            )
+	            ) : ''
 	          ),
 	          _react2["default"].createElement(
 	            'div',
@@ -453,10 +453,12 @@ webpackJsonp([10],{
 	      };
 
 	      // change password
-	      this.change.onclick = function () {
-	        Creat_popup('change_PW', masters, _this7.refs.list.ids);
-	        pop.style.display = 'block';
-	      };
+	      if (this.state.master === 'out') {
+	        this.change.onclick = function () {
+	          Creat_popup('change_PW', masters, _this7.refs.list.ids);
+	          pop.style.display = 'block';
+	        };
+	      }
 
 	      // search
 	      this.search.onclick = this.search_handler.bind(this);
@@ -779,11 +781,6 @@ webpackJsonp([10],{
 	                  null,
 	                  _react2["default"].createElement(
 	                    'a',
-	                    { href: '#', onClick: _this10.option.bind(_this10, 'edit', e.sfrzh, e.xm) },
-	                    '\u7F16\u8F91'
-	                  ),
-	                  _react2["default"].createElement(
-	                    'a',
 	                    { href: '#', onClick: _this10.option.bind(_this10, 'del', e.sfrzh, e.xm) },
 	                    '\u5220\u9664'
 	                  ),
@@ -983,22 +980,6 @@ webpackJsonp([10],{
 	                    { className: 'warn' },
 	                    '*'
 	                  ),
-	                  '\u5F53\u524D\u5BC6\u7801'
-	                ),
-	                _react2["default"].createElement('input', { type: 'password', ref: 'dqmm' }),
-	                _react2["default"].createElement('span', { className: 'tips' })
-	              ),
-	              _react2["default"].createElement(
-	                'div',
-	                null,
-	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'left_span' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    { className: 'warn' },
-	                    '*'
-	                  ),
 	                  '\u65B0\u5BC6\u7801'
 	                ),
 	                _react2["default"].createElement('input', { type: 'password', ref: 'xmm' }),
@@ -1097,14 +1078,6 @@ webpackJsonp([10],{
 	            type: ['in', 'out'].indexOf(OptionComponent.state.master)
 	          };
 	          break;
-	        case 'change_PW':
-	          dat = {
-	            unifyCode: getCookie("userId"),
-	            userId: getCookie("userId"),
-	            oldPassWord: this.refs.dqmm.value,
-	            newPassWord: this.refs.xmm.value
-	          };
-	          break;
 	        default:
 	          break;
 	      }
@@ -1118,14 +1091,20 @@ webpackJsonp([10],{
 	          "change_PW": "updateZjPassWord"
 	        };
 	        if (type == 'change_PW') {
-	          console.log(_this14.refs.xmm.value && _this14.refs.xmmqr.value && _this14.refs.dqmm.value);
-	          if (!(_this14.refs.xmm.value && _this14.refs.xmmqr.value && _this14.refs.dqmm.value)) {
+	          if (!(_this14.refs.xmm.value && _this14.refs.xmmqr.value)) {
 	            alert("请检查参数！");
 	            return;
 	          }
 	          if (_this14.refs.xmm.value !== _this14.refs.xmmqr.value) {
 	            alert("新密码确认错误，请检查！");
 	            return;
+	          } else {
+	            dat = {
+	              unifyCode: getCookie("userId"),
+	              userId: getCookie("userId"),
+	              // oldPassWord: this.refs.dqmm.value,
+	              newPassWord: _this14.refs.xmm.value
+	            };
 	          }
 	        }
 	        ajax({
@@ -1138,7 +1117,7 @@ webpackJsonp([10],{
 	              cancel_popup();
 	              OptionComponent.get_list();
 	            } else {
-	              alert("操作失败");
+	              // alert("操作失败");
 	            }
 	          }
 	        });
