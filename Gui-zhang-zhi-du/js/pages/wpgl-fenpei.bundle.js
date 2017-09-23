@@ -439,7 +439,7 @@ webpackJsonp([7],{
 	    }
 	  }, {
 	    key: 'option',
-	    value: function option(type, id, num, groupItem, eve) {
+	    value: function option(type, id, num, groupItem, index, eve) {
 	      // if(eve) {
 	      //   eve.preventDefault();
 	      // } else {
@@ -449,11 +449,11 @@ webpackJsonp([7],{
 	      console.log("option:", type);
 	      switch (type) {
 	        case '撤销':
-	          Creat_popup('撤销', num, id, groupItem);
+	          Creat_popup('撤销', num, id, groupItem, index);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case '自动分配':
-	          Creat_popup('自动分配', num, id, groupItem);
+	          Creat_popup('自动分配', num, id, groupItem, index);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case 'showZJ':
@@ -500,7 +500,7 @@ webpackJsonp([7],{
 	        FenzuNum[index] = +eve.target.value;
 	        console.log('ok,', FenzuNum[index]);
 	      } else {
-	        eve.target.value = '';
+	        eve.target.value = 0;
 	        return;
 	      }
 	    }
@@ -634,7 +634,7 @@ webpackJsonp([7],{
 	                list.cz.map(function (e, innerIndex) {
 	                  return _react2["default"].createElement(
 	                    'span',
-	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, FenzuNum[index] || list.expertNum, list.groupItem) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
+	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, FenzuNum[index] || list.expertNum, list.groupItem, index) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
 	                    e.name
 	                  );
 	                }),
@@ -1029,6 +1029,14 @@ webpackJsonp([7],{
 	          };
 	          break;
 	        case "自动分配":
+	          dat = {
+	            unifyCode: getCookie("userId"),
+	            ID: parseHash(window.location.href).id,
+	            expertGroupItem: this.props.groupItem,
+	            // groupNum: FenzuNum.join(',')
+	            groupNum: FenzuNum[this.props.index]
+	          };
+	          break;
 	        case '批量分配':
 	          dat = {
 	            unifyCode: getCookie("userId"),
@@ -1055,7 +1063,7 @@ webpackJsonp([7],{
 	            var datas = JSON.parse(gets);
 	            if (datas.meta.result == 100) {
 	              cancel_popup();
-	              Kcfzgl_option._get_list();
+	              WPGL._get_list();
 	            }
 	          }
 	        });
@@ -1087,13 +1095,14 @@ webpackJsonp([7],{
 	  return Popup;
 	}(_react2["default"].Component);
 
-	function Creat_popup(type, names, id, groupItem) {
+	function Creat_popup(type, names, id, groupItem, index) {
 	  console.log(id);
 	  var popup_datas = {
 	    type: type,
 	    names: names,
 	    id: id,
-	    groupItem: groupItem
+	    groupItem: groupItem,
+	    index: index
 	  };
 	  var popup = _reactDom2["default"].render(_react2["default"].createElement(Popup, popup_datas), document.getElementById('popup'));
 	}

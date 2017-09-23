@@ -313,7 +313,7 @@ webpackJsonp([0],{
 	            _react2["default"].createElement('br', null),
 	            _react2["default"].createElement(
 	              'span',
-	              null,
+	              { title: e.ywjm.split('.')[0] },
 	              e.ywjm.split('.')[0]
 	            )
 	          ));

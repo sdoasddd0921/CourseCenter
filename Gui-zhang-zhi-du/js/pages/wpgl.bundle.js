@@ -628,7 +628,6 @@ webpackJsonp([6],{
 	          success: function success(gets) {
 	            var datas = JSON.parse(gets);
 	            if (datas.meta.result !== 100) {
-	              alert("删除失败!");
 	              return;
 	            }
 	            cancel_popup();

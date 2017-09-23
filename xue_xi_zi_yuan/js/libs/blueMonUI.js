@@ -150,7 +150,7 @@ class BlueMUI_Create_a extends React.Component {
             <img src="../../imgs/classListInfShow/courseShow/shipin.png" style={{width:'152px',height:'131px'}}/>
           </a>
           <br/>
-          <span>{e.ywjm.split('.')[0]}</span>
+          <span title={e.ywjm.split('.')[0]} >{e.ywjm.split('.')[0]}</span>
         </div>);
       } else {
         this.down.push(e);
