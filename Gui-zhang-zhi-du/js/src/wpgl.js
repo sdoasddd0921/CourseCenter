@@ -115,10 +115,6 @@ class Option extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        // if(datas.meta.result!==100) {
-        //   alert("下拉菜单获取失败！");
-        //   return;
-        // }
         this.setState({
           wppc_select: JSON.parse(gets).data.list
         });
@@ -143,15 +139,6 @@ class Option extends React.Component {
       pop.style.display='block';
     };
   }
-
-  // componentWillUnmount() {
-  //   let del = new RegExp(`^${_prefix}`)
-  //   for(let i in sessionStorage) {
-  //     if(del.test(i)) {
-  //       console.log("should be deleted!")
-  //     }
-  //   }
-  // }
 }
 
 class Lists extends React.Component {

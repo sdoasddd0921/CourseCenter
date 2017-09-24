@@ -188,10 +188,6 @@ webpackJsonp([6],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          // if(datas.meta.result!==100) {
-	          //   alert("下拉菜单获取失败！");
-	          //   return;
-	          // }
 	          _this4.setState({
 	            wppc_select: JSON.parse(gets).data.list
 	          });
@@ -219,16 +215,6 @@ webpackJsonp([6],{
 	        pop.style.display = 'block';
 	      };
 	    }
-
-	    // componentWillUnmount() {
-	    //   let del = new RegExp(`^${_prefix}`)
-	    //   for(let i in sessionStorage) {
-	    //     if(del.test(i)) {
-	    //       console.log("should be deleted!")
-	    //     }
-	    //   }
-	    // }
-
 	  }]);
 
 	  return Option;

@@ -47,6 +47,8 @@ webpackJsonp([7],{
 	var ZhuanjiaNum = new Array(10).fill(0);
 	// 选中的条目
 	var Checks = [];
+	// 每条信息条目
+	var Items = new Array(10).fill('');
 
 	var Option = function (_React$Component) {
 	  _inherits(Option, _React$Component);
@@ -58,8 +60,8 @@ webpackJsonp([7],{
 
 	    _this.search_cache = {
 	      fzx: GET("fzx"),
-	      yfp: GET("yfp") || SET("yfp", "true"),
-	      wfp: GET("wfp") || SET("wfp", "true")
+	      yfp: GET("yfp") || SET("yfp", 1),
+	      wfp: GET("wfp") || SET("wfp", 1)
 	    };
 	    _this.title = parseHash(window.location.href)['wppc'];
 	    console.log(_this.title);
@@ -90,7 +92,7 @@ webpackJsonp([7],{
 	          page: page,
 	          count: _COUNT,
 	          groupItem: this.search_cache.fzx,
-	          assignState: '[' + (this.search_cache.yfp === 'true') + ', ' + (this.search_cache.wfp === 'true') + ']'
+	          assignState: '[' + +this.search_cache.yfp + ', ' + +this.search_cache.wfp + ']'
 	        },
 	        success: function success(gets) {
 	          SET("page", page);
@@ -148,7 +150,7 @@ webpackJsonp([7],{
 	    key: 'change_state',
 	    value: function change_state(state, eve) {
 	      console.log(state, eve.target.checked);
-	      this.search_cache[state] = SET(state, eve.target.checked);
+	      this.search_cache[state] = SET(state, +eve.target.checked);
 	      this.search();
 	    }
 	  }, {
@@ -218,7 +220,7 @@ webpackJsonp([7],{
 	              _react2["default"].createElement('input', {
 	                type: 'checkbox',
 	                id: 'yfp',
-	                defaultChecked: this.search_cache.yfp == "true",
+	                defaultChecked: +this.search_cache.yfp,
 	                onChange: this.change_state.bind(this, 'yfp'),
 	                ref: function ref(check) {
 	                  return _this4.yfp = check;
@@ -237,7 +239,7 @@ webpackJsonp([7],{
 	              _react2["default"].createElement('input', {
 	                type: 'checkbox',
 	                id: 'wfp',
-	                defaultChecked: this.search_cache.wfp == "true",
+	                defaultChecked: +this.search_cache.wfp,
 	                onChange: this.change_state.bind(this, 'wfp'),
 	                ref: function ref(check) {
 	                  return _this4.wfp = check;
@@ -304,7 +306,6 @@ webpackJsonp([7],{
 	    value: function componentDidMount() {
 	      var _this5 = this;
 
-	      // document.getElementById('fenpei-fzx').onchange=this.search.bind(this);
 	      console.log('moren:', this.fzx_select.value);
 	      // 填充分组项次下拉菜单
 	      ajax({
@@ -345,12 +346,58 @@ webpackJsonp([7],{
 	      };
 
 	      this.PLcx.onclick = function () {
-	        Creat_popup('批量撤销', Nums.toString(), _this5.refs.list.lists.toString());
+	        var flag = false;
+	        // 检查数据是否都合法？state=1
+	        flag = Items.some(function (e) {
+	          return e && e.state !== 1;
+	        });
+	        if (!flag && Items.every(function (e) {
+	          return e === '';
+	        })) {
+	          alert('请先选择需要撤销的项！');
+	          return;
+	        }
+	        console.log('flag:', flag);
+	        if (flag) {
+	          alert('只能撤销已分配的项目，请检查！');
+	          return;
+	        }
+	        // 经过筛选后合法的数据
+	        var exGroups = [];
+	        Items.forEach(function (e) {
+	          return e && exGroups.push(e.expertGroup);
+	        });
+	        Creat_popup('批量撤销', Nums.toString(), 'useless', exGroups.join(','));
 	        document.getElementById('popup').style.display = "block";
 	      };
 	      this.PLfp.onclick = function () {
+	        var flag = false;
+	        // 检查数据是否都合法？state!=1
+	        flag = Items.some(function (e) {
+	          return e && e.state === 1;
+	        });
+	        if (!flag && Items.every(function (e) {
+	          return e === '';
+	        })) {
+	          alert('请先选择需要分配的项！');
+	          return;
+	        }
+	        console.log('flag:', flag);
+	        if (flag) {
+	          alert('只能分配未分配的项目，请检查！');
+	          return;
+	        }
+	        // 经过筛选后合法的数据
+	        var exGroups = [];
+	        Items.forEach(function (e) {
+	          return e && exGroups.push(e.expertGroup);
+	        });
 	        Creat_popup('批量分配', Nums.toString(), _this5.refs.list.lists.toString());
 	        document.getElementById('popup').style.display = "block";
+	      };
+	      // 分配结果跳转
+	      this.fpjg.onclick = function () {
+	        window.location.href = './wpgl-jieguo.html?wppc=' + parseHash(window.location.href).wppc + '&id=' + parseHash(window.location.href).id;
 	      };
 	    }
 	  }]);
@@ -439,13 +486,7 @@ webpackJsonp([7],{
 	    }
 	  }, {
 	    key: 'option',
-	    value: function option(type, id, num, groupItem, index, eve) {
-	      // if(eve) {
-	      //   eve.preventDefault();
-	      // } else {
-	      //   groupItem.preventDefault();
-	      // }
-
+	    value: function option(type, id, num, groupItem, index) {
 	      console.log("option:", type);
 	      switch (type) {
 	        case '撤销':
@@ -461,7 +502,6 @@ webpackJsonp([7],{
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case 'showKC':
-	          console.log('ttttttt', eve);
 	          Creat_popup('showKC', num, id);
 	          document.getElementById('popup').style.display = "block";
 	          break;
@@ -471,11 +511,12 @@ webpackJsonp([7],{
 	    }
 	  }, {
 	    key: 'check',
-	    value: function check(id, num, index, eve) {
+	    value: function check(id, num, list, index, eve) {
 	      if (eve.target.checked) {
 	        this.lists.push(id);
 	        Nums.push(num || 0);
 	        Checks.push(index);
+	        Items[index] = list;
 	      } else {
 	        this.lists = this.lists.filter(function (e) {
 	          return e !== id;
@@ -486,9 +527,10 @@ webpackJsonp([7],{
 	        Checks = Checks.filter(function (e) {
 	          return e !== index;
 	        });
+	        Items[index] = '';
 	      }
 	      this.allCheck.checked = false;
-	      console.log(Nums, this.lists);
+	      console.log(Nums, this.lists, Items);
 	    }
 
 	    // 输入数字检测
@@ -565,7 +607,7 @@ webpackJsonp([7],{
 	              _react2["default"].createElement('input', {
 	                type: 'checkbox',
 	                id: 'list-' + index,
-	                onChange: _this8.check.bind(_this8, list.expertGroup, list.expertNum, index)
+	                onChange: _this8.check.bind(_this8, list.expertGroup, list.expertNum, list, index)
 	              }),
 	              _react2["default"].createElement(
 	                'label',
@@ -634,7 +676,7 @@ webpackJsonp([7],{
 	                list.cz.map(function (e, innerIndex) {
 	                  return _react2["default"].createElement(
 	                    'span',
-	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, FenzuNum[index] || list.expertNum, list.groupItem, index) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
+	                    { key: innerIndex, onClick: e.able ? _this8.option.bind(_this8, e.name, list.expertGroup, FenzuNum[index] || list.groupNum, list.groupItem, index) : '', title: e.tips, className: e.able ? 'able' : 'disable' },
 	                    e.name
 	                  );
 	                }),
@@ -680,10 +722,15 @@ webpackJsonp([7],{
 	            _this9.lists.push(e.expertGroup);
 	            Nums.push(NumsCache[index] || e.expertNum);
 	          });
+	          for (var i = 0, end = _this9.props.Lists.length; i < end; i++) {
+	            Items[i] = _this9.props.Lists[i];
+	          }
 	        } else {
 	          _this9.lists = [];
 	          Nums = [];
+	          Items.fill('');
 	        }
+	        console.log(Items);
 	        Array.from(document.querySelectorAll('tbody input[type="checkbox"]')).forEach(function (e) {
 	          return e.checked = eve.target.checked;
 	        });
@@ -1033,17 +1080,23 @@ webpackJsonp([7],{
 	            unifyCode: getCookie("userId"),
 	            ID: parseHash(window.location.href).id,
 	            expertGroupItem: this.props.groupItem,
-	            // groupNum: FenzuNum.join(',')
 	            groupNum: FenzuNum[this.props.index]
 	          };
 	          break;
 	        case '批量分配':
+	          var A = [];
+	          var B = [];
+	          Checks.forEach(function (e) {
+	            A.push(Items[e].expertGroup);
+	            B.push(FenzuNum[e]);
+	          });
 	          dat = {
 	            unifyCode: getCookie("userId"),
 	            ID: parseHash(window.location.href).id,
-	            expertGroupItem: this.props.groupItem,
-	            // groupNum: FenzuNum.join(',')
-	            groupNum: this.props.names
+	            expertGroupItem: A.join(','),
+	            groupNum: B.join(',')
+	            // expertGroupItem: this.props.groupItem,
+	            // groupNum: this.props.names
 	          };
 	          break;
 	        default:

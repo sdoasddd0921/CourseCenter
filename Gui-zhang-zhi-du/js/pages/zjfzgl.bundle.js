@@ -99,6 +99,7 @@ webpackJsonp([9],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
+	          console.log('datas:', datas);
 	          SET("page", page);
 	          _this2.setState({
 	            TP: {
@@ -378,7 +379,7 @@ webpackJsonp([9],{
 	          window.location.href = './masterSortTeam.html?masterPC=' + zjfzpc + '&groupPC=' + fzpc + '&groupItem=' + fzx;
 	          break;
 	        case 'delete':
-	          Creat_popup('delete', zjfzpc);
+	          Creat_popup('delete', fzpc);
 	          break;
 	        case 'show':
 	          Creat_popup('show', zjfzpc.map(function (e) {
@@ -553,6 +554,11 @@ webpackJsonp([9],{
 	                null,
 	                '\u786E\u5B9A\u8981' + (MAP[type] + id) + '?'
 	              )
+	            ),
+	            _react2["default"].createElement(
+	              'div',
+	              { className: 'warning' },
+	              '\u5C06\u4F1A\u5220\u9664\u8BE5\u4E13\u5BB6\u5206\u7EC4\u6279\u6B21\u4E0B\u6240\u6709\u5206\u7EC4\u9879\u53CA\u4E13\u5BB6\u7684\u5206\u7EC4\uFF0C\u8BF7\u8C28\u614E\u64CD\u4F5C\u3002'
 	            ),
 	            _react2["default"].createElement(
 	              'div',

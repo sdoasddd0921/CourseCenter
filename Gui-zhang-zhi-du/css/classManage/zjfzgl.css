@@ -188,7 +188,8 @@ tbody td>span {
 }
 #popbody {
   width: 457px;
-  height: 250px;
+  min-height: 250px;
+  padding-bottom: 20px;
   background: #FFF;
   text-align: center;
   margin: 200px auto;
@@ -221,7 +222,11 @@ tbody td>span {
   color: #007A51;
   background: #FFF;
 }
-
+#popbody .warning {
+  width: 80%;
+  margin: 0 auto 20px;
+  color: red;
+}
 #popbody #zjs {
   width: 80%;
   text-align: left;

@@ -60,7 +60,7 @@ class Option extends React.Component {
         type: ['zj', 'kc'].indexOf(this.model)+1,
         allocateStatus: `[${+this.yfp.checked},${+this.wfp.checked}]`,
         selectItem: this.search_cache.fzx,
-        selectName: this.search_cache.name
+        selectName: SET('name', this.name_input.value)
       },
       success: (gets)=>{
         SET("page", page);
@@ -81,9 +81,9 @@ class Option extends React.Component {
     this.setState({
       fzx: e?e.target.value:this.state.fzx
     });
+    this.search_cache.fzx = SET('fzx', e?e.target.value:this.state.fzx);
+    this._get_list(1);
   }
-
-  change_name(e) {}
 
   search() {
     this.search_cache.wppc=SET("yfp",this.yfp.checked);
@@ -227,6 +227,9 @@ class Option extends React.Component {
 
     // 首次查询列表并填充
     this._get_list(1);
+
+    this.yfp.onchange = this._get_list.bind(this, 1);
+    this.wfp.onchange = this._get_list.bind(this, 1);
 
     // back button click options
     this.back.onclick=()=>{

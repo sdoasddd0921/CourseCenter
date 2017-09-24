@@ -33,8 +33,8 @@ class Option extends React.Component {
     super(props);
     this.search_cache={
       fzx: GET("fzx"),
-      yfp: GET("yfp")||SET("yfp","true"),
-      wfp: GET("wfp")||SET("wfp","true")
+      yfp: GET("yfp")||SET("yfp",1),
+      wfp: GET("wfp")||SET("wfp",1)
     };
     this.title=parseHash(window.location.href)['wppc'];
     console.log(this.title);
@@ -60,7 +60,7 @@ class Option extends React.Component {
         page: page,
         count: _COUNT,
         groupItem: this.search_cache.fzx,
-        assignState: `[${this.search_cache.yfp==='true'}, ${this.search_cache.wfp==='true'}]`
+        assignState: `[${+this.search_cache.yfp}, ${+this.search_cache.wfp}]`
       },
       success: (gets)=>{
         SET("page", page);
@@ -107,7 +107,7 @@ class Option extends React.Component {
 
   change_state(state,eve) {
     console.log(state,eve.target.checked)
-    this.search_cache[state]=SET(state,eve.target.checked);
+    this.search_cache[state]=SET(state,+eve.target.checked);
     this.search();
   }
 
@@ -133,7 +133,7 @@ class Option extends React.Component {
               <input 
                 type="checkbox"
                 id="yfp"
-                defaultChecked={this.search_cache.yfp=="true"}
+                defaultChecked={+this.search_cache.yfp}
                 onChange={this.change_state.bind(this,'yfp')}
                 ref={check=>this.yfp=check}
               />
@@ -144,7 +144,7 @@ class Option extends React.Component {
               <input 
                 type="checkbox" 
                 id="wfp" 
-                defaultChecked={this.search_cache.wfp=="true"}
+                defaultChecked={+this.search_cache.wfp}
                 onChange={this.change_state.bind(this,'wfp')}
                 ref={check=>this.wfp=check} 
               />
@@ -176,7 +176,6 @@ class Option extends React.Component {
   }
 
   componentDidMount() {
-    // document.getElementById('fenpei-fzx').onchange=this.search.bind(this);
     console.log('moren:',this.fzx_select.value)
     // 填充分组项次下拉菜单
     ajax({
@@ -217,24 +216,44 @@ class Option extends React.Component {
     };
 
     this.PLcx.onclick=()=>{
-      let flag = true;
+      let flag = false;
       // 检查数据是否都合法？state=1
-      Items.forEach((e) => {
-        if (e) {
-          if (e.state === 2 || !flag) {
-            flag = false;
-            return;
-          }
-        }
+      flag = Items.some((e) => {
+        return e && (e.state !== 1);
       });
-      if (!flag) {
-        console.log('只能撤销已分配的项目，请检查！');
+      if (!flag && Items.every((e) => e === '')) {
+        alert('请先选择需要撤销的项！');
         return;
       }
-      Creat_popup('批量撤销', Nums.toString(), this.refs.list.lists.toString());
+      console.log('flag:', flag);
+      if (flag) {
+        alert('只能撤销已分配的项目，请检查！');
+        return;
+      }
+      // 经过筛选后合法的数据
+      let exGroups = [];
+      Items.forEach((e) => e && exGroups.push(e.expertGroup));
+      Creat_popup('批量撤销', Nums.toString(), 'useless', exGroups.join(','));
       document.getElementById('popup').style.display="block";
     }
     this.PLfp.onclick=()=>{
+      let flag = false;
+      // 检查数据是否都合法？state!=1
+      flag = Items.some((e) => {
+        return e && (e.state === 1);
+      });
+      if (!flag && Items.every((e) => e === '')) {
+        alert('请先选择需要分配的项！');
+        return;
+      }
+      console.log('flag:', flag);
+      if (flag) {
+        alert('只能分配未分配的项目，请检查！');
+        return;
+      }
+      // 经过筛选后合法的数据
+      let exGroups = [];
+      Items.forEach((e) => e && exGroups.push(e.expertGroup));
       Creat_popup('批量分配', Nums.toString(), this.refs.list.lists.toString());
       document.getElementById('popup').style.display="block";
     }
@@ -405,7 +424,7 @@ class Lists extends React.Component {
             <div>
               {
                 list.cz.map(
-                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,FenzuNum[index]||list.expertNum,list.groupItem,index):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
+                  (e,innerIndex)=><span key={innerIndex} onClick={e.able?this.option.bind(this,e.name,list.expertGroup,FenzuNum[index]||list.groupNum,list.groupItem,index):''} title={e.tips} className={e.able?'able':'disable'}>{e.name}</span>
                 )
               }
               {
@@ -651,17 +670,23 @@ class Popup extends React.Component {
           unifyCode: getCookie("userId"),
           ID: parseHash(window.location.href).id,
           expertGroupItem: this.props.groupItem,
-          // groupNum: FenzuNum.join(',')
           groupNum: FenzuNum[this.props.index]
         };
         break;
       case '批量分配':
+        let A = [];
+        let B = [];
+        Checks.forEach((e) => {
+          A.push(Items[e].expertGroup);
+          B.push(FenzuNum[e]);
+        });
         dat={
           unifyCode: getCookie("userId"),
           ID: parseHash(window.location.href).id,
-          expertGroupItem: this.props.groupItem,
-          // groupNum: FenzuNum.join(',')
-          groupNum: this.props.names
+          expertGroupItem: A.join(','),
+          groupNum: B.join(',')
+          // expertGroupItem: this.props.groupItem,
+          // groupNum: this.props.names
         };
         break;
       default:

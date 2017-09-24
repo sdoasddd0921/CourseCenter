@@ -66,6 +66,7 @@ class Option extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
+        console.log('datas:',datas);
         SET("page", page);
         this.setState({
           TP: {
@@ -241,7 +242,7 @@ class List extends React.Component {
         window.location.href=`./masterSortTeam.html?masterPC=${zjfzpc}&groupPC=${fzpc}&groupItem=${fzx}`;
         break;
       case 'delete':
-        Creat_popup('delete', zjfzpc);
+        Creat_popup('delete', fzpc);
         break;
       case 'show':
         Creat_popup('show', zjfzpc.map(e=>e.xm));
@@ -335,6 +336,7 @@ class Popup extends React.Component {
             <div id="msg">
               <p>{`确定要${MAP[type]+id}?`}</p>
             </div>
+            <div className="warning">将会删除该专家分组批次下所有分组项及专家的分组，请谨慎操作。</div>
             <div id="popup_option">
               <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
               <button id="popup_back" ref={btn=>this.back=btn}>取消</button>

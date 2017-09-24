@@ -26,7 +26,7 @@ webpackJsonp([10],{
 	var _COUNT = 10;
 	var ajax = __webpack_require__(159);
 	var Fanye = __webpack_require__(160);
-	var masters = [];
+	var masterNames = [];
 
 	function SET(key, value) {
 	  sessionStorage.setItem("zjkgl-" + key, value);
@@ -448,17 +448,25 @@ webpackJsonp([10],{
 
 	      // PiLiangDelete
 	      this.PLdelete.onclick = function () {
-	        Creat_popup('PLdelete', masters, _this7.refs.list.ids);
+	        Creat_popup('PLdelete', masterNames, _this7.refs.list.ids);
 	        pop.style.display = 'block';
 	      };
 
 	      // change password
-	      if (this.state.master === 'out') {
-	        this.change.onclick = function () {
-	          Creat_popup('change_PW', masters, _this7.refs.list.ids);
+	      this.change.onclick = function () {
+	        if (_this7.state.master === 'out') {
+	          if (_this7.refs.list.ids.length > 1) {
+	            alert('一次只能修改一个专家的密码！');
+	            return;
+	          }
+	          if (_this7.refs.list.ids.length === 0) {
+	            alert('请先选中要修改密码的专家！');
+	            return;
+	          }
+	          Creat_popup('change_PW', masterNames, _this7.refs.list.ids[0]);
 	          pop.style.display = 'block';
 	        };
-	      }
+	      };
 
 	      // search
 	      this.search.onclick = this.search_handler.bind(this);
@@ -836,13 +844,13 @@ webpackJsonp([10],{
 	      if (eve.target.checked) {
 	        // add
 	        this.ids.push(id);
-	        masters.push(name);
+	        masterNames.push(name);
 	      } else {
 	        // delet
 	        this.ids = this.ids.filter(function (e) {
 	          return e !== id;
 	        });
-	        masters = masters.filter(function (e) {
+	        masterNames = masterNames.filter(function (e) {
 	          return e !== name;
 	        });
 	      }
@@ -850,7 +858,7 @@ webpackJsonp([10],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      masters = [];
+	      masterNames = [];
 	      this.ids = [];
 	      return _react2["default"].createElement(
 	        'div',
@@ -870,12 +878,12 @@ webpackJsonp([10],{
 
 	      this.allcheck.onchange = function (eve) {
 	        _this11.ids = [];
-	        masters = [];
+	        masterNames = [];
 	        var checks = Array.from(document.querySelectorAll('tbody td input[type="checkbox"]'));
 	        checks.map(function (e) {
-	          (e.checked = eve.target.checked) && _this11.ids.push(e.value.split("#")[0]) && masters.push(e.value.split("#")[1]);
+	          (e.checked = eve.target.checked) && _this11.ids.push(e.value.split("#")[0]) && masterNames.push(e.value.split("#")[1]);
 	        });
-	        console.log(masters.join(","));
+	        console.log(masterNames.join(","));
 	      };
 	    }
 	  }, {
@@ -1101,7 +1109,8 @@ webpackJsonp([10],{
 	          } else {
 	            dat = {
 	              unifyCode: getCookie("userId"),
-	              userId: getCookie("userId"),
+	              userId: _this14.props.id,
+	              oldPassWord: '',
 	              // oldPassWord: this.refs.dqmm.value,
 	              newPassWord: _this14.refs.xmm.value
 	            };
