@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -36,10 +36,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -238,7 +238,7 @@ webpackJsonp([0],{
 	    value: function render() {
 	      return _react2["default"].createElement(
 	        'div',
-	        null,
+	        { id: 'table-wrap' },
 	        _react2["default"].createElement(
 	          'table',
 	          null,
@@ -811,25 +811,23 @@ webpackJsonp([0],{
 	          if (that.props.Master) {
 	            that.props.callback({ master: that.Master });
 	          } else {
-	            (function () {
-	              var Teachers = [];
-	              if (that.props.Rank == 1) {
-	                that.choose_teachers.map(function (e) {
-	                  Teachers.push({
-	                    sfrzh: e,
-	                    jyszr: that.teacher_names[e]
-	                  });
+	            var Teachers = [];
+	            if (that.props.Rank == 1) {
+	              that.choose_teachers.map(function (e) {
+	                Teachers.push({
+	                  sfrzh: e,
+	                  jyszr: that.teacher_names[e]
 	                });
-	              } else {
-	                that.choose_teachers.map(function (e) {
-	                  Teachers.push({
-	                    sfrzh: e,
-	                    xm: that.teacher_names[e]
-	                  });
+	              });
+	            } else {
+	              that.choose_teachers.map(function (e) {
+	                Teachers.push({
+	                  sfrzh: e,
+	                  xm: that.teacher_names[e]
 	                });
-	              }
-	              that.props.callback(Teachers);
-	            })();
+	              });
+	            }
+	            that.props.callback(Teachers);
 	          }
 	        }
 	        //清空搜索栏
@@ -1678,10 +1676,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 160:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -1753,6 +1751,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

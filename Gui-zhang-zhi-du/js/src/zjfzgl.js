@@ -242,7 +242,7 @@ class List extends React.Component {
         window.location.href=`./masterSortTeam.html?masterPC=${zjfzpc}&groupPC=${fzpc}&groupItem=${fzx}`;
         break;
       case 'delete':
-        Creat_popup('delete', fzpc);
+        Creat_popup('delete', zjfzpc);
         break;
       case 'show':
         Creat_popup('show', zjfzpc.map(e=>e.xm));
@@ -367,7 +367,7 @@ class Popup extends React.Component {
       case "delete":
         dat={
           unifyCode: getCookie("userId"),
-          groupBatch: id
+          evaluateGroupBatch: id
         };
         break;
       default:
@@ -379,7 +379,7 @@ class Popup extends React.Component {
     // OK button option
     this.OK&&(this.OK.onclick=()=>{
       let data_map={
-        "delete": "deleteFz"
+        "delete": "deleteZjfzpc"
       };
       ajax({
         url: courseCenter.host+data_map[type],

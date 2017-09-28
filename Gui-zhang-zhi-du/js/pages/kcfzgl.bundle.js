@@ -132,10 +132,7 @@ webpackJsonp([3],{
 	        wppc: reviewBatch
 	      }, function () {
 	        console.log('test:', _this3.wppc_select.value);
-	        if (e && !_this3.wppc_select.value) {
-	          console.log('tttt');
-	          _this3.search();
-	        }
+	        _this3.search();
 	      });
 
 	      // charge fzx select list

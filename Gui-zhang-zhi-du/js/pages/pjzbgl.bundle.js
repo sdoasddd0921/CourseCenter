@@ -243,7 +243,9 @@ webpackJsonp([4],{
 	      eve.preventDefault();
 	      switch (type) {
 	        case 'edit':
-	          window.location.href = './masterAddZbEditor.html?isEditor=true&type=' + +(lb === "通用") + '&indexBatch=' + zbpc;
+	          var a = './masterAddZbEditor.html?isEditor=true&type=' + +(lb === "通用") + '&indexBatch=' + zbpc;
+	          console.log(a);
+	          window.location.href = a;
 	          break;
 	        case 'delete':
 	          Creat_popup('delete', zbpc);
@@ -458,7 +460,7 @@ webpackJsonp([4],{
 	            var datas = JSON.parse(gets);
 	            if (datas.meta.result == 100) {
 	              cancel_popup();
-	              pjzbgl_option.get_list();
+	              pjzbgl_option.get_list(1);
 	            }
 	          }
 	        });

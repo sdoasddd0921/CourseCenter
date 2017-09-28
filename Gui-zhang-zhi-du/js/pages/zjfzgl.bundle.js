@@ -379,7 +379,7 @@ webpackJsonp([9],{
 	          window.location.href = './masterSortTeam.html?masterPC=' + zjfzpc + '&groupPC=' + fzpc + '&groupItem=' + fzx;
 	          break;
 	        case 'delete':
-	          Creat_popup('delete', fzpc);
+	          Creat_popup('delete', zjfzpc);
 	          break;
 	        case 'show':
 	          Creat_popup('show', zjfzpc.map(function (e) {
@@ -619,7 +619,7 @@ webpackJsonp([9],{
 	        case "delete":
 	          dat = {
 	            unifyCode: getCookie("userId"),
-	            groupBatch: id
+	            evaluateGroupBatch: id
 	          };
 	          break;
 	        default:
@@ -631,7 +631,7 @@ webpackJsonp([9],{
 	      // OK button option
 	      this.OK && (this.OK.onclick = function () {
 	        var data_map = {
-	          "delete": "deleteFz"
+	          "delete": "deleteZjfzpc"
 	        };
 	        ajax({
 	          url: courseCenter.host + data_map[type],

@@ -112,7 +112,7 @@ class BlueMUI_CreateThead extends React.Component {
   }
 
   render() {
-    return (<div>
+    return (<div id="table-wrap">
       <table>
         <thead>
           <tr>{this.thead_create()}</tr>

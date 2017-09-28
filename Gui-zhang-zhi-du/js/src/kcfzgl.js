@@ -95,10 +95,7 @@ class Option extends React.Component {
       wppc: reviewBatch
     }, () => {
       console.log('test:', this.wppc_select.value);
-      if (e && !this.wppc_select.value) {
-        console.log('tttt');
-        this.search();
-      }
+      this.search();
     });
 
     // charge fzx select list

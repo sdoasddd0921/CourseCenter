@@ -127,24 +127,16 @@ webpackJsonp([7],{
 	        console.log(eve.target.value);
 	      };
 	      console.log('fzx:', this.search_cache.fzx);
-	      return _react2["default"].createElement(
-	        'select',
-	        {
-	          name: 'fzx',
-	          id: 'fenpei-fzx',
-	          ref: function ref(sel) {
-	            return _this3.fzx_select = sel;
-	          },
-	          defaultValue: this.search_cache.fzx,
-	          onChange: change_fzx
-	          // dangerouslySetInnerHTML = {this.state.dangerHTML}
+	      return _react2["default"].createElement('select', {
+	        name: 'fzx',
+	        id: 'fenpei-fzx',
+	        ref: function ref(sel) {
+	          return _this3.fzx_select = sel;
 	        },
-	        _react2["default"].createElement(
-	          'option',
-	          { value: '' },
-	          this.search_cache.fzx || '请选择'
-	        )
-	      );
+	        defaultValue: this.search_cache.fzx,
+	        onChange: change_fzx
+	        // dangerouslySetInnerHTML = {this.state.dangerHTML}
+	      });
 	    }
 	  }, {
 	    key: 'change_state',
@@ -307,6 +299,8 @@ webpackJsonp([7],{
 	      var _this5 = this;
 
 	      console.log('moren:', this.fzx_select.value);
+	      var ops = '<option value="">\u8BF7\u9009\u62E9</option>';
+	      this.fzx_select.innerHTML = ops;
 	      // 填充分组项次下拉菜单
 	      ajax({
 	        url: courseCenter.host + "getFzxByWppc",
@@ -321,11 +315,12 @@ webpackJsonp([7],{
 	            return;
 	          }
 
-	          var ops = '<option value="">\u8BF7\u9009\u62E9</option>';
+	          var nowItem = _this5.search_cache.fzx;
 	          JSON.parse(gets).data.forEach(function (e, index) {
-	            return ops += '<option data-reactid=".0.0.1.2.1.' + index + '" ' + (e.fzx === _this5.search_cache.fzx ? 'selected' : null) + ' value=' + e.fzx + '>' + e.fzx + '</option>';
+	            return ops += '<option data-reactid=".0.0.1.2.1.' + index + '" ' + (e.fzx === nowItem ? 'selected' : null) + ' value=' + e.fzx + '>' + e.fzx + '</option>';
 	          });
-	          _this5.fzx_select.innerHTML = ops;
+	          console.log(ops);
+	          _this5.fzx_select.innerHTML = ops.toString();
 	          // this.setState({dangerHTML: ops});
 	        }
 	      });
@@ -365,7 +360,7 @@ webpackJsonp([7],{
 	        // 经过筛选后合法的数据
 	        var exGroups = [];
 	        Items.forEach(function (e) {
-	          return e && exGroups.push(e.expertGroup);
+	          return e && exGroups.push(e.groupItem);
 	        });
 	        Creat_popup('批量撤销', Nums.toString(), 'useless', exGroups.join(','));
 	        document.getElementById('popup').style.display = "block";
@@ -494,6 +489,7 @@ webpackJsonp([7],{
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case '自动分配':
+	          console.log('自动分配', num, id, groupItem, index, FenzuNum);
 	          Creat_popup('自动分配', num, id, groupItem, index);
 	          document.getElementById('popup').style.display = "block";
 	          break;
@@ -594,11 +590,11 @@ webpackJsonp([7],{
 	            _react2["default"].createElement(
 	              'td',
 	              { className: 'td_head' },
-	              function () {
-	                // 储存每条信息里需要用到的数据
-	                FenzuNum[index] = list.groupNum;
-	                ZhuanjiaNum[index] = list.expertNum;
-	              }
+
+	              // 储存每条信息里需要用到的数据
+	              FenzuNum[index] = list.groupNum,
+	              console.log('aaaaaaaaaaaaaaaaaaaaaaaaa', FenzuNum),
+	              ZhuanjiaNum[index] = list.expertNum
 	            ),
 	            _react2["default"].createElement('td', null),
 	            _react2["default"].createElement(

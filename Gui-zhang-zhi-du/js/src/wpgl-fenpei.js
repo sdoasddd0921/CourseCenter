@@ -100,7 +100,7 @@ class Option extends React.Component {
         onChange={change_fzx}
         // dangerouslySetInnerHTML = {this.state.dangerHTML}
       >
-        <option value=''>{this.search_cache.fzx||'请选择'}</option>
+        {/* <option value=''>{this.search_cache.fzx||'请选-择'}</option> */}
       </select>
     )
   }
@@ -177,6 +177,8 @@ class Option extends React.Component {
 
   componentDidMount() {
     console.log('moren:',this.fzx_select.value)
+    let ops=`<option value="">请选择</option>`;
+    this.fzx_select.innerHTML = ops;
     // 填充分组项次下拉菜单
     ajax({
       url: courseCenter.host+"getFzxByWppc",
@@ -191,11 +193,12 @@ class Option extends React.Component {
           return;
         }
 
-        let ops=`<option value="">请选择</option>`
+        let nowItem = this.search_cache.fzx;
         JSON.parse(gets).data.forEach(
-          (e, index)=>ops+=`<option data-reactid=".0.0.1.2.1.${index}" ${e.fzx===this.search_cache.fzx?'selected':null} value=${e.fzx}>${e.fzx}</option>`
+          (e, index)=>ops+=`<option data-reactid=".0.0.1.2.1.${index}" ${e.fzx===nowItem?'selected':null} value=${e.fzx}>${e.fzx}</option>`
         )
-        this.fzx_select.innerHTML = ops;
+        console.log(ops);
+        this.fzx_select.innerHTML = ops.toString();
         // this.setState({dangerHTML: ops});
       }
     });
@@ -232,7 +235,7 @@ class Option extends React.Component {
       }
       // 经过筛选后合法的数据
       let exGroups = [];
-      Items.forEach((e) => e && exGroups.push(e.expertGroup));
+      Items.forEach((e) => e && exGroups.push(e.groupItem));
       Creat_popup('批量撤销', Nums.toString(), 'useless', exGroups.join(','));
       document.getElementById('popup').style.display="block";
     }
@@ -308,6 +311,7 @@ class Lists extends React.Component {
         document.getElementById('popup').style.display="block";
         break;
       case '自动分配':
+        console.log('自动分配', num, id, groupItem, index, FenzuNum);
         Creat_popup('自动分配', num, id, groupItem, index);
         document.getElementById('popup').style.display="block";
         break;
@@ -384,11 +388,12 @@ class Lists extends React.Component {
       <tbody>
         {this.props.Lists.map(
           (list, index) => <tr key={index}>
-            <td className="td_head">{()=>{
+            <td className="td_head">{
               // 储存每条信息里需要用到的数据
-              FenzuNum[index]=list.groupNum;
-              ZhuanjiaNum[index]=list.expertNum;
-            }}</td>
+              FenzuNum[index]=list.groupNum}{
+              console.log('aaaaaaaaaaaaaaaaaaaaaaaaa',FenzuNum)}{
+              ZhuanjiaNum[index]=list.expertNum
+            }</td>
             <td></td>
             <td>
               <input 
