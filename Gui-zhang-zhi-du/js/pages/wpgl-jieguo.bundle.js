@@ -1097,6 +1097,9 @@ webpackJsonp([8],{
 	    value: function create_popup_fanye() {
 	      var _this2 = this;
 
+	      if (this.props.TP.pages < 1) {
+	        return null;
+	      }
 	      if (this.props.TP.total === 0) {
 	        return _react2["default"].createElement('div', { style: { height: '21px', padding: '30px 0' } });
 	      }
@@ -1151,29 +1154,32 @@ webpackJsonp([8],{
 
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'fanye' },
+	        { className: 'fanye' },
 	        _react2["default"].createElement(
 	          'span',
-	          { id: 'total' },
+	          { className: 'total' },
 	          '\u5171',
 	          this.props.TP.total >= 0 ? this.props.TP.total : 1,
 	          '\u6761\u8BB0\u5F55'
 	        ),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u9996\u9875', id: 'fanye_start', onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0A\u4E00\u9875', id: 'fanye_pre', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_start', type: 'button', value: '\u9996\u9875', onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_pre', type: 'button', value: '\u4E0A\u4E00\u9875', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
 	        _react2["default"].createElement(
 	          'ul',
-	          { id: 'fanye_nums' },
+	          { className: 'fanye_nums' },
 	          nums
 	        ),
-	        _react2["default"].createElement('input', { type: 'text', id: 'tp', ref: 'tp', placeholder: this.props.TP.page + '/' + this.props.TP.pages }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0B\u4E00\u9875', id: 'fanye_next', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u5C3E\u9875', id: 'fanye_end', onClick: this.fanye.bind(this, now === end ? 0 : end) })
+	        _react2["default"].createElement('input', { type: 'text', className: 'tp', ref: 'tp', placeholder: this.props.TP.page + '/' + this.props.TP.pages }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_next', type: 'button', value: '\u4E0B\u4E00\u9875', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_end', type: 'button', value: '\u5C3E\u9875', onClick: this.fanye.bind(this, now === end ? 0 : end) })
 	      );
 	    }
 	  }, {
 	    key: 'fanye',
 	    value: function fanye(p) {
+	      if (!this.refs.tp) {
+	        return;
+	      }
 	      this.refs.tp.value = null;
 	      if (p == 0) {
 	        return;
@@ -1190,6 +1196,9 @@ webpackJsonp([8],{
 	    value: function componentDidMount() {
 	      var _this3 = this;
 
+	      if (!this.refs.tp) {
+	        return;
+	      }
 	      // 手动跳转翻页
 	      this.refs.tp.onkeydown = function (eve) {
 	        if (eve.keyCode === 13) {

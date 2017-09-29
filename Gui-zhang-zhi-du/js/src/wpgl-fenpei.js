@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
 const _COUNT=10;
+const _POPCOUNT=10;
 
 const SET = (key, value) => {
   sessionStorage.setItem("wpgl-fenpei-"+key, value);
@@ -388,12 +389,11 @@ class Lists extends React.Component {
       <tbody>
         {this.props.Lists.map(
           (list, index) => <tr key={index}>
-            <td className="td_head">{
+            <td className="td_head">{ (() => {
               // 储存每条信息里需要用到的数据
-              FenzuNum[index]=list.groupNum}{
-              console.log('aaaaaaaaaaaaaaaaaaaaaaaaa',FenzuNum)}{
+              FenzuNum[index]=list.groupNum
               ZhuanjiaNum[index]=list.expertNum
-            }</td>
+            })() }</td>
             <td></td>
             <td>
               <input 
@@ -495,7 +495,7 @@ class Poplist extends React.Component {
     this.state={
       list: [],
       TP: {
-        page: 0,
+        page: 1,
         pages: 0,
         total: 0
       }
@@ -503,35 +503,97 @@ class Poplist extends React.Component {
   }
 
   _get_list(p) {
-    // ajax({
-    //   url: courseCenter.host+'queryExpAllocDetail',
-    //   data: {
-    //     unifyCode: getCookie("userId"),
-    //     ID: parseHash(window.location.href).id,
-    //     expID: this.props.id,
-    //     groupItem: this.props.fzx,
-    //     page: p||1,
-    //     count: _COUNT
-    //   },
-    //   success: (gets) => {
-    //     let datas=JSON.parse(gets);
-    //     if(datas.meta.result!==100) {
-    //       return;
-    //     }
-    //     this.setState({
-    //       list: datas.data.list,
-    //       TP: {
-    //         page: p||1,
-    //         pages: datas.data.totalPages,
-    //         total: datas.data.total
-    //       }
-    //     });
-    //   }
-    // });
+    let type = this.props.type === 'showZJ' ? 'getZjfzList' : 'getKcfzList';
+    let dat = {};
+    if (type === 'showZJ') {
+      dat = {
+        unifyCode: getCookie("userId"),
+        evaluateGroupBatch: this.props.fzpc,
+        evaluateName: this.ZJ.value,
+        group: this.props.fzx,
+        page: this.state.TP.page,
+        count: _POPCOUNT
+      };
+    } else {
+      dat = {
+        unifyCode: getCookie("userId"),
+        reviewBatch: parseHash(window.location.href).wppc,
+        courseName: this.ZJ.value,
+        group: this.props.fzx,
+        page: this.state.TP.page,
+        count: _POPCOUNT
+      };
+    }
+    ajax({
+      url: courseCenter.host+type,
+      data: dat,
+      success: (gets) => {
+        let datas=JSON.parse(gets);
+        console.log(datas);
+        if(datas.meta.result!==100) {
+          return;
+        }
+        this.setState({
+          list: datas.data.courseGroupList || datas.data.evaluateGroupList,
+          TP: {
+            page: p||1,
+            pages: datas.data.totalPages,
+            total: datas.data.total
+          }
+        });
+      }
+    });
   }
 
   render() {
     console.log('poplist:',this.props)
+    let thead = '';
+    if (this.props.type === 'showZJ') {
+      thead = <thead>
+        <tr>
+          <td width="25%">账号</td>
+          <td width="25%">姓名</td>
+          <td width="25%">工作单位</td>
+          <td width="25%">联系电话</td>
+        </tr>
+      </thead>
+    } else {
+      thead = <thead>
+        <tr>
+          <td width="30%">课程名称</td>
+          <td width="15%">课程编号</td>
+          <td width="30%">开课学院</td>
+          <td width="25%">系部中心</td>
+        </tr>
+      </thead>
+    }
+    let tbody = [];
+    if (this.props.type === 'showZJ') {
+      tbody = [];
+      this.state.list.forEach((e) => {
+        e.evaluates.forEach((m) => {
+          tbody.push(<tr key={m.zjid}>
+            <td>{ m.zjid }</td>
+            <td>{ m.xm }</td>
+            <td>{ m.dw }</td>
+            <td>{ m.lxdh }</td>
+          </tr>);
+        });
+      });
+    } else {
+      tbody = [];
+      this.state.list.forEach((e) => {
+        e.courseList.forEach((m) => {
+          tbody.push(<tr key={m.kcbh}>
+            <td>{ m.kcmc }</td>
+            <td>{ m.kcbh }</td>
+            <td>{ m.kkxymc }</td>
+            <td>{ m.jysmc }</td>
+          </tr>);
+        });
+      });
+    }
+
     return (
       <div style={{padding:'0 40px'}}>
         <div id="ops">
@@ -539,30 +601,16 @@ class Poplist extends React.Component {
         <div id="searchZJ">
           <span>{this.props.type.indexOf('ZJ')===-1?'课程名称：':'专家姓名：'}</span>
           <input type="text" ref={inp=>this.ZJ=inp}/>
-          <button ref={btn=>this.btn=btn}>搜索</button>
+          <button ref={btn=>this.btn=btn} onClick={this._get_list.bind(this, 1)}>搜索</button>
         </div>
         </div>
         <div id="pop_table_body">
           <table>
-            <thead>
-              <tr>
-                <td width="30%">课程编号</td>
-                <td width="30%">课程名称</td>
-                <td width="40%">开课学院</td>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.state.list.map((e,index)=><tr key={index}>
-                  <td>{e.courseName}</td>
-                  <td>{e.courseNo}</td>
-                  <td>{e.unit}</td>
-                </tr>)
-              }
-            </tbody>
+            { thead }
+            <tbody>{ tbody }</tbody>
           </table>
         </div>
-        {/* <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} /> */}
+        <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
       </div>
     );
   }

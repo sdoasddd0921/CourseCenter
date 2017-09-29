@@ -6,6 +6,9 @@ export default class Fanye extends React.Component {
   }
 
   create_popup_fanye() {
+    if(this.props.TP.pages < 1) {
+      return null;
+    }
     if(this.props.TP.total===0) {
       return <div style={{height:'21px',padding: '30px 0'}}></div>;
     }
@@ -46,30 +49,36 @@ export default class Fanye extends React.Component {
       }
     }
 
-    return (<div id="fanye">
-      <span id="total">共{this.props.TP.total>=0?this.props.TP.total:1}条记录</span>
-      <input className="fanye_options" type="button" value="首页"   id="fanye_start" onClick={this.fanye.bind(this,now===1?0:1)} />
-      <input className="fanye_options" type="button" value="上一页" id="fanye_pre"   onClick={this.fanye.bind(this,now===1?0:now-1)} />
-      <ul id="fanye_nums">{nums}</ul>
-      <input type="text" id="tp" ref="tp" placeholder={`${this.props.TP.page}/${this.props.TP.pages}`} />
-      <input className="fanye_options" type="button" value="下一页" id="fanye_next"  onClick={this.fanye.bind(this,now===end?0:now+1)} />
-      <input className="fanye_options" type="button" value="尾页"   id="fanye_end"   onClick={this.fanye.bind(this,now===end?0:end)} />
+    return (<div className="fanye">
+      <span className="total">共{this.props.TP.total>=0?this.props.TP.total:1}条记录</span>
+      <input className="fanye_options fanye_start" type="button" value="首页" onClick={this.fanye.bind(this,now===1?0:1)} />
+      <input className="fanye_options fanye_pre" type="button" value="上一页" onClick={this.fanye.bind(this,now===1?0:now-1)} />
+      <ul className="fanye_nums">{nums}</ul>
+      <input type="text" className="tp" ref="tp" placeholder={`${this.props.TP.page}/${this.props.TP.pages}`} />
+      <input className="fanye_options fanye_next" type="button" value="下一页" onClick={this.fanye.bind(this,now===end?0:now+1)} />
+      <input className="fanye_options fanye_end" type="button" value="尾页" onClick={this.fanye.bind(this,now===end?0:end)} />
     </div>);
   }
 
   fanye(p) {
+    if (!this.refs.tp) {
+      return;
+    }
     this.refs.tp.value=null;
     if(p==0) {
       return;
     }
     this.props.callback(p);
   }
-
+  
   render() {
     return this.create_popup_fanye();
   }
-
+  
   componentDidMount() {
+    if (!this.refs.tp) {
+      return;
+    }
     // 手动跳转翻页
     this.refs.tp.onkeydown=(eve)=>{
       if(eve.keyCode===13) {

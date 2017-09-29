@@ -26,6 +26,7 @@ webpackJsonp([7],{
 	var ajax = __webpack_require__(159);
 	var Fanye = __webpack_require__(160);
 	var _COUNT = 10;
+	var _POPCOUNT = 10;
 
 	var SET = function SET(key, value) {
 	  sessionStorage.setItem("wpgl-fenpei-" + key, value);
@@ -590,11 +591,11 @@ webpackJsonp([7],{
 	            _react2["default"].createElement(
 	              'td',
 	              { className: 'td_head' },
-
-	              // 储存每条信息里需要用到的数据
-	              FenzuNum[index] = list.groupNum,
-	              console.log('aaaaaaaaaaaaaaaaaaaaaaaaa', FenzuNum),
-	              ZhuanjiaNum[index] = list.expertNum
+	              function () {
+	                // 储存每条信息里需要用到的数据
+	                FenzuNum[index] = list.groupNum;
+	                ZhuanjiaNum[index] = list.expertNum;
+	              }()
 	            ),
 	            _react2["default"].createElement('td', null),
 	            _react2["default"].createElement(
@@ -755,7 +756,7 @@ webpackJsonp([7],{
 	    _this10.state = {
 	      list: [],
 	      TP: {
-	        page: 0,
+	        page: 1,
 	        pages: 0,
 	        total: 0
 	      }
@@ -766,38 +767,178 @@ webpackJsonp([7],{
 	  _createClass(Poplist, [{
 	    key: '_get_list',
 	    value: function _get_list(p) {
-	      // ajax({
-	      //   url: courseCenter.host+'queryExpAllocDetail',
-	      //   data: {
-	      //     unifyCode: getCookie("userId"),
-	      //     ID: parseHash(window.location.href).id,
-	      //     expID: this.props.id,
-	      //     groupItem: this.props.fzx,
-	      //     page: p||1,
-	      //     count: _COUNT
-	      //   },
-	      //   success: (gets) => {
-	      //     let datas=JSON.parse(gets);
-	      //     if(datas.meta.result!==100) {
-	      //       return;
-	      //     }
-	      //     this.setState({
-	      //       list: datas.data.list,
-	      //       TP: {
-	      //         page: p||1,
-	      //         pages: datas.data.totalPages,
-	      //         total: datas.data.total
-	      //       }
-	      //     });
-	      //   }
-	      // });
+	      var _this11 = this;
+
+	      var type = this.props.type === 'showZJ' ? 'getZjfzList' : 'getKcfzList';
+	      var dat = {};
+	      if (type === 'showZJ') {
+	        dat = {
+	          unifyCode: getCookie("userId"),
+	          evaluateGroupBatch: this.props.fzpc,
+	          evaluateName: this.ZJ.value,
+	          group: this.props.fzx,
+	          page: this.state.TP.page,
+	          count: _POPCOUNT
+	        };
+	      } else {
+	        dat = {
+	          unifyCode: getCookie("userId"),
+	          reviewBatch: parseHash(window.location.href).wppc,
+	          courseName: this.ZJ.value,
+	          group: this.props.fzx,
+	          page: this.state.TP.page,
+	          count: _POPCOUNT
+	        };
+	      }
+	      ajax({
+	        url: courseCenter.host + type,
+	        data: dat,
+	        success: function success(gets) {
+	          var datas = JSON.parse(gets);
+	          console.log(datas);
+	          if (datas.meta.result !== 100) {
+	            return;
+	          }
+	          _this11.setState({
+	            list: datas.data.courseGroupList || datas.data.evaluateGroupList,
+	            TP: {
+	              page: p || 1,
+	              pages: datas.data.totalPages,
+	              total: datas.data.total
+	            }
+	          });
+	        }
+	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this11 = this;
+	      var _this12 = this;
 
 	      console.log('poplist:', this.props);
+	      var thead = '';
+	      if (this.props.type === 'showZJ') {
+	        thead = _react2["default"].createElement(
+	          'thead',
+	          null,
+	          _react2["default"].createElement(
+	            'tr',
+	            null,
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '25%' },
+	              '\u8D26\u53F7'
+	            ),
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '25%' },
+	              '\u59D3\u540D'
+	            ),
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '25%' },
+	              '\u5DE5\u4F5C\u5355\u4F4D'
+	            ),
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '25%' },
+	              '\u8054\u7CFB\u7535\u8BDD'
+	            )
+	          )
+	        );
+	      } else {
+	        thead = _react2["default"].createElement(
+	          'thead',
+	          null,
+	          _react2["default"].createElement(
+	            'tr',
+	            null,
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '30%' },
+	              '\u8BFE\u7A0B\u540D\u79F0'
+	            ),
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '15%' },
+	              '\u8BFE\u7A0B\u7F16\u53F7'
+	            ),
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '30%' },
+	              '\u5F00\u8BFE\u5B66\u9662'
+	            ),
+	            _react2["default"].createElement(
+	              'td',
+	              { width: '25%' },
+	              '\u7CFB\u90E8\u4E2D\u5FC3'
+	            )
+	          )
+	        );
+	      }
+	      var tbody = [];
+	      if (this.props.type === 'showZJ') {
+	        tbody = [];
+	        this.state.list.forEach(function (e) {
+	          e.evaluates.forEach(function (m) {
+	            tbody.push(_react2["default"].createElement(
+	              'tr',
+	              { key: m.zjid },
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.zjid
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.xm
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.dw
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.lxdh
+	              )
+	            ));
+	          });
+	        });
+	      } else {
+	        tbody = [];
+	        this.state.list.forEach(function (e) {
+	          e.courseList.forEach(function (m) {
+	            tbody.push(_react2["default"].createElement(
+	              'tr',
+	              { key: m.kcbh },
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.kcmc
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.kcbh
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.kkxymc
+	              ),
+	              _react2["default"].createElement(
+	                'td',
+	                null,
+	                m.jysmc
+	              )
+	            ));
+	          });
+	        });
+	      }
+
 	      return _react2["default"].createElement(
 	        'div',
 	        { style: { padding: '0 40px' } },
@@ -818,13 +959,13 @@ webpackJsonp([7],{
 	              this.props.type.indexOf('ZJ') === -1 ? '课程名称：' : '专家姓名：'
 	            ),
 	            _react2["default"].createElement('input', { type: 'text', ref: function ref(inp) {
-	                return _this11.ZJ = inp;
+	                return _this12.ZJ = inp;
 	              } }),
 	            _react2["default"].createElement(
 	              'button',
 	              { ref: function ref(btn) {
-	                  return _this11.btn = btn;
-	                } },
+	                  return _this12.btn = btn;
+	                }, onClick: this._get_list.bind(this, 1) },
 	              '\u641C\u7D22'
 	            )
 	          )
@@ -835,56 +976,17 @@ webpackJsonp([7],{
 	          _react2["default"].createElement(
 	            'table',
 	            null,
-	            _react2["default"].createElement(
-	              'thead',
-	              null,
-	              _react2["default"].createElement(
-	                'tr',
-	                null,
-	                _react2["default"].createElement(
-	                  'td',
-	                  { width: '30%' },
-	                  '\u8BFE\u7A0B\u7F16\u53F7'
-	                ),
-	                _react2["default"].createElement(
-	                  'td',
-	                  { width: '30%' },
-	                  '\u8BFE\u7A0B\u540D\u79F0'
-	                ),
-	                _react2["default"].createElement(
-	                  'td',
-	                  { width: '40%' },
-	                  '\u5F00\u8BFE\u5B66\u9662'
-	                )
-	              )
-	            ),
+	            thead,
 	            _react2["default"].createElement(
 	              'tbody',
 	              null,
-	              this.state.list.map(function (e, index) {
-	                return _react2["default"].createElement(
-	                  'tr',
-	                  { key: index },
-	                  _react2["default"].createElement(
-	                    'td',
-	                    null,
-	                    e.courseName
-	                  ),
-	                  _react2["default"].createElement(
-	                    'td',
-	                    null,
-	                    e.courseNo
-	                  ),
-	                  _react2["default"].createElement(
-	                    'td',
-	                    null,
-	                    e.unit
-	                  )
-	                );
-	              })
+	              tbody
 	            )
 	          )
-	        )
+	        ),
+	        _react2["default"].createElement(Fanye, { TP: this.state.TP, callback: function callback(p) {
+	            _this12._get_list(p);
+	          } })
 	      );
 	    }
 	  }, {
@@ -916,7 +1018,7 @@ webpackJsonp([7],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this13 = this;
+	      var _this14 = this;
 
 	      console.log(this.props);
 	      var _props = this.props,
@@ -937,7 +1039,7 @@ webpackJsonp([7],{
 	          return _react2["default"].createElement(
 	            'div',
 	            { id: 'background', ref: function ref(div) {
-	                return _this13.background = div;
+	                return _this14.background = div;
 	              } },
 	            _react2["default"].createElement(
 	              'div',
@@ -957,14 +1059,14 @@ webpackJsonp([7],{
 	                _react2["default"].createElement(
 	                  'button',
 	                  { id: 'popup_OK', ref: function ref(btn) {
-	                      return _this13.OK = btn;
+	                      return _this14.OK = btn;
 	                    } },
 	                  '\u786E\u5B9A'
 	                ),
 	                _react2["default"].createElement(
 	                  'button',
 	                  { id: 'popup_back', ref: function ref(btn) {
-	                      return _this13.back = btn;
+	                      return _this14.back = btn;
 	                    } },
 	                  '\u53D6\u6D88'
 	                )
@@ -977,7 +1079,7 @@ webpackJsonp([7],{
 	          return _react2["default"].createElement(
 	            'div',
 	            { id: 'background', ref: function ref(div) {
-	                return _this13.background = div;
+	                return _this14.background = div;
 	              } },
 	            _react2["default"].createElement(
 	              'div',
@@ -997,14 +1099,14 @@ webpackJsonp([7],{
 	                _react2["default"].createElement(
 	                  'button',
 	                  { id: 'popup_OK', ref: function ref(btn) {
-	                      return _this13.OK = btn;
+	                      return _this14.OK = btn;
 	                    } },
 	                  '\u786E\u5B9A'
 	                ),
 	                _react2["default"].createElement(
 	                  'button',
 	                  { id: 'popup_back', ref: function ref(btn) {
-	                      return _this13.back = btn;
+	                      return _this14.back = btn;
 	                    } },
 	                  '\u53D6\u6D88'
 	                )
@@ -1020,10 +1122,10 @@ webpackJsonp([7],{
 	            {
 	              id: 'background',
 	              ref: function ref(div) {
-	                return _this13.background = div;
+	                return _this14.background = div;
 	              },
 	              onClick: function onClick(e) {
-	                return _this13.delete_popup(e);
+	                return _this14.delete_popup(e);
 	              }
 	            },
 	            _react2["default"].createElement(
@@ -1278,6 +1380,9 @@ webpackJsonp([7],{
 	    value: function create_popup_fanye() {
 	      var _this2 = this;
 
+	      if (this.props.TP.pages < 1) {
+	        return null;
+	      }
 	      if (this.props.TP.total === 0) {
 	        return _react2["default"].createElement('div', { style: { height: '21px', padding: '30px 0' } });
 	      }
@@ -1332,29 +1437,32 @@ webpackJsonp([7],{
 
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'fanye' },
+	        { className: 'fanye' },
 	        _react2["default"].createElement(
 	          'span',
-	          { id: 'total' },
+	          { className: 'total' },
 	          '\u5171',
 	          this.props.TP.total >= 0 ? this.props.TP.total : 1,
 	          '\u6761\u8BB0\u5F55'
 	        ),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u9996\u9875', id: 'fanye_start', onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0A\u4E00\u9875', id: 'fanye_pre', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_start', type: 'button', value: '\u9996\u9875', onClick: this.fanye.bind(this, now === 1 ? 0 : 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_pre', type: 'button', value: '\u4E0A\u4E00\u9875', onClick: this.fanye.bind(this, now === 1 ? 0 : now - 1) }),
 	        _react2["default"].createElement(
 	          'ul',
-	          { id: 'fanye_nums' },
+	          { className: 'fanye_nums' },
 	          nums
 	        ),
-	        _react2["default"].createElement('input', { type: 'text', id: 'tp', ref: 'tp', placeholder: this.props.TP.page + '/' + this.props.TP.pages }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u4E0B\u4E00\u9875', id: 'fanye_next', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
-	        _react2["default"].createElement('input', { className: 'fanye_options', type: 'button', value: '\u5C3E\u9875', id: 'fanye_end', onClick: this.fanye.bind(this, now === end ? 0 : end) })
+	        _react2["default"].createElement('input', { type: 'text', className: 'tp', ref: 'tp', placeholder: this.props.TP.page + '/' + this.props.TP.pages }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_next', type: 'button', value: '\u4E0B\u4E00\u9875', onClick: this.fanye.bind(this, now === end ? 0 : now + 1) }),
+	        _react2["default"].createElement('input', { className: 'fanye_options fanye_end', type: 'button', value: '\u5C3E\u9875', onClick: this.fanye.bind(this, now === end ? 0 : end) })
 	      );
 	    }
 	  }, {
 	    key: 'fanye',
 	    value: function fanye(p) {
+	      if (!this.refs.tp) {
+	        return;
+	      }
 	      this.refs.tp.value = null;
 	      if (p == 0) {
 	        return;
@@ -1371,6 +1479,9 @@ webpackJsonp([7],{
 	    value: function componentDidMount() {
 	      var _this3 = this;
 
+	      if (!this.refs.tp) {
+	        return;
+	      }
 	      // 手动跳转翻页
 	      this.refs.tp.onkeydown = function (eve) {
 	        if (eve.keyCode === 13) {
