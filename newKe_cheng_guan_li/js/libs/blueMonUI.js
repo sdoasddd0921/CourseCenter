@@ -2,6 +2,507 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 var ajax=require('./post_ajax.js');
 var OUT_COUNT=10;
+
+
+
+
+// 独立页面--------------------------------------------------------------
+var Kcfzgl_option = '';
+const _COUNT = 10;
+
+const SET = (key, value) => {
+  sessionStorage.setItem("kcfzgl-"+key, value);
+  return value;
+}
+
+const GET = (key) => {
+  return sessionStorage.getItem("kcfzgl-"+key) || '';
+}
+class Fanye extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  create_popup_fanye() {
+    if(this.props.TP.pages < 1) {
+      return null;
+    }
+    if(this.props.TP.total===0) {
+      return <div style={{height:'21px',padding: '30px 0'}}></div>;
+    }
+
+    let nums=[];
+    let start=1;
+    let end=this.props.TP.pages||1;
+    let now=this.props.TP.page||1;
+    let page_on={color:"#007A51"};
+
+    let change_page=(p)=>{
+      if(p===now) {
+        nums.push(<li key={p} style={page_on}>{p}</li>);
+      } else {
+        nums.push(<li key={p} onClick={this.fanye.bind(this,p)}>{p}</li>);
+      }
+    }
+
+    if(end<1) {
+      nums.push(<li key="only" onClick={this.fanye.bind(this,1)}>1</li>)
+    } else if(end<=5) {
+      for(let i=1;i<=end;i++) {
+        change_page(i)
+      }
+    } else {
+      if(now<3) {
+        for(let i=1;i<=5;i++) {
+        change_page(i)
+        }
+      } else if(now>end-3) {
+        for(let i=end-4;i<=end;i++) {
+        change_page(i)
+        }
+      } else {
+        for(let i=now-2;i<=now+2;i++) {
+        change_page(i)
+        }
+      }
+    }
+
+    return (<div className="fanye">
+      <span className="total">共{this.props.TP.total>=0?this.props.TP.total:1}条记录</span>
+      <input className="fanye_options fanye_start" type="button" value="首页" onClick={this.fanye.bind(this,now===1?0:1)} />
+      <input className="fanye_options fanye_pre" type="button" value="上一页" onClick={this.fanye.bind(this,now===1?0:now-1)} />
+      <ul className="fanye_nums">{nums}</ul>
+      <input type="text" className="tp" ref="tp" placeholder={`${this.props.TP.page}/${this.props.TP.pages}`} />
+      <input className="fanye_options fanye_next" type="button" value="下一页" onClick={this.fanye.bind(this,now===end?0:now+1)} />
+      <input className="fanye_options fanye_end" type="button" value="尾页" onClick={this.fanye.bind(this,now===end?0:end)} />
+    </div>);
+  }
+
+  fanye(p) {
+    if (!this.refs.tp) {
+      return;
+    }
+    this.refs.tp.value=null;
+    if(p==0) {
+      return;
+    }
+    this.props.callback(p);
+  }
+  
+  render() {
+    return this.create_popup_fanye();
+  }
+  
+  componentDidMount() {
+    if (!this.refs.tp) {
+      return;
+    }
+    // 手动跳转翻页
+    this.refs.tp.onkeydown=(eve)=>{
+      if(eve.keyCode===13) {
+        let newpage=+eve.target.value;
+        if(!isNaN(newpage)) {
+          if(newpage>=1&&newpage<=this.props.TP.pages) {
+            this.fanye(newpage);
+          } else {
+            eve.target.value=null;
+          }
+        } else {
+          eve.target.value=null;
+        }
+        eve.target.blur();
+      }
+    }
+  }
+}
+
+class Option extends React.Component {
+  constructor(props) {
+    super(props);
+    // read cache
+    this.search_cache={
+      wppc: GET("wppc"),
+      fzx: GET("fzx"),
+      kcmc: GET("kcmc")
+    };
+
+    this.state={
+      TP: {
+        page: 1,
+        pages: 1,
+        total: 1
+      },
+      list: [],
+
+      wppc: GET("wppc"),
+      fzx: GET("fzx"),
+      kcmc: GET("kcmc"),
+      wppc_select: [],
+      fzx_select: []
+    };
+  }
+
+  search() {
+    // cache search datas
+    this.search_cache={
+      wppc: SET('wppc',this.state.wppc),
+      fzx: SET('fzx',this.state.fzx),
+      kcmc: SET('kcmc',this.state.kcmc)
+    };
+    this._get_list(1);
+  }
+
+  _get_list(p) {
+    let page=p||+GET("page")||1;
+
+    ajax({
+      url: courseCenter.host+"getKcfzList",
+      data: {
+        unifyCode: getCookie('userId'),
+        reviewBatch: this.search_cache.wppc,
+        courseName: this.search_cache.kcmc,
+        group: this.search_cache.fzx,
+        count: _COUNT,
+        page: page
+      },
+      success: (gets)=>{
+        let datas=JSON.parse(gets);
+        SET("page", page);
+        this.setState({
+          TP: {
+            page: page,
+            pages: datas.data.totalPages,
+            total:datas.data.total
+          },
+          list: datas.data.courseGroupList
+        });
+      }
+    });
+  }
+
+  change_wppc(e) {
+    let reviewBatch, fzx;
+    if(e) {
+      // handle trriger
+      fzx="";
+      reviewBatch=e.target.value;
+      // sessionStorage.removeItem("fzx");
+    } else {
+      // auto trriger
+      fzx=this.search_cache.fzx;
+      reviewBatch=this.state.wppc;
+    }
+    this.setState({
+      wppc: reviewBatch
+    }, () => {
+      console.log('test:', this.wppc_select.value);
+      this.search();
+    });
+
+    // charge fzx select list
+    ajax({
+      url: courseCenter.host+"getFzxByWppc",
+      data: {
+        unifyCode: getCookie("userId"),
+        reviewBatch: reviewBatch
+      },
+      success: (gets)=>{
+        let datas=JSON.parse(gets);
+        if(datas.meta.result!==100) {
+          this.setState({
+            fzx: fzx,
+            fzx_select: []
+          });
+        } else {
+          this.setState({
+            fzx: fzx,
+            fzx_select: datas.data
+          });
+        }
+      }
+    });
+  }
+
+  change_fzx(e) {
+    this.setState({
+      fzx: e.target.value
+    }, () => {
+      this.search();
+    });
+  }
+
+  render() {
+    // console.log("TP:",this.state.TP)
+    return (
+      <div id="Option_react">
+        <div id="option">
+          <div id="down">
+            <span>网评批次：</span>
+            <select 
+              name="wppc_select" 
+              id="wppc_select" 
+              ref={sel=>this.wppc_select=sel}
+              value={this.state.wppc}
+              onChange={this.change_wppc.bind(this)}
+            >
+              {
+                [<option value="" key="default">请选择</option>].concat(
+                  this.state.wppc_select.map((op,index)=><option value={op.wppc} key={index} >{op.wppc}</option>)
+                )
+              }
+            </select>
+
+            <span>分组项：</span>
+            <select 
+              name="fzx_select" 
+              id="fzx_select" 
+              ref={sel=>this.fzx_select=sel}
+              value={this.state.fzx}
+              onChange={this.change_fzx.bind(this)}
+            >
+              {
+                [<option value="" key="default">请选择</option>].concat(
+                  this.state.fzx_select.map((op,index)=><option value={op.fzx} key={index} >{op.fzx}</option>)
+                )
+              }
+            </select>
+
+          </div>
+        </div>
+
+        <List list={this.state.list} />
+        <Fanye TP={this.state.TP} callback={(p)=>{this._get_list(p)}} />
+      </div>
+    );
+  }
+
+  componentDidMount() {
+    // charge wppc select
+    ajax({
+      url: courseCenter.host+"reviewBriefList",
+      data: {
+        userID: getCookie('userId'),
+        state: 1,
+        expGroup: ''
+      },
+      success: (gets)=>{
+        let datas=JSON.parse(gets);
+        if(datas.meta.result===100) {
+          this.setState({
+            wppc_select: datas.data.list
+          });
+        } else {
+          this.setState({
+            wppc_select: []
+          });
+        }
+      }
+    });
+    this.change_wppc();    
+
+    this._get_list();
+  }
+}
+
+class List extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  creat_thead() {
+    return(
+      <thead>
+        <tr>
+          <td className="lefttd"><div></div></td>
+          <td width="0px"></td>
+          <td width="10%">网评批次</td>
+          <td width="15%">分组批次</td>
+          <td width="15%">分组项</td>
+          <td>课程列表</td>
+          <td width="15%">操作</td>
+          <td width="0px"></td>
+          <td className="righttd"><div></div></td>
+        </tr>
+      </thead>
+    );
+  }
+
+  option(type, data, data2, data3, eve) {
+    eve.preventDefault();
+    switch(type) {
+      case 'edit': 
+        window.location.href=`./materCourseSort.html?fzx=${data2}&wppc=${data}&wppcId=${data3}`;
+        break;
+      case 'delete':
+        Creat_popup('delete', data);
+        break;
+      case 'show':
+        Creat_popup('show', data.map(e=>e.kcmc));
+        break;
+      default:
+        break;
+    }
+  }
+
+  creat_tbody() {
+    return(
+      <tbody>
+        {this.props.list.map((e,index)=><tr key={index}>
+          <td className="lefttd"></td>
+          <td></td>
+          <td>{e.wppc}</td>
+          <td>{e.fzpc}</td>
+          <td>{e.fzx}</td>
+          <td>
+            <span className="kcmc_num">{`[${e.kcs}]`}</span>
+            <span className="kcmc_list" onClick={this.option.bind(this,'show',e.courseList,e.fzx,e.wpid)}>
+              {
+                (+e.kcmcs)>3 ?
+                e.courseList.map((kcmc,kcmcNo)=>kcmcNo<3&&<span key={kcmcNo} className="kcmc_name">{kcmc.xm}</span>).concat(<span key="dot">……</span>) :
+                e.courseList.map((kcmc,kcmcNo)=><span key={kcmcNo} className="kcmc_name">{kcmc.kcmc}</span>)
+              }
+            </span>
+          </td>
+          <td>
+            <a href="#" onClick={this.option.bind(this,'edit',e.wppc,e.fzx,e.wpid)} >编辑</a>
+          </td>
+          <td></td>
+          <td className='righttd'></td>
+        </tr>)}
+      </tbody>
+    );
+  }
+
+  render() {
+    return (
+      <div id="List">
+        <table>
+          {this.creat_thead()}
+          {this.creat_tbody()}
+        </table>
+      </div>
+    );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(window.frameElement) {
+      window.frameElement.height=document.body.offsetHeight;
+    }
+  }
+}
+
+
+
+class Popup extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    console.log(this.props)
+    const {type,id}=this.props;
+    const MAP={
+      "delete": "删除"
+    };
+
+    switch(type) {
+      case 'delete':
+        return(
+          <div id="popbody" ref='pb'>
+            <div id="msg">
+              <p>{`确定要${MAP[type]+id}?`}</p>
+            </div>
+            <div id="popup_option">
+              <button id="popup_OK" ref={btn=>this.OK=btn}>确定</button>
+              <button id="popup_back" ref={btn=>this.back=btn}>取消</button>
+            </div>
+          </div>
+        );
+        break;
+      case 'show':
+        return(
+          <div id="popbody" ref="pb">
+            <div id="kcmcs">{id.map((kcmc,index)=><span key={index} className="kcmc">{kcmc}</span>)}</div>
+          </div>
+        );
+        break;
+      default: 
+        return(<div></div>);
+        break;
+    }
+  }
+
+  componentDidMount() {
+    const {id,type}=this.props;
+    // background click to cancel
+    this.refs.pb.onclick=e=>e.stopPropagation();
+    let dat={};
+
+    switch(type) {
+      case "delete":
+        dat={
+          unifyCode: getCookie("userId"),
+          reviewId: id
+        };
+        break;
+      default:
+        break;
+    }
+
+    // back button click to cancel
+    this.back&&(this.back.onclick=cancel_popup);
+    // OK button option
+    this.OK&&(this.OK.onclick=()=>{
+      let data_map={
+        "delete": "deleteKcfz"
+      };
+      ajax({
+        url: courseCenter.host+data_map[type],
+        data: dat,
+        success: (gets)=>{
+          let datas=JSON.parse(gets);
+          if(datas.meta.result==100) {
+            cancel_popup();
+            Kcfzgl_option._get_list();
+          }
+        }
+      });
+    });
+  }
+}
+
+function Creat_popup(type, id) {
+  const popupB=document.getElementById('popup-b');
+  const popup_datas={
+    type: type,
+    id: id
+  };
+  ReactDOM.render(
+    <Popup {...popup_datas}/>,
+    document.getElementById('popup-b')
+  );
+  // click to close popup
+  popupB.style.display="block";
+  popupB.onclick=cancel_popup;
+}
+
+function cancel_popup() {
+  let popupB=document.getElementById('popup-b');
+  popupB.style.display="none";
+  ReactDOM.unmountComponentAtNode(popupB);
+}
+
+// var Kcfzgl_option=ReactDOM.render(
+//   <Option />,
+//   document.getElementById('kcfzgl')
+// );
+// 独立页面--------------------------------------------------------------
+
+
+
+
+
+
 /**
  * ******************课程管理******************
  */
@@ -92,7 +593,7 @@ class BlueMUI_CreateFanye extends React.Component {
   }
 
   fanye(p) {
-    if(p==0) {
+    if(p==0||BluMUI.result.Tab.state.subModule==='kcfz') {
       return;
     }
     Array().map.call(
@@ -126,7 +627,9 @@ class BlueMUI_CreateTabs extends React.Component {
     }
 
     // 清空搜索内容
-    document.getElementById('jxtdss').value='';
+    if(document.getElementById('jxtdss')) {
+      document.getElementById('jxtdss').value='';
+    }
   }
 
   render() {
@@ -225,16 +728,26 @@ class BlueMUI_CreateOptions extends React.Component {
         hand_serch();
       }
     }
-    if(this.state.subModule!='audit') {
+    if(this.state.subModule!='audit'||this.state.subModule!='kcfz') {
       this.refs.allchecked.checked=true;
+    }
+    if (this.state.subModule==='kcfz') {
+      return;
     }
     this.refs.serchBtn.onclick=hand_serch;
   }
   componentWillUpdate(nextProps, nextState) {
+    if (nextState.subModule==='kcfz') {
+      return;
+    }
     if(nextState.subModule!=this.state.subModule) {
       nextState.course_state=[1,1,1,1,1,1];
     }
-    BlueMUI_GetList(nextState.subModule,nextState.page,nextState.course_state,this.refs.serchValue.value,this);
+    if (this.refs.serchValue) {
+      BlueMUI_GetList(nextState.subModule,nextState.page,nextState.course_state,this.refs.serchValue.value,this);
+    } else {
+      BlueMUI_GetList(nextState.subModule,nextState.page,nextState.course_state,'',this);
+    }
   }
 
   render() {
@@ -261,20 +774,35 @@ class BlueMUI_CreateOptions extends React.Component {
     let space_div=<div style={{width:'1px',height:'18px'}}></div>
 
     return(<div id="options">
-      {this.state.subModule=='audit'?'':filter_items}
-      {this.state.subModule=='audit'?space_div:filter_allcheck}
+      {(this.state.subModule=='audit'||this.state.subModule=='kcfz')?'':filter_items}
+      {(this.state.subModule=='audit'||this.state.subModule=='kcfz')?space_div:filter_allcheck}
       <div style={{clear:'both'}}></div>
       <div id="hr"></div>
-      {double_option}
+      {this.state.subModule==='kcfz'?'':double_option}
     </div>);
   }
 
   componentDidUpdate(prevProps,prevState) {
-    if(this.state.subModule=='audit') {
+    if(this.state.subModule=='kcfz') {
+      ReactDOM.unmountComponentAtNode(document.getElementById('React_list'));
+      BluMUI.result.CreateList = '';
+      ReactDOM.unmountComponentAtNode(document.getElementById('React_fanye'));
+      Kcfzgl_option=ReactDOM.render(
+        <Option />,
+        document.getElementById('React_list')
+      );
+
+
+
+
+
       return;
     }
 
     let allchecked=this.state.course_state.reduce((x,y)=>x+y);
+    if (!this.refs.allchecked) {
+      return;
+    }
     if(allchecked==0||allchecked==6) {
       this.refs.allchecked.checked=true;
       for(let i=0;i<6;i++) {
@@ -309,11 +837,13 @@ var BlueMUI_GetList=function(Module,P,Cs,Serch,This) {
         list=datas.data.courseList;
       }
       if(BluMUI.result.CreateList) {
+        console.log('aaaaaaaaaaaaaaaaaaa');
         BluMUI.result.CreateList.setState({
           Lists:list,
           Module:Module
         });
       } else {
+        console.log('bbbbbbbbbbbbbbbbb');
         BluMUI.create({
           id:'CreateList',
           module:Module,
