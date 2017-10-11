@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 const ajax=require('../libs/post_ajax.js');
 const Fanye=require('../libs/fanye.js');
 const _COUNT=10;
-const _POPCOUNT=10;
+const _POPCOUNT=5;
 
 const SET = (key, value) => {
   sessionStorage.setItem("wpgl-fenpei-"+key, value);
@@ -505,7 +505,8 @@ class Poplist extends React.Component {
   _get_list(p) {
     let type = this.props.type === 'showZJ' ? 'getZjfzList' : 'getKcfzList';
     let dat = {};
-    if (type === 'showZJ') {
+    if (this.props.type === 'showZJ') {
+      console.log('专家');
       dat = {
         unifyCode: getCookie("userId"),
         evaluateGroupBatch: this.props.fzpc,
@@ -515,6 +516,7 @@ class Poplist extends React.Component {
         count: _POPCOUNT
       };
     } else {
+      console.log('课程');
       dat = {
         unifyCode: getCookie("userId"),
         reviewBatch: parseHash(window.location.href).wppc,
@@ -594,8 +596,15 @@ class Poplist extends React.Component {
       });
     }
 
+    if (tbody.length === 0 ) {
+      tbody = <tr><td colSpan={4}>
+        <img className="pop-list-err" src="../../imgs/public/error.png" style={{width: '200px'}} />
+        <div>没有数据！</div>
+      </td></tr>
+    }
+
     return (
-      <div style={{padding:'0 40px'}}>
+      <div id="poplist" style={{padding:'0 40px', overflowY: 'auto'}}>
         <div id="ops">
         <p>{this.props.fzx}</p>
         <div id="searchZJ">
@@ -617,6 +626,14 @@ class Poplist extends React.Component {
 
   componentDidMount() {
     this._get_list(1);
+  }
+  componentDidUpdate() {
+    // 重设页面高度
+    let bdHeight = document.getElementById('poplist').scrollHeight;
+    let h = +window.frameElement.height;
+    if (bdHeight > 537) {
+      window.frameElement.height = h + bdHeight - 537;
+    }
   }
 }
 

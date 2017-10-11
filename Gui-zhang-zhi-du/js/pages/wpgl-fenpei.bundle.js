@@ -26,7 +26,7 @@ webpackJsonp([7],{
 	var ajax = __webpack_require__(159);
 	var Fanye = __webpack_require__(160);
 	var _COUNT = 10;
-	var _POPCOUNT = 10;
+	var _POPCOUNT = 5;
 
 	var SET = function SET(key, value) {
 	  sessionStorage.setItem("wpgl-fenpei-" + key, value);
@@ -771,7 +771,8 @@ webpackJsonp([7],{
 
 	      var type = this.props.type === 'showZJ' ? 'getZjfzList' : 'getKcfzList';
 	      var dat = {};
-	      if (type === 'showZJ') {
+	      if (this.props.type === 'showZJ') {
+	        console.log('专家');
 	        dat = {
 	          unifyCode: getCookie("userId"),
 	          evaluateGroupBatch: this.props.fzpc,
@@ -781,6 +782,7 @@ webpackJsonp([7],{
 	          count: _POPCOUNT
 	        };
 	      } else {
+	        console.log('课程');
 	        dat = {
 	          unifyCode: getCookie("userId"),
 	          reviewBatch: parseHash(window.location.href).wppc,
@@ -939,9 +941,26 @@ webpackJsonp([7],{
 	        });
 	      }
 
+	      if (tbody.length === 0) {
+	        tbody = _react2["default"].createElement(
+	          'tr',
+	          null,
+	          _react2["default"].createElement(
+	            'td',
+	            { colSpan: 4 },
+	            _react2["default"].createElement('img', { className: 'pop-list-err', src: '../../imgs/public/error.png', style: { width: '200px' } }),
+	            _react2["default"].createElement(
+	              'div',
+	              null,
+	              '\u6CA1\u6709\u6570\u636E\uFF01'
+	            )
+	          )
+	        );
+	      }
+
 	      return _react2["default"].createElement(
 	        'div',
-	        { style: { padding: '0 40px' } },
+	        { id: 'poplist', style: { padding: '0 40px', overflowY: 'auto' } },
 	        _react2["default"].createElement(
 	          'div',
 	          { id: 'ops' },
@@ -993,6 +1012,16 @@ webpackJsonp([7],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this._get_list(1);
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      // 重设页面高度
+	      var bdHeight = document.getElementById('poplist').scrollHeight;
+	      var h = +window.frameElement.height;
+	      if (bdHeight > 537) {
+	        window.frameElement.height = h + bdHeight - 537;
+	      }
 	    }
 	  }]);
 

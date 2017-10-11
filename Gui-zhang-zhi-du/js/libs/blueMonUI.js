@@ -95,7 +95,10 @@ class Menu extends React.Component {
           if(e.hasOwnProperty("second")) {
             this.refs["menu_"+name].getElementsByTagName('ul')[0].style.display="block";
           } else {
-            document.querySelector("#menu li>ul").style.display="none";
+            console.log('else:',e.url)
+            if(document.querySelector("#menu li>ul")) {
+              document.querySelector("#menu li>ul").style.display="none";
+            }
             Create_tabs(name);
           }
           this.refs["menu_"+name].className="menu_on";
