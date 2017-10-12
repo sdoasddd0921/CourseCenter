@@ -270,12 +270,19 @@ class BlueMUI_Create_b extends React.Component {
         } else {
           console.log('success',datas)
           datas.data.map(e=>{
+            let Xiazai;
+            if(e.sfnxz==1) {
+              Xiazai=<span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>;
+            } else {
+              Xiazai='';
+            }
             back.push(<div className="ziyuan_item" key={e.id}>
               <img src="../../imgs/classListInfShow/courseShow/ziyuan.png"/>
               <br/>
               <span title={e.ywjm}>{e.ywjm.split('.')[0]}</span>
               <br/>
-              <span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span>
+              { Xiazai }
+              {/* <span className='ziyuan_xiazai' onClick={xiazai.bind(this,e.ywjm,e.xywjm)}>下载</span> */}
             </div>);
           });
         }

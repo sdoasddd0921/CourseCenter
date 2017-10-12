@@ -469,6 +469,16 @@ webpackJsonp([0],{
 	          } else {
 	            console.log('success', datas);
 	            datas.data.map(function (e) {
+	              var Xiazai = void 0;
+	              if (e.sfnxz == 1) {
+	                Xiazai = _react2["default"].createElement(
+	                  'span',
+	                  { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this6, e.ywjm, e.xywjm) },
+	                  '\u4E0B\u8F7D'
+	                );
+	              } else {
+	                Xiazai = '';
+	              }
 	              back.push(_react2["default"].createElement(
 	                'div',
 	                { className: 'ziyuan_item', key: e.id },
@@ -480,11 +490,7 @@ webpackJsonp([0],{
 	                  e.ywjm.split('.')[0]
 	                ),
 	                _react2["default"].createElement('br', null),
-	                _react2["default"].createElement(
-	                  'span',
-	                  { className: 'ziyuan_xiazai', onClick: xiazai.bind(_this6, e.ywjm, e.xywjm) },
-	                  '\u4E0B\u8F7D'
-	                )
+	                Xiazai
 	              ));
 	            });
 	          }
