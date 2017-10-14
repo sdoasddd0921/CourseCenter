@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 var ajax = require('../libs/post_ajax.js');
-var _count=13;
+var _count=10;
 
 //创建绿色的表头（又是绿色= =！）
 class BlueMUI_CreateThead extends React.Component {
   constructor(props) {
     super(props);
-    this.bind_pages=this.bind_pages.bind(this);
+    // this.bind_pages=this.bind_pages.bind(this);
     this.state={
       lists:this.props.lists,
       page: this.props.page||1,
+      total: this.props.total,
       totalPages:this.props.totalPages
     }
   }
@@ -20,32 +21,32 @@ class BlueMUI_CreateThead extends React.Component {
     //创建表头内容数组
     let thead_items=[];
     //填充表头内容
-    thead_items[0]=<td key='w1' width='5px'></td>;
-    thead_items[1]=<td key='0' width='40px'>序号</td>;
+    thead_items[0]=<td key='w1' width='35px'></td>;
+    thead_items[1]=<td key='0' width='150px'>序号</td>;
     switch(BluMUI.result.Tab.state.Rank) {
       case 1:
-        thead_items[2]=<td key='1' width='100px'>学院</td>;
-        thead_items[3]=<td key='2' width='100px'>系部中心名称</td>;
-        thead_items[4]=<td key='3' width='60px'>系部中心主任</td>;
+        thead_items[2]=<td key='1'>学院</td>;
+        thead_items[3]=<td key='2' width='240px'>系部中心名称</td>;
+        thead_items[4]=<td key='3' width='300px'>系部中心主任</td>;
         break;
       case 2:
       case 3:
-        thead_items[2]=<td key='1' width='80px'>课程编号</td>;
-        thead_items[3]=<td key='2' width='200px'>课程名称</td>;
-        thead_items[4]=<td key='3' width='50px'>课程负责人</td>;
-        thead_items[5]=<td key='4' width='200px'>课程团队成员</td>;
+        thead_items[2]=<td key='1' width='180px'>课程编号</td>;
+        thead_items[3]=<td key='2'>课程名称</td>;
+        thead_items[4]=<td key='3' width='150px'>课程负责人</td>;
+        thead_items[5]=<td key='4' width='280px'>课程团队成员</td>;
         break;
     }
-    thead_items.push(<td key={thead_items.length+1} width='50px'>操作</td>);
-    thead_items.push(<td key='w2' width='5px'></td>);
+    thead_items.push(<td key={thead_items.length+1} width='120px'>操作</td>);
+    thead_items.push(<td key='w2' width='39px'></td>);
     return thead_items;
   }
 
   face_serch(p) {
-    if(p==0||p==this.state.page) {
-      return;
-    }
-    let that=this;
+    // if(p==0||p==this.state.page) {
+    //   return;
+    // }
+    // let that=this;
     ajax({
       url:courseCenter.host+'CourseMatainMsg',
       data: {
@@ -55,9 +56,10 @@ class BlueMUI_CreateThead extends React.Component {
         count:_count,
         selectName:document.getElementById('jxtdss').value
       },
-      success: function(gets) {
+      success: (gets) => {
         let list=JSON.parse(gets);
-        that.setState({
+        console.log(this)
+        this.setState({
           lists: list.data.courseList,
           page: p
         });
@@ -66,42 +68,41 @@ class BlueMUI_CreateThead extends React.Component {
   }
 
   //绑定翻页按钮事件（提出来是因为原来需要初始化和重渲染后再绑定）
-  bind_pages() {
-    let that=this;
-    let fanye_out=this.refs.fanye_out;
-    if(fanye_out.refs.popup_fanye){
-      let fanye_bar=fanye_out.refs.popup_fanye.children;
-      let yema=fanye_bar.length;
-      for(let j=0;j<yema;j++) {
-        if(fanye_bar[j].innerText!='...') {
-          fanye_bar[j].onclick=function() {
-            let click_page= +this.innerText;
-            that.face_serch(click_page);
-          }
-        }
-      }
-    }
+  // bind_pages() {
+  //   let that=this;
+  //   let fanye_out=this.refs.fanye_out;
+  //   if(fanye_out.refs.popup_fanye){
+  //     let fanye_bar=fanye_out.refs.popup_fanye.children;
+  //     let yema=fanye_bar.length;
+  //     for(let j=0;j<yema;j++) {
+  //       if(fanye_bar[j].innerText!='...') {
+  //         fanye_bar[j].onclick=function() {
+  //           let click_page= +this.innerText;
+  //           that.face_serch(click_page);
+  //         }
+  //       }
+  //     }
+  //   }
 
-    //搜索的前翻和后翻
-    if(fanye_out.refs.next&&fanye_out.refs.pre) {
-      fanye_out.refs.next.onclick=function() {
-        that.face_serch(that.state.page+1>that.state.totalPages?0:that.state.page+1);
-      }
-      fanye_out.refs.pre.onclick=function() {
-        that.face_serch(that.state.page-1<0?1:that.state.page-1);
-      }
-    }
-  }
+  //   //搜索的前翻和后翻
+  //   if(fanye_out.refs.next&&fanye_out.refs.pre) {
+  //     fanye_out.refs.next.onclick=function() {
+  //       that.face_serch(that.state.page+1>that.state.totalPages?0:that.state.page+1);
+  //     }
+  //     fanye_out.refs.pre.onclick=function() {
+  //       that.face_serch(that.state.page-1<0?1:that.state.page-1);
+  //     }
+  //   }
+  // }
 
   //组件加载后执行的事件
   componentDidMount() {
-    document.getElementById('list').style.minHeight="556px";
-    this.bind_pages();
+    // this.bind_pages();
   }
 
   //组件重渲染后执行的事件
   componentDidUpdate() {
-    this.bind_pages();
+    // this.bind_pages();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -119,7 +120,14 @@ class BlueMUI_CreateThead extends React.Component {
         </thead>
         <BlueMUI_CreateTbody Lists={this.state.lists} Rank={BluMUI.result.Tab.state.Rank} page={this.state.page} />
       </table>
-      <BlueMUI_CreateFanye id="Out_fanye" pages={this.state.totalPages} page={this.state.page} ref="fanye_out" />
+      {/*<BlueMUI_CreateFanye id="Out_fanye" pages={this.state.totalPages} page={this.state.page} ref="fanye_out" />*/}
+
+      <BlueMUI_CreateFanye
+        id="Out_fanye"
+        TP={{pages: this.state.totalPages, page: this.state.page, total: this.state.total}}
+        ref="fanye_out"
+        callback={this.face_serch.bind(this)}
+      />
     </div>);
   }
 }
@@ -178,9 +186,9 @@ class BlueMUI_CreateTbody extends React.Component {
     switch(BluMUI.result.Tab.state.Rank) {
       case 1:
         for(let i=0;i<end;i++) {
-          lists.push(<tr key={i} style={{background:i%2==0?'#FFF':'#EEE'}}>
+          lists.push(<tr key={i}>
             <td></td>
-            <td>{i+1+5*(this.props.page-1)}</td>
+            <td>{i+1+_count*(this.props.page-1)}</td>
             <td>{all_lists[i].kkxymc}</td>
             <td>{all_lists[i].jysmc}</td>
             <td>{all_lists[i].officeLeadersName.map(e=><span key={e.jyszr}>{e.jyszr}</span>)}</td>
@@ -202,13 +210,13 @@ class BlueMUI_CreateTbody extends React.Component {
             teachers.push(<span key={j++} >{e.xm}</span>);
           });
 
-          lists.push(<tr key={i} style={{background:i%2==0?'#FFF':'#EEE'}}>
+          lists.push(<tr key={i}>
             <td></td>
-            <td>{i+1+5*(this.props.page-1)}</td>
+            <td>{i+1+_count*(this.props.page-1)}</td>
             <td>{all_lists[i].kcbh}</td>
             <td>{all_lists[i].kcmc}</td>
             <td>{all_lists[i].fzrxm}</td>
-            <td>{teachers}</td>
+            <td className="out-teacher"><div className="teachers">{teachers}</div></td>
             <td><a href="#" onClick={this.option.bind(this,{
               Teachers:all_lists[i].teacher,
               Master:all_lists[i].fzrxm?{xm:all_lists[i].fzrxm,sfrzh:all_lists[i].fzrsfrzh}:'',
@@ -231,9 +239,9 @@ class BlueMUI_CreateTbody extends React.Component {
           } else {
             teachers=[];
           }
-          lists.push(<tr key={i} style={{background:i%2==0?'#FFF':'#EEE'}}>
+          lists.push(<tr key={i}>
             <td></td>
-            <td>{i+1+5*(this.props.page-1)}</td>
+            <td>{i+1+_count*(this.props.page-1)}</td>
             <td>{all_lists[i].kcbh}</td>
             <td>{all_lists[i].kcmc}</td>
             <td>{all_lists[i].fzrxm}</td>
@@ -897,97 +905,195 @@ class BlueMUI_CreateAdding extends React.Component {
 
 
 
+// class BlueMUI_CreateFanye extends React.Component {
+//   constructor(props) {
+//     super(props);
+//   }
+
+//   create_popup_fanye() {
+//     let style={};
+//     let fanye=[];
+//     let start=1;
+//     let end=this.props.pages;
+//     let style_on={
+//       background:"url('../../imgs/courseAudit/fanye_bg.png')",
+//       backgroundRepeat:'no-repeat',
+//       backgroundPosition:'5px 5px',
+//       color:'#FFF'
+//     };
+//     if(this.props.pages==0) {
+//       return <div></div>;
+//     }
+//     if(this.props.pages<=7) {
+//       for(let i=2;i<this.props.pages;i++) {
+//         if(i==this.props.page) {
+//           style=style_on;
+//         } else {
+//           style={};
+//         }
+//         fanye.push(<li key={i} style={style}>{i}</li>);
+//       }
+//     } else {
+//       if(this.props.page<5) {
+//         for(let j=2;j<=6;j++) {
+//           if(j==this.props.page) {
+//             style=style_on;
+//           } else {
+//             style={};
+//           }
+//           fanye.push(<li key={j} style={style}>{j}</li>);
+//         }
+//         fanye.push(<li key='end' >...</li>);
+//       } else if(this.props.page>this.props.pages-4) {
+//         for(let k=this.props.pages-5;k<this.props.pages;k++) {
+//           if(k==this.props.page) {
+//             style=style_on;
+//           } else {
+//             style={};
+//           }
+//           fanye.push(<li key={k} style={style}>{k}</li>);
+//         }
+//         fanye.unshift(<li key='start' >...</li>);
+//       } else {
+//         for(let l=this.props.page-2;l<=this.props.page+2; l++) {
+//           if(l==this.props.page) {
+//             style=style_on;
+//           } else {
+//             style={};
+//           }
+//           fanye.push(<li key={l} style={style}>{l}</li>);
+//         }
+//         fanye.unshift(<li key='start' >...</li>);
+//         fanye.push(<li key='end' >...</li>);
+//       }
+//     }
+//     if(this.props.page==1) {
+//       if(this.props.pages==1) {
+//         fanye=[<li key={1} style={style_on} >{1}</li>];
+//       } else {
+//         fanye.unshift(<li key={1} style={style_on} >{1}</li>);
+//         fanye.push(<li key={this.props.pages}>{this.props.pages}</li>);
+//       }
+//     } else if(this.props.page==this.props.pages) {
+//       fanye.unshift(<li key={1}>{1}</li>);
+//       fanye.push(<li key={this.props.pages} style={style_on} >{this.props.pages}</li>);
+//     } else {
+//       fanye.unshift(<li key={1}>{1}</li>);
+//       fanye.push(<li key={this.props.pages}>{this.props.pages}</li>);
+//     }
+//     return(<div className="fanye" id={this.props.id}>
+//       <div className="popup_fanye_pre" ref="pre"><img src="../../imgs/courseAudit/fanye_left.png"/></div>
+//       <ul ref="popup_fanye">
+//         {fanye}
+//       </ul>
+//       <div className="popup_fanye_next" ref="next"><img src="../../imgs/courseAudit/fanye_right.png"/></div>
+//     </div>);
+//   }
+
+//   render() {
+//     return this.create_popup_fanye();
+//   }
+
+// }
+
 class BlueMUI_CreateFanye extends React.Component {
   constructor(props) {
     super(props);
   }
 
   create_popup_fanye() {
-    let style={};
-    let fanye=[];
+    if(this.props.TP.pages < 1) {
+      return null;
+    }
+    if(this.props.TP.total===0) {
+      return <div style={{height:'21px',padding: '30px 0'}}></div>;
+    }
+    console.log('total:', this.props.TP.total)
+
+    let nums=[];
     let start=1;
-    let end=this.props.pages;
-    let style_on={
-      background:"url('../../imgs/courseAudit/fanye_bg.png')",
-      backgroundRepeat:'no-repeat',
-      backgroundPosition:'5px 5px',
-      color:'#FFF'
-    };
-    if(this.props.pages==0) {
-      return <div></div>;
+    let end=this.props.TP.pages||1;
+    let now=this.props.TP.page||1;
+    let page_on={color:"#007A51"};
+
+    let change_page=(p)=>{
+      if(p===now) {
+        nums.push(<li key={p} style={page_on}>{p}</li>);
+      } else {
+        nums.push(<li key={p} onClick={this.fanye.bind(this,p)}>{p}</li>);
+      }
     }
-    if(this.props.pages<=7) {
-      for(let i=2;i<this.props.pages;i++) {
-        if(i==this.props.page) {
-          style=style_on;
-        } else {
-          style={};
-        }
-        fanye.push(<li key={i} style={style}>{i}</li>);
+
+    if(end<1) {
+      nums.push(<li key="only" onClick={this.fanye.bind(this,1)}>1</li>)
+    } else if(end<=5) {
+      for(let i=1;i<=end;i++) {
+        change_page(i)
       }
     } else {
-      if(this.props.page<5) {
-        for(let j=2;j<=6;j++) {
-          if(j==this.props.page) {
-            style=style_on;
-          } else {
-            style={};
-          }
-          fanye.push(<li key={j} style={style}>{j}</li>);
+      if(now<3) {
+        for(let i=1;i<=5;i++) {
+        change_page(i)
         }
-        fanye.push(<li key='end' >...</li>);
-      } else if(this.props.page>this.props.pages-4) {
-        for(let k=this.props.pages-5;k<this.props.pages;k++) {
-          if(k==this.props.page) {
-            style=style_on;
-          } else {
-            style={};
-          }
-          fanye.push(<li key={k} style={style}>{k}</li>);
+      } else if(now>end-3) {
+        for(let i=end-4;i<=end;i++) {
+        change_page(i)
         }
-        fanye.unshift(<li key='start' >...</li>);
       } else {
-        for(let l=this.props.page-2;l<=this.props.page+2; l++) {
-          if(l==this.props.page) {
-            style=style_on;
-          } else {
-            style={};
-          }
-          fanye.push(<li key={l} style={style}>{l}</li>);
+        for(let i=now-2;i<=now+2;i++) {
+        change_page(i)
         }
-        fanye.unshift(<li key='start' >...</li>);
-        fanye.push(<li key='end' >...</li>);
       }
     }
-    if(this.props.page==1) {
-      if(this.props.pages==1) {
-        fanye=[<li key={1} style={style_on} >{1}</li>];
-      } else {
-        fanye.unshift(<li key={1} style={style_on} >{1}</li>);
-        fanye.push(<li key={this.props.pages}>{this.props.pages}</li>);
-      }
-    } else if(this.props.page==this.props.pages) {
-      fanye.unshift(<li key={1}>{1}</li>);
-      fanye.push(<li key={this.props.pages} style={style_on} >{this.props.pages}</li>);
-    } else {
-      fanye.unshift(<li key={1}>{1}</li>);
-      fanye.push(<li key={this.props.pages}>{this.props.pages}</li>);
-    }
-    return(<div className="fanye" id={this.props.id}>
-      <div className="popup_fanye_pre" ref="pre"><img src="../../imgs/courseAudit/fanye_left.png"/></div>
-      <ul ref="popup_fanye">
-        {fanye}
-      </ul>
-      <div className="popup_fanye_next" ref="next"><img src="../../imgs/courseAudit/fanye_right.png"/></div>
+
+    return (<div className="fanye" id={this.props.id}>
+      <span className="total">共{this.props.TP.total>=0?this.props.TP.total:1}条记录</span>
+      <input className="fanye_options fanye_start" type="button" value="首页" onClick={this.fanye.bind(this,now===1?0:1)} />
+      <input className="fanye_options fanye_pre" type="button" value="上一页" onClick={this.fanye.bind(this,now===1?0:now-1)} />
+      <ul className="fanye_nums">{nums}</ul>
+      <input type="text" className="tp" ref="tp" placeholder={`${this.props.TP.page}/${this.props.TP.pages}`} />
+      <input className="fanye_options fanye_next" type="button" value="下一页" onClick={this.fanye.bind(this,now===end?0:now+1)} />
+      <input className="fanye_options fanye_end" type="button" value="尾页" onClick={this.fanye.bind(this,now===end?0:end)} />
     </div>);
   }
 
+  fanye(p) {
+    if (!this.refs.tp || !this.props.callback) {
+      return;
+    }
+    this.refs.tp.value=null;
+    if(p==0) {
+      return;
+    }
+    this.props.callback(p);
+  }
+  
   render() {
     return this.create_popup_fanye();
   }
-
+  
+  componentDidMount() {
+    if (!this.refs.tp) {
+      return;
+    }
+    // 手动跳转翻页
+    this.refs.tp.onkeydown=(eve)=>{
+      if(eve.keyCode===13) {
+        let newpage=+eve.target.value;
+        if(!isNaN(newpage)) {
+          if(newpage>=1&&newpage<=this.props.TP.pages) {
+            this.fanye(newpage);
+          } else {
+            eve.target.value=null;
+          }
+        } else {
+          eve.target.value=null;
+        }
+        eve.target.blur();
+      }
+    }
+  }
 }
-
 //tab标签
 class BlueMUI_CreateTab extends React.Component {
   constructor(props) {
@@ -1000,7 +1106,7 @@ class BlueMUI_CreateTab extends React.Component {
 
   componentDidMount() {
     //改变第一个tab标签的字体为粗体
-    this.refs['Rank-'+this.state.Rank].style.borderBottomColor='#009361';
+    this.refs['Rank-'+this.state.Rank].style.color='#009361';
     let that=this;
     for(let i=0; i<this.props.role.length; i++) {
       this.refs['Rank-'+this.props.role[i].subModule].onclick=function(e) {
@@ -1011,9 +1117,9 @@ class BlueMUI_CreateTab extends React.Component {
 
     let tab_change=function() {
       that.props.role.map(e=>{
-        that.refs['Rank-'+e.subModule].style.borderBottomColor='#FFF'
+        that.refs['Rank-'+e.subModule].style.color='#999999'
       });
-      that.refs['Rank-'+that.state.Rank].style.borderBottomColor='#009361';
+      that.refs['Rank-'+that.state.Rank].style.color='#009361';
     }
 
     /*绑定搜素*/
@@ -1034,9 +1140,11 @@ class BlueMUI_CreateTab extends React.Component {
         },
         success:function(get) {
           let datas=JSON.parse(get);
+          console.log('test:', datas.data)
           BluMUI.result.Title.setState({
             lists:datas.data.courseList,
             page:1,
+            total:datas.data.total,
             totalPages:datas.data.totalPages
           });
         }
@@ -1063,6 +1171,7 @@ class BlueMUI_CreateTab extends React.Component {
             rank:that.state.Rank,
             lists:datas.data.courseList,
             page:1,
+            total:datas.data.total,
             totalPages:datas.data.totalPages
           },
           'CreateTableTitle',
@@ -1072,6 +1181,7 @@ class BlueMUI_CreateTab extends React.Component {
             rank:that.state.Rank,
             lists:datas.data.courseList,
             page:1,
+            total:datas.data.total,
             totalPages:datas.data.totalPages
           });
         }
@@ -1082,8 +1192,11 @@ class BlueMUI_CreateTab extends React.Component {
   render() {
     if(this.state.Rank==1) {
       document.getElementById('serch_title').innerText='系部中心名称';
+      console.log(document.getElementById('serch_title'))
+      document.getElementById('jxtdss').placeholder='请输入系部中心名称';
     } else {
       document.getElementById('serch_title').innerText='课程名称';
+      document.getElementById('jxtdss').placeholder='请输入课程名称';
     }
     let tabs=[];
     this.props.role.map(e=>{

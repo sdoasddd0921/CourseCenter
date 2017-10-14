@@ -15,7 +15,7 @@ class BluMUI_Fuzeren extends React.Component {
     let fuzeren=[];
     this.props.Fuzeren.map(e=>{
       fuzeren.push(<div className="fuzeren" key={e.xm}>
-        <img src="../../imgs/team_show/teacher_l.png" width='182px' height='182px'/>
+        <img src="../../imgs/team_show/teacher_l.png"/>
         <div className="msg">
           <span>姓名：{e.xm}</span>
           <span>学院：<span className="xueyuan">{e.xymc}</span></span>
@@ -37,10 +37,10 @@ class BluMUI_Teachers extends React.Component {
     let teachers=[];
     this.props.Teachers.map(e=>{
       teachers.push(<div className="teachers" key={e.xm}>
-        <img src="../../imgs/team_show/teacher_s.png" width='119px' height='120px'/>
+        <img src="../../imgs/team_show/teacher_l.png"/>
         <br/><br/>
-        <p>{e.xm}</p>
-        <p className="xy">{e.xymc}</p>
+        <p>姓名：{e.xm}</p>
+        {/*<p className="xy">{e.xymc}</p>*/}
       </div>);
     });
     return teachers;

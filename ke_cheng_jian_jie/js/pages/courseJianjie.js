@@ -1,20 +1,11 @@
-var BluMUI = require('../libs/blueMonUI.js');
+import React from 'react';
+import ReactDOM from 'react-dom';
 var ajax=require('../libs/post_ajax.js');
 var Place=2;
 var url_place=parseHash(window.location.href);
 if("place" in url_place) {
   Place = url_place.place;
 }
-/*
-
- 院长：0102295 Cq011568 (黄容)
-教研室主任：0102549  251833（罗婷婷）
-课程负责人：0102387 密码caiting@cqupt（蔡婷）
-教师：0102295 0102549   0102387 
-欢迎页面
-http://172.20.2.137/subjectCenter/CquptCourseCenter/index.html
-课程编号： A1040040  A2040080  A2040020  
- */
 let User={
   id:''
 }
@@ -24,27 +15,144 @@ let Course={
 User.id=getCookie('userId')
 Course.kcbh=parseHash(window.location.href).classId
 
-BluMUI.result.unifyCode=User.id;
-
-ajax({
-  url:courseCenter.host+'getCourseIntroducePageMsg',
-  data:{
-    kcbh:Course.kcbh,
-    unifyCode:User.id,
-    place:Place
-  },
-  success:function(gets) {
-    let datas=JSON.parse(gets);
-    if(datas.meta.result==101) {
-      window.location.href='error1.html';
-    } else if(datas.meta.result==102) {
-      window.location.href='error2.html';
-    }
-    if(!datas.data||datas.data[0].kcjshtml=='') {
-      // window.location.href='error.html';
-      document.getElementById('jianjie').innerHTML='<p style="text-align:center;">没有课程简介</p>';
+class JianJie extends React.Component {
+  render() {
+    console.log('props:', this.props)
+    let H5 = '';
+    if (this.props.H5) {
+      H5 = <div id="intro" dangerouslySetInnerHTML={{__html: this.props.H5}}></div>;
     } else {
-      document.getElementById('jianjie').innerHTML=datas.data[0].kcjshtml;
+      H5 = <div id="intro">{this.props.intro}</div>;
     }
+    return (<div>
+      <div id="title">{this.props.courseName}课程简介</div>
+      <div id="infos">
+        <div id="left">
+          <p>
+            <span id="No">课程编号：{this.props.infos.No}</span>
+            <span>学时[学分]：{this.props.infos.xs}[{this.props.infos.xf}]</span>
+          </p>
+          <p>先修课程：{this.props.infos.pre}</p>
+        </div>
+        <div id="right">
+          <p>课程类型：{this.props.infos.type}</p>
+          <p>适用专业：{this.props.infos.suit}</p>
+        </div>
+      </div>
+      { H5 }
+    </div>);
   }
-});
+}
+// getCourseHomePageMsg
+
+function aj1() {
+  return new Promise(function(resolve, reject) {
+    ajax({
+      url:courseCenter.host+'getCourseIntroducePageMsg',
+      data:{
+        kcbh:Course.kcbh,
+        unifyCode:User.id,
+        place:Place
+      },
+      success: (gets) => {
+        let datas = JSON.parse(gets).data[0];
+        let D = JSON.parse(gets);
+        if(D.meta.result==101) {
+          window.location.href='error1.html';
+          return;
+        } else if(D.meta.result==102) {
+          window.location.href='error2.html';
+          return;
+        }
+        let intro = datas.kcjs;
+        let courseName = datas.kcmc;
+        let H5 = datas.kcjshtml;
+        resolve({intro, courseName, H5});
+      }
+    });
+  });
+}
+
+function aj2() {
+  return new Promise(function(resolve, reject) {
+    ajax({
+      url:courseCenter.host+'getCourseHomePageMsg',
+      data: {
+        kcbh:Course.kcbh,
+        unifyCode:User.id
+      },
+      success: (gets) => {
+        let datas = JSON.parse(gets).data;
+        let D = JSON.parse(gets);
+        if(D.meta.result==101) {
+          window.location.href='error1.html';
+          return;
+        } else if(D.meta.result==102) {
+          window.location.href='error2.html';
+          return;
+        }
+        let No = datas.courseBaseMsg[0].kcbh;
+        let type = datas.courseBaseMsg[0].kclx;
+        type = ['其他', '选修课程', '必修课程'][type];
+        let xf = parseInt(datas.courseIntrodeceList[0].xf);
+        let xs = parseInt(datas.courseIntrodeceList[0].xs);
+        let suit = datas.courseIntrodeceList[0].applyMajor.join(',');
+        resolve({infos: {No, type, xf, xs, suit}});
+      }
+    });
+  });
+}
+
+Promise.all([aj1(), aj2()])
+  .then(function(results) {
+    let introData = Object.assign(results[0], results[1]);
+    // console.log('results:', JSON.stringify(introData));
+    ReactDOM.render(
+      <JianJie {...introData}/>,
+      document.getElementById('jianjie')
+    );
+  });
+
+
+// ajax({
+//   url:courseCenter.host+'getCourseIntroducePageMsg',
+//   data:{
+//     kcbh:Course.kcbh,
+//     unifyCode:User.id,
+//     place:Place
+//   },
+//   success:function(gets) {
+//     let D = JSON.parse(gets);
+//     let datas = D.data[0];
+//     let intro = datas.kcjs;
+//     let courseName = datas.kcmc;
+//     let infos = {
+//       No: datas.kcbh,
+//       xs: 'test2',
+//       xf: 'test3',
+//       pre: 'test4',
+//       type: 'test5',
+//       suit: 'test6'
+//     };
+//     let H5 = datas.kcjshtml;
+
+//     if(D.meta.result==101) {
+//       window.location.href='error1.html';
+//       return;
+//     } else if(D.meta.result==102) {
+//       window.location.href='error2.html';
+//       return;
+//     }
+//     if(!D.data||datas.kcjshtml=='') {
+//       // window.location.href='error.html';
+//       document.getElementById('jianjie').innerHTML='<p style="text-align:center;">没有课程简介</p>';
+//     } else {
+//       ReactDOM.render(
+//         <JianJie intro={intro} courseName={courseName} infos={infos} H5={H5}/>,
+//         document.getElementById('jianjie')
+//       );
+//       // document.getElementById('jianjie').innerHTML=datas.data[0].kcjshtml;
+//     }
+//   }
+// });
+

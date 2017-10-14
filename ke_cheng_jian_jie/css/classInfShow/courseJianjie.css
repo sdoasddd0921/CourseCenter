@@ -2,8 +2,47 @@
 #jianjie {
   width: 1120px;
   margin: 37px auto;
-  padding: 70px 50px 20px 50px;
+  padding: 0 50px 20px 50px;
   background: #FFF;
 }
 
+#title {
+  text-align: center;
+  font-size: 20px;
+  color: #333333;
+}
 
+#infos {
+  width: 700px;
+  margin: 0 auto;
+  margin-top: 30px;
+  overflow: hidden;
+  color: #666666;
+  font-size: 16px;
+  line-height: 2.5em;
+}
+
+#left {
+  float: left;
+}
+
+#right {
+  float: right;
+}
+
+#No {
+  margin-right: 90px;
+}
+
+#intro {
+  width: 1100px;
+  margin: 0 auto;
+  margin-top: 40px;
+  color: #999999;
+  font-size: 14px;
+  font-weight: 200;
+}
+
+#intro p {
+  text-indent: 2em;
+}
