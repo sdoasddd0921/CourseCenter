@@ -547,6 +547,7 @@ webpackJsonp([0],{
 	    //用于搜索用的state
 	    _this4.state = {
 	      teachers: [],
+	      total: 0,
 	      page: 1,
 	      pages: 0
 	    };
@@ -712,12 +713,12 @@ webpackJsonp([0],{
 	        { id: 'popup_option' },
 	        _react2["default"].createElement(
 	          'span',
-	          { className: 'blue_btn', id: 'popup_ok', ref: 'OK' },
+	          { className: 'pop-opt-btn', id: 'popup_ok', ref: 'OK' },
 	          '\u786E\u5B9A'
 	        ),
 	        _react2["default"].createElement(
 	          'span',
-	          { className: 'white_btn', id: 'popup_return', ref: 'back' },
+	          { className: 'pop-opt-btn', id: 'popup_return', ref: 'back' },
 	          '\u8FD4\u56DE'
 	        )
 	      );
@@ -728,6 +729,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'popup_serch',
 	    value: function popup_serch(p, start) {
+	      console.log('inner:', p);
 	      if (p == 0) {
 	        return;
 	      }
@@ -757,11 +759,13 @@ webpackJsonp([0],{
 	            that.setState({
 	              teachers: list.data.teacherList,
 	              pages: list.data.totalPages,
+	              total: list.data.total,
 	              page: p
 	            });
 	          } else {
 	            that.setState({
 	              teachers: [],
+	              total: list.data.total,
 	              page: 1,
 	              pages: 0
 	            });
@@ -778,9 +782,11 @@ webpackJsonp([0],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var that = this;
-	      var hide_popup = function hide_popup() {
-	        that.popup.style.display = "none";
-	        _reactDom2["default"].unmountComponentAtNode(document.getElementById('popup'));
+	      var hide_popup = function hide_popup(e) {
+	        if (e.target.id === 'popup' || e.target.id === 'popup_return' || e.target.id === 'popup_close') {
+	          that.popup.style.display = "none";
+	          _reactDom2["default"].unmountComponentAtNode(document.getElementById('popup'));
+	        }
 	      };
 	      //单击弹出窗后面的背景隐藏弹出层
 	      this.popup.onclick = hide_popup;
@@ -789,9 +795,9 @@ webpackJsonp([0],{
 	      //单击弹出窗的返回按钮隐藏弹出层
 	      this.refs.back.onclick = hide_popup;
 	      //阻止弹出窗body的单击事件冒泡
-	      document.getElementById('popup_body').onclick = function (e) {
-	        e.stopPropagation();
-	      };
+	      // document.getElementById('popup_body').onclick=function(e){
+	      //   e.stopPropagation();
+	      // };
 
 	      //搜索按钮单击
 	      this.refs.serch.onclick = function () {
@@ -809,8 +815,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      var _this7 = this;
-
 	      var that = this;
 
 	      //单击确认
@@ -894,29 +898,29 @@ webpackJsonp([0],{
 	      }
 
 	      //fanye
-	      var fanye_in = this.refs.fanye_in;
-	      if (fanye_in.refs.popup_fanye) {
-	        var fanye_bar = fanye_in.refs.popup_fanye.children;
-	        var yema = fanye_bar.length;
-	        for (var _j = 0; _j < yema; _j++) {
-	          if (fanye_bar[_j].innerText != '...') {
-	            fanye_bar[_j].onclick = function (e) {
-	              var click_page = +e.target.innerText;
-	              that.popup_serch(click_page == _this7.state.page ? 0 : click_page, that.serch_name || '');
-	            };
-	          }
-	        }
-	      }
+	      // let fanye_in=this.refs.fanye_in;
+	      // if(fanye_in.refs.popup_fanye){
+	      //   let fanye_bar=fanye_in.refs.popup_fanye.children;
+	      //   let yema=fanye_bar.length;
+	      //   for(let j=0;j<yema;j++) {
+	      //     if(fanye_bar[j].innerText!='...') {
+	      //       fanye_bar[j].onclick=e=>{
+	      //         let click_page= +e.target.innerText;
+	      //         that.popup_serch(click_page==this.state.page?0:click_page,that.serch_name||'');
+	      //       }
+	      //     }
+	      //   }
+	      // }
 
 	      //搜索的前翻和后翻
-	      if (fanye_in.refs.next && fanye_in.refs.pre) {
-	        fanye_in.refs.next.onclick = function () {
-	          that.popup_serch(that.state.page + 1 > that.state.pages ? 0 : that.state.page + 1, that.serch_name || '');
-	        };
-	        fanye_in.refs.pre.onclick = function () {
-	          that.popup_serch(that.state.page - 1 < 1 ? 0 : that.state.page - 1, that.serch_name || '');
-	        };
-	      }
+	      // if(fanye_in.refs.next&&fanye_in.refs.pre) {
+	      //   fanye_in.refs.next.onclick=function() {
+	      //     that.popup_serch(that.state.page+1>that.state.pages?0:that.state.page+1,that.serch_name||'');
+	      //   }
+	      //   fanye_in.refs.pre.onclick=function() {
+	      //     that.popup_serch(that.state.page-1<1?0:that.state.page-1,that.serch_name||'');
+	      //   }
+	      // }
 	    }
 	  }, {
 	    key: 'render',
@@ -933,7 +937,12 @@ webpackJsonp([0],{
 	          this.create_popup_thead(),
 	          this.create_popup_tbody()
 	        ),
-	        _react2["default"].createElement(BlueMUI_CreateFanye, { id: 'Popup_Fanye', page: this.state.page, pages: this.state.pages, ref: 'fanye_in' }),
+	        _react2["default"].createElement(BlueMUI_CreateFanye, {
+	          id: 'Popup_Fanye',
+	          TP: { pages: this.state.pages, page: this.state.page, total: this.state.total },
+	          ref: 'fanye_out',
+	          callback: this.popup_serch.bind(this)
+	        }),
 	        this.create_popup_option()
 	      );
 	    }
@@ -942,23 +951,26 @@ webpackJsonp([0],{
 	  return BlueMUI_CreatePopup;
 	}(_react2["default"].Component);
 
+	// <BlueMUI_CreateFanye id="Popup_Fanye" page={this.state.page} pages={this.state.pages} ref="fanye_in" />
+
+
 	var BlueMUI_CreateAdding = function (_React$Component4) {
 	  _inherits(BlueMUI_CreateAdding, _React$Component4);
 
 	  function BlueMUI_CreateAdding(props) {
 	    _classCallCheck(this, BlueMUI_CreateAdding);
 
-	    var _this8 = _possibleConstructorReturn(this, (BlueMUI_CreateAdding.__proto__ || Object.getPrototypeOf(BlueMUI_CreateAdding)).call(this, props));
+	    var _this7 = _possibleConstructorReturn(this, (BlueMUI_CreateAdding.__proto__ || Object.getPrototypeOf(BlueMUI_CreateAdding)).call(this, props));
 
-	    _this8.del_teacher = _this8.del_teacher.bind(_this8);
-	    _this8.save_adding = _this8.save_adding.bind(_this8);
-	    _this8.back = _this8.back.bind(_this8);
-	    _this8.create_tdjs = _this8.create_tdjs.bind(_this8);
-	    _this8.state = {
-	      teachers: _this8.props.Teachers || _this8.props.Leaders,
-	      master: _this8.props.Master
+	    _this7.del_teacher = _this7.del_teacher.bind(_this7);
+	    _this7.save_adding = _this7.save_adding.bind(_this7);
+	    _this7.back = _this7.back.bind(_this7);
+	    _this7.create_tdjs = _this7.create_tdjs.bind(_this7);
+	    _this7.state = {
+	      teachers: _this7.props.Teachers || _this7.props.Leaders,
+	      master: _this7.props.Master
 	    };
-	    return _this8;
+	    return _this7;
 	  }
 
 	  _createClass(BlueMUI_CreateAdding, [{
@@ -1139,6 +1151,8 @@ webpackJsonp([0],{
 	        });
 	      }
 	    }
+	    // <img src="../../imgs/public/red_star.png" />
+
 	  }, {
 	    key: 'create_fuzeren',
 	    value: function create_fuzeren() {
@@ -1152,9 +1166,13 @@ webpackJsonp([0],{
 	            { id: 'master' },
 	            this.state.master && _react2["default"].createElement(
 	              'span',
-	              { className: 'blue_btn', key: this.state.master.sfrzh },
+	              { className: 'green_btn', key: this.state.master.sfrzh },
 	              this.state.master.xm,
-	              _react2["default"].createElement('img', { src: '../../imgs/public/teacher_del.png', onClick: this.del_teacher })
+	              _react2["default"].createElement(
+	                'div',
+	                { className: 'dt' },
+	                _react2["default"].createElement('img', { src: '../../imgs/public/teacher_del.png', onClick: this.del_teacher })
+	              )
 	            )
 	          );
 	        }
@@ -1164,22 +1182,26 @@ webpackJsonp([0],{
 	          _react2["default"].createElement(
 	            'div',
 	            { className: 'list_left' },
-	            _react2["default"].createElement('img', { src: '../../imgs/public/red_star.png' }),
+	            _react2["default"].createElement(
+	              'span',
+	              { style: { color: 'red' } },
+	              '*'
+	            ),
 	            _react2["default"].createElement(
 	              'span',
 	              null,
-	              '\xA0\u8BFE\u7A0B\u8D1F\u8D23\u4EBA'
+	              '\u8BFE\u7A0B\u8D1F\u8D23\u4EBA'
 	            )
 	          ),
 	          _react2["default"].createElement(
 	            'div',
 	            { className: 'list_right' },
-	            mst,
 	            _react2["default"].createElement(
 	              'span',
-	              { className: 'blue_btn', ref: 'adding_fuzeren' },
+	              { className: 'add_btn', ref: 'adding_fuzeren' },
 	              (this.state.master.xm ? "修改" : "添加") + "负责人"
-	            )
+	            ),
+	            mst
 	          )
 	        );
 	      } else {
@@ -1223,9 +1245,13 @@ webpackJsonp([0],{
 	      for (var i = 0; i < end; i++) {
 	        teachers.push(_react2["default"].createElement(
 	          'span',
-	          { className: 'blue_btn', key: this.state.teachers[i].sfrzh },
+	          { className: 'green_btn', key: this.state.teachers[i].sfrzh },
 	          this.props.Rank == 1 ? this.state.teachers[i].jyszr : this.state.teachers[i].xm,
-	          _react2["default"].createElement('img', { src: '../../imgs/public/teacher_del.png', onClick: this.del_teacher.bind(this, i) })
+	          _react2["default"].createElement(
+	            'div',
+	            { className: 'dt' },
+	            _react2["default"].createElement('img', { src: '../../imgs/public/teacher_del.png', onClick: this.del_teacher.bind(this, i) })
+	          )
 	        ));
 	      }
 
@@ -1233,25 +1259,14 @@ webpackJsonp([0],{
 	        'div',
 	        { className: 'list_right' },
 	        _react2["default"].createElement(
+	          'span',
+	          { className: 'add_btn', ref: 'adding_teachers' },
+	          this.props.Rank == 1 ? '添加系部中心主任' : '添加任课教师'
+	        ),
+	        _react2["default"].createElement(
 	          'div',
 	          { id: 'teachers' },
 	          teachers
-	        ),
-	        _react2["default"].createElement(
-	          'span',
-	          { className: 'blue_btn', ref: 'adding_teachers' },
-	          this.props.Rank == 1 ? '添加系部中心主任' : '添加任课教师'
-	        ),
-	        _react2["default"].createElement('br', null),
-	        _react2["default"].createElement(
-	          'span',
-	          { className: 'caozuo', id: 'Adding_baocun', ref: 'save_adding', onClick: this.save_adding },
-	          '\u4FDD\u5B58'
-	        ),
-	        _react2["default"].createElement(
-	          'span',
-	          { className: 'caozuo', id: 'Adding_fanhui', ref: 'back', onClick: this.back },
-	          '\u8FD4\u56DE'
 	        )
 	      );
 	    }
@@ -1282,9 +1297,9 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this9 = this;
+	      var _this8 = this;
 
-	      document.getElementById('list').style.minHeight = "738px";
+	      // document.getElementById('list').style.minHeight="738px";
 	      if (this.props.Rank == 3) {
 	        ajax({
 	          url: courseCenter.host + 'getTeachingTeamPageMsg',
@@ -1336,9 +1351,9 @@ webpackJsonp([0],{
 	      if (this.props.Rank == 3) {
 	        this.refs.Js.onchange = function (e) {
 	          if (e.target.value === '') {
-	            _this9.refs.Js_warn.innerText = '请输入团队介绍！';
+	            _this8.refs.Js_warn.innerText = '请输入团队介绍！';
 	          } else {
-	            _this9.refs.Js_warn.innerText = '';
+	            _this8.refs.Js_warn.innerText = '';
 	          }
 	        };
 	      }
@@ -1351,8 +1366,26 @@ webpackJsonp([0],{
 	        { id: 'adding' },
 	        this.create_tdjs(),
 	        this.create_fuzeren(),
-	        this.create_adding_left(),
-	        this.create_adding_right()
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'down' },
+	          this.create_adding_left(),
+	          this.create_adding_right()
+	        ),
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'opt' },
+	          _react2["default"].createElement(
+	            'span',
+	            { className: 'caozuo', id: 'Adding_baocun', ref: 'save_adding', onClick: this.save_adding },
+	            '\u4FDD\u5B58'
+	          ),
+	          _react2["default"].createElement(
+	            'span',
+	            { className: 'caozuo', id: 'Adding_fanhui', ref: 'back', onClick: this.back },
+	            '\u8FD4\u56DE'
+	          )
+	        )
 	      );
 	    }
 	  }]);
@@ -1463,7 +1496,7 @@ webpackJsonp([0],{
 	  _createClass(BlueMUI_CreateFanye, [{
 	    key: 'create_popup_fanye',
 	    value: function create_popup_fanye() {
-	      var _this11 = this;
+	      var _this10 = this;
 
 	      if (this.props.TP.pages < 1) {
 	        return null;
@@ -1489,7 +1522,7 @@ webpackJsonp([0],{
 	        } else {
 	          nums.push(_react2["default"].createElement(
 	            'li',
-	            { key: p, onClick: _this11.fanye.bind(_this11, p) },
+	            { key: p, onClick: _this10.fanye.bind(_this10, p) },
 	            p
 	          ));
 	        }
@@ -1546,6 +1579,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'fanye',
 	    value: function fanye(p) {
+	      console.log('in TP:', p);
 	      if (!this.refs.tp || !this.props.callback) {
 	        return;
 	      }
@@ -1563,11 +1597,33 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      var _this12 = this;
+	      var _this11 = this;
 
 	      if (!this.refs.tp) {
 	        return;
 	      }
+	      // 手动跳转翻页
+	      this.refs.tp.onkeydown = function (eve) {
+	        if (eve.keyCode === 13) {
+	          var newpage = +eve.target.value;
+	          if (!isNaN(newpage)) {
+	            if (newpage >= 1 && newpage <= _this11.props.TP.pages) {
+	              _this11.fanye(newpage);
+	            } else {
+	              eve.target.value = null;
+	            }
+	          } else {
+	            eve.target.value = null;
+	          }
+	          eve.target.blur();
+	        }
+	      };
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate(prevProps, prevState) {
+	      var _this12 = this;
+
 	      // 手动跳转翻页
 	      this.refs.tp.onkeydown = function (eve) {
 	        if (eve.keyCode === 13) {

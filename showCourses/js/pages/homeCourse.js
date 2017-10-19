@@ -42,7 +42,6 @@ ajax({
   }
 });
 
-
 //ajax1,显示学院(左上)
 ajax({
 	url:courseCenter.host+'getCourseHomePageMsg',
@@ -81,10 +80,17 @@ ajax({
       }
     })
 
-		var baseInfos=['kcmc','kcbh','xf','xs','kcjs'];
+		var baseInfos=['kcmc','kcbh','xf','xs','kcjs','kclx'];
 
 		baseInfos.map(e=>{
-			document.getElementById(e).innerText=totalInfos[e];
+      if (e === 'xf' || e === 'xs') {
+        document.getElementById(e).innerText=parseInt(totalInfos[e]);
+      } else if (e === 'kclx') {
+        let ty = ["理论课/实验课","课程设计/实习实训"];
+        document.getElementById(e).innerText=ty[parseInt(totalInfos[e])-1];
+      } else {
+			 document.getElementById(e).innerText=totalInfos[e];
+      }
 		});//填充课程基本信息
     if(courseBaseMsg.tpurl!='') {
       fengmian=courseCenter.host+'upload/PIC/'+courseBaseMsg.tpurl;
@@ -93,9 +99,9 @@ ajax({
 		//适用专业、学院
 
 		totalInfos.applyMajor.map(e=>{
-			document.getElementById('syxy').innerHTML+=e+';<br/>'
+			document.getElementById('syxy').innerHTML+=e+'<br/>'
 		});
-		document.getElementById('syxy').innerHTML+='<span id="moreSpan">···<a href="#" id="showMore">[ 显示全部 ]</a></span>';
+		document.getElementById('syxy').innerHTML+='<span id="showMore">显示全部 》</span>';
 		document.getElementById('showMore').onclick=showMore;
 
     //左下角的老师
@@ -122,19 +128,19 @@ ajax({
 		 */
 
     //评论组件
-    BluMUI.create({
-      id:"Review",
-      extClass:'review_test',
-      name:'课程评价',// 评价组件名称
-      num:5,// 评价的星星总数
-      starNum:getCourseHomePageMsg.courseBaseMsg.kcpf,// 当前评价的星星数
-      enable:false,// 是否可修改评价，布尔值
-      callback:function(value){//
-        console.log(value);
-      }},
-      'Review',
-      document.getElementById('evaluation3')
-    );
+    // BluMUI.create({
+    //   id:"Review",
+    //   extClass:'review_test',
+    //   name:'课程评价',// 评价组件名称
+    //   num:5,// 评价的星星总数
+    //   starNum:getCourseHomePageMsg.courseBaseMsg.kcpf,// 当前评价的星星数
+    //   enable:false,// 是否可修改评价，布尔值
+    //   callback:function(value){//
+    //     console.log(value);
+    //   }},
+    //   'Review',
+    //   document.getElementById('evaluation3')
+    // );
 	}
 });
 
@@ -162,7 +168,7 @@ BluMUI.create({
 	enable:true,// 是否可修改评价，布尔值
 	callback:function(value){//
 		console.log(value);
-    document.getElementById('percent').innerText=value*20;
+    // document.getElementById('percent').innerText=value*20;
     document.getElementById('value1').value=value;
 	}
 },'Review',document.getElementById('evaluation1'));

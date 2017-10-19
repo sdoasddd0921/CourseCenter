@@ -20,57 +20,38 @@
       <div id="home_left">
         <div class="left">
           <p class="content_title">课程介绍</p>
-          <table>
-            <tr>
-              <td data-name="courseNumber">课程名称</td>
-              <td id="kcmc"></td>
-            </tr>
-            <tr>
-              <td data-name="courseNumber">课程编号</td>
-              <td id="kcbh"></td>
-            </tr>
-            <tr>
-              <td data-name="courseNumber">学分</td>
-              <td id="xf"></td>
-            </tr>
-            <tr>
-              <td data-name="courseTime">学时</td>
-              <td id="xs"></td>
-            </tr>
-            <tr>
-              <td data-name="compulsory">课程类型</td>
-              <td>选修课程</td>
-            </tr>
-            <tr>
-              <td data-name="suitable">适用学院
-                <br>/专业</td>
-              <td id="syxy">
+            <p class="intro">
+              <span data-name="courseNumber">课程名称 :</span>
+              <span id="kcmc"></span>
+            </p>
+            <p class="intro">
+              <span data-name="courseNumber">课程编号 :</span>
+              <span id="kcbh"></span>
+            </p>
+            <p class="intro">
+              <span data-name="courseNumber">学分 :</span>
+              <span id="xf"></span>
+            </p>
+            <p class="intro">
+              <span data-name="courseTime">学时 :</span>
+              <span id="xs"></span>
+            </p>
+            <p class="intro">
+              <span data-name="compulsory">课程类型 :</span>
+              <span id="kclx"></span>
+            </p>
+            <p class="intro">
+              <span data-name="suitable">适合学院 :</span>
+              <span id="syxy">
                 <!--经济管理学院<br />-->
                 <!--计算机科学与技术学院 <br/>-->
                 <!--<span id="moreSpan">···<a href="#" id="showMore">[ 显示全部 ]</a></span>-->
-              </td>
-            </tr>
-          </table>
+              </span>
+            </p>
         </div>
-        <br />
-        <!--不换行的话两个板块会连接在一起-->
         <div class="left" id="rkjs">
           <p class="content_title">任课教师</p>
-          <table id="rkjs_table">
-            <!-- 					<tr>
-						使用down的样式使中垂直对齐
-						<td class="down"><img src="../../imgs/home-course/home_teacher.png" /></td>
-						<td class="down"><a href="#">张三</a><br /><span>通信工程学院</span></td>
-					</tr>
-					<tr>
-						<td class="down"><img src="../../imgs/home-course/home_teacher.png" /> </td>
-						<td class="down"><a href="#">张三</a><br />通信工程学院</td>
-					</tr>
-					<tr>
-						<td class="down"><img src="../../imgs/home-course/home_teacher.png" /> </td>
-						<td class="down"><a href="#">张三</a><br />通信工程学院</td>
-					</tr> -->
-          </table>
+          <div id="rkjs_table"></div>
         </div>
       </div>
       <!--右侧板块-->
@@ -79,104 +60,26 @@
         <div id="r1">
           <div id="r1_content">
             <div id="left_photo">
-              <a href="#"> <img id="fengmian" src="" width="211px" height="211px"/></a>
+              <a href="#"><img id="fengmian" src="" width="150px" height="150px"/></a>
             </div>
             <!--课程信息-->
             <div id="course_message">
-              <h4 data-name="courseName" class="right_left" id="bigkcmc"></h4>
+              <span id="bigkcmc"></span>
               <!--这个div构成页面中的更多链接-->
-              <div class="right_right">
-                <span><a id="more_info" href="#">更多</a></span><img src="../../imgs/home-course/home_more.png" />
-              </div>
+              <a id="more_info" class="more" href="#">更多》</a>
               <div id="course_details">
                 <p data-name="courseIntroduction" id="kcjs"></p>
               </div>
-              <div>
-                <div id="evaluation3"></div>
-              </div>
-              <div class="right_right">
-                <span id="visited">0人看过</span>
-              </div>
+              <span id="visited">0人看过</span>
             </div>
           </div>
         </div>
-        <br /><div id="Resources">
- 
-        </div>
-        <br />
-<!--         <div id="r3">
-          <div>
-            <span class="content_title">本学期开课情况</span>
-            <div class="right_right">
-              <img src="../../imgs/home-course/home_more.png" /><span><a href="#">更多</a></span>
-            </div>
-            <div style="clear: both;"></div>
-          </div>
-          <div id="r3_content">
-            <div id="kkqk">
-              						<ul>
-							<li>
-								<ul>
-									<li><img src="../../imgs/classListInfShow/lingxing.png" alt="">
-										<span>A10011100</span>
-									</li>
-									<li>
-										<span>● name</span>
-									</li>
-									<li>
-										<span>● 类型</span>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<ul>
-									<li><img src="../../imgs/classListInfShow/lingxing.png" alt="">
-										<span>A10011100</span>
-									</li>
-									<li>
-										<span>● name</span>
-									</li>
-									<li>
-										<span>● 类型</span>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<ul>
-									<li><img src="../../imgs/classListInfShow/lingxing.png" alt="">
-										<span>A10011100</span>
-									</li>
-									<li>
-										<span>● name</span>
-									</li>
-									<li>
-										<span>● 类型</span>
-									</li>
-								</ul>
-							</li>
-							<li>
-								<ul>
-									<li><img src="../../imgs/classListInfShow/lingxing.png" alt="">
-										<span>A10011100</span>
-									</li>
-									<li>
-										<span>● name</span>
-									</li>
-									<li>
-										<span>● 类型</span>
-									</li>
-								</ul>
-							</li>
-						</ul>
-            </div>
-          </div>
-        </div>
-        <br /> -->
+
+        <div id="Resources"></div>
+
         <div id="r4">
           <p class="content_title">课程综合评价</p>
           <div id="praise">
-            <p id="praise_score"><span id="percent">100</span>%</p>
-            <p id="praise_name">好评度</p>
             <ul id="evaluation">
               <li id="evaluation1"></li>
               <li id="evaluation2"></li>
@@ -195,8 +98,8 @@
     </div>
   </div>
   <script src="../../js/libs/courseCenter.config.js"></script>
-  <script src="../../js/libs/react.min.js"></script>
-  <script src="../../js/pages/homeCourse.wp.js"></script>
+  <script src="../../js/pages/react.zq.js"></script>
+  <script src="../../js/pages/homeCourse.zq.js"></script>
 </body>
 
 </html>

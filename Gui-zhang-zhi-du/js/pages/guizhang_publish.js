@@ -160,7 +160,7 @@ Pub.onclick=function(e) {
         (gets=>{
           console.log(JSON.parse(gets))
           if(JSON.parse(gets).meta.result==100) {
-            window.location.href="./guizhang-gzzd.html";
+            window.location.href="./gzzd.html";
           }
         })(xhr2.responseText);
       } else {

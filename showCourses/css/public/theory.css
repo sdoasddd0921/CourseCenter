@@ -1,6 +1,6 @@
 /* group general styles
 ------------------------------------------------------- */
-div,body,ul,li,img{
+div,body,ul,li,img,p{
 	 font-family: "Microsoft Yahei UI" ! important;
 	 padding:0;
 	 margin:0;
@@ -15,10 +15,11 @@ img{
 }
 
 .wrap_center{/*限制宽度*/
-	 width:1120px;
+	 width:1175px;
 	 margin:0 auto;
 	 position:relative;
 	 height:inherit;
+	 overflow: hidden;
 }
 
 /* group page structure
@@ -49,9 +50,9 @@ img{
 }
 
 #content{
-	 min-width:1120px;
+	 min-width:1165px;
 	 background-color:#f7f7f7;
-	min-height: 860px;
+	 min-height: 860px;
 	 overflow: auto;
 }
 
@@ -148,13 +149,19 @@ a{
 
 /*中间内容样式，设置内容栏的顶头标题，用border设置下划线，padding-bottom设置下划线和字体的距离*/
 #content .content_title{
-	 padding-bottom: 1px;
+	/* padding-bottom: 1px;
 	 border-bottom: 4px solid #006948;
 	 font-size:16px;
 	 color:#006948;
 	 float:left;
 	 margin-top:31px;
-	 margin-left:28px;
+	 margin-left:28px;*/
+	 font-size: 20px;
+	 font-weight: 400;
+	 color: #007a51;
+	 margin-left: 30px;
+	 padding-top: 22px;
+	 padding-bottom: 10px;
 }
 
 /*页脚的字体定位样式*/

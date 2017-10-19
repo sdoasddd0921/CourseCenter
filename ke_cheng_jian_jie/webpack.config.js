@@ -6,7 +6,7 @@ module.exports = {
   },
   output:{
       path:'./js/pages/',
-      filename:"[name].bundle.js",
+      filename:"[name].kcjj.js",
       publicPath: 'http://localhost:8080/js/pages/'
   },
   plugins: [

@@ -280,6 +280,7 @@ class BlueMUI_CreatePopup extends React.Component {
     //用于搜索用的state
     this.state={
       teachers:[],
+      total: 0,
       page:1,
       pages:0
     };
@@ -357,13 +358,14 @@ class BlueMUI_CreatePopup extends React.Component {
 
   create_popup_option() {
     return(<div id="popup_option">
-      <span className="blue_btn" id="popup_ok" ref="OK">确定</span>
-      <span className="white_btn" id="popup_return" ref="back">返回</span>
+      <span className="pop-opt-btn" id="popup_ok" ref="OK">确定</span>
+      <span className="pop-opt-btn" id="popup_return" ref="back">返回</span>
     </div>);
   }
 
   //搜索
-  popup_serch(p,start) {
+  popup_serch(p, start) {
+    console.log('inner:', p)
     if(p==0) {
       return;
     }
@@ -393,11 +395,13 @@ class BlueMUI_CreatePopup extends React.Component {
           that.setState({
             teachers: list.data.teacherList,
             pages: list.data.totalPages,
+            total: list.data.total,
             page: p
           });
         } else {
           that.setState({
             teachers:[],
+            total: list.data.total,
             page:1,
             pages:0
           });
@@ -411,9 +415,11 @@ class BlueMUI_CreatePopup extends React.Component {
   //因为react的事件全部代理在document上面的
   componentDidMount(){
     let that=this;
-    let hide_popup=function(){
-      that.popup.style.display="none";
-      ReactDOM.unmountComponentAtNode(document.getElementById('popup'));
+    let hide_popup=function(e){
+      if (e.target.id === 'popup' || e.target.id === 'popup_return' || e.target.id === 'popup_close') {
+        that.popup.style.display="none";
+        ReactDOM.unmountComponentAtNode(document.getElementById('popup'));
+      }
     };
     //单击弹出窗后面的背景隐藏弹出层
     this.popup.onclick=hide_popup;
@@ -422,9 +428,9 @@ class BlueMUI_CreatePopup extends React.Component {
     //单击弹出窗的返回按钮隐藏弹出层
     this.refs.back.onclick=hide_popup;
     //阻止弹出窗body的单击事件冒泡
-    document.getElementById('popup_body').onclick=function(e){
-      e.stopPropagation();
-    };
+    // document.getElementById('popup_body').onclick=function(e){
+    //   e.stopPropagation();
+    // };
 
     //搜索按钮单击
     this.refs.serch.onclick=function() {
@@ -520,29 +526,29 @@ class BlueMUI_CreatePopup extends React.Component {
     }
 
     //fanye
-    let fanye_in=this.refs.fanye_in;
-    if(fanye_in.refs.popup_fanye){
-      let fanye_bar=fanye_in.refs.popup_fanye.children;
-      let yema=fanye_bar.length;
-      for(let j=0;j<yema;j++) {
-        if(fanye_bar[j].innerText!='...') {
-          fanye_bar[j].onclick=e=>{
-            let click_page= +e.target.innerText;
-            that.popup_serch(click_page==this.state.page?0:click_page,that.serch_name||'');
-          }
-        }
-      }
-    }
+    // let fanye_in=this.refs.fanye_in;
+    // if(fanye_in.refs.popup_fanye){
+    //   let fanye_bar=fanye_in.refs.popup_fanye.children;
+    //   let yema=fanye_bar.length;
+    //   for(let j=0;j<yema;j++) {
+    //     if(fanye_bar[j].innerText!='...') {
+    //       fanye_bar[j].onclick=e=>{
+    //         let click_page= +e.target.innerText;
+    //         that.popup_serch(click_page==this.state.page?0:click_page,that.serch_name||'');
+    //       }
+    //     }
+    //   }
+    // }
 
     //搜索的前翻和后翻
-    if(fanye_in.refs.next&&fanye_in.refs.pre) {
-      fanye_in.refs.next.onclick=function() {
-        that.popup_serch(that.state.page+1>that.state.pages?0:that.state.page+1,that.serch_name||'');
-      }
-      fanye_in.refs.pre.onclick=function() {
-        that.popup_serch(that.state.page-1<1?0:that.state.page-1,that.serch_name||'');
-      }
-    }
+    // if(fanye_in.refs.next&&fanye_in.refs.pre) {
+    //   fanye_in.refs.next.onclick=function() {
+    //     that.popup_serch(that.state.page+1>that.state.pages?0:that.state.page+1,that.serch_name||'');
+    //   }
+    //   fanye_in.refs.pre.onclick=function() {
+    //     that.popup_serch(that.state.page-1<1?0:that.state.page-1,that.serch_name||'');
+    //   }
+    // }
   }
 
   render() {
@@ -554,12 +560,18 @@ class BlueMUI_CreatePopup extends React.Component {
         {this.create_popup_thead()}
         {this.create_popup_tbody()}
       </table>
-      <BlueMUI_CreateFanye id="Popup_Fanye" page={this.state.page} pages={this.state.pages} ref="fanye_in" />
+      <BlueMUI_CreateFanye
+        id="Popup_Fanye"
+        TP={{pages: this.state.pages, page: this.state.page, total: this.state.total}}
+        ref="fanye_out"
+        callback={this.popup_serch.bind(this)}
+      />
       {this.create_popup_option()}
     </div>);
   }
 }
 
+// <BlueMUI_CreateFanye id="Popup_Fanye" page={this.state.page} pages={this.state.pages} ref="fanye_in" />
 
 
 class BlueMUI_CreateAdding extends React.Component {
@@ -756,7 +768,7 @@ class BlueMUI_CreateAdding extends React.Component {
       });
     }
   }
-
+// <img src="../../imgs/public/red_star.png" />
   create_fuzeren() {
     let fuzeren;
     let mst;
@@ -764,20 +776,21 @@ class BlueMUI_CreateAdding extends React.Component {
     if(this.props.Rank==2) {
       if(this.state.master.xm) {
         mst=<div id="master">
-          {this.state.master&&<span className="blue_btn" key={this.state.master.sfrzh}>
+          {this.state.master&&<span className="green_btn" key={this.state.master.sfrzh}>
             {this.state.master.xm}
-            <img src="../../imgs/public/teacher_del.png" onClick={this.del_teacher} />
+            <div className="dt">
+              <img src="../../imgs/public/teacher_del.png" onClick={this.del_teacher} />
+            </div>
           </span>}
         </div>;
       }
       fuzeren=<div id="fuzeren">
         <div className="list_left">
-          <img src="../../imgs/public/red_star.png" />
-          <span>&nbsp;课程负责人</span>
+          <span style={{color:'red'}}>*</span><span>课程负责人</span>
         </div>
         <div className="list_right">
+          <span className="add_btn" ref="adding_fuzeren">{(this.state.master.xm?"修改":"添加")+"负责人"}</span>
           {mst}
-          <span className="blue_btn" ref="adding_fuzeren">{(this.state.master.xm?"修改":"添加")+"负责人"}</span>
         </div>
       </div>;
     } else { fuzeren=null; }
@@ -797,19 +810,18 @@ class BlueMUI_CreateAdding extends React.Component {
     let end=this.state.teachers.length;
     for(let i=0;i<end;i++) {
       teachers.push(
-        <span className="blue_btn" key={this.state.teachers[i].sfrzh}>
+        <span className="green_btn" key={this.state.teachers[i].sfrzh}>
           {this.props.Rank==1?this.state.teachers[i].jyszr:this.state.teachers[i].xm}
-          <img src="../../imgs/public/teacher_del.png" onClick={this.del_teacher.bind(this,i)} />
+          <div className="dt">
+            <img src="../../imgs/public/teacher_del.png" onClick={this.del_teacher.bind(this,i)} />
+          </div>
         </span>
       )
     }
 
     return(<div className="list_right">
+      <span className="add_btn" ref="adding_teachers">{this.props.Rank==1?'添加系部中心主任':'添加任课教师'}</span>
       <div id="teachers">{teachers}</div>
-      <span className="blue_btn" ref="adding_teachers">{this.props.Rank==1?'添加系部中心主任':'添加任课教师'}</span>
-      <br/>
-      <span className="caozuo" id="Adding_baocun" ref="save_adding" onClick={this.save_adding} >保存</span>
-      <span className="caozuo" id="Adding_fanhui" ref="back" onClick={this.back} >返回</span>
     </div>);
   }
 
@@ -824,7 +836,7 @@ class BlueMUI_CreateAdding extends React.Component {
 
   //组件第一次渲染后执行的内容
   componentDidMount() {
-    document.getElementById('list').style.minHeight="738px";
+    // document.getElementById('list').style.minHeight="738px";
     if(this.props.Rank==3) {
       ajax({
         url:courseCenter.host+'getTeachingTeamPageMsg',
@@ -897,8 +909,14 @@ class BlueMUI_CreateAdding extends React.Component {
     return(<div id="adding">
       {this.create_tdjs()}
       {this.create_fuzeren()}
-      {this.create_adding_left()}
-      {this.create_adding_right()}
+      <div id="down">
+        {this.create_adding_left()}
+        {this.create_adding_right()}
+      </div>
+      <div id="opt">
+        <span className="caozuo" id="Adding_baocun" ref="save_adding" onClick={this.save_adding} >保存</span>
+        <span className="caozuo" id="Adding_fanhui" ref="back" onClick={this.back} >返回</span>
+      </div>
     </div>);
   }
 }
@@ -1058,6 +1076,7 @@ class BlueMUI_CreateFanye extends React.Component {
   }
 
   fanye(p) {
+    console.log('in TP:', p)
     if (!this.refs.tp || !this.props.callback) {
       return;
     }
@@ -1076,6 +1095,26 @@ class BlueMUI_CreateFanye extends React.Component {
     if (!this.refs.tp) {
       return;
     }
+    // 手动跳转翻页
+    this.refs.tp.onkeydown=(eve)=>{
+      if(eve.keyCode===13) {
+        let newpage=+eve.target.value;
+        if(!isNaN(newpage)) {
+          if(newpage>=1&&newpage<=this.props.TP.pages) {
+            this.fanye(newpage);
+          } else {
+            eve.target.value=null;
+          }
+        } else {
+          eve.target.value=null;
+        }
+        eve.target.blur();
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    
     // 手动跳转翻页
     this.refs.tp.onkeydown=(eve)=>{
       if(eve.keyCode===13) {

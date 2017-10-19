@@ -1,8 +1,6 @@
 * { margin: 0; padding: 0; }
-body{background: #ccc;}
 #body-c {
-	height: 500px;
-	/*background: #ccc;*/
+	padding-top: 18px;
 	width: 1120px;
 	margin: 0 auto;
 }

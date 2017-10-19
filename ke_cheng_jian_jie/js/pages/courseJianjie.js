@@ -32,11 +32,10 @@ class JianJie extends React.Component {
             <span id="No">课程编号：{this.props.infos.No}</span>
             <span>学时[学分]：{this.props.infos.xs}[{this.props.infos.xf}]</span>
           </p>
-          <p>先修课程：{this.props.infos.pre}</p>
+          <p>适用专业：{this.props.infos.suit}</p>
         </div>
         <div id="right">
           <p>课程类型：{this.props.infos.type}</p>
-          <p>适用专业：{this.props.infos.suit}</p>
         </div>
       </div>
       { H5 }
