@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -85,10 +85,17 @@ webpackJsonp([0],{
 	      }
 	    });
 
-	    var baseInfos = ['kcmc', 'kcbh', 'xf', 'xs', 'kcjs'];
+	    var baseInfos = ['kcmc', 'kcbh', 'xf', 'xs', 'kcjs', 'kclx'];
 
 	    baseInfos.map(function (e) {
-	      document.getElementById(e).innerText = totalInfos[e];
+	      if (e === 'xf' || e === 'xs') {
+	        document.getElementById(e).innerText = parseInt(totalInfos[e]);
+	      } else if (e === 'kclx') {
+	        var ty = ["理论课/实验课", "课程设计/实习实训"];
+	        document.getElementById(e).innerText = ty[parseInt(totalInfos[e]) - 1];
+	      } else {
+	        document.getElementById(e).innerText = totalInfos[e];
+	      }
 	    }); //填充课程基本信息
 	    if (courseBaseMsg.tpurl != '') {
 	      fengmian = courseCenter.host + 'upload/PIC/' + courseBaseMsg.tpurl;
@@ -97,9 +104,9 @@ webpackJsonp([0],{
 	    //适用专业、学院
 
 	    totalInfos.applyMajor.map(function (e) {
-	      document.getElementById('syxy').innerHTML += e + ';<br/>';
+	      document.getElementById('syxy').innerHTML += e + '<br/>';
 	    });
-	    document.getElementById('syxy').innerHTML += '<span id="moreSpan">···<a href="#" id="showMore">[ 显示全部 ]</a></span>';
+	    document.getElementById('syxy').innerHTML += '<span id="showMore">显示全部 》</span>';
 	    document.getElementById('showMore').onclick = showMore;
 
 	    //左下角的老师
@@ -120,17 +127,19 @@ webpackJsonp([0],{
 	     */
 
 	    //评论组件
-	    BluMUI.create({
-	      id: "Review",
-	      extClass: 'review_test',
-	      name: '课程评价', // 评价组件名称
-	      num: 5, // 评价的星星总数
-	      starNum: getCourseHomePageMsg.courseBaseMsg.kcpf, // 当前评价的星星数
-	      enable: false, // 是否可修改评价，布尔值
-	      callback: function callback(value) {
-	        //
-	        console.log(value);
-	      } }, 'Review', document.getElementById('evaluation3'));
+	    // BluMUI.create({
+	    //   id:"Review",
+	    //   extClass:'review_test',
+	    //   name:'课程评价',// 评价组件名称
+	    //   num:5,// 评价的星星总数
+	    //   starNum:getCourseHomePageMsg.courseBaseMsg.kcpf,// 当前评价的星星数
+	    //   enable:false,// 是否可修改评价，布尔值
+	    //   callback:function(value){//
+	    //     console.log(value);
+	    //   }},
+	    //   'Review',
+	    //   document.getElementById('evaluation3')
+	    // );
 	  }
 	});
 
@@ -160,7 +169,7 @@ webpackJsonp([0],{
 	  callback: function callback(value) {
 	    //
 	    console.log(value);
-	    document.getElementById('percent').innerText = value * 20;
+	    // document.getElementById('percent').innerText=value*20;
 	    document.getElementById('value1').value = value;
 	  }
 	}, 'Review', document.getElementById('evaluation1'));
@@ -206,10 +215,10 @@ webpackJsonp([0],{
 	  e.preventDefault();
 	};
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	 * https://github.com/es-shims/es5-shim
@@ -2278,10 +2287,10 @@ webpackJsonp([0],{
 	}));
 
 
-/***/ },
+/***/ }),
 
 /***/ 2:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	 * https://github.com/es-shims/es5-shim
@@ -2848,10 +2857,10 @@ webpackJsonp([0],{
 	}));
 
 
-/***/ },
+/***/ }),
 
 /***/ 3:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// Console-polyfill. MIT license.
 	// https://github.com/paulmillr/console-polyfill
@@ -2874,10 +2883,10 @@ webpackJsonp([0],{
 	})(typeof window === 'undefined' ? this : window);
 
 
-/***/ },
+/***/ }),
 
 /***/ 4:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var require;/* WEBPACK VAR INJECTION */(function(process, global) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
@@ -4035,17 +4044,17 @@ webpackJsonp([0],{
 	//# sourceMappingURL=es6-promise.map
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), (function() { return this; }())))
 
-/***/ },
+/***/ }),
 
 /***/ 6:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/* (ignored) */
 
-/***/ },
+/***/ }),
 
 /***/ 7:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -4102,162 +4111,84 @@ webpackJsonp([0],{
 	              'li',
 	              null,
 	              _react2["default"].createElement(
-	                'div',
-	                { className: 'li_left' },
-	                _react2["default"].createElement(
-	                  'p',
-	                  { className: 'right_left' },
-	                  '\u53C2\u8003\u4E66'
-	                ),
-	                _react2["default"].createElement(
-	                  'div',
-	                  { className: 'right_right' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    null,
-	                    _react2["default"].createElement(
-	                      'a',
-	                      { id: 'more1', className: 'small', href: '#' },
-	                      '\u66F4\u591A'
-	                    ),
-	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
-	                  )
-	                )
+	                'span',
+	                null,
+	                '\u53C2\u8003\u4E66'
+	              ),
+	              _react2["default"].createElement(
+	                'a',
+	                { id: 'more1', className: 'more', href: '#' },
+	                '\u66F4\u591A\u300B'
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'li',
+	              { className: 'right-item' },
+	              _react2["default"].createElement(
+	                'span',
+	                null,
+	                '\u89C6\u9891\u8D44\u6E90'
+	              ),
+	              _react2["default"].createElement(
+	                'a',
+	                { id: 'more2', className: 'more', href: '#' },
+	                '\u66F4\u591A\u300B'
 	              )
 	            ),
 	            _react2["default"].createElement(
 	              'li',
 	              null,
 	              _react2["default"].createElement(
-	                'div',
-	                { className: 'li_left' },
-	                _react2["default"].createElement(
-	                  'p',
-	                  { className: 'right_left' },
-	                  '\u89C6\u9891\u8D44\u6E90'
-	                ),
-	                _react2["default"].createElement(
-	                  'div',
-	                  { className: 'right_right' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    null,
-	                    _react2["default"].createElement(
-	                      'a',
-	                      { id: 'more2', className: 'small', href: '#' },
-	                      '\u66F4\u591A'
-	                    ),
-	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
-	                  )
-	                )
+	                'span',
+	                null,
+	                '\u4E60\u9898\u5E93'
+	              ),
+	              _react2["default"].createElement(
+	                'a',
+	                { id: 'more3', className: 'more', href: '#' },
+	                '\u66F4\u591A\u300B'
+	              )
+	            ),
+	            _react2["default"].createElement(
+	              'li',
+	              { className: 'right-item' },
+	              _react2["default"].createElement(
+	                'span',
+	                null,
+	                '\u7F51\u7EDC\u5B66\u4E60\u8D44\u6E90'
+	              ),
+	              _react2["default"].createElement(
+	                'a',
+	                { id: 'more4', className: 'more', href: '#' },
+	                '\u66F4\u591A\u300B'
 	              )
 	            ),
 	            _react2["default"].createElement(
 	              'li',
 	              null,
 	              _react2["default"].createElement(
-	                'div',
-	                { className: 'li_left' },
-	                _react2["default"].createElement(
-	                  'p',
-	                  { className: 'right_left' },
-	                  '\u4E60\u9898\u5E93'
-	                ),
-	                _react2["default"].createElement(
-	                  'div',
-	                  { className: 'right_right' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    null,
-	                    _react2["default"].createElement(
-	                      'a',
-	                      { id: 'more3', className: 'small', href: '#' },
-	                      '\u66F4\u591A'
-	                    ),
-	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
-	                  )
-	                )
+	                'span',
+	                null,
+	                '\u4F5C\u4E1A'
+	              ),
+	              _react2["default"].createElement(
+	                'a',
+	                { id: 'more5', className: 'more', href: '#' },
+	                '\u66F4\u591A\u300B'
 	              )
 	            ),
 	            _react2["default"].createElement(
 	              'li',
-	              null,
+	              { className: 'right-item' },
 	              _react2["default"].createElement(
-	                'div',
-	                { className: 'li_left' },
-	                _react2["default"].createElement(
-	                  'p',
-	                  { className: 'right_left' },
-	                  '\u7F51\u7EDC\u5B66\u4E60\u8D44\u6E90'
-	                ),
-	                _react2["default"].createElement(
-	                  'div',
-	                  { className: 'right_right' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    null,
-	                    _react2["default"].createElement(
-	                      'a',
-	                      { id: 'more4', className: 'small', href: '#' },
-	                      '\u66F4\u591A'
-	                    ),
-	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
-	                  )
-	                )
-	              )
-	            ),
-	            _react2["default"].createElement(
-	              'li',
-	              null,
+	                'span',
+	                null,
+	                '\u8BB2\u4E49'
+	              ),
 	              _react2["default"].createElement(
-	                'div',
-	                { className: 'li_left' },
-	                _react2["default"].createElement(
-	                  'p',
-	                  { className: 'right_left' },
-	                  '\u4F5C\u4E1A'
-	                ),
-	                _react2["default"].createElement(
-	                  'div',
-	                  { className: 'right_right' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    null,
-	                    _react2["default"].createElement(
-	                      'a',
-	                      { id: 'more5', className: 'small', href: '#' },
-	                      '\u66F4\u591A'
-	                    ),
-	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
-	                  )
-	                )
-	              )
-	            ),
-	            _react2["default"].createElement(
-	              'li',
-	              null,
-	              _react2["default"].createElement(
-	                'div',
-	                { className: 'li_left' },
-	                _react2["default"].createElement(
-	                  'p',
-	                  { className: 'right_left' },
-	                  '\u8BB2\u4E49'
-	                ),
-	                _react2["default"].createElement(
-	                  'div',
-	                  { className: 'right_right' },
-	                  _react2["default"].createElement(
-	                    'span',
-	                    null,
-	                    _react2["default"].createElement(
-	                      'a',
-	                      { id: 'more6', className: 'small', href: '#' },
-	                      '\u66F4\u591A'
-	                    ),
-	                    _react2["default"].createElement('img', { className: 'smallImg', src: '../../imgs/home-course/home_more.png' })
-	                  )
-	                )
+	                'a',
+	                { id: 'more6', className: 'more', href: '#' },
+	                '\u66F4\u591A\u300B'
 	              )
 	            )
 	          )
@@ -4388,58 +4319,43 @@ webpackJsonp([0],{
 	      this.props.teachers.map(function (e) {
 	        if (e.jslx == '负责人') {
 	          fuzeren = _react2["default"].createElement(
-	            'tr',
-	            null,
+	            'div',
+	            { key: e.xm, className: 'teachers' },
+	            _react2["default"].createElement('img', { src: '../../imgs/team_show/teacher_l.png' }),
 	            _react2["default"].createElement(
-	              'td',
-	              { className: 'down' },
-	              _react2["default"].createElement('img', { src: '../../imgs/home-course/home_teacher.png' })
-	            ),
-	            _react2["default"].createElement(
-	              'td',
+	              'div',
 	              { className: 'down' },
 	              _react2["default"].createElement(
-	                'a',
-	                { href: 'javascript:void(0);' },
-	                e.xm,
-	                '(',
-	                _react2["default"].createElement(
-	                  'span',
-	                  { style: { color: 'red' } },
-	                  '\u8D1F\u8D23\u4EBA'
-	                ),
-	                ')',
-	                _react2["default"].createElement('br', null),
-	                _react2["default"].createElement(
-	                  'span',
-	                  null,
-	                  e.xymc
-	                )
+	                'span',
+	                null,
+	                e.xm
+	              ),
+	              _react2["default"].createElement('br', null),
+	              _react2["default"].createElement(
+	                'span',
+	                null,
+	                '\u8D1F\u8D23\u4EBA'
 	              )
 	            )
 	          );
 	        } else {
 	          teachers.push(_react2["default"].createElement(
-	            'tr',
-	            { key: e.xm },
+	            'div',
+	            { key: e.xm, className: 'teachers' },
+	            _react2["default"].createElement('img', { src: '../../imgs/team_show/teacher_l.png' }),
 	            _react2["default"].createElement(
-	              'td',
-	              { className: 'down' },
-	              _react2["default"].createElement('img', { src: '../../imgs/home-course/home_teacher.png' })
-	            ),
-	            _react2["default"].createElement(
-	              'td',
+	              'div',
 	              { className: 'down' },
 	              _react2["default"].createElement(
-	                'a',
-	                { href: 'javascript:void(0);' },
-	                e.xm,
-	                _react2["default"].createElement('br', null),
-	                _react2["default"].createElement(
-	                  'span',
-	                  null,
-	                  e.xymc
-	                )
+	                'span',
+	                null,
+	                e.xm
+	              ),
+	              _react2["default"].createElement('br', null),
+	              _react2["default"].createElement(
+	                'span',
+	                null,
+	                e.xymc
 	              )
 	            )
 	          ));
@@ -4463,24 +4379,16 @@ webpackJsonp([0],{
 	      }
 	      if (this.props.teachers.length == 0) {
 	        warnings = _react2["default"].createElement(
-	          'tr',
+	          'p',
 	          null,
-	          _react2["default"].createElement(
-	            'td',
-	            null,
-	            _react2["default"].createElement(
-	              'p',
-	              null,
-	              '\u8BE5\u8BFE\u7A0B\u6CA1\u6709\u4EFB\u8BFE\u6559\u5E08'
-	            )
-	          )
+	          '\u8BE5\u8BFE\u7A0B\u6CA1\u6709\u4EFB\u8BFE\u6559\u5E08'
 	        );
 	      } else {
 	        warnings = null;
 	      }
 	      return _react2["default"].createElement(
-	        'tbody',
-	        null,
+	        'div',
+	        { id: 'course-teachers' },
 	        fuzeren,
 	        teacher,
 	        warnings
@@ -4567,10 +4475,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 165:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -4642,6 +4550,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

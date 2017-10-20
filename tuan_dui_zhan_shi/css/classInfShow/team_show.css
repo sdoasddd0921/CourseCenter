@@ -1,68 +1,71 @@
 * { margin: 0; padding: 0; }
-body{background: #ccc;}
 #body-c {
-	height: 500px;
-	/*background: #ccc;*/
-	/**/
+	padding-top: 18px;
 	width: 1120px;
 	margin: 0 auto;
 }
 
 /*标题*/
 .title>span {
-	color: #1C9562;
-	font-size: 22px;
-	/*font-weight: bold;*/
+	color: #007a51;
+	font-size: 20px;
 	display: inline-block;
-	border-bottom: 5px solid #1C9562;
 }
 
 /*内容容器*/
 .container {
-	padding: 40px 40px;
+	padding: 26px 29px;
 	background: #FFF;
-	margin-bottom: 10px;
 }
 #fuzeren {
-	padding: 40px 0 0 40px;
+	padding: 19px 0 0 0;
 }
 .fuzeren {
 	width: 480px;
-	min-height: 200px;
 	display: inline-block;
-	/*vertical-align: middle;*/
+}
+.fuzeren>img, .teachers>img {
+	vertical-align: middle;
+	width: 89px;
+	height: 94px;
+	border: 1px solid #CCCCCC;
+	padding: 18px 12px;
 }
 .msg {
-	/*height: 100%;*/
 	display: inline-block;
-	vertical-align: middle;
-	padding: 30px 0 30px 30px;
+	vertical-align: top;
+	padding: 0 0 30px 30px;
 }
-.fuzeren>img {
-	vertical-align: middle;
+.msg>span {
+	display: block;
+	font-size: 16px;
+	color: #666666;
+	font-weight: 200;
+	margin-bottom: 10px;
+	word-break: break-all;
 }
 .xueyuan {
 	width: 200px;
 	display: inline-block;
 	vertical-align: middle;
 }
-.msg>span {
-	/*width: 230px;*/
-	display: block;
-	font-size: 20px;
-	line-height: 20px;
-	margin: 20px 0;
-	word-break: break-all;
-}
 
 #teachers {
-	padding: 40px 0 0 40px;
+	padding: 40px 0 0 0;
 }
 .teachers {
 	float: left;
-	font-size: 18px;
+	font-size: 16px;
+	/*font-weight: 200;*/
 	text-align: center;
-	margin: 20px;
+	margin-right: 22px;
+	margin-bottom: 19px;
+	width: 120px;
+	height: 180px;
+	line-height: 19px;
+}
+.teachers p {
+	color: #666666;
 }
 
 .xy {
@@ -72,15 +75,18 @@ body{background: #ccc;}
 }
 
 #React-fuzeren,#React-teachers {
-	min-height: 200px;
+	min-height: 150px;
+	overflow: hidden;
 }
 
 
 /* 团队介绍 */
 #tdjs {
 	margin-top: 20px;
-	line-height: 26px;
+	font-weight: 200;
+	line-height: 1.75em;
 	font-size: 16px;
+	color: #999999;
 }
 
 

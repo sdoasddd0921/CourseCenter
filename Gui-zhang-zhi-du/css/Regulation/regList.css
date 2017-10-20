@@ -158,30 +158,44 @@ body {
 }
 
 #test_fanye{
-	height: 20px;
-	background-color: #fff;
-	float: left;
-	margin-left:0px;
-}
-#test a{
-	text-decoration: none;
-	font-size: 14px;
-	height:20px;
-	min-width: 20px;
 	text-align: center;
-	color:#999999;
-	float: left;
-	margin-left: 4px;
-	margin-right:4px;
-	margin-top:5px;
+    margin-bottom: 40px;
+    margin-top: -90px;
+	vertical-align: middle;
 }
-#test a img{
-	width: 60%;
-	height: 60%;
-	float: left;
-	margin-top: 4px;
-	clear: both;
+#test_fanye_content{
+	font-size: 14px;
+	margin: 0 auto;
 }
+#test_fanye #listSum{
+	color: #a9a9a9;
+	width: 130px;
+	display: inline-block;
+}
+#test_fanye .changePT{
+	width: 60px;
+	height: 25px;
+	background-color: #e1e1e1;
+	display: inline-block;
+	color: #8f8f8f;
+}
+#test_fanye .changePT span{
+	margin: 3px auto;
+	display: inline-block;
+}
+#test_fanye .pageNum{
+	width: 30px;
+	color: #8f8f8f;
+	display: inline-block;
+}
+#test_fanye #inputPage{
+	width: 50px;
+	color: #8f8f8f;
+	text-align: center;
+}
+
+
+
 
 /* footer */
 #footer{

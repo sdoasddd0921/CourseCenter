@@ -6,8 +6,8 @@ module.exports = {
   },
   output:{
       path:'./js/pages/',
-      filename:"[name].wp.js",
-      publicPath: 'http://localhost:8080/js/pages'
+      filename:"[name].zq.js",
+      publicPath: 'http://localhost:8080/js/pages/'
   },
   plugins: [
       new webpack.optimize.CommonsChunkPlugin({

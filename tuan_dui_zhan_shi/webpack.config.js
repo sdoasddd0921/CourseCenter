@@ -7,7 +7,7 @@ module.exports = {
   output:{
       path:'./js/pages/',
       filename:"[name].bundle.js",
-      publicPath: 'http://localhost:8080/js/pages'
+      publicPath: 'http://localhost:8080/js/pages/'
   },
   plugins: [
       new webpack.optimize.CommonsChunkPlugin({

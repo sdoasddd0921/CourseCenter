@@ -1,7 +1,7 @@
 webpackJsonp([0],{
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -42,31 +42,29 @@ webpackJsonp([0],{
 	  success: function success(get) {
 	    var datas = JSON.parse(get);
 	    if (datas.meta.result == 100) {
-	      (function () {
-	        var teachers = [];
-	        var master = [];
-	        datas.data.member.map(function (e) {
-	          if (e.jslx == "负责人") {
-	            master.push(e);
-	          } else {
-	            teachers.push(e);
-	          }
-	        });
-	        console.log('负责人', master);
-	        console.log('教师', teachers);
-	        BluMUI.create({
-	          id: 'Msg',
-	          Js: datas.data.tdjs
-	        }, 'Create_jieshao', document.getElementById('React-jieshao'));
-	        BluMUI.create({
-	          id: 'Master',
-	          Fuzeren: master
-	        }, 'Create_fuzeren', document.getElementById('React-fuzeren'));
-	        BluMUI.create({
-	          id: 'Teacher',
-	          Teachers: teachers
-	        }, 'Create_teachers', document.getElementById('React-teachers'));
-	      })();
+	      var teachers = [];
+	      var master = [];
+	      datas.data.member.map(function (e) {
+	        if (e.jslx == "负责人") {
+	          master.push(e);
+	        } else {
+	          teachers.push(e);
+	        }
+	      });
+	      console.log('负责人', master);
+	      console.log('教师', teachers);
+	      BluMUI.create({
+	        id: 'Msg',
+	        Js: datas.data.tdjs
+	      }, 'Create_jieshao', document.getElementById('React-jieshao'));
+	      BluMUI.create({
+	        id: 'Master',
+	        Fuzeren: master
+	      }, 'Create_fuzeren', document.getElementById('React-fuzeren'));
+	      BluMUI.create({
+	        id: 'Teacher',
+	        Teachers: teachers
+	      }, 'Create_teachers', document.getElementById('React-teachers'));
 	    } else if (datas.meta.result == 101) {
 	      window.location.href = 'error1.html';
 	    } else if (datas.meta.result == 102) {
@@ -75,10 +73,10 @@ webpackJsonp([0],{
 	  }
 	});
 
-/***/ },
+/***/ }),
 
 /***/ 1:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	 * https://github.com/es-shims/es5-shim
@@ -2147,10 +2145,10 @@ webpackJsonp([0],{
 	}));
 
 
-/***/ },
+/***/ }),
 
 /***/ 2:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	 * https://github.com/es-shims/es5-shim
@@ -2717,10 +2715,10 @@ webpackJsonp([0],{
 	}));
 
 
-/***/ },
+/***/ }),
 
 /***/ 3:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	// Console-polyfill. MIT license.
 	// https://github.com/paulmillr/console-polyfill
@@ -2743,10 +2741,10 @@ webpackJsonp([0],{
 	})(typeof window === 'undefined' ? this : window);
 
 
-/***/ },
+/***/ }),
 
 /***/ 4:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var require;/* WEBPACK VAR INJECTION */(function(process, global) {/*!
 	 * @overview es6-promise - a tiny implementation of Promises/A+.
@@ -3904,17 +3902,17 @@ webpackJsonp([0],{
 	//# sourceMappingURL=es6-promise.map
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), (function() { return this; }())))
 
-/***/ },
+/***/ }),
 
 /***/ 6:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	/* (ignored) */
 
-/***/ },
+/***/ }),
 
 /***/ 7:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -3967,7 +3965,7 @@ webpackJsonp([0],{
 	        fuzeren.push(_react2["default"].createElement(
 	          'div',
 	          { className: 'fuzeren', key: e.xm },
-	          _react2["default"].createElement('img', { src: '../../imgs/team_show/teacher_l.png', width: '182px', height: '182px' }),
+	          _react2["default"].createElement('img', { src: '../../imgs/team_show/teacher_l.png' }),
 	          _react2["default"].createElement(
 	            'div',
 	            { className: 'msg' },
@@ -4023,18 +4021,14 @@ webpackJsonp([0],{
 	        teachers.push(_react2["default"].createElement(
 	          'div',
 	          { className: 'teachers', key: e.xm },
-	          _react2["default"].createElement('img', { src: '../../imgs/team_show/teacher_s.png', width: '119px', height: '120px' }),
+	          _react2["default"].createElement('img', { src: '../../imgs/team_show/teacher_l.png' }),
 	          _react2["default"].createElement('br', null),
 	          _react2["default"].createElement('br', null),
 	          _react2["default"].createElement(
 	            'p',
 	            null,
+	            '\u59D3\u540D\uFF1A',
 	            e.xm
-	          ),
-	          _react2["default"].createElement(
-	            'p',
-	            { className: 'xy' },
-	            e.xymc
 	          )
 	        ));
 	      });
@@ -4058,6 +4052,10 @@ webpackJsonp([0],{
 	  Create_fuzeren: BluMUI_Fuzeren,
 	  Create_teachers: BluMUI_Teachers,
 	  Create_jieshao: BluMUI_Js
+	  // Review: BlueMUI_Review,
+	  // Show_all: BlueMUI_ShowAll,
+	  // Show_teacher: BlueMUI_Teachers,
+	  // Show_kkqk: BlueMUI_Kkqk
 	};
 	var BluMUI = {
 	  result: {},
@@ -4070,10 +4068,10 @@ webpackJsonp([0],{
 	exports["default"] = BluMUI;
 	module.exports = exports['default'];
 
-/***/ },
+/***/ }),
 
 /***/ 165:
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -4145,6 +4143,6 @@ webpackJsonp([0],{
 	exports["default"] = post_ajax;
 	module.exports = exports['default'];
 
-/***/ }
+/***/ })
 
 });

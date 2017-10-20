@@ -136,6 +136,7 @@ body {
 	font-size: 14px;
 	color:#2397e8;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 #contain #up{

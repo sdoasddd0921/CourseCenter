@@ -12,70 +12,28 @@ class BlueMUI_Resources extends React.Component {
       <div id="r2_content">
         <ul>
           <li>
-            <div className="li_left">
-              <p className="right_left">参考书</p>
-              <div className="right_right">
-                <span>
-                  <a id="more1" className="small" href="#">更多</a>
-                  <img className="smallImg" src="../../imgs/home-course/home_more.png" />
-                </span>
-              </div>
-            </div>
+            <span>参考书</span>
+            <a id="more1" className="more" href="#">更多》</a>
+          </li>
+          <li className="right-item">
+            <span>视频资源</span>
+            <a id="more2" className="more" href="#">更多》</a>
           </li>
           <li>
-            <div className="li_left">
-              <p className="right_left">视频资源</p>
-              <div className="right_right">
-                <span>
-                  <a id="more2" className="small" href="#">更多</a>
-                  <img className="smallImg" src="../../imgs/home-course/home_more.png" />
-                </span>
-              </div>
-            </div>
+            <span>习题库</span>
+            <a id="more3" className="more" href="#">更多》</a>
+          </li>
+          <li className="right-item">
+            <span>网络学习资源</span>
+            <a id="more4" className="more" href="#">更多》</a>
           </li>
           <li>
-            <div className="li_left">
-              <p className="right_left">习题库</p>
-              <div className="right_right">
-                <span>
-                  <a id="more3" className="small" href="#">更多</a>
-                  <img className="smallImg" src="../../imgs/home-course/home_more.png" />
-                </span>
-              </div>
-            </div>
+            <span>作业</span>
+            <a id="more5" className="more" href="#">更多》</a>
           </li>
-          <li>
-            <div className="li_left">
-              <p className="right_left">网络学习资源</p>
-              <div className="right_right">
-                <span>
-                  <a id="more4" className="small" href="#">更多</a>
-                  <img className="smallImg" src="../../imgs/home-course/home_more.png" />
-                </span>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div className="li_left">
-              <p className="right_left">作业</p>
-              <div className="right_right">
-                <span>
-                  <a id="more5" className="small" href="#">更多</a>
-                  <img className="smallImg" src="../../imgs/home-course/home_more.png" />
-                </span>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div className="li_left">
-              <p className="right_left">讲义</p>
-              <div className="right_right">
-                <span>
-                  <a id="more6" className="small" href="#">更多</a>
-                  <img className="smallImg" src="../../imgs/home-course/home_more.png" />
-                </span>
-              </div>
-            </div>
+          <li className="right-item">
+            <span>讲义</span>
+            <a id="more6" className="more" href="#">更多》</a>
           </li>
         </ul>
       </div>
@@ -172,31 +130,24 @@ class BlueMUI_Teachers extends React.Component {
     this.props.teachers.map(e => {
       if (e.jslx == '负责人') {
         fuzeren = 
-          <tr>
-            <td className="down">
-              <img src="../../imgs/home-course/home_teacher.png" />
-            </td>
-            <td className="down">
-              <a href="javascript:void(0);">
-                { e.xm }(<span style={{color:'red'}}>负责人</span>)
-                <br/>
-                <span>{ e.xymc }</span>
-              </a>
-            </td>
-          </tr>;        
+          <div key={e.xm} className="teachers">
+            <img src="../../imgs/team_show/teacher_l.png" />
+            <div className="down">
+              <span>{ e.xm }</span>
+              <br/>
+              <span>负责人</span>
+            </div>
+          </div>
       } else {
-        teachers.push( 
-          <tr key={e.xm}>
-            <td className="down">
-              <img src="../../imgs/home-course/home_teacher.png" />
-            </td>
-            <td className="down">
-              <a href="javascript:void(0);">{ e.xm }
-                <br />
-                <span>{ e.xymc }</span>
-              </a>
-            </td>
-          </tr>
+        teachers.push(
+          <div key={e.xm} className="teachers">
+            <img src="../../imgs/team_show/teacher_l.png" />
+            <div className="down">
+              <span>{ e.xm }</span>
+              <br/>
+              <span>{ e.xymc }</span>
+            </div>
+          </div>
         );
       }
     });
@@ -217,16 +168,16 @@ class BlueMUI_Teachers extends React.Component {
       }
     }
     if(this.props.teachers.length==0) {
-      warnings=<tr><td><p>该课程没有任课教师</p></td></tr>;
+      warnings=<p>该课程没有任课教师</p>;
     } else {
       warnings=null;
     }
     return (
-      <tbody>
+      <div id="course-teachers">
         {fuzeren}
         {teacher}
         {warnings}
-      </tbody>
+      </div>
     );
   }
 }
