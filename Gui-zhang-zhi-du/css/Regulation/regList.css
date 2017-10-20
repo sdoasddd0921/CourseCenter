@@ -23,6 +23,7 @@ body {
 .center-content {
   width: 1166px;
   margin: 0 auto;
+  padding-left: calc(100vw - 100%);
 }
 /*-----------各模块-------------*/
 #width {
@@ -73,14 +74,14 @@ body {
 
 /*--------列表页样式----------*/
 #containBg #contain{
-	/*width:1088px;*/
+	width:100%;
 	float:left;
 	/*margin-left:47px;*/
 }
 
 #contain #title{
 	/*border-left: 4px solid #007a51;*/
-  padding-left: 40px;
+  padding-left: 36px;
 	font-size: 18px;
 	color:#009361;
 }
@@ -93,6 +94,7 @@ body {
 #contain #Filters {
 	float: right;
 	margin-top: -46px;
+  margin-right: 40px;
 }
 #filter {
   float: right;
@@ -121,13 +123,14 @@ body {
 	color: #FFF;
 }
 #contain #list{
-	width: 982px;
-	float: left;
-	margin-left: 53px; 
+	width: 95%;
+	float: left; 
+  box-sizing: border-box;
+	padding-left: 53px; 
 }
 
 #list ul{
-	width: 982px;
+	width: 100%;
 	line-height: 58px;
 	float: left;
 }
