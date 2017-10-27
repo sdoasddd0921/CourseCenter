@@ -26,6 +26,9 @@ webpackJsonp([0],{
 	      menue_names[e.subModule] = e.cdmc;
 	    });
 
+	    // just test
+
+
 	    // 左边的菜单
 	    BluMUI.create({
 	      Menues: menues
@@ -81,7 +84,7 @@ webpackJsonp([0],{
 	      enumerable: false
 	    });
 	    _this.state.tabs.map(function (e, index) {
-	      _this.iframes[e] = _react2["default"].createElement('iframe', { src: '../systemManage/' + e + '.html', frameBorder: '0', id: 'ifs-' + e, key: index, style: { display: 'none' }, onLoad: _this.ld.bind(_this) });
+	      _this.iframes[e] = _react2["default"].createElement('iframe', { src: '../systemManage/' + e + '.html', frameBorder: '0', id: 'ifs-' + e, key: e, style: { display: 'none' }, onLoad: _this.ld.bind(_this) });
 	      _this.iframes.length++;
 	    });
 	    return _this;

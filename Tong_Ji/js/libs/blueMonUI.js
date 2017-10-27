@@ -14,7 +14,7 @@ class Iframe extends React.Component {
       enumerable: false
     });
     this.state.tabs.map((e,index)=>{
-      this.iframes[e]=<iframe src={'../systemManage/'+e+'.html'} frameBorder="0" id={'ifs-'+e} key={index} style={{display:'none'}} onLoad={this.ld.bind(this)} ></iframe>;
+      this.iframes[e]=<iframe src={'../systemManage/'+e+'.html'} frameBorder="0" id={'ifs-'+e} key={e} style={{display:'none'}} onLoad={this.ld.bind(this)} ></iframe>;
       this.iframes.length++;
     });
   }

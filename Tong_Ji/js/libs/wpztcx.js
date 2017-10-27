@@ -20,6 +20,8 @@ class Filter extends React.Component {
     super(props);
     this.state={
       kcmc: '',
+      zjxm: '',
+      zt: 0,
       wppc: '',
       kkxy: '',
       kkxbzx: '',
@@ -87,6 +89,10 @@ class Filter extends React.Component {
     })
   }
 
+  change_zt(eve) {
+    this.setState({zt: eve.target.value}, this._get_list);
+  }
+
   _get_list(p) {
     p = p || 1;
     let D = {
@@ -95,11 +101,13 @@ class Filter extends React.Component {
       college: this.state.kkxy,
       courseDepartment: this.state.kkxbzx,
       courseName: this.state.kcmc,
+      evaluateName: this.state.zjxm,
+      state: this.state.zt,
       page: p,
       count: _COUNT
     };
     ajax({
-      url: courseCenter.host + "getWpjgList",
+      url: courseCenter.host + "getWpztList",
       data: D,
       success: (gets) => {
         let datas = JSON.parse(gets);
@@ -109,12 +117,11 @@ class Filter extends React.Component {
             page: p,
             pages: datas.data.totalPages,
             total: datas.data.total,
-            lists: datas.data.wpjgList
+            lists: datas.data.wpztList
           });
         }
       }
     });
-
   }
 
   render() {
@@ -134,6 +141,14 @@ class Filter extends React.Component {
         </select>
         <span>课程名称：</span>
         <input placeholder="请输入课程名称" type="text" value={this.state.kcmc} onChange={(eve)=>{this.setState({kcmc: eve.target.value})}}/>
+        <span>专家姓名：</span>
+        <input placeholder="请输入专家姓名" type="text" value={this.state.zjxm} onChange={(eve)=>{this.setState({zjxm: eve.target.value})}}/>
+        <span>状态：</span>
+        <select name="zt" id="zt" ref={sel=>this.zt_select=sel} onChange={this.change_zt.bind(this)} defaultValue={this.state.zt}>
+          <option value="0">待评价</option>
+          <option value="1">待提交</option>
+          <option value="2">已提交</option>
+        </select>
         <button id="search">搜索</button>
       </div>
       <Table lists={this.state.lists}></Table>
@@ -171,22 +186,23 @@ class Table extends React.Component {
   }
 
   create_tbody() {
-    console.log(this.props)
     let lists = [];
     this.props.lists.forEach((e, index) => {
       lists.push(<tr className="list-item" key={index} onClick = {this.show_detail.bind(this, index)}>
-        <td></td>
         <td></td>
         <td>{ e.wppc }</td>
         <td>{ e.kkxymc }</td>
         <td>{ e.jysmc }</td>
         <td>{ e.kcbh }</td>
         <td>{ e.kcmc }</td>
-        <td>{ e.pjf || 0 }</td>
-        <td></td>
+        <td>{ e.ZJXM }</td>
+        <td>{ e.JSSJ }</td>
+        <td>{ e.TJZT }</td>
+        <td>{ e.CZSJ }</td>
+        <td>{ parseInt(+e.ZF) }</td>
+        <td>{ e.PJ }</td>
         <td></td>
       </tr>);
-      lists.push(<Item key={'it-'+index} show={this.state.showToggles[index]} wpid={e.wpid} kcbh={e.kcbh}></Item>);
     });
     return(<tbody>
       { lists }
@@ -197,16 +213,19 @@ class Table extends React.Component {
     return (<table>
       <thead>
         <tr>
-          <td className="lefttd"><div></div></td>
-          <td width="5px"></td>
-          <td width="15%">网评批次</td>
-          <td width="15%">学院名称</td>
-          <td width="15%">系部中心</td>
-          <td width="15%">课程编号</td>
-          <td width="">课程名称</td>
-          <td width="10%">平均分（得分）</td>
-          <td width="5px"></td>
-          <td className="righttd"><div></div></td>
+          <td className="lefttd"></td>
+          <td>网评批次</td>
+          <td>学院名称</td>
+          <td>系部中心</td>
+          <td>课程编号</td>
+          <td>课程名称</td>
+          <td>专家姓名</td>
+          <td>结束时间</td>
+          <td>提交状态</td>
+          <td>提交时间</td>
+          <td>总分</td>
+          <td style={{maxWidth:"200px"}}>评价</td>
+          <td className="righttd"></td>
         </tr>
       </thead>
       {this.create_tbody()}
@@ -217,63 +236,9 @@ class Table extends React.Component {
     if(window.frameElement) {
       window.frameElement.height=document.body.scrollHeight;
     }
-    
-    console.log('in:', window.frameElement.height, document.body.scrollHeight)
   }
 }
 
-
-class Item extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      teachers: []
-    };
-  }
-
-  render() {
-    let pf = this.state.teachers.map((e,ei) => <div className="item-zj" key={ei}>
-      <p>专家姓名：{e.xm}<span className="df">总分：{e.zf}</span></p>
-      <p><span className="item-l">指标项</span><span className="item-r">得分</span></p>
-      {
-        e.zbxdfList.map((m, mi) => <p key={mi}>
-          <span className="item-l">{m.zbx}</span>
-          <span className="item-r">{m.pf}</span>
-        </p>)
-      }
-      <p>评价：{e.pj}</p>
-    </div>);
-    return (<tr className="items"
-                style={{
-                  display: this.props.show ? 'table-row' : 'none'
-                }}
-    >
-      <td colSpan={10} className="item-td">
-        <div className="th">{ pf }</div>
-      </td>
-    </tr>);
-  }
-
-  componentDidMount() {
-    ajax({
-      url: courseCenter.host + 'getWpjgxqList',
-      data: {
-        unifyCode: getCookie('userId'),
-        reviewId: this.props.wpid,// wpid
-        courseNo: this.props.kcbh,//kcbh
-        count: 10 * _COUNT,
-        page: 1
-      },
-      success: (gets) => {
-        let datas = JSON.parse(gets);
-        console.log('inner:', datas)
-        this.setState({
-          teachers: datas.data.wpjgxqList
-        });
-      }
-    });
-  }
-}
 
 var BluMUI_M = {
   BluMUI_Filter: Filter

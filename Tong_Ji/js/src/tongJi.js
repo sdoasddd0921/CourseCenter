@@ -19,14 +19,13 @@ ajax({
       menue_names[e.subModule]=e.cdmc;
     });
 
+    // just test
+    
+
+
     // 左边的菜单
     BluMUI.create({
       Menues:menues
     },'Create_menu',document.getElementById('menue'))
   }
 });
-
-
-
-
-

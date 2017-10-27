@@ -1140,23 +1140,28 @@ webpackJsonp([0],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var that = this;
+	      var val = this.refs.serchValue ? this.refs.serchValue.value : '';
 	      function hand_serch(eve) {
-	        BlueMUI_GetList(that.state.subModule, 1, that.state.course_state, document.getElementById('jxtdss').value, that);
+	        BlueMUI_GetList(that.state.subModule, 1, that.state.course_state, document.getElementById('jxtdss') || document.getElementById('jxtdss').value, that);
 	      }
 	      //查询列表
-	      BlueMUI_GetList(this.state.subModule, this.state.page, this.state.course_state, this.refs.serchValue.value, this);
-	      this.refs.serchValue.onkeydown = function (e) {
-	        if (e.keyCode == 13) {
-	          hand_serch();
-	        }
-	      };
+	      BlueMUI_GetList(this.state.subModule, this.state.page, this.state.course_state, val, this);
+	      if (this.refs.serchValue) {
+	        this.refs.serchValue.onkeydown = function (e) {
+	          if (e.keyCode == 13) {
+	            hand_serch();
+	          }
+	        };
+	      }
 	      if (this.state.subModule != 'audit' || this.state.subModule != 'kcfz') {
 	        this.refs.allchecked.checked = true;
 	      }
 	      if (this.state.subModule === 'kcfz') {
 	        return;
 	      }
-	      this.refs.serchBtn.onclick = hand_serch;
+	      if (this.refs.serchBtn) {
+	        this.refs.serchBtn.onclick = hand_serch;
+	      }
 	    }
 	  }, {
 	    key: 'componentWillUpdate',
@@ -1176,25 +1181,30 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var double_option = _react2["default"].createElement(
-	        'div',
-	        null,
-	        _react2["default"].createElement(
+	      var double_option = '';
+	      if (this.state.subModule !== 'audit') {
+	        double_option = _react2["default"].createElement(
 	          'div',
-	          { id: 'out_serch' },
+	          null,
 	          _react2["default"].createElement(
-	            'span',
-	            null,
-	            '\u8BFE\u7A0B\u540D\u79F0\uFF1A'
-	          ),
-	          _react2["default"].createElement('input', { type: 'text', id: 'jxtdss', ref: 'serchValue' }),
-	          _react2["default"].createElement(
-	            'span',
-	            { id: 'serch_btn', ref: 'serchBtn' },
-	            '\u641C\u7D22'
+	            'div',
+	            { id: 'out_serch' },
+	            _react2["default"].createElement(
+	              'span',
+	              null,
+	              '\u8BFE\u7A0B\u540D\u79F0\uFF1A'
+	            ),
+	            _react2["default"].createElement('input', { type: 'text', id: 'jxtdss', ref: 'serchValue' }),
+	            _react2["default"].createElement(
+	              'span',
+	              { id: 'serch_btn', ref: 'serchBtn' },
+	              '\u641C\u7D22'
+	            )
 	          )
-	        )
-	      );
+	        );
+	      } else {
+	        double_option = '';
+	      }
 	      // label用作勾选框，中间不能填字
 	      var filter_items = _react2["default"].createElement(
 	        'ul',
@@ -1258,7 +1268,7 @@ webpackJsonp([0],{
 	        this.state.subModule == 'audit' || this.state.subModule == 'kcfz' ? space_div : filter_allcheck,
 	        _react2["default"].createElement('div', { style: { clear: 'both' } }),
 	        _react2["default"].createElement('div', { id: 'hr' }),
-	        this.state.subModule === 'kcfz' ? '' : double_option
+	        this.state.subModule === 'audit' ? '' : double_option
 	      );
 	    }
 	  }, {
@@ -1328,6 +1338,10 @@ webpackJsonp([0],{
 	          module: Module,
 	          Lists: list
 	        }, 'Create_list', document.getElementById('React_list'));
+	      }
+	      if (Module === 'audit') {
+	        _reactDom2["default"].unmountComponentAtNode(document.getElementById('React_fanye'));
+	        return;
 	      }
 	      _reactDom2["default"].render(_react2["default"].createElement(BlueMUI_CreateFanye, { id: 'fanye', pages: datas.data.totalPages, page: P, This: This }), document.getElementById('React_fanye'));
 	    }
@@ -1490,7 +1504,7 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate() {
-	      if (BluMUI.result.Tab.state.subModule == 'audit') {
+	      if (BluMUI.result.Tab.state.subModule !== 'audit') {
 	        Array().map.call(document.getElementById('center_table').getElementsByTagName('input'), function (e) {
 	          e.checked = false;
 	        });
@@ -1555,55 +1569,7 @@ webpackJsonp([0],{
 	          )
 	        );
 	      } else {
-	        return _react2["default"].createElement(
-	          'table',
-	          { id: 'center_table' },
-	          _react2["default"].createElement(
-	            'thead',
-	            null,
-	            _react2["default"].createElement(
-	              'tr',
-	              null,
-	              _react2["default"].createElement('td', { width: '20px' }),
-	              _react2["default"].createElement(
-	                'td',
-	                { width: '16%' },
-	                '\u8BFE\u7A0B\u7F16\u53F7'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                { width: '20%' },
-	                '\u8BFE\u7A0B\u540D\u79F0'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                { width: '20%' },
-	                '\u6559\u5B66\u673A\u6784\u540D\u79F0'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                { width: '14%' },
-	                '\u6700\u8FD1\u66F4\u65B0\u65F6\u95F4'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                { width: '13%' },
-	                '\u8BFE\u7A0B\u72B6\u6001'
-	              ),
-	              _react2["default"].createElement(
-	                'td',
-	                { width: '10%' },
-	                '\u64CD\u4F5C'
-	              ),
-	              _react2["default"].createElement('td', { width: '35px' })
-	            )
-	          ),
-	          _react2["default"].createElement(
-	            'tbody',
-	            { ref: 'list_body' },
-	            this.create_list()
-	          )
-	        );
+	        return _react2["default"].createElement('iframe', { style: { display: 'block' }, src: '../classManage/classManageCheck.html', frameBorder: '0' });
 	      }
 	    }
 	  }]);

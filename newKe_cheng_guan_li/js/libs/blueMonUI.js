@@ -712,20 +712,23 @@ class BlueMUI_CreateOptions extends React.Component {
   }
   componentDidMount() {
     let that=this;
+    let val = this.refs.serchValue ? this.refs.serchValue.value : '';
     function hand_serch(eve) {
       BlueMUI_GetList(
         that.state.subModule,
         1,
         that.state.course_state,
-        document.getElementById('jxtdss').value,
+        document.getElementById('jxtdss')||document.getElementById('jxtdss').value,
         that
       );
     }
     //查询列表
-    BlueMUI_GetList(this.state.subModule,this.state.page,this.state.course_state,this.refs.serchValue.value,this);
-    this.refs.serchValue.onkeydown=e=>{
-      if(e.keyCode==13) {
-        hand_serch();
+    BlueMUI_GetList(this.state.subModule,this.state.page,this.state.course_state,val,this);
+    if(this.refs.serchValue) {
+      this.refs.serchValue.onkeydown=e=>{
+        if(e.keyCode==13) {
+          hand_serch();
+        }
       }
     }
     if(this.state.subModule!='audit'||this.state.subModule!='kcfz') {
@@ -734,7 +737,9 @@ class BlueMUI_CreateOptions extends React.Component {
     if (this.state.subModule==='kcfz') {
       return;
     }
-    this.refs.serchBtn.onclick=hand_serch;
+    if (this.refs.serchBtn) {
+      this.refs.serchBtn.onclick=hand_serch;
+    }
   }
   componentWillUpdate(nextProps, nextState) {
     if (nextState.subModule==='kcfz') {
@@ -751,13 +756,20 @@ class BlueMUI_CreateOptions extends React.Component {
   }
 
   render() {
-    let double_option=<div>
-      <div id="out_serch">
-        <span>课程名称：</span>
-        <input type="text" id="jxtdss" ref="serchValue"/>
-        <span id="serch_btn" ref="serchBtn">搜索</span>
-      </div>
-    </div>;
+    let double_option='';
+    if (this.state.subModule!=='audit') {
+      double_option = <div>
+          <div id="out_serch">
+            <span>课程名称：</span>
+            <div id="search-box">
+              <input type="text" id="jxtdss" ref="serchValue"/>
+              <span id="serch_btn" ref="serchBtn">搜索</span>
+            </div>
+          </div>
+        </div>;
+    } else {
+      double_option = '';
+    }
     // label用作勾选框，中间不能填字
     let filter_items=<ul id="option_bar">
       <li><input type="checkbox" ref='check-5' value="5" id="itm5" onChange={this.change_course_state}/><label htmlFor="itm5"></label>已上线</li>
@@ -778,7 +790,7 @@ class BlueMUI_CreateOptions extends React.Component {
       {(this.state.subModule=='audit'||this.state.subModule=='kcfz')?space_div:filter_allcheck}
       <div style={{clear:'both'}}></div>
       <div id="hr"></div>
-      {this.state.subModule==='kcfz'?'':double_option}
+      {this.state.subModule==='audit'?'':double_option}
     </div>);
   }
 
@@ -852,6 +864,10 @@ var BlueMUI_GetList=function(Module,P,Cs,Serch,This) {
           'Create_list',
           document.getElementById('React_list')
         );
+      }
+      if (Module==='audit') {
+        ReactDOM.unmountComponentAtNode(document.getElementById('React_fanye'));
+        return;
       }
       ReactDOM.render(
         <BlueMUI_CreateFanye id={'fanye'} pages={datas.data.totalPages} page={P} This={This}/>,
@@ -929,7 +945,7 @@ class BlueMUI_CreateList extends React.Component {
         ops.push(<span key={findex} onClick={op_func} className={f.able?'op_on':''}>{f.name}</span>);
       });
       ops.push(<span key='lish' onClick={this.operation.bind(this,'历史',e.kcbh)} className='op_on'>历史查询</span>);
-      list.push(<tr key={index} style={style}>
+      list.push(<tr key={index}>
         <td></td>
         {check}
         <td>{e.kcbh}</td>
@@ -946,7 +962,7 @@ class BlueMUI_CreateList extends React.Component {
   }
 
   componentDidUpdate() {
-    if(BluMUI.result.Tab.state.subModule=='audit') {
+    if(BluMUI.result.Tab.state.subModule!=='audit') {
       Array().map.call(
         document.getElementById('center_table').getElementsByTagName('input'),
         e=>{e.checked=false;}
@@ -967,27 +983,13 @@ class BlueMUI_CreateList extends React.Component {
             <td width="14%">最近更新时间</td>
             <td width="13%">课程状态</td>
             <td width="10%">操作</td>
-            <td width='35px'></td>
+            <td width='20px'></td>
           </tr>
         </thead>
         <tbody ref='list_body'>{this.create_list()}</tbody>
       </table>);
     } else {
-      return(<table id="center_table">
-        <thead>
-          <tr>
-            <td width='20px'></td>
-            <td width="16%">课程编号</td>
-            <td width="20%">课程名称</td>
-            <td width="20%">教学机构名称</td>
-            <td width="14%">最近更新时间</td>
-            <td width="13%">课程状态</td>
-            <td width="10%">操作</td>
-            <td width='35px'></td>
-          </tr>
-        </thead>
-        <tbody ref='list_body'>{this.create_list()}</tbody>
-      </table>);
+      return(<iframe style={{display:'block'}} src="../classManage/classManageCheck.html" frameBorder="0"></iframe>);
     }
 
   }
@@ -1086,14 +1088,16 @@ class BlueMUI_CreatePopup extends React.Component {
 
   render() {
     this.popup.style.display="block";
-    return(<div id="popup_body">
+    return(<div className="pop-wrap">
+      <div id="popup_body">
       {this.create_popup_top()}
       <table id="serch_table">
         {this.create_popup_thead()}
         {this.create_popup_tbody()}
       </table>
       <BlueMUI_CreateFanye id={'lishi_fanye'} page={this.state.page} pages={this.state.pages} This={this} ref="fanye_in" />
-    </div>);
+      </div>
+      </div>);
   }
 }
 

@@ -83,6 +83,8 @@ body {
 #contain #title{
 	font-size: 18px;
 	color:#009361;
+  margin: 0;
+  padding: 18px 0;
 	text-align: center;
 }
 
@@ -143,6 +145,7 @@ body {
 	float: right;
 	margin-top:20px;
 	clear: both;
+  margin-right: 20px;
 }
 
 #up li{
