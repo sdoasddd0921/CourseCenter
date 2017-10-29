@@ -1114,6 +1114,9 @@ class BlueMUI_CreateFanye extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (!this.refs.tp) {
+      return;
+    }
     
     // 手动跳转翻页
     this.refs.tp.onkeydown=(eve)=>{

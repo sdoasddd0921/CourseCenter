@@ -496,17 +496,27 @@ webpackJsonp([4],{
 	            null,
 	            '\u8BFE\u7A0B\u540D\u79F0\uFF1A'
 	          ),
-	          _react2["default"].createElement('input', { placeholder: '\u8BF7\u8F93\u5165\u8BFE\u7A0B\u540D\u79F0', type: 'text', value: this.state.kcmc, onChange: function onChange(eve) {
+	          _react2["default"].createElement('input', { placeholder: '\u8BF7\u8F93\u5165\u8BFE\u7A0B\u540D\u79F0', type: 'text', value: this.state.kcmc,
+	            onChange: function onChange(eve) {
 	              _this6.setState({ kcmc: eve.target.value });
-	            } }),
+	            },
+	            onKeyDown: function onKeyDown(eve) {
+	              if (eve.keyCode === 13) _this6._get_list(1);
+	            }
+	          }),
 	          _react2["default"].createElement(
 	            'span',
 	            null,
 	            '\u4E13\u5BB6\u59D3\u540D\uFF1A'
 	          ),
-	          _react2["default"].createElement('input', { placeholder: '\u8BF7\u8F93\u5165\u4E13\u5BB6\u59D3\u540D', type: 'text', value: this.state.zjxm, onChange: function onChange(eve) {
+	          _react2["default"].createElement('input', { placeholder: '\u8BF7\u8F93\u5165\u4E13\u5BB6\u59D3\u540D', type: 'text', value: this.state.zjxm,
+	            onChange: function onChange(eve) {
 	              _this6.setState({ zjxm: eve.target.value });
-	            } }),
+	            },
+	            onKeyDown: function onKeyDown(eve) {
+	              if (eve.keyCode === 13) _this6._get_list(1);
+	            }
+	          }),
 	          _react2["default"].createElement(
 	            'span',
 	            null,
@@ -535,7 +545,7 @@ webpackJsonp([4],{
 	          ),
 	          _react2["default"].createElement(
 	            'button',
-	            { id: 'search' },
+	            { id: 'search', onClick: this._get_list.bind(this, 1) },
 	            '\u641C\u7D22'
 	          )
 	        ),

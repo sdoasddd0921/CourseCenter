@@ -140,16 +140,22 @@ class Filter extends React.Component {
           <option value="">请选择</option>
         </select>
         <span>课程名称：</span>
-        <input placeholder="请输入课程名称" type="text" value={this.state.kcmc} onChange={(eve)=>{this.setState({kcmc: eve.target.value})}}/>
+        <input placeholder="请输入课程名称" type="text" value={this.state.kcmc}
+          onChange={(eve)=>{this.setState({kcmc: eve.target.value})}}
+          onKeyDown={(eve)=>{if(eve.keyCode===13)this._get_list(1)}}
+        />
         <span>专家姓名：</span>
-        <input placeholder="请输入专家姓名" type="text" value={this.state.zjxm} onChange={(eve)=>{this.setState({zjxm: eve.target.value})}}/>
+        <input placeholder="请输入专家姓名" type="text" value={this.state.zjxm}
+          onChange={(eve)=>{this.setState({zjxm: eve.target.value})}}
+          onKeyDown={(eve)=>{if(eve.keyCode===13)this._get_list(1)}}
+        />
         <span>状态：</span>
         <select name="zt" id="zt" ref={sel=>this.zt_select=sel} onChange={this.change_zt.bind(this)} defaultValue={this.state.zt}>
           <option value="0">待评价</option>
           <option value="1">待提交</option>
           <option value="2">已提交</option>
         </select>
-        <button id="search">搜索</button>
+        <button id="search" onClick={this._get_list.bind(this,1)}>搜索</button>
       </div>
       <Table lists={this.state.lists}></Table>
       <Fanye TP={{

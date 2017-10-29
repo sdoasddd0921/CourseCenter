@@ -114,7 +114,6 @@ class Filter extends React.Component {
         }
       }
     });
-
   }
 
   render() {
@@ -133,8 +132,14 @@ class Filter extends React.Component {
           <option value="">请选择</option>
         </select>
         <span>课程名称：</span>
-        <input placeholder="请输入课程名称" type="text" value={this.state.kcmc} onChange={(eve)=>{this.setState({kcmc: eve.target.value})}}/>
-        <button id="search">搜索</button>
+        <input placeholder="请输入课程名称" type="text" value={this.state.kcmc} onChange={(eve)=>{this.setState({kcmc: eve.target.value})}}
+          onKeyDown={(eve)=>{
+            if (eve.keyCode===13) {
+              this._get_list(1)
+            }
+          }}
+        />
+        <button id="search" onClick={this._get_list.bind(this,1)}>搜索</button>
       </div>
       <Table lists={this.state.lists}></Table>
       <Fanye TP={{
@@ -142,7 +147,7 @@ class Filter extends React.Component {
           pages: this.state.pages,
           total: this.state.total
         }}
-        callback={this._get_list.bind(this)}
+        callback={this._get_list.bind(this,1)}
       ></Fanye>
     </div>);
   }
@@ -171,7 +176,6 @@ class Table extends React.Component {
   }
 
   create_tbody() {
-    console.log(this.props)
     let lists = [];
     this.props.lists.forEach((e, index) => {
       lists.push(<tr className="list-item" key={index} onClick = {this.show_detail.bind(this, index)}>
@@ -217,8 +221,6 @@ class Table extends React.Component {
     if(window.frameElement) {
       window.frameElement.height=document.body.scrollHeight;
     }
-    
-    console.log('in:', window.frameElement.height, document.body.scrollHeight)
   }
 }
 
@@ -266,7 +268,6 @@ class Item extends React.Component {
       },
       success: (gets) => {
         let datas = JSON.parse(gets);
-        console.log('inner:', datas)
         this.setState({
           teachers: datas.data.wpjgxqList
         });

@@ -1,17 +1,20 @@
 * { padding: 0; margin: 0; }
+
 html{background: #F7F7F7;}
+
 #React_body {
   margin-bottom: 70px;
 }
+
 body {
-  /*height: 100%;*/
   min-width: 1180px;
   position: relative;
 }
+
 table{
   table-layout: fixed;
-  /*width: 850px;*/
 }
+
 #whitebar {
   position: absolute;
   height: 103px;
@@ -20,6 +23,7 @@ table{
   min-width: 930px;
   z-index: -1;
 }
+
 #center {
   width: 1180px;
   position: relative;
@@ -32,12 +36,13 @@ table{
   height: 103px;
   display: table-cell;
   vertical-align: middle;
-  /*background: #FFF;*/
 }
+
 #head>img {
   vertical-align: middle;
   margin: 0 15px;
 }
+
 #head>span {
   vertical-align: middle;
   color: #007A53;
@@ -56,10 +61,12 @@ table{
   display: inline-block;
   vertical-align: middle;
 }
+
 #teacher>span {
   color: blue;
   font-size: 13px;
 }
+
 #triangle {
   display: inline-block;
   width: 0;
@@ -68,6 +75,7 @@ table{
   border-right: 7px solid transparent;
   border-top: 11px solid #666666;
 }
+
 #teacher:hover #logout {
   display: block;
 }
@@ -81,10 +89,12 @@ table{
   line-height: 31px;
   border: 1px solid #E4E4E4;
 }
+
 #logout>a {
   text-decoration: none;
   color: #333;
 }
+
 /*----------------------------------------*/
 
 /*中间部分*/
@@ -93,24 +103,21 @@ table{
   width: 100%;
   margin-top: 26px;
 }
+
 #tabs {
-  /*width: 100%;*/
   padding: 0 45px;
-  /*height: 150px;*/
   background: #FFF;
-  /*margin-bottom: 2px;*/
 }
+
 #main_body {
-  /*width: 100%;*/
-  /*height: 900px;*/
   padding: 0 15px 5px 15px;
   background: #FFF;
 }
+
 /*tab*/
 #tab>li {
   color: #009361;
   list-style: none;
-  /*float: left;*/
   display: inline-block;
   font-size: 20px;
   font-weight: 600;
@@ -120,14 +127,13 @@ table{
   padding: 16px 0 0 0;
   cursor: pointer;
 }
+
 #tab .tab_line {
   cursor: default;
   width: 0px;
   height: 16px;
   border: none;
   padding: 0;
-  /*vertical-align: middle;*/
-  /*margin-bottom: 15px;*/
   margin: 0 10px;
   border-left: 1px solid #000;
 }
@@ -136,31 +142,35 @@ table{
 #option_bar {
   float: right;
 }
+
 #option_bar ul {
-  /*float: right;*/
 }
+
 #option_bar li {
   list-style: none;
   float: right;
   margin: 0 5px;
 }
+
 #options #option_allcheck {
   float: right;
   margin: 0 5px;
 }
+
 #options {
   background: #FFF;
-  height: 73px;
+  overflow: hidden;
   padding: 0 45px 15px 45px;
 }
+
 #options #hr {
   width: 1180px;
   height: 0;
   border-bottom: 1px solid #CCC;
   margin-top: 11px;
   margin-left: -45px;
-  /*margin-bottom: 20px;*/
 }
+
 .double_btn {
   display: inline-block;
   line-height: 26px;
@@ -173,6 +183,7 @@ table{
   height: 26px;
   border-radius: 1px;
 }
+
 .double_btn:hover {
   color: #FFF;
   background: #009361;
@@ -184,44 +195,42 @@ table{
   float: right;
   position: relative;
   top: 19px;
+  padding-bottom: 20px;
 }
+
 #out_serch span {
-  /*clear: both;*/
   color: #009361;
   font-size: 14px;
   height: 28px;
-  /*vertical-align: middle;*/
 }
+
 #jxtdss {
   position: relative;
   top: 0px;
-  /*height: 18px;*/
-  border: 1px solid #009361;
-  border-right: none;
   padding: 2px 5px;
   border-radius: 4px 0 0 4px;
-  /*vertical-align: middle;*/
 }
+
 #out_serch #serch_btn {
   background: #009361;
-  line-height: 21px;
   color: #FFF;
   height: 21px;
   padding: 0 5px;
   position: absolute;
-  top: 0px;
+  top: -1px;
   right: -5px;
   font-size: 14px;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
 }
+
 #search-box {
   display: inline-block;
   position: relative;
-  height: 21px;
+  height: 19px;
+  border-radius: 4px;
+  border: 1px solid #009361;
 }
-
-
 
 /*table*/
 #center_table {
@@ -229,23 +238,29 @@ table{
   text-align: center;
   border-collapse:collapse;
 }
+
 #center_table thead {
   color: #FFF;
   background: #009361;
 }
+
 #center_table tr {
   padding: 0 45px;
 }
+
 #center_table label {
   top: 2px;
 }
+
 #center_table thead td {
   height: 40px;
 }
+
 #center_table td:first-child {
   border-radius: 2px 0 0 2px;
   border-bottom: none;
 }
+
 #center_table td:last-child {
   border-radius: 0 2px 2px 0;
   border-bottom: none;
@@ -254,22 +269,19 @@ table{
 #center_table tbody tr {
   height: 50px;
   background: #FFF;
-  /*border-bottom: 7px solid #F7F7F7;*/
-  /*border-spacing:10px;*/
 }
-/*#center_table tbody td {
-  margin-bottom: 7px;
-}*/
+
 #center_table tbody td span {
   color: #666;
   cursor: default;
   display: block;
-  /*margin: 2px 0;*/
 }
+
 #center_table tbody td span.op_on {
   color: #0066FF;
   cursor: pointer;
 }
+
 #center_table tbody tr.list_line {
   background: transparent;
   height: 7px;
@@ -279,6 +291,7 @@ table{
 input[type="checkbox"]{
   display: none;
 }
+
 input[type="checkbox"] + label{
   width: 13px;
   height: 13px;
@@ -288,64 +301,61 @@ input[type="checkbox"] + label{
   position: relative;
   top: 3px;
   margin-right: 7px;
-  /*line-height: 13px;*/
 }
 
 input[type="checkbox"]:checked + label{
   background:url('../../imgs/courseAudit/checked.png');
 }
 
-
-
-
-
 #React_list {
   min-height: 603px;
 }
-
-
 
 /*list_body*/
 #list_body {
   font-size: 13px;
 }
+
 #list_body table {
   width: 100%;
   text-align: center;
   border-collapse:collapse;
 }
+
 #list_body table thead {
   border: 1px solid #CCCCCC;
 }
+
 #list_body table thead tr td{
   height: 33px;
   background: #F2F2F2;
 }
+
 #list_body input {
-  /*vertical-align: middle;*/
   position: relative;
   top: 2px;
-  /*margin-top: 2px;*/
 }
+
 #quanxuan {
   position: absolute;
   margin-left: 3px;
 }
+
 #list_body table tbody tr {
   height: 100px;
   border-bottom: 1px dashed #CCCCCC;
 }
+
 .date {
   color: #999999;
 }
+
 #list_body tbody span {
   display: inline-block;
   margin: 3px 0;
   color: #999;
   cursor: default;
 }
-
-
 
 /*翻页条*/
 #React_fanye {
@@ -359,8 +369,8 @@ input[type="checkbox"]:checked + label{
   font-size: 13px;
   line-height: 40px;
   text-align: center;
-  /* margin: -50px auto; */
 }
+
 #lishi_fanye {
   clear: both;
   width: 800px;
@@ -370,35 +380,36 @@ input[type="checkbox"]:checked + label{
   position: absolute;
   bottom: 10px;
 }
+
 #fanye>div, #lishi_fanye>div{
   width: 40px;
   height: 40px;
   background: #FFF;
   display: inline-block;
   cursor: pointer;
-  /*border: 1px solid #DDD;*/
 }
+
 #fanye>ul, #lishi_fanye>ul{
   display: inline-block;
   background: #FFF;
   list-style: none;
 }
+
 #fanye>ul>li, #lishi_fanye>ul>li{
   width: 40px;
   height: 40px;
   display: inline-block;
   word-spacing: 0;
-  /*border: 1px solid #DDD;*/
   cursor: pointer;
-  /*border-right: none;*/
 }
+
 #fanye #fanye_pre, #lishi_fanye #fanye_pre{
   border-radius: 5px 0 0 5px;
 }
+
 #fanye #fanye_next, #lishi_fanye #fanye_next{
   border-radius: 0 5px 5px 0;
 }
-
 
 /*弹出层*/
 #popup {
@@ -408,6 +419,7 @@ input[type="checkbox"]:checked + label{
   height: 100%;
   background: rgba(102,102,102,0.7);
 }
+
 .pop-wrap {
   position: fixed;
   width: 800px;
@@ -419,12 +431,14 @@ input[type="checkbox"]:checked + label{
   border: 1px solid #CCC;
   padding-bottom: 60px;
 }
+
 #popup #popup_body {
   z-index: 100;
   width: 800px;
   background: #FFF;
   font-size: 13px;
 }
+
 #popup_body>#top {
   width: 100%;
   height: 39px;
@@ -432,31 +446,35 @@ input[type="checkbox"]:checked + label{
   display: table;
   position: relative;
 }
+
 #popup_body>#top>span {
   display: table-cell;
   vertical-align: middle;
   position: relative;
   left: 18px;
 }
+
 #top>#popup_close {
   font-size: 14px;
   width: 45px;
-  /*cursor: pointer;*/
 }
+
 #top>#popup_close>img {
   cursor: pointer;
 }
+
 /*搜索选项*/
 #popup_body>#serch {
   margin: 10px 0 10px 0;
   text-align: center;
-  /*padding-left: 70px;*/
 }
+
 #popup_left {
   margin-left: 19px;
   font-size: 14px;
   vertical-align: middle;
 }
+
 #popup_serch_button {
   display: inline-block;
   text-align: center;
@@ -472,6 +490,7 @@ input[type="checkbox"]:checked + label{
   background: #007A51;
   border-radius: 5px;
 }
+
 #popup_serch {
   width: 186px;
   height: 28px;
@@ -488,22 +507,25 @@ input[type="checkbox"]:checked + label{
   margin: 10px auto;
   border-collapse: collapse;
 }
+
 #serch_table>thead {
   background: #D7D7D7;
 }
+
 #serch_table td {
   height: 24px;
   border: 1px solid #999;
 }
+
 #serch_table tbody td {
   height: 29px;
 }
+
 /*table中的input垂直位置有点高*/
 #serch_table td>input {
   position: relative;
   top: 2px;
 }
-
 
 /*弹出框下面的按钮*/
 #popup_option {
@@ -511,20 +533,21 @@ input[type="checkbox"]:checked + label{
   text-align: center;
   margin: 20px auto;
   position: absolute;
-  /*top: 550px;*/
   left: 250px;
 }
+
 #popup_option>span {
   margin: 0 16px;
   cursor: pointer;
 }
+
 #popup_ok {
   width: 118px;
   height: 38px;
   line-height: 38px;
   background: #007A51;
-  /*margin: 0 auto;*/
 }
+
 #popup_return {
   display: inline-block;
   width: 116px;
@@ -532,9 +555,7 @@ input[type="checkbox"]:checked + label{
   line-height: 36px;
   border-radius: 5px;
   border: 1px solid #CCC;
-  /*margin: 0 auto;*/
 }
-
 
 /*蓝色按钮*/
 .blue_btn {
@@ -571,7 +592,6 @@ input[type="checkbox"]:checked + label{
   position: relative;
 }
 
-
 /* 没有数据 */
 
 .no_data {
@@ -579,14 +599,12 @@ input[type="checkbox"]:checked + label{
   text-align: center;
   margin-top: 50px;
 }
+
 #ND {
   background: transparent;
 }
 
-
-
 /*--------------------------------------------------------*/
-
 
 /*添加成员*/
 .list_left {
@@ -599,6 +617,7 @@ input[type="checkbox"]:checked + label{
   top: 0;
   vertical-align: top;
 }
+
 .list_right {
   display: inline-block;
   padding: 0;
@@ -606,6 +625,7 @@ input[type="checkbox"]:checked + label{
   top: 25px;
   vertical-align: top;
 }
+
 .list_right>span {
   cursor: pointer;
 }
@@ -613,6 +633,7 @@ input[type="checkbox"]:checked + label{
 #teachers {
   width: 750px;
 }
+
 /*delete teacher*/
 .blue_btn>img {
   position: absolute;
@@ -626,6 +647,7 @@ input[type="checkbox"]:checked + label{
   font-size: 14px;
   vertical-align: middle;
 }
+
 #fuzeren img {
   vertical-align: middle;
 }
@@ -637,7 +659,6 @@ input[type="checkbox"]:checked + label{
   height: 160px;
   background: #FFF;
   font-size: 13px;
-  /*padding: 0px 5px;*/
   border: 1px solid #CCC;
   /*居中*/
   position: fixed;
@@ -645,16 +666,19 @@ input[type="checkbox"]:checked + label{
   left: 0; right: 0;
   top: 0; bottom: 0;
 }
+
 #tijiaoshenhe_head {
   width: 100%;
   height: 30px;
   background: #009361;
 }
+
 #tijiaoshenhe_head>span {
   color: #FFF;
   line-height: 30px;
   margin-left: 10px;
 }
+
 #tijiaoshenhe_head>img {
   float: right;
   cursor: pointer;
@@ -662,15 +686,18 @@ input[type="checkbox"]:checked + label{
   top: 6px;
   right: 6px;
 }
+
 #tijiaoshenhe p {
   width: 250px;
   text-align: center;
   margin: 10px auto;
 }
+
 #tijiaoshenhe #tijiao_div {
   width: 212px;
   margin: 0 auto;
 }
+
 #tijiao_div>span {
   display: inline-block;
   cursor: pointer;
@@ -680,11 +707,10 @@ input[type="checkbox"]:checked + label{
   line-height: 32px;
   border-radius: 5px;
   text-align: center;
-  /*border: 1px solid #CCC;*/
-  /*margin: 0 auto;*/
   background: #009361;
   margin: 10px;
 }
+
 #tijiaoshenhe .fanhui {
   color: #000;
   width: 84px;
@@ -693,11 +719,7 @@ input[type="checkbox"]:checked + label{
   border: 1px solid #009361;
 }
 
-
-
-
 /*页头页脚*/
-
 
 /*------通用部分--------------------------------------------------------
 ----------------------------------------------------------------------*/
@@ -706,18 +728,21 @@ html,body,div,ul,li,a,hr,p,span,button,input,tr,td,tbody,table{
   padding: 0;
   outline: none;
   border: none;
-  /*font-family: "Microsoft YaHei UI";*/
 }
+
 iframe{
   display: none;
 }
+
 ul{
   list-style: none;
 }
+
 a{
   text-decoration:none;
   color: black;
 }
+
 .warp{
   min-width: 1180px;
 }
@@ -729,35 +754,36 @@ a{
   height:100%;
 }
 
-
 /*------结构部分--------------------------------------------------------
 ----------------------------------------------------*/
 #header{
   height: 48px;
   background-color:#dcdcdc;
 }
+
 #logo{
   height:136px;
   background-color: #ffffff;
 }
+
 #body{
   background-color: #f7f7f7;
   padding-top: 20px;
   padding-bottom:55px;
 }
+
 #footer{
   height:71px;
   background-color: #007a51;
   text-align: center;
 }
+
 #footer .copyRight{
   font-size: 16px;
   color: #ffffff;
   height:71px;
   line-height: 71px;
 }
-
-
 
 /*------结构内容部分--------------------------------------------------------
 ----------------------------------------------------------------------*/
@@ -767,14 +793,17 @@ a{
 .BluMUI_UserLoginState{
   font-size: 14px;
 }
+
 .BluMUI_UserLoginState ul{
   float: right;
 }
+
 .BluMUI_UserLoginState li{
   cursor: default;
   float: right;
   margin-left: 24px;
 }
+
 .BluMUI_UserLoginState hr{
   display: block;
   float: right;
@@ -785,12 +814,14 @@ a{
   margin-top: 19px;
   margin-left:23px;
 }
+
 .BluMUI_UserLoginState{
   width: 1180px;
   position: relative;
   line-height: 49px;
   height: 48px;
 }
+
 .BluMUI_UserLoginState .userInf{
   display: inline-block;
   position: relative;
@@ -799,27 +830,33 @@ a{
   cursor: pointer;
   height: 49px;
 }
+
 .BluMUI_UserLoginState .login{
   color:#007a51;
   margin-left: 25px;
   font-size: 14px;
   float: right;
 }
+
 .BluMUI_UserLoginState .loginNum{
   float: left;
 }
+
 .BluMUI_UserLoginState .loginExtInf{
   color: red;
   float: right;
   margin-left: 23px;
 }
+
 .BluMUI_UserLoginState .userName {
   height: 49px;
   overflow: hidden;
 }
+
 .BluMUI_UserLoginState  #show{
   display: none;
 }
+
 .BluMUI_UserLoginState #userName{
   float: left;
   height: 49px;
@@ -827,6 +864,7 @@ a{
   background-color:inherit;
 
 }
+
 .BluMUI_UserLoginState #userDrop{
   width: 24px;
   height: 49px;
@@ -834,12 +872,14 @@ a{
   margin-left: 0;
   background:url('../../imgs/public/userList.png') no-repeat 0px 20px;
 }
+
 .BluMUI_UserLoginState .userList{
   z-index: 10;
   position: absolute;
   top:35px;
   right:0;
 }
+
 .BluMUI_UserLoginState .userList .func {
   float: none;
   height: 24px;
@@ -850,14 +890,14 @@ a{
   text-align: center;
   color: #ffffff;
 }
+
 .BluMUI_UserLoginState .userList .func:hover{
   background-color: #999999;
 }
+
 .BluMUI_UserLoginState  .inLoginText{
   float: right;
 }
-
-
 
 /*选框按钮的样式*/
 .BlueMUI_Radio .radio{
@@ -872,23 +912,24 @@ a{
   line-height: 21px;
   margin-top: 2px;
 }
+
 /*选框按钮-选中的样式*/
 .BlueMUI_Radio .selected{
   background-image: url("../../imgs/classManangeEditor/selected.png");
 }
+
 /*选框名字样式*/
 .BlueMUI_Radio .name{
   display: block;
   float:left;
 }
+
 /*选框样式*/
 .BlueMUI_Radio{
   overflow: hidden;
   margin-top: 10px;
   width:150px;
 }
-
-
 
 /* logo-logo_warp */
 #logo .logo_warp{
@@ -899,12 +940,14 @@ a{
   overflow: hidden;
   position: absolute;
 }
+
 #logo .logo{
   height: 100%;
   float: left;
   width: 304px;
   background:url("../../imgs/public/logo.png") no-repeat 0px 7px;
 }
+
 #logo .logo_text{
   height: 100%;
   float: left;
@@ -920,18 +963,22 @@ a{
 
 /* 独立页面 */
 * { padding: 0; margin: 0; }
+
 body {
   background: #F7F6F6;
 }
+
 #option {
   background: #FFF;
   padding-left: 25px;
   padding-top: 15px;
 }
+
 #down {
   height: 0;
   padding-bottom: 40px;
 }
+
 #down  span {
   color: #333;
   font-size: 14px;
@@ -946,6 +993,7 @@ body {
   margin-right: 30px;
   border: 1px solid #AAA;
 }
+
 #down input[type="text"] {
   width: 90px;
   height: 21px;
@@ -953,6 +1001,7 @@ body {
   top: -1px;
   border: 1px solid #AAAAAA;
 }
+
 #down button {
   width: 63px;
   height: 25px;
@@ -964,6 +1013,7 @@ body {
   background: #009261;
   border: 1px solid #009261;
 }
+
 /*=====================================*/
 
 #List {
@@ -971,6 +1021,7 @@ body {
   background: #FFF;
   box-shadow: 0 14px 17px -12px rgba(120,120,120,.20);
 }
+
 table {
   width: 100%;
   font-size: 14px;
@@ -978,67 +1029,81 @@ table {
   text-align: center;
   border-collapse: collapse;
 }
+
 td a {
   margin: 0 5px;
   color: #007A51;
   text-decoration: none;
 }
+
 thead {
   color: #FFF;
 }
+
 thead tr td {
   height: 40px;
   background: #009361;
 }
+
 .lefttd, .righttd {
   width: 25px;
   background: transparent;
 }
+
 .lefttd>div, .righttd>div {
   height: 100%;
 }
+
 thead tr td.lefttd>div, thead tr td.righttd>div {
   background: #009361;
 }
+
 .lefttd>div {
   border-radius: 3px 0 0 3px;
 }
+
 .righttd>div {
   border-radius: 0 3px 3px 0;
 }
+
 tbody tr td {
   height: 52px;
   border-bottom: 1px solid #EEE;
 }
+
 tbody tr td.lefttd,
 tbody tr td.righttd {
   border-bottom: none;
-  /*background: red;*/
 }
+
 tbody tr.noborder td {
   border-bottom: none;
 }
+
 tbody td .kcmc_num {
   color: red;
   margin-right: 5px;
 }
+
 tbody td .kcmc_name {
   margin: 0 5px;
 }
+
 tbody td .kcmc_list {
   cursor: pointer;
   text-align: left;
-  /*display: inline-block;*/
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Chrome/Safari/Opera */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none;
 }
+
 tbody td .kcmc_list>span {
   text-align: center;
   display: inline-block;
 }
+
 /*=====================================*/
 
 /* Fanye */
@@ -1049,12 +1114,13 @@ tbody td .kcmc_list>span {
   font-size: 16px;
   line-height: 16px;
   padding: 70px 0 0;
-  /*background: #F7F6F6;*/
 }
+
 .fanye ul {
   margin: 0 5px;
   display: inline-block;
 }
+
 .fanye li {
   color: #666;
   margin: 0 10px;
@@ -1062,11 +1128,13 @@ tbody td .kcmc_list>span {
   list-style: none;
   display: inline-block;
 }
+
 .fanye .total {
   color: #999;
   margin-right: 23px;
   font-size: 14px;
 }
+
 .fanye .fanye_options {
   color: #666;
   width: 61px;
@@ -1078,6 +1146,7 @@ tbody td .kcmc_list>span {
   line-height: 21px;
   background: #E1E1E1;
 }
+
 .fanye .tp {
   width: 53px;
   height: 19px;
@@ -1085,12 +1154,12 @@ tbody td .kcmc_list>span {
   margin-right: 8px;
   border: 1px solid #D3D2D2;
 }
+
 .fanye .tp::-webkit-input-placeholder {
   text-align: center;
 }
 
 /*======================================*/
-
 
 #popup-b {
   width: 100%;
@@ -1102,6 +1171,7 @@ tbody td .kcmc_list>span {
   top: 0;
 
 }
+
 #popbody {
   width: 457px;
   height: 250px;
@@ -1110,6 +1180,7 @@ tbody td .kcmc_list>span {
   margin: 200px auto;
   overflow: hidden;
 }
+
 #popbody #msg {
   width: 80%;
   height: 160px;
@@ -1119,6 +1190,7 @@ tbody td .kcmc_list>span {
   line-height: 25px;
   font-size: 18px;
 }
+
 #popbody button {
   width: 91px;
   height: 31px;
@@ -1129,10 +1201,12 @@ tbody td .kcmc_list>span {
   line-height: 31px;
   font-size: 14px;
 }
+
 #popbody #popup_OK {
   color: #FFF;
   background: #007A51;
 }
+
 #popbody #popup_back {
   color: #007A51;
   background: #FFF;
@@ -1143,14 +1217,13 @@ tbody td .kcmc_list>span {
   text-align: left;
   margin: 30px auto 0 auto;
 }
+
 #popbody #kcmcs .kcmc {
   display: inline-block;
-  /*width: 61px;*/
   margin: 8px 15px;
   text-align: center;
-  /*text-align: left;*/
-  /*line-height: 30px;*/
 }
+
 #Option_react {
   margin-top: -50px;
 }

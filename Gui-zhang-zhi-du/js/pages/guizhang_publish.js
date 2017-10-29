@@ -133,8 +133,8 @@ function del_file(a,name) {
 /* 操作 */
 var Pub=document.getElementById('publish');
 var Bak=document.getElementById('back');
-back.onclick=function(e) {
-  window.location.href='./guizhang-gzzd.html';
+Bak.onclick=function(e) {
+  window.location.href='./gzzd.html';
 }
 Pub.onclick=function(e) {
   if(document.getElementById('title').value=='') {

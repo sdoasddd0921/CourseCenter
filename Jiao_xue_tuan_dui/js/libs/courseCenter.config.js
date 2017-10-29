@@ -47,7 +47,7 @@ function getCookie(c_name)
 
 	*/
 	// return "0102215"
-	return "0102295";
+	return "0102215";
 }
 
 // 删除cookie

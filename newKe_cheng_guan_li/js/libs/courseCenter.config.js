@@ -37,7 +37,9 @@ function getCookie(c_name)
 			return unescape(document.cookie.substring(c_start,c_end))
 		}
 	}
-	return "0102215"
+	return "0102549"
+	// LTT:0102549
+	// CW:0102215
 }
 /* 管理员 0102215 */
 

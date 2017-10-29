@@ -495,7 +495,6 @@ webpackJsonp([0],{
 	            { className: 'lefttd' },
 	            _react2["default"].createElement('div', null)
 	          ),
-	          _react2["default"].createElement('td', { width: '0px' }),
 	          _react2["default"].createElement(
 	            'td',
 	            { width: '10%' },
@@ -518,10 +517,9 @@ webpackJsonp([0],{
 	          ),
 	          _react2["default"].createElement(
 	            'td',
-	            { width: '15%' },
+	            { width: '10%' },
 	            '\u64CD\u4F5C'
 	          ),
-	          _react2["default"].createElement('td', { width: '0px' }),
 	          _react2["default"].createElement(
 	            'td',
 	            { className: 'righttd' },
@@ -563,7 +561,6 @@ webpackJsonp([0],{
 	            'tr',
 	            { key: index },
 	            _react2["default"].createElement('td', { className: 'lefttd' }),
-	            _react2["default"].createElement('td', null),
 	            _react2["default"].createElement(
 	              'td',
 	              null,
@@ -618,7 +615,6 @@ webpackJsonp([0],{
 	                '\u7F16\u8F91'
 	              )
 	            ),
-	            _react2["default"].createElement('td', null),
 	            _react2["default"].createElement('td', { className: 'righttd' })
 	          );
 	        })
@@ -1194,11 +1190,15 @@ webpackJsonp([0],{
 	              null,
 	              '\u8BFE\u7A0B\u540D\u79F0\uFF1A'
 	            ),
-	            _react2["default"].createElement('input', { type: 'text', id: 'jxtdss', ref: 'serchValue' }),
 	            _react2["default"].createElement(
-	              'span',
-	              { id: 'serch_btn', ref: 'serchBtn' },
-	              '\u641C\u7D22'
+	              'div',
+	              { id: 'search-box' },
+	              _react2["default"].createElement('input', { type: 'text', id: 'jxtdss', ref: 'serchValue' }),
+	              _react2["default"].createElement(
+	                'span',
+	                { id: 'serch_btn', ref: 'serchBtn' },
+	                '\u641C\u7D22'
+	              )
 	            )
 	          )
 	        );
@@ -1326,13 +1326,11 @@ webpackJsonp([0],{
 	        list = datas.data.courseList;
 	      }
 	      if (BluMUI.result.CreateList) {
-	        console.log('aaaaaaaaaaaaaaaaaaa');
 	        BluMUI.result.CreateList.setState({
 	          Lists: list,
 	          Module: Module
 	        });
 	      } else {
-	        console.log('bbbbbbbbbbbbbbbbb');
 	        BluMUI.create({
 	          id: 'CreateList',
 	          module: Module,
@@ -1454,7 +1452,7 @@ webpackJsonp([0],{
 	        ));
 	        list.push(_react2["default"].createElement(
 	          'tr',
-	          { key: index, style: style },
+	          { key: index },
 	          _react2["default"].createElement('td', null),
 	          check,
 	          _react2["default"].createElement(
@@ -1559,7 +1557,7 @@ webpackJsonp([0],{
 	                { width: '10%' },
 	                '\u64CD\u4F5C'
 	              ),
-	              _react2["default"].createElement('td', { width: '35px' })
+	              _react2["default"].createElement('td', { width: '20px' })
 	            )
 	          ),
 	          _react2["default"].createElement(
@@ -1746,21 +1744,126 @@ webpackJsonp([0],{
 	      this.popup.style.display = "block";
 	      return _react2["default"].createElement(
 	        'div',
-	        { id: 'popup_body' },
-	        this.create_popup_top(),
+	        { className: 'pop-wrap' },
 	        _react2["default"].createElement(
-	          'table',
-	          { id: 'serch_table' },
-	          this.create_popup_thead(),
-	          this.create_popup_tbody()
-	        ),
-	        _react2["default"].createElement(BlueMUI_CreateFanye, { id: 'lishi_fanye', page: this.state.page, pages: this.state.pages, This: this, ref: 'fanye_in' })
+	          'div',
+	          { id: 'popup_body' },
+	          this.create_popup_top(),
+	          _react2["default"].createElement(
+	            'table',
+	            { id: 'serch_table' },
+	            this.create_popup_thead(),
+	            this.create_popup_tbody()
+	          ),
+	          _react2["default"].createElement(BlueMUI_CreateFanye, { id: 'lishi_fanye', page: this.state.page, pages: this.state.pages, This: this, ref: 'fanye_in' })
+	        )
 	      );
 	    }
 	  }]);
 
 	  return BlueMUI_CreatePopup;
 	}(_react2["default"].Component);
+
+	// 提交审核的弹出
+
+	var Tijiaoshenhe = function (_React$Component10) {
+	  _inherits(Tijiaoshenhe, _React$Component10);
+
+	  function Tijiaoshenhe(props) {
+	    _classCallCheck(this, Tijiaoshenhe);
+
+	    return _possibleConstructorReturn(this, (Tijiaoshenhe.__proto__ || Object.getPrototypeOf(Tijiaoshenhe)).call(this, props));
+	  }
+
+	  _createClass(Tijiaoshenhe, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this23 = this;
+
+	      this.refs.tijiao.onclick = function (e) {
+	        console.log(_this23.props.Kcbh);
+	        Tijiao(1, _this23.props.Kcbh);
+	        _this23.die();
+	      };
+	      this.refs.fanhui.onclick = this.die;
+	      this.refs.close.onclick = this.die;
+	    }
+	  }, {
+	    key: 'die',
+	    value: function die() {
+	      document.getElementById('tijiaoshenhe').style.display = 'none';
+	      _reactDom2["default"].unmountComponentAtNode(document.getElementById('tijiaoshenhe'));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2["default"].createElement(
+	        'div',
+	        null,
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'tijiaoshenhe_head' },
+	          _react2["default"].createElement(
+	            'span',
+	            null,
+	            '\u63D0\u4EA4\u5BA1\u6838'
+	          ),
+	          _react2["default"].createElement('img', { ref: 'close', src: '../../imgs/courseAudit/close.png' })
+	        ),
+	        _react2["default"].createElement(
+	          'p',
+	          null,
+	          '\u6750\u6599\u5C06\u63D0\u4EA4\u81F3\u6559\u5B66\u9662\u957F\u3001\u7CFB\u90E8\u4E2D\u5FC3\u4E3B\u4EFB\u3001',
+	          _react2["default"].createElement('br', null),
+	          '\u8BFE\u7A0B\u8D1F\u8D23\u4EBA\u8FDB\u884C\u5BA1\u6838\uFF0C\u63D0\u4EA4\u540E\u4E0D\u53EF\u4FEE\u6539\u3002'
+	        ),
+	        _react2["default"].createElement(
+	          'div',
+	          { id: 'tijiao_div' },
+	          _react2["default"].createElement(
+	            'span',
+	            { className: 'tijiao', ref: 'tijiao' },
+	            '\u786E\u5B9A'
+	          ),
+	          _react2["default"].createElement(
+	            'span',
+	            { className: 'fanhui', ref: 'fanhui' },
+	            '\u8FD4\u56DE'
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Tijiaoshenhe;
+	}(_react2["default"].Component);
+
+	function Tjsh(kcbh) {
+	  var t = document.getElementById('tijiaoshenhe');
+	  t.style.display = "block";
+	  _reactDom2["default"].render(_react2["default"].createElement(Tijiaoshenhe, { Kcbh: kcbh }), t);
+	}
+
+	function Tijiao(op, course, note) {
+	  ajax({
+	    url: courseCenter.host + 'submitOperation',
+	    data: {
+	      unifyCode: BluMUI.result.unifyCode,
+	      courseNo: course,
+	      note: note || '',
+	      type: op
+	    },
+	    success: function success(gets) {
+	      var datas = JSON.parse(gets);
+	      BluMUI.result.Tab.change_subModule(BluMUI.result.Tab.state.subModule);
+	      // BlueMUI_GetList(
+	      //   BluMUI.result.Tab.state.subModule,
+	      //   BluMUI.result.Options.state.page,
+	      //   BluMUI.result.Options.state.course_state
+	      // );
+	    }
+	  });
+	}
 
 	var BluMUI_M = {
 	  Create_options: BlueMUI_CreateOptions,

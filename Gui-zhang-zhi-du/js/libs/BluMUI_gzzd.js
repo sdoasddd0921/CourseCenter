@@ -236,7 +236,7 @@ class List extends React.Component {
         title=document.getElementById('Title').value;
         source=document.getElementById('Source').value;
         state=(document.getElementById('Pub').checked==document.getElementById('Unpub').checked?'':+document.getElementById('Pub'));
-        return <tr key={index} style={{background:index%2?'':'white'}}>
+        return <tr key={index}>
           <td>{e.bt}</td>
           <td>{e.czsj}</td>
           <td>{e.author}</td>

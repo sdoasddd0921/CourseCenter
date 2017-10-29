@@ -499,7 +499,7 @@ webpackJsonp([2],{
 	          state = document.getElementById('Pub').checked == document.getElementById('Unpub').checked ? '' : +document.getElementById('Pub');
 	          return _react2["default"].createElement(
 	            'tr',
-	            { key: index, style: { background: index % 2 ? '' : 'white' } },
+	            { key: index },
 	            _react2["default"].createElement(
 	              'td',
 	              null,

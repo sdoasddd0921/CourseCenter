@@ -36,6 +36,7 @@ html {
   background: #009261;
   color: #FFF;
   border: none;
+  outline: none;
   cursor: pointer;
   margin-left: 20px;
 }

@@ -1624,6 +1624,10 @@ webpackJsonp([0],{
 	    value: function componentDidUpdate(prevProps, prevState) {
 	      var _this12 = this;
 
+	      if (!this.refs.tp) {
+	        return;
+	      }
+
 	      // 手动跳转翻页
 	      this.refs.tp.onkeydown = function (eve) {
 	        if (eve.keyCode === 13) {

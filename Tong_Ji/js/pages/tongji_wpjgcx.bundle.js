@@ -323,10 +323,16 @@ webpackJsonp([3],{
 	          ),
 	          _react2["default"].createElement('input', { placeholder: '\u8BF7\u8F93\u5165\u8BFE\u7A0B\u540D\u79F0', type: 'text', value: this.state.kcmc, onChange: function onChange(eve) {
 	              _this6.setState({ kcmc: eve.target.value });
-	            } }),
+	            },
+	            onKeyDown: function onKeyDown(eve) {
+	              if (eve.keyCode === 13) {
+	                _this6._get_list(1);
+	              }
+	            }
+	          }),
 	          _react2["default"].createElement(
 	            'button',
-	            { id: 'search' },
+	            { id: 'search', onClick: this._get_list.bind(this, 1) },
 	            '\u641C\u7D22'
 	          )
 	        ),
@@ -336,7 +342,7 @@ webpackJsonp([3],{
 	            pages: this.state.pages,
 	            total: this.state.total
 	          },
-	          callback: this._get_list.bind(this)
+	          callback: this._get_list.bind(this, 1)
 	        })
 	      );
 	    }
@@ -380,7 +386,6 @@ webpackJsonp([3],{
 	    value: function create_tbody() {
 	      var _this8 = this;
 
-	      console.log(this.props);
 	      var lists = [];
 	      this.props.lists.forEach(function (e, index) {
 	        lists.push(_react2["default"].createElement(
@@ -494,8 +499,6 @@ webpackJsonp([3],{
 	      if (window.frameElement) {
 	        window.frameElement.height = document.body.scrollHeight;
 	      }
-
-	      console.log('in:', window.frameElement.height, document.body.scrollHeight);
 	    }
 	  }]);
 
@@ -607,7 +610,6 @@ webpackJsonp([3],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log('inner:', datas);
 	          _this10.setState({
 	            teachers: datas.data.wpjgxqList
 	          });

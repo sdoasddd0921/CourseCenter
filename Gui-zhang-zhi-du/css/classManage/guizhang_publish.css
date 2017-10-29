@@ -39,7 +39,7 @@ body { background-color: #FFF; }
 }
 input[type="file"] {
   display: inline-block;
-  width: 69px;
+  width: 61px;
   margin-top: 7px;
 }
 #file_names>li {

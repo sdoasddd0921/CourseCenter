@@ -314,13 +314,11 @@ class List extends React.Component {
       <thead>
         <tr>
           <td className="lefttd"><div></div></td>
-          <td width="0px"></td>
           <td width="10%">网评批次</td>
           <td width="15%">分组批次</td>
           <td width="15%">分组项</td>
           <td>课程列表</td>
-          <td width="15%">操作</td>
-          <td width="0px"></td>
+          <td width="10%">操作</td>
           <td className="righttd"><div></div></td>
         </tr>
       </thead>
@@ -349,7 +347,6 @@ class List extends React.Component {
       <tbody>
         {this.props.list.map((e,index)=><tr key={index}>
           <td className="lefttd"></td>
-          <td></td>
           <td>{e.wppc}</td>
           <td>{e.fzpc}</td>
           <td>{e.fzx}</td>
@@ -366,7 +363,6 @@ class List extends React.Component {
           <td>
             <a href="#" onClick={this.option.bind(this,'edit',e.wppc,e.fzx,e.wpid)} >编辑</a>
           </td>
-          <td></td>
           <td className='righttd'></td>
         </tr>)}
       </tbody>
@@ -849,13 +845,11 @@ var BlueMUI_GetList=function(Module,P,Cs,Serch,This) {
         list=datas.data.courseList;
       }
       if(BluMUI.result.CreateList) {
-        console.log('aaaaaaaaaaaaaaaaaaa');
         BluMUI.result.CreateList.setState({
           Lists:list,
           Module:Module
         });
       } else {
-        console.log('bbbbbbbbbbbbbbbbb');
         BluMUI.create({
           id:'CreateList',
           module:Module,
@@ -1099,6 +1093,72 @@ class BlueMUI_CreatePopup extends React.Component {
       </div>
       </div>);
   }
+}
+
+
+
+// 提交审核的弹出
+
+class Tijiaoshenhe extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  componentDidMount() {
+    this.refs.tijiao.onclick=(e=>{
+      console.log(this.props.Kcbh);
+      Tijiao(1,this.props.Kcbh);
+      this.die();
+    });
+    this.refs.fanhui.onclick=this.die;
+    this.refs.close.onclick=this.die;
+  }
+  die() {
+    document.getElementById('tijiaoshenhe').style.display='none';
+    ReactDOM.unmountComponentAtNode(document.getElementById('tijiaoshenhe'));
+  }
+  render() {
+    return(<div>
+      <div id="tijiaoshenhe_head">
+        <span>提交审核</span>
+        <img ref='close' src="../../imgs/courseAudit/close.png"/>
+      </div>
+      <p>材料将提交至教学院长、系部中心主任、<br/>课程负责人进行审核，提交后不可修改。</p>
+      <div id="tijiao_div">
+        <span className="tijiao" ref="tijiao">确定</span>
+        <span className="fanhui" ref="fanhui">返回</span>
+      </div>
+    </div>);
+  }
+}
+
+function Tjsh(kcbh) {
+  let t=document.getElementById('tijiaoshenhe');
+  t.style.display="block";
+  ReactDOM.render(
+    <Tijiaoshenhe Kcbh={kcbh}/>,
+    t
+  );
+}
+
+function Tijiao(op,course,note) {
+  ajax({
+    url:courseCenter.host+'submitOperation',
+    data: {
+      unifyCode:BluMUI.result.unifyCode,
+      courseNo:course,
+      note:note||'',
+      type:op
+    },
+    success:function(gets) {
+      let datas=JSON.parse(gets);
+      BluMUI.result.Tab.change_subModule(BluMUI.result.Tab.state.subModule);
+      // BlueMUI_GetList(
+      //   BluMUI.result.Tab.state.subModule,
+      //   BluMUI.result.Options.state.page,
+      //   BluMUI.result.Options.state.course_state
+      // );
+    }
+  });
 }
 
 

@@ -27,6 +27,7 @@ body {
 #list_table {
   text-align: center;
   width: 100%;
+  background: #FFF;
   border-collapse: collapse;
 }
 #list_table>thead {
@@ -40,7 +41,7 @@ body {
 }
 #list_table>tbody>tr {
   height: 40px;
-  background: #eee;
+  border-bottom: 1px solid #EEE;
 }
 #caozuo>span {
   margin: 0 5px;
