@@ -419,7 +419,8 @@ class Lists extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if(window.frameElement) {
-      window.frameElement.height=document.body.offsetHeight;
+      window.frameElement.height=document.body.scrollHeight;
+
     }
   }
 }
@@ -472,9 +473,9 @@ class Poplist extends React.Component {
           <table>
             <thead>
               <tr>
-                <td width="30%">课程名称</td>
-                <td width="30%">课程编号</td>
-                <td width="40%">开课学院</td>
+                <td width="44%">课程名称</td>
+                <td width="28%">课程编号</td>
+                <td width="28%">开课学院</td>
               </tr>
             </thead>
             <tbody>
@@ -495,6 +496,19 @@ class Poplist extends React.Component {
 
   componentDidMount() {
     this._get_list(1);
+  }
+  componentDidUpdate() {
+    let bgh = document.getElementById('background').scrollHeight;
+    if(window.frameElement) {
+      let H=document.body.offsetHeight;
+      if(bgh>parseInt(document.body.offsetHeight)) {
+        H=bgh;
+      }
+      console.log("height:",bgh)
+      window.frameElement.height=H;
+    }
+
+
   }
 }
 
@@ -551,16 +565,6 @@ class Popup extends React.Component {
   }
 
   componentDidMount() {
-    if(window.frameElement) {
-      let H=document.body.offsetHeight;
-      if(this.background.offsetHeight>parseInt(document.body.offsetHeight)) {
-        H=this.background.offsetHeight;
-      }
-      console.log("height:",this.background.offsetHeight)
-      window.frameElement.height=H;
-    }
-
-
     const {id,type}=this.props;
     let dat={};
 
@@ -574,16 +578,6 @@ class Popup extends React.Component {
         break;
       default:
         break;
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if(window.frameElement) {
-      let H=document.body.offsetHeight;
-      if(this.background.style.height.split('px')[0]>parseInt(document.body.offsetHeight)) {
-        H=this.background.style.height.split('px')[0];
-      }
-      window.frameElement.height=H;
     }
   }
 

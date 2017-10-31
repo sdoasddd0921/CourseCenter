@@ -686,7 +686,7 @@ webpackJsonp([8],{
 	    key: 'componentDidUpdate',
 	    value: function componentDidUpdate(prevProps, prevState) {
 	      if (window.frameElement) {
-	        window.frameElement.height = document.body.offsetHeight;
+	        window.frameElement.height = document.body.scrollHeight;
 	      }
 	    }
 	  }]);
@@ -766,17 +766,17 @@ webpackJsonp([8],{
 	                null,
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '30%' },
+	                  { width: '44%' },
 	                  '\u8BFE\u7A0B\u540D\u79F0'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '30%' },
+	                  { width: '28%' },
 	                  '\u8BFE\u7A0B\u7F16\u53F7'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '40%' },
+	                  { width: '28%' },
 	                  '\u5F00\u8BFE\u5B66\u9662'
 	                )
 	              )
@@ -817,6 +817,19 @@ webpackJsonp([8],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      this._get_list(1);
+	    }
+	  }, {
+	    key: 'componentDidUpdate',
+	    value: function componentDidUpdate() {
+	      var bgh = document.getElementById('background').scrollHeight;
+	      if (window.frameElement) {
+	        var H = document.body.offsetHeight;
+	        if (bgh > parseInt(document.body.offsetHeight)) {
+	          H = bgh;
+	        }
+	        console.log("height:", bgh);
+	        window.frameElement.height = H;
+	      }
 	    }
 	  }]);
 
@@ -921,15 +934,6 @@ webpackJsonp([8],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      if (window.frameElement) {
-	        var H = document.body.offsetHeight;
-	        if (this.background.offsetHeight > parseInt(document.body.offsetHeight)) {
-	          H = this.background.offsetHeight;
-	        }
-	        console.log("height:", this.background.offsetHeight);
-	        window.frameElement.height = H;
-	      }
-
 	      var _props2 = this.props,
 	          id = _props2.id,
 	          type = _props2.type;
@@ -946,17 +950,6 @@ webpackJsonp([8],{
 	          break;
 	        default:
 	          break;
-	      }
-	    }
-	  }, {
-	    key: 'componentDidUpdate',
-	    value: function componentDidUpdate(prevProps, prevState) {
-	      if (window.frameElement) {
-	        var H = document.body.offsetHeight;
-	        if (this.background.style.height.split('px')[0] > parseInt(document.body.offsetHeight)) {
-	          H = this.background.style.height.split('px')[0];
-	        }
-	        window.frameElement.height = H;
 	      }
 	    }
 	  }, {
