@@ -1,0 +1,88 @@
+* { margin: 0; padding: 0; }
+body{background: #f7f7f7;}
+#body-c {
+
+	/*background: #ccc;*/
+	/**/
+
+	width: 1120px;
+	margin: 0 auto;
+	margin-top: 10px;
+}
+
+/*标题*/
+.title>span {
+	color: #1C9562;
+	font-size: 22px;
+	/*font-weight: bold;*/
+	display: inline-block;
+	border-bottom: 5px solid #1C9562;
+}
+
+/*内容容器*/
+.container {
+	padding: 40px 40px;
+	background: #FFF;
+	margin-bottom: 10px;
+}
+#fuzeren {
+	padding: 40px 0 0 40px;
+}
+.fuzeren {
+	width: 480px;
+	min-height: 200px;
+	display: inline-block;
+	/*vertical-align: middle;*/
+}
+.msg {
+	/*height: 100%;*/
+	display: inline-block;
+	vertical-align: middle;
+	padding: 30px 0 30px 30px;
+}
+.fuzeren>img {
+	vertical-align: middle;
+}
+.xueyuan {
+	width: 200px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.msg>span {
+	/*width: 230px;*/
+	display: block;
+	font-size: 20px;
+	line-height: 20px;
+	margin: 20px 0;
+	word-break: break-all;
+}
+
+#teachers {
+	padding: 40px 0 0 40px;
+}
+.teachers {
+	float: left;
+	font-size: 18px;
+	text-align: center;
+	margin: 20px;
+}
+
+.xy {
+	font-size: 12px;
+	text-align: center;
+	margin-top: 10px;
+}
+
+#React-fuzeren,#React-teachers {
+	min-height: 200px;
+}
+
+
+/* 团队介绍 */
+#tdjs {
+	margin-top: 20px;
+	line-height: 26px;
+	font-size: 16px;
+}
+
+

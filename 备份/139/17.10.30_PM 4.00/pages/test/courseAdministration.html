@@ -1,0 +1,99 @@
+<!Doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>课程中心-课程督导</title>
+  <link rel="stylesheet" type="text/css" href="../../css/classInfShow/classInfShow/courseAdministration.css">
+</head>
+
+<body>
+<div id="popup" style="display: none;">
+	<div id="pop">
+		<span id="remark">
+			<span style="display: none;" id="tingyong">停用备注</span>
+			<span style="display: none;" id="bohui">驳回备注</span>
+		</span>
+		<span id="close"></span>
+		<textarea id="msg">备注信息</textarea>
+		<button id="sub_btn">驳回</button>
+	</div>
+</div>
+<div id="header" class="warp">
+  <div class="warp_center">
+  </div>
+</div>
+<div id="logo" class="warp">
+  <div class="warp_center"></div>
+</div>
+<!-- ------------------------------- -->
+<div id="body" class="warp">
+  <div class="warp_center">
+    <div id="body-out-top">
+      <div id="body-top">
+		  <div id="control">
+		  </div>
+
+        <div id="settings">
+            <span class="set">
+              <input type="checkbox" value="5" id="itm5" checked="checked"><label for="itm5"></label>所有课程
+            </span>
+              <span class="set">
+              <input type="checkbox" value="1" id="itm1"><label for="itm1"></label>待审核
+            </span>
+              <span class="set">
+              <input type="checkbox" value="2" id="itm2"><label for="itm2"></label>已上线
+            </span>
+              <span class="set">
+              <input type="checkbox" value="3" id="itm3"><label for="itm3"></label>已停用
+            </span>
+              <span class="set">
+              <input type="checkbox" value="4" id="itm4"><label for="itm4"></label>已驳回
+            </span>
+              <span class="set">
+              <input type="checkbox" value="0" id="itm0"><label for="itm0"></label>初始
+            </span>
+        </div>
+      </div>
+      <div id="states">
+        <span class="state">停用</span>
+        <span class="state">启用</span>
+        <span class="state">驳回</span>
+      </div>
+    </div>
+    <!-- 以上是中间body的上面部分 -->
+	 <!--
+	 以下是绿条条内部ul的写法，为了避免display:inline-block带来的空格麻烦，
+	 以及那个“全选”的排版问题而采用的hack写法，代码排版不好看，实际效果很不错
+	 -->
+    <div id="classList">
+      <div id="topGreenBar">
+        <ul id="greenBarItems">
+          <li class="allCheck" id="allCheckToggle">
+			 <input type="checkbox" id="allCheck">
+			 <label id="selecAll"><span id="quanxuan">全选</span></label></li><li class="courseNumber">课程编号</li><li class="courseName">
+          课程名称</li><li class="classRoom">
+          教研室</li><li class="sublimeTime">
+          提交审核时间</li><li class="currentState">
+          当前课程操作状态</li><li class="operation">
+          操作</li>
+        </ul>
+      </div>
+      <div id="courses"></div>
+		<div id="BluMUI_PT"></div>
+    </div>
+  </div>
+</div>
+<!-- ------------------------------- -->
+<div id="footer" class="warp">
+  <div class="warp_center">
+      <span class="copyRight">
+        版权所有 重庆邮电大学 地址：重庆市南岸区崇文路2号 邮编：400065
+      </span>
+  </div>
+</div>
+<script src="../../js/libs/react.min.js"></script>
+<script src="../../js/pages/courseAdministration.bundle.js"></script>
+</body>
+
+</html>

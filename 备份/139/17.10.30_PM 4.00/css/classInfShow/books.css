@@ -1,0 +1,102 @@
+#content_left{
+	width:277px;
+	min-height:200px;
+	float:left;
+	margin-top:37px;
+	background-color:#fff;
+}
+
+#content_right{
+	width:825px;
+	min-height:654px;
+	float:right;
+	margin-top:37px;
+	background-color:#fff;
+}
+
+
+/*左侧菜单栏的列表*/
+#content_left ul{
+	float:left;
+	font-size:16px;
+	margin-top:25px;
+}
+
+#content_left li{
+	height:40px;
+	width:277px;
+	float:left;
+	margin-left:40px;
+	list-style: disc;
+
+}
+
+#content_left a{
+	color:#333333;
+}
+
+#content_left a:hover{
+	color:#007a51;
+}
+/*包裹右侧板块内容部分*/
+#content_right .right_text{
+	width:756px;
+	min-height:580px;
+	color: #666666;
+	font-size:14px;
+	float:left;
+	margin-left:30px;
+	overflow: auto;
+}
+
+
+/*设置用来包裹教材信息的ul样式*/
+#right_text ul{
+	width:856px;
+	float:left;
+	margin-left:28px;
+	margin-top:10px;
+}
+
+
+
+
+/*用book设置盛放教材信息的li标签*/
+.book{
+	 width:410px;
+	 height:190px;
+	 float:left;
+ }
+
+/*设置教材信息中的文字样式和文字布局*/
+.book_message{
+	width:270px;
+	height:160px;
+	float:right;
+	font-size:14px;
+	color:#666666;
+}
+
+/*设置教材名称左侧的边框和字体颜色*/
+.book_name{
+	color: #333333;
+	border-left:4px solid #006948;
+	padding-left:5px;
+	font-size:16px;
+}
+
+/*设置hr标签的样式，height设为1px会导致缩放时消失，增大height即可消除这个问题*/
+.normal{
+	border:none 0;
+	height:1px;
+	line-height: 1px;
+	color:#007a51;
+	background-color:#007a51;
+	float:right;
+	clear:both;
+	font-size:0;
+	width:790px;
+	margin-top:-17px;
+}
+
+

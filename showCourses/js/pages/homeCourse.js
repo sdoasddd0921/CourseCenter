@@ -99,10 +99,15 @@ ajax({
 		//适用专业、学院
 
 		totalInfos.applyMajor.map(e=>{
-			document.getElementById('syxy').innerHTML+=e+'<br/>'
+			document.getElementById('syxy').innerHTML+=e+'<br/>';
 		});
-		document.getElementById('syxy').innerHTML+='<span id="showMore">显示全部 》</span>';
-		document.getElementById('showMore').onclick=showMore;
+    if (totalInfos.applyMajor.length > 1) {
+  		document.getElementById('syxy').innerHTML+='<span id="showMore">显示全部 》</span>';
+      document.getElementById('showMore').onclick=showMore;
+    }
+    if (totalInfos.applyMajor === 0 || totalInfos.applyMajor[0] === null) {
+      document.getElementById('syxy').innerHTML='全校';
+    }
 
     //左下角的老师
     BluMUI.create({

@@ -1,0 +1,106 @@
+var courseCenter = {
+	//http://172.22.114.135:6535/
+	host:'http://cc.cqupt.edu.cn/'
+	//host:'http://172.22.114.135:6535/'
+}
+function parseHash(URL) {
+	var hash = decodeURI(URL).split('?')[1],
+		result = {};
+	if(hash) {
+		var hashArry = hash.split('&'),
+			i,
+			keyValue,
+			result = {},
+			len;
+		for( i = 0 , len = hashArry.length ; i < len ; i++){
+			keyValue = hashArry[i].split('=');
+			result[keyValue[0]]=keyValue[1];
+		}
+
+	}
+	return result;
+}
+
+// 获取cookie
+function getCookie(c_name)
+{
+	var c_start,
+		c_end;
+	if (document.cookie.length>0)
+	{
+		c_start=document.cookie.indexOf(c_name + "=")
+		if (c_start!=-1)
+		{
+			c_start=c_start + c_name.length+1
+			c_end=document.cookie.indexOf(";",c_start)
+			if (c_end==-1) c_end=document.cookie.length
+			return decodeURI(document.cookie.substring(c_start,c_end))
+		}
+	}
+
+	return "";
+	// console.log(c_name == 'userId');
+	// if(c_name == 'userName') {
+	// 	return "游客";
+	// }
+	// if(c_name == 'userId'){
+	// 	//0102549
+	// 	//0102295
+	// 	// 0102387
+	// 	//0102295
+	// 	return "0102215";
+	// }else{
+	// 	return "";
+	// }
+}
+
+// 删除cookie
+function delCookie(name)
+{
+	var exp = new Date();
+	exp.setTime(exp.getTime() - 1);
+	var cval=getCookie(name);
+	console.log(name);
+	if(cval!=null)
+		document.cookie= name + "="+cval+";expires="+exp.toGMTString();
+}
+
+function getElementsByClassName(elem,className){
+	var elems = elem.getElementsByTagName('*'),
+		 i,
+		 result = [],
+		 len;
+	for( i = 0 , len = elems.length ; i < len ; i++){
+		if(elems[i].class == className || elems[i].className == className) {
+			result.push(elems[i]);
+		}
+	}
+	return result;
+}
+
+function selfAdaptionFrame(id) {
+	var iframe = document.getElementById(id);
+	var height;
+	iframe.height = height;
+	iframe.onload = function () {
+
+		setTimeout(function () {
+			try {
+				height = iframe.contentWindow.document.documentElement.offsetHeight;
+			} catch (e) {};
+			try {
+				height = iframe.contentDocument.documentElement.offsetHeight;
+			} catch (e) {};
+			iframe.height = height;
+		}, 100);
+	};
+	window.onresize = function () {
+		try {
+			height = iframe.contentWindow.document.documentElement.offsetHeight;
+		} catch (e) {};
+		try {
+			height = iframe.contentDocument.documentElement.offsetHeight;
+		} catch (e) {};
+		iframe.height = height;
+	};
+}

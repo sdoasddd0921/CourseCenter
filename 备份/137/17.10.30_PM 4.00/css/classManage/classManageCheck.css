@@ -1,0 +1,421 @@
+/*------通用部分--------------------------------------------------------
+----------------------------------------------------------------------*/
+html,body,div,ul,li,a,hr,p,span,button,input,tr,td,tbody,table{
+	margin: 0;
+	padding: 0;
+	outline: none;
+	border: none;
+	font: "Microsoft YaHei UI";
+}
+ul{
+	list-style: none;
+}
+a{
+	text-decoration:none;
+	color: black;
+}
+.warp{
+	min-width: 1180px;
+}
+
+.warp_center{
+	position: relative;
+	width:1180px ;
+	margin: auto;
+	height:100%;
+}
+
+
+/*------结构部分--------------------------------------------------------
+----------------------------------------------------*/
+#header{
+	height: 48px;
+	background-color:#dcdcdc;
+}
+#logo{
+	height:136px;
+	background-color: #ffffff;
+}
+#body{
+	background-color: #f7f7f7;
+	padding-bottom:55px;
+	padding-top: 20px;
+}
+#footer{
+	height:71px;
+	background-color: #007a51;
+	text-align: center;
+}
+#footer .copyRight{
+	font-size: 16px;
+	color: #ffffff;
+	height:71px;
+	line-height: 71px;
+}
+
+
+
+
+/*------结构内容部分--------------------------------------------------------
+----------------------------------------------------------------------*/
+
+
+/*header - UserLoginState*/
+
+.BluMUI_UserLoginState{
+	font-size: 14px;
+}
+.BluMUI_UserLoginState ul{
+	float: right;
+}
+.BluMUI_UserLoginState li{
+	cursor: default;
+	float: right;
+	margin-left: 24px;
+}
+.BluMUI_UserLoginState hr{
+	display: block;
+	float: right;
+	height:11px;
+	width: 1px;
+	background-color: #666666;
+	border:1px solid #ababab;
+	margin-top: 19px;
+	margin-left:23px;
+}
+.BluMUI_UserLoginState{
+	width: 1180px;
+	position: relative;
+	line-height: 49px;
+	height: 48px;
+}
+.BluMUI_UserLoginState .userInf{
+	display: inline-block;
+	position: relative;
+	margin-left:23px;
+	float: right;
+	cursor: pointer;
+	height: 49px;
+}
+.BluMUI_UserLoginState .login{
+	color:#007a51;
+	margin-left: 25px;
+	font-size: 14px;
+	float: right;
+}
+.BluMUI_UserLoginState .loginNum{
+	float: left;
+}
+.BluMUI_UserLoginState .loginExtInf{
+	color: red;
+	float: right;
+	margin-left: 23px;
+}
+.BluMUI_UserLoginState .userName {
+	height: 49px;
+	overflow: hidden;
+}
+.BluMUI_UserLoginState  #show{
+	display: none;
+}
+.BluMUI_UserLoginState #userName{
+	float: none;
+	height: 49px;
+	line-height: 49px;
+	background-color:inherit;
+	background:url('../../imgs/public/userList.png') no-repeat 97px 20px;
+	padding-right:24px;
+}
+.BluMUI_UserLoginState .userList{
+	z-index: 10;
+	position: absolute;
+	top:35px;
+	right:0;
+}
+.BluMUI_UserLoginState .userList .func {
+	float: none;
+	height: 24px;
+	width: 100px;
+	background-color: #999999;
+	margin-top: 2px;
+	line-height: 24px;
+	text-align: center;
+	color: #ffffff;
+}
+.BluMUI_UserLoginState  .inLoginText{
+	float: right;
+}
+
+/*body classNameShow*/
+
+#body .classNameShow{
+	background-color: #ffffff;
+}
+#body .classNameShow div{
+	width: 1180px;
+	height: 66px;
+}
+#body .classNameShow span{
+	display: inline-block;
+}
+#body .classNameShow .title{
+	color:#007a51;
+	font-size:20px;
+	border-bottom:2px solid #009361;
+	margin-left: 46px;
+	margin-top: 15px;
+}
+#body .classNameShow .name{
+	color:black;
+	font-size:18px;
+	float: right;
+	margin-right: 88px;
+	margin-top: 15px;
+}
+#body .classNameShow hr{
+	width: 1048px;
+	height: 1px;
+	margin-left: 46px;
+	background: #e9e4e4;
+}
+#body .classNameShow button{
+	color:#099d6b;
+	font-size:14px;
+	height: 30px;
+	width: 105px;
+	background: #ffffff;
+	border: 1px solid #099d6b;
+	float: right;
+
+	margin-top: 18px;
+}
+#body .classNameShow .view{
+	margin-right: 86px;
+}
+#body .classNameShow button:hover{
+	color:#ffffff;
+	background-color: #099d6b;
+}
+#body .classNameShow .top{
+	height: 68px;
+}
+#body .classNameShow .bottom{
+	height: 65px;
+}
+
+/*选框按钮的样式*/
+.BlueMUI_Radio .radio{
+	display: block;
+	width:16px;
+	height: 16px;
+	background: #fff;
+	border:1px solid gray ;
+	background-size:100% 100%;
+	float:left;
+	line-height: 21px;
+	margin-top: 3px;
+}
+
+
+/*选框按钮-选中的样式*/
+.BlueMUI_Radio .selected{
+	background-image: url("../../imgs/classManangeEditor/selected.png");
+}
+/*选框名字样式*/
+.BlueMUI_Radio .name{
+	display: block;
+	float:left;
+	width:64px;
+	height: 21px;
+	overflow: hidden;
+	margin-left: 15px;
+}
+/*选框样式*/
+.BlueMUI_Radio{
+	overflow: hidden;
+	width:150px;
+	margin-top: 10px;
+}
+
+
+/* body - content*/
+
+
+
+#body .content{
+	width:1180px;
+	background: #ffffff;
+	overflow: hidden;
+	position: relative;
+}
+
+.BlueMUI_MouduleCheck .radiosWarp .BlueMUI_Radio{
+	float: left;
+}
+
+.BlueMUI_MouduleCheck .radiosWarp{
+	float: left;
+	width: 900px;
+	margin-left: 50px;
+}
+.BlueMUI_MouduleCheck .radioTitle{
+	float: left;
+	font-size: 18px;
+	font-weight: bold;
+	margin-top: 10px;
+
+}
+.BlueMUI_MouduleCheck .Warp{
+	width: 1050px;
+	overflow: hidden;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+
+
+
+	/*body - review */
+#body .review{
+	width: 1180px;
+	height: 282px;
+	background: #ffffff;
+}
+#body .review .title{
+	display: inline-block;
+	width: 114px;
+	text-align: center;
+	margin-left: 51px;
+	margin-top: 22px;
+	height: 22px;
+	color:#333333;
+	font-size: 16px;
+	background: url("../../imgs/classManageCheck/review_logo.png") no-repeat;
+}
+#body .review textarea{
+	width:1075px;
+	height: 128px;
+	resize: none;
+	display: inline-block;
+	border: 1px solid #d2d2d2;
+	margin-left: 51px;
+	margin-top: 21px;
+}
+#body .review .control{
+	width: 373px;
+	height:33px;
+	margin: auto;
+	margin-top: 24px;
+}
+#body .review button{
+	color:#099d6b;
+	font-size:14px;
+	text-align: center;
+	height: 30px;
+	width: 105px;
+	background: #ffffff;
+	border: 1px solid #099d6b;
+	float: right;
+}
+#body .review button:hover{
+	 color:#ffffff;
+	 background-color: #099d6b;
+ }
+#body .review #reject{
+	margin-left: 30px;
+}
+#body .review .right{
+	float: right;
+}
+#body .review .left{
+	float: left;
+}
+	/* logo-logo_warp */
+#logo .logo_warp{
+	height:86px;
+	top:33px;
+	width: 443px;
+	overflow: hidden;
+	position: absolute;
+}
+#logo .logo{
+	height: 100%;
+	float: left;
+	width: 304px;
+	background:url("../../imgs/public/logo.png") no-repeat 0px 7px;
+}
+#logo .logo_text{
+	height: 100%;
+	float: left;
+	font-size:30px;
+	line-height:86px;
+	margin-left: 19px;
+	color: #007a51;
+}
+
+/* body - review*/
+
+#class_nav{
+	margin-top: 10px;
+	overflow: hidden;
+}
+.BluMUI_NavList{
+	float: left;
+	overflow: hidden;
+	width: 100%;
+}
+.BluMUI_NavList li{
+	cursor: default;
+	width: 181px;
+	height: 56px;
+	line-height: 56px;
+	text-align: center;
+	float: left;
+	color: #007a51;
+	background: #ffffff;
+}
+
+.BluMUI_NavList .selected a{
+	display: inline-block;
+	height: 56px;
+	background-image: url("../../imgs/classListInfShow/class_nav_selected.png");
+	background-repeat: repeat-x;
+	background-position: 63px 52px ;
+	background-size: 54px 4px;;
+}
+
+#myIframe{
+	border: none;
+	display: block;
+	min-width: 1180px;
+}
+
+/*totalInf*/
+#body .classNameShow #totalInf{
+	padding-right: 46px;
+	padding-left: 46px;
+	padding-bottom: 20px;
+	overflow: hidden;
+	height: auto;
+}
+.BluMuI_FileNum li{
+	float: left;
+	width:200px;
+	margin-top: 20px;
+}
+.BluMuI_FileNum .Num{
+	color:#007a51;
+	margin-left: 10px;
+}
+.BluMuI_FileNum ul{
+	float: left;
+	width: 1000px;
+	margin-left: 20px;
+}
+.BluMuI_FileNum .title1{
+	color:#007a51;
+	float: left;
+	margin-top: 20px;
+}

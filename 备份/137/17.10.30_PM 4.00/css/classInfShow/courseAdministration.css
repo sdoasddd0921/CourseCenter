@@ -1,0 +1,413 @@
+/*------通用部分--------------------------------------------------------
+----------------------------------------------------------------------*/
+html,body,div,ul,li,a,hr,p,span,button{
+  margin: 0;
+  padding: 0;
+  font-family: "微软雅黑";
+}
+body{
+  background-color: #F7F7F7;
+}
+ul{
+  list-style: none;
+}
+a{
+  text-decoration:none;
+  color: black;
+}
+button{
+  display: block;
+  border: none;
+  padding:0 6px;
+}
+li{
+  text-decoration: none;
+}
+.warp{
+  min-width: 1180px;
+}
+
+.warp_center{
+  position: relative;
+  width:1180px ;
+  margin: auto;
+  height:100%;
+}
+
+/*------结构部分--------------------------------------------------------
+----------------------------------------------------*/
+#header{
+  height: 48px;
+  background-color:#dcdcdc;
+}
+#logo{
+  background-color: #fff;
+}
+#logo .warp_center{
+  height:132px;
+  background:url('../../imgs/courseAudit/logo.png') no-repeat;
+  background-position:7px 36px;
+  margin: 0 auto;
+}
+#body{
+  height: 1085px;
+  width: 1180px;
+  margin:20px auto 0 auto;
+}
+#footer{
+  height:71px;
+  background-color: #007a51;
+  text-align: center;
+}
+
+
+/*------结构内容部分--------------------------------------------------------
+----------------------------------------------------------------------*/
+
+
+/*footer*/
+#footer .copyRight{
+  font-size: 16px;
+  color: #ffffff;
+  height:71px;
+  line-height: 71px;
+}
+/*body*/
+
+
+.showGreenBar{
+  height: 2px;
+  width: 80px;
+  display:inline-block;
+  position: relative;
+  top: -15px;
+  background-color: #009361;
+}
+
+#body-out-top{
+  width: 100%;
+  height: 134px;
+  background: #fff;
+}
+#body-top{
+  margin-left: 45px;
+  width: 1050px;
+  height: 80px;
+  border-bottom: solid 1px #E9E4E4;
+}
+.set{
+  color: #333;
+  display: inline-block;
+  width: 100px;
+}
+
+/*所有checkbox的样式*/
+input[type="checkbox"]{
+  display: none;
+}
+input[type="checkbox"] + label{
+  width: 13px;
+  height: 13px;
+  background: #E5E5E5;
+  border: 1px solid #999;
+  display: inline-block;
+  position: relative;
+  top: 3px;
+  margin-right: 7px;
+  /*line-height: 13px;*/
+}
+
+input[type="checkbox"]:checked + label{
+	background:url('../../imgs/courseAudit/checked.png');
+}
+/*绿色标题*/
+#control{
+	/*background: greenyellow;*/
+	width:400px;
+	display: inline-block;
+	padding-top: 15px;
+}
+#control div,#control span{
+	display: inline-block;
+}
+
+#wei_hu,#shen_he{
+	height:30px;
+	cursor: pointer;
+}
+#control #vertical_line{
+	height:12px;
+	border-left:1px solid #009361;
+	position: relative;
+	top:-25px;
+	margin:0 19px;
+}
+.spanTitle{
+	color: #009361;
+	width: 80px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#settings{
+  position: relative;
+  right: -45px;
+  bottom: -49px;
+  float: right;
+}
+#states .state{
+  display: inline-block;
+  width: 81px;
+  height: 26px;
+  background-color: #fff;
+  color: #007A51;
+  line-height: 26px;
+  text-align: center;
+  border: solid 1px #009361;
+  border-radius: 1px;
+  font-size: 14px;
+  margin: 0 9px;
+  position: relative;
+  left: 51px; top: 14px;
+}
+#states .state:hover{
+  background: #009361;
+  color: #fff;
+}
+
+/*classList*/
+#classList{
+  width: 1180px;
+	font-size: 14px;
+}
+#topGreenBar{
+  width: 1180px;
+  height: 40px;
+  background: #009361;
+  border-radius: 2px;
+  line-height: 40px;
+}
+/*那个绿条条前面的“全选”打乱了排版，就用::befor写了个，
+  但是会导致“课程编号”的居中被破坏，
+  于是又写了个::after，跟::before一样的content
+  颜色跟绿条条一样，这样就隐藏了::after的文字，又实现了排版*/
+/*#greenBarItems .allCheck +.courseNumber::before{*/
+	/*content: '全选';*/
+	/*position: relative;*/
+	/*left:-30px;*/
+/*}*/
+/*#greenBarItems .allCheck +.courseNumber::after{*/
+	 /*content: '全选';*/
+	 /*position: relative;*/
+	/*color: #009361;*/
+/*}用下面中方法解决了*/
+
+/*全选那几个字*/
+#quanxuan{
+	display: inline-block;
+	position: relative;
+	left:23px;
+	width: 30px;
+	/*height:13px;*/
+	float: left;
+	line-height: 13px;
+}
+
+
+#greenBarItems li{
+  display: inline-block;
+	/*text-align: center;*/
+  color: #fff;
+  font-size: 14px;
+}
+
+.check{width:26px;}
+.courseNumber{width:176px;}
+.courseName{width:306px;}
+.classRoom{width:165px;}
+.sublimeTime{width:158px;}
+.currentState{width:149px;}
+.operation{width:106px;}
+#BluMUI_PT{margin-top: 27px;}
+
+/*------组件开发--------------------------------------------------------
+----------------------------------------------------------------------*/
+
+
+/*弹出框*/
+
+#popup{
+	z-index: 100;
+	min-width:100%;
+	height: 100%;
+	cursor: default;
+	position:fixed;
+	top:0;
+	background:rgba(0,0,0,0);
+	/*filter为了兼容IE8,实现透明背景*/
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#00000000,endColorstr=#00000000);
+}
+#pop{
+	z-index:101;
+	width:604px;
+	height:262px;
+	background: white;
+	border:1px solid #A0A0A0;
+	border-top: 46px solid #009361;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-top: -153px;
+	margin-left: -302px;
+}
+#remark{
+	/*display: block;*/
+	float: left;
+	color: #ffffff;
+	/*width:50px;*/
+	height:22px;
+	background: url("../../imgs/courseAudit/remark.png") no-repeat;
+	position: relative;
+	top:-35px;
+	left:22px;
+	padding-left:31px;
+}
+#close{
+	z-index:101;
+	width:23px;
+	height:23px;
+	float: right;
+	background: url("../../imgs/courseAudit/close.png") no-repeat;
+	background-position: 4px 4px;
+	position: relative;
+	top:-36px;
+	right:11px;
+}
+textarea{
+	width:562px;
+	height: 139px;
+	resize: none;
+	margin:0 15px;
+	padding: 5px;
+	border: 1px solid #A0A0A0;
+}
+#sub_btn{
+	width:107px;
+	height:33px;
+	background: #099D6B;
+	color: #ffffff;
+	margin:24px auto;
+	line-height: 33px;
+	font-size: 14px;
+	border-radius: 6px;
+	outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.courseBar li{
+  display: inline-block;
+}
+.courseBar{
+  height:150px;
+  margin-bottom: 7px;
+  background-color: #fff;
+
+  vertical-align: middle;
+  line-height: 150px;
+  overflow: hidden;
+}
+#greenBarItems, .courseBar{
+  /*padding:0 auto;*/
+  text-align: center;
+}
+
+/*让课程条目的勾出现在正确的位置*/
+#greenBarItems label, .courseBar label{
+  text-align: left;
+}
+.operation{
+  line-height:21px;
+  display: inline;
+  vertical-align: middle;
+}
+.courseBar .operation{
+	position: relative;
+	top:-2px;
+}
+.operationSpan{
+  height: 150px;
+  display: inline;
+}
+.operationSpan a{color: #539DFE;}
+
+/*“编辑”提示不可用的样式*/
+.unable{
+	color:#000;
+	opacity: 0.4;
+	cursor: default;
+}
+
+#noCourse{
+	text-align: center;
+}
+
+/*下方的翻页条*/
+
+#turnPage{
+	margin-top: 67px;
+	width: 876px;
+	background: #ffffff;
+	margin-left: 10px;
+}
+
+.BluMUI_PT{
+	width: 470px;
+	margin: auto;
+	height:54px;
+	background: #ffffff;
+}
+.BluMUI_PT  button{
+	float: left;
+	width: 95px;
+	height: 100%;
+}
+
+.BluMUI_PT .last{
+	background: url("../../imgs/home/last.png") no-repeat 38px 21px;
+}
+
+.BluMUI_PT .next{
+	background: url("../../imgs/home/next.png") no-repeat 44px 21px;
+}
+.BluMUI_PT #warp {
+	background:white;
+	float: left;
+}
+.BluMUI_PT #warp li{
+	float: left;
+	line-height:40px;
+	height: 40px;
+	width: 40px;
+	font-size: 10px;
+	text-align: center;
+	margin-top: 7px;
+}
+.BluMUI_PT #warp .cur{
+	color: white;
+	background: url("../../imgs/public/pageBoxSelected.png") no-repeat;
+}
+.BluMUI_PT #warp li:hover{
+	opacity: 0.5;
+	cursor: pointer;
+}

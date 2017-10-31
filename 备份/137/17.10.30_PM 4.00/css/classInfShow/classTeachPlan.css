@@ -1,0 +1,132 @@
+/* group general styles
+------------------------------------------------------- */
+div,body,ul,li,img{
+	font-family: "Microsoft Yahei UI" ! important;
+	padding:0;
+	margin:0;
+}
+
+
+ul{
+	list-style:none;
+}
+
+img{
+	border: none;
+}
+
+.wrap_center{/*限制宽度*/
+	width:1120px;
+	margin:0 auto;
+	position:relative;
+	height:inherit;
+	overflow: hidden;
+}
+
+/* group page structure
+------------------------------------------------------- */
+
+
+#content{
+	min-width:1120px;
+	min-height:806px;
+	background-color:#f7f7f7;
+	overflow: auto;
+}
+
+
+
+/*group page components
+------------------------------------------------------- */
+/*页面最上面的样式，用列表来排版欢迎词和登录*/
+#top ul{
+	float: right;
+	line-height:47px;
+}
+
+#top li{
+	float:left;
+}
+
+#top a:link{
+	color:#007a51;
+}
+#top a:visited{
+	color:#007a51;
+}
+
+#top a:hover{
+	color:#666666;
+}
+
+/*课程中心标志栏，设置校徽图片的格式，用float设置课程中心标志和课程名称*/
+
+
+#content_left{
+	width:256px;
+	float:left;
+	margin-top:37px;
+	background-color:#fff;
+	max-height: 674px;
+	overflow: auto;
+}
+
+
+
+
+#content_right{
+	width:825px;
+	float:right;
+}
+
+#content_right_noNav{
+	width:1120px;
+	height:704px;
+	margin: auto;
+	margin-top:37px;
+}
+
+#content_left #fileList  .selected{
+	/*color:#007a51;*/
+	background: #007a51;
+	color:white;
+}
+#content_left #fileList li{
+	overflow: hidden;
+	padding-left: 37px;
+	height: 56px;
+	color: #333333;
+	/*font-size: 14px;*/
+	font-size: 16px;
+	line-height: 56px;
+	/*background: url("../../imgs/classListInfShow/item_logo.png") no-repeat 25px 24px;*/
+}
+
+.BluMUI_TeachPlan{
+	min-height:674px;
+	background: #fff;
+	margin-top:37px;
+}
+.BluMUI_TeachPlan .jxb{
+	font-weight: bold;
+	font-size: 17px;
+	border-bottom: 3px solid #007a51;
+	padding: 20px;
+}
+.BluMUI_TeachPlan .itemContent{
+	margin-left: 22px;
+}
+.BluMUI_TeachPlan .content a{
+	color: #007a51;
+	cursor: pointer;
+}
+.BluMUI_TeachPlan .content{
+	margin-left: 10px;
+}
+.BluMUI_TeachPlan .warp{
+	margin-top: 10px;
+}
+#downLoad{
+	display:none;
+}
+

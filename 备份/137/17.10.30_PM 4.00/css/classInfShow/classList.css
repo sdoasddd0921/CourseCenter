@@ -1,0 +1,618 @@
+/*------通用部分--------------------------------------------------------
+----------------------------------------------------------------------*/
+html,body,div,ul,li,a,hr,p,span,button,input{
+	margin: 0;
+	padding: 0;
+	outline: none;
+	border: none;
+	font: "Microsoft YaHei UI";
+}
+ul{
+	list-style: none;
+}
+a{
+	text-decoration:none;
+	color: black;
+}
+.warp{
+	min-width: 1180px;
+}
+
+.warp_center{
+	position: relative;
+	width:1120px ;
+	margin: auto;
+	height:100%;
+}
+iframe{
+	display: none;
+}
+/*------结构部分--------------------------------------------------------
+----------------------------------------------------*/
+#header{
+	height: 48px;
+	background-color:#dcdcdc;
+}
+#logo{
+	height:136px;
+	background-color: #f7f7f7;
+}
+#body{
+	min-height: 660px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	background-color: #f7f7f7;
+}
+#body .warp_center{
+	overflow: hidden;
+	height: auto;
+	padding: 10px;
+}
+#footer{
+	height:71px;
+	background-color: #007a51;
+	text-align: center;
+}
+
+
+/*------结构内容部分--------------------------------------------------------
+----------------------------------------------------------------------*/
+
+/*header - UserLoginState*/
+
+
+.BluMUI_UserLoginState ul{
+	float: right;
+	height: 48px;
+}
+.BluMUI_UserLoginState li{
+	cursor: default;
+	float: right;
+	margin-left: 24px;
+}
+.BluMUI_UserLoginState hr{
+	display: block;
+	float: right;
+	height:11px;
+	width: 1px;
+	background-color: #666666;
+	border:1px solid #ababab;
+	margin-top: 19px;
+	margin-left:23px;
+	margin-right:23px;
+}
+.BluMUI_UserLoginState .clearFloat{
+	clear: both;
+}
+.BluMUI_UserLoginState{
+	width: 1120px;
+	font-size: 14px;
+	line-height: 49px;
+	height: 48px;
+}
+.BluMUI_UserLoginState .userInf{
+	display: inline-block;
+	position: relative;
+	float: right;
+	cursor: pointer;
+	height: 49px;
+}
+.BluMUI_UserLoginState .login{
+	color:#007a51;
+	margin-left: 25px;
+	font-size: 14px;
+	float: right;
+	cursor: default;
+}
+.BluMUI_UserLoginState .loginNum{
+	float: left;
+	height: 48px;
+}
+.BluMUI_UserLoginState .loginExtInf{
+	color: red;
+	float: right;
+	margin-left: 23px;
+}
+.BluMUI_UserLoginState .userName {
+	height: 49px;
+	overflow: hidden;
+}
+.BluMUI_UserLoginState  #show{
+	display: none;
+}
+.BluMUI_UserLoginState #userName{
+	float: left;
+	height: 49px;
+	line-height: 49px;
+	background-color:inherit;
+
+}
+.BluMUI_UserLoginState #userDrop{
+	width: 24px;
+	height: 49px;
+	float: left;
+	margin-left: 0;
+	background:url('../../imgs/public/userList.png') no-repeat 0px 20px;
+}
+.BluMUI_UserLoginState .userList{
+	z-index: 10;
+	position: absolute;
+	top:35px;
+	right:0;
+}
+.BluMUI_UserLoginState .userList .func {
+	float: none;
+	height: 24px;
+	width: 100px;
+	background-color: #d8d8d8;
+	margin-top: 2px;
+	line-height: 24px;
+	text-align: center;
+	color: #ffffff;
+}
+.BluMUI_UserLoginState .userList .func:hover{
+	background-color: #999999;
+}
+.BluMUI_UserLoginState  .inLoginText{
+	float: right;
+}
+
+
+/* 自定义滚动条 */
+
+.BluMUI_ScrollBar {
+	border:1px solid #BABABA;
+	width: 100%;
+	position: absolute;
+	overflow: hidden;
+	margin-left: -1px;
+}
+.BluMUI_ScrollBar .body{
+	height: 500px;
+	width: 90%;
+	float: left;
+}
+.BluMUI_ScrollBar  .scroll{
+	width:10%;
+	height: 100%;
+	float: left;
+}
+.BluMUI_ScrollBar  .bar{
+	width: 100%;/*不要动这个*/
+	height: 20px;
+	border: none;
+	outline: none;
+	background-color:black;
+	opacity: 0.7;
+	display: block;/*不要动这个*/
+}
+
+
+
+/* logo-logo_warp */
+#logo .logo_warp{
+	height:86px;
+	margin-top: 33px;
+	width: 443px;
+	overflow: hidden;
+	float: left;
+	display: inline-block;
+}
+#logo .logo{
+	height: 100%;
+	float: left;
+	width: 304px;
+	background:url("../../imgs/public/logo.png") no-repeat 0px 7px;
+}
+#logo .logo_text{
+	height: 100%;
+	float: left;
+	font-size:30px;
+	line-height:86px;
+	margin-left: 19px;
+	color: #007a51;
+}
+
+#search{
+	display: inline-block;
+	right:0;
+	top:75px;
+	position: absolute;
+	height: 28px;
+}
+.BluMUI_Sch {
+	height:28px;
+}
+.BluMUI_Sch .searchArea{
+	height: 26px;
+	border: 1px solid #007a51;
+	border-radius: 4px;
+	overflow: hidden;
+}
+.BluMUI_Sch .searchArea input{
+	width: 282px;
+	height: 26px;
+	border:none;
+	float: left;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.BluMUI_Sch .searchArea button{
+	color: white;
+	height: 26px;
+	width: 92px;
+	background: #007a51;
+	border:none;
+	float: left;
+}
+
+.BluMUI_SimpleDrop{
+	width: 110px;
+	position: relative;
+	float: left;
+}
+.BluMUI_SimpleDrop .selected{
+	display: block;
+	height: 28px;
+	color: #333333;
+	font-size: 14px;
+	line-height: 24px;
+	text-align: center;
+	background: url('../../imgs/public/userList.png') no-repeat 96px 8px;
+}
+.BluMUI_SimpleDrop .selectArea{
+	z-index: 99;
+	position: absolute;
+	width: 100%;
+}
+.BluMUI_SimpleDrop .noSelectArea{
+	display: none;
+}
+.BluMUI_SimpleDrop .selectArea li{
+	font-size: 14px;
+	text-align: center;
+	height: 20px;
+	line-height: 20px;
+	background: #d8d8d8;
+	color:white;
+	margin: 1px;
+	cursor: default;
+}
+.BluMUI_SimpleDrop .selectArea li:hover{
+	background-color:#999999 ;
+}
+/* body - body-left */
+#body .left{
+	float: left;
+	width:234px;
+}
+.BluMUI_DropList{
+	position: relative;
+	background-color: #ffffff;
+	width: 245px;
+	border-radius: 3px;
+
+}
+.BluMUI_DropList ul{
+	list-style: none;
+}
+.BluMUI_DropList div{
+	overflow: hidden;
+	width: 244px;
+}
+.BluMUI_DropList span{
+	cursor: default;
+	display: inline-block;
+	float: left;
+}
+.BluMUI_DropList .rightLogo,.leftLogo{
+	background-repeat: no-repeat;
+	height:48px;
+}
+.BluMUI_DropList .rightLogo{
+	width:27px;
+	background-position:7px 20px;
+	background-size:14px 8px;
+}
+.BluMUI_DropList .leftLogo{
+	width:37px;
+	background-position: 13px 12px;
+	background-size:24px 24px;
+}
+.BluMUI_DropList .warp{
+	min-width: auto;
+}
+.BluMUI_DropList .BluMUI_DropList-0 .warp,
+ .BluMUI_DropList .BluMUI_DropList-1 .warp,
+ .BluMUI_DropList .BluMUI_DropList-2 .warp{
+	 max-height: 776px;
+	 overflow-y: auto;
+	 overflow-x: hidden;
+	 width: 244px;
+ }
+
+.BluMUI_DropList .BluMUI_DropList-0 .rightLogo,
+.BluMUI_DropList .BluMUI_DropList-1 .rightLogo,
+.BluMUI_DropList .BluMUI_DropList-2 .rightLogo{
+	background-position:0px 20px;
+}
+.BluMUI_DropList .BluMUI_DropList-0 .warp .warp,
+.BluMUI_DropList .BluMUI_DropList-1 .warp .warp,
+.BluMUI_DropList .BluMUI_DropList-2 .warp .warp{
+	height: auto;
+	overflow: hidden;
+}
+.BluMUI_DropList ul{
+	width: 234px;
+}
+.BluMUI_DropList .name{
+	width:157px;
+	font-size:14px;
+	height: 48px;
+	text-align: left;
+	padding-left: 12px;
+	line-height: 48px;
+	color: #333333;
+}
+.BluMUI_DropList .item-2 .leftLogo{
+	background-position:29px 20px;
+	background-size:8px 8px;
+}
+.BluMUI_DropList  .item-1-selected{
+	background: #007a51;
+}
+.BluMUI_DropList  .item-1-selected .name{
+	color:white;
+}
+.BluMUI_DropList  .item-2-selected .name{
+	color: #007a51;
+}
+.BluMUI_DropList  .item-3-selected .name{
+	color: #007a51;
+}
+
+/* body - left */
+#body #body_left{
+	width: 234px;
+	float: left;
+	min-height: 856px;
+}
+
+.BluMUI_TopPic img{
+	width: 866px;
+	margin-top: 10px;
+	cursor:url('../../imgs/classListInfShow/topMap_cursor.png'),pointer;
+}
+
+/*body - right*/
+
+
+#class_nav{
+	width: 866px;
+	overflow: hidden;
+}
+#body .right{
+	float: left;
+	margin-left: 10px;
+}
+
+.BluMUI_NavList{
+	float: left;
+	overflow: hidden;
+}
+.BluMUI_NavList li{
+	cursor: default;
+	width: 181px;
+	height: 56px;
+	line-height: 56px;
+	text-align: center;
+	float: left;
+	color: #007a51;
+	background: #ffffff;
+	margin-left: 10px;
+}
+
+.BluMUI_NavList .selected a{
+	display: inline-block;
+	height: 56px;
+	background-image: url("../../imgs/classListInfShow/class_nav_selected.png");
+	background-repeat: repeat-x;
+	background-position: 63px 52px ;
+	background-size: 54px 4px;;
+}
+#class_inf{
+	margin-top: 10px;
+	margin-left: 10px;
+	width: 866px;
+	height: 855px;
+}
+
+/*  */
+.BluMUI_ClassInfBox .item{
+	background-color:#ffffff;
+	width: 866px;
+	height: 160px;
+	margin-top: 13px;
+}
+.BluMUI_ClassInfBox .item  img{
+	width: 122px;
+	height: 122px;
+	background: #999999;
+	float: left;
+	margin-left: 15px;
+	margin-top: 21px;
+	border: none;
+}
+.BluMUI_ClassInfBox .body{
+	width: 540px;
+	height: 140px;
+	margin-left:18px;
+	margin-top: 11px;
+	float: left;
+	background:url("../../imgs/classListInfShow/classInfBg.png") no-repeat 536px 1px;
+}
+.BluMUI_ClassInfBox .title{
+	display: block;
+	background: url("../../imgs/classListInfShow/item_title.png") no-repeat ;
+	background-size:4px 21px;
+	font-size:16px;
+	height:21px;
+	line-height: 21px;
+	padding-left:10px;
+	margin-top: 12px;
+}
+.BluMUI_ClassInfBox
+.content,
+.data,
+.major{
+	font-size:14px ;
+	color: #666666;
+}
+.BluMUI_ClassInfBox .content{
+	margin-top: 15px;
+	width: 531px;
+	height: 35px;
+	overflow: hidden;
+	word-break: break-all;
+	line-height: 18px;
+}
+.BluMUI_ClassInfBox .data{
+	width:350px;
+	height:16px;
+	margin-top:10px;
+}
+.BluMUI_ClassInfBox  .noData p{
+	text-align: center;
+}
+
+.BluMUI_ClassInfBox  .noData img{
+	display: block;
+	height:200px;
+	width:200px;
+	margin: auto;
+	margin-top: 100px;
+}
+.BluMUI_ClassInfBox .major{
+	height: 16px;
+	margin-top: 13px;
+}
+
+.BluMUI_ClassInfBox .reviewName{
+	display: block;
+	margin: auto;
+	font-size: 14px;
+	color: #333333;
+	height: 35px;
+	width:85px;
+	margin-top: 35px;
+	line-height: 18px;
+	text-align: center;
+	overflow: hidden;
+}
+.BluMUI_ClassInfBox .review_warp{
+	height: 140px;
+	width: 171px;
+	float: left;
+}
+.BluMUI_ClassInfBox .content_warp{
+	height: 100%;
+	width: 695px;
+	float: left;
+}
+.BluMUI_ClassInfBox .reviewName1{
+	display: block;
+	margin: auto;
+	font-size: 14px;
+	color: #999999;
+	margin-top: 17px;
+	height: 14px;
+	width:85px;
+	text-align: center;
+	line-height: 14px;
+	overflow: hidden;
+}
+
+.BluMUI_ClassInfBox .stuTime{
+	margin-left: 10px;
+}
+.BlueMUI_Review{
+	width:125px;
+	margin-top: 18px;
+	overflow: hidden;
+	margin-left: auto;
+	margin-right: auto;
+}
+.BlueMUI_Review .star{
+	display: block;
+	float: left;
+	width: 18px;
+	height: 18px;
+	cursor: default;
+	margin-left: 7px;
+}
+.BlueMUI_Review .onstar{
+	background: url("../../imgs/classListInfShow/star.png");
+}
+
+.BlueMUI_Review .nostar{
+	background: url("../../imgs/classListInfShow/nostar.png");
+}
+
+#turnPageWarp{
+	margin-top: 20px;
+	width: 866px;
+	height: 54px;
+	background: #ffffff;
+	margin-left: 10px;
+	text-align: center;
+}
+
+.BluMUI_PT{
+	display: inline-block;
+	height:54px;
+	left:25%;
+	right:25%;
+	background: #ffffff;
+}
+.BluMUI_PT  button{
+	float: left;
+	width: 95px;
+	height: 100%;
+}
+
+.BluMUI_PT .last{
+	background: url("../../imgs/home/last.png") no-repeat 38px 21px;
+}
+
+.BluMUI_PT .next{
+	background: url("../../imgs/home/next.png") no-repeat 44px 21px;
+}
+.BluMUI_PT #warp {
+	background:white;
+	float: left;
+}
+.BluMUI_PT #warp li{
+	float: left;
+	line-height:40px;
+	height: 40px;
+	width: 40px;
+	font-size: 10px;
+	text-align: center;
+	margin-top: 7px;
+}
+.BluMUI_PT #warp .cur{
+	color: white;
+	background: url("../../imgs/public/pageBoxSelected.png") no-repeat;
+}
+.BluMUI_PT #warp li:hover{
+	opacity: 0.5;
+	cursor: pointer;
+}
+
+#footer .copyRight{
+	font-size: 16px;
+	color: #ffffff;
+	height:71px;
+	line-height: 71px;
+}
