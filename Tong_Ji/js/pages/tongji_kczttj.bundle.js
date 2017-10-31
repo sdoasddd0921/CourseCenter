@@ -271,6 +271,16 @@ webpackJsonp([1],{
 	          ),
 	          _react2["default"].createElement(
 	            'td',
+	            null,
+	            e.zs
+	          ),
+	          _react2["default"].createElement(
+	            'td',
+	            null,
+	            e.bfb
+	          ),
+	          _react2["default"].createElement(
+	            'td',
 	            { className: 'righttd' },
 	            _react2["default"].createElement('div', null)
 	          )
@@ -344,38 +354,48 @@ webpackJsonp([1],{
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '10%' },
+	                  { width: '8%' },
 	                  '\u521D\u59CB'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '10%' },
+	                  { width: '8%' },
 	                  '\u7F16\u8F91\u4E2D'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '10%' },
+	                  { width: '8%' },
 	                  '\u7CFB\u90E8\u4E2D\u5FC3\u5F85\u5BA1'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '10%' },
+	                  { width: '8%' },
 	                  '\u6559\u5B66\u9662\u957F\u5F85\u5BA1'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '10%' },
+	                  { width: '8%' },
 	                  '\u9A73\u56DE'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '10%' },
+	                  { width: '8%' },
 	                  '\u5DF2\u4E0A\u7EBF'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',
-	                  { width: '10%' },
+	                  { width: '8%' },
 	                  '\u5DF2\u505C\u7528'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '8%' },
+	                  '\u8BFE\u7A0B\u603B\u6570'
+	                ),
+	                _react2["default"].createElement(
+	                  'td',
+	                  { width: '8%' },
+	                  '\u4E0A\u7EBF\u7387'
 	                ),
 	                _react2["default"].createElement(
 	                  'td',

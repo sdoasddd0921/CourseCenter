@@ -79,6 +79,8 @@ class Lists extends React.Component {
         <td>{e.bhdxg}</td>
         <td>{e.ysx}</td>
         <td>{e.yty}</td>
+        <td>{e.zs}</td>
+        <td>{e.bfb}</td>
         <td className="righttd"><div></div></td>
       </tr>);
     });
@@ -122,13 +124,15 @@ class Lists extends React.Component {
                 <div></div>
               </td>
               <td>开课学院</td>
-              <td width="10%">初始</td>
-              <td width="10%">编辑中</td>
-              <td width="10%">系部中心待审</td>
-              <td width="10%">教学院长待审</td>
-              <td width="10%">驳回</td>
-              <td width="10%">已上线</td>
-              <td width="10%">已停用</td>
+              <td width="8%">初始</td>
+              <td width="8%">编辑中</td>
+              <td width="8%">系部中心待审</td>
+              <td width="8%">教学院长待审</td>
+              <td width="8%">驳回</td>
+              <td width="8%">已上线</td>
+              <td width="8%">已停用</td>
+              <td width="8%">课程总数</td>
+              <td width="8%">上线率</td>
               <td className="righttd">
                 <div></div>
               </td>
