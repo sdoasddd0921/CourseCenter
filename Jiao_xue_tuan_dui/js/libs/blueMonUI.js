@@ -58,7 +58,6 @@ class BlueMUI_CreateThead extends React.Component {
       },
       success: (gets) => {
         let list=JSON.parse(gets);
-        console.log(this)
         this.setState({
           lists: list.data.courseList,
           page: p
@@ -365,7 +364,6 @@ class BlueMUI_CreatePopup extends React.Component {
 
   //搜索
   popup_serch(p, start) {
-    console.log('inner:', p)
     if(p==0) {
       return;
     }
@@ -1026,7 +1024,6 @@ class BlueMUI_CreateFanye extends React.Component {
     if(this.props.TP.total===0) {
       return <div style={{height:'21px',padding: '30px 0'}}></div>;
     }
-    console.log('total:', this.props.TP.total)
 
     let nums=[];
     let start=1;
@@ -1076,7 +1073,6 @@ class BlueMUI_CreateFanye extends React.Component {
   }
 
   fanye(p) {
-    console.log('in TP:', p)
     if (!this.refs.tp || !this.props.callback) {
       return;
     }
@@ -1182,7 +1178,6 @@ class BlueMUI_CreateTab extends React.Component {
         },
         success:function(get) {
           let datas=JSON.parse(get);
-          console.log('test:', datas.data)
           BluMUI.result.Title.setState({
             lists:datas.data.courseList,
             page:1,
@@ -1234,7 +1229,6 @@ class BlueMUI_CreateTab extends React.Component {
   render() {
     if(this.state.Rank==1) {
       document.getElementById('serch_title').innerText='系部中心名称';
-      console.log(document.getElementById('serch_title'))
       document.getElementById('jxtdss').placeholder='请输入系部中心名称';
     } else {
       document.getElementById('serch_title').innerText='课程名称';

@@ -39,7 +39,6 @@ webpackJsonp([1],{
 	      }
 	      menus.push(menu_msg);
 	    });
-	    console.log("newMenu:", menus);
 
 	    // 左边的菜单
 	    BluMUI.create({
@@ -280,7 +279,6 @@ webpackJsonp([1],{
 	            if (e.hasOwnProperty("second")) {
 	              _this4.refs["menu_" + name].getElementsByTagName('ul')[0].style.display = "block";
 	            } else {
-	              console.log('else:', e.url);
 	              if (document.querySelector("#menu li>ul")) {
 	                document.querySelector("#menu li>ul").style.display = "none";
 	              }
@@ -378,7 +376,6 @@ webpackJsonp([1],{
 	    }
 
 	    // del(tab_name,eve) {
-	    //   console.log("del:",tab_name)
 	    //   eve.nativeEvent.preventDefault();
 	    //   let tabs=this.state.tabs;
 	    //   let index=tabs.indexOf(tab_name);

@@ -40,7 +40,6 @@ class Filter extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        console.log(datas);
         let ops=[`<option value="">请选择</option>`];
         datas.data.list.forEach(e=>{
           ops.push(`<option value="${e.wppc}">${e.wppc}</option>`)
@@ -58,7 +57,6 @@ class Filter extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        console.log(datas);
         let ops=[`<option value="">请选择</option>`];
         datas.data.forEach(e=>{
           ops.push(`<option value="${e.kkxymc}">${e.kkxymc}</option>`)
@@ -77,7 +75,6 @@ class Filter extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        console.log(datas);
         let ops=[`<option value="">请选择</option>`];
         datas.data.forEach(e=>{
           ops.push(`<option value="${e.jysmc}">${e.jysmc}</option>`)
@@ -103,7 +100,6 @@ class Filter extends React.Component {
       data: D,
       success: (gets) => {
         let datas = JSON.parse(gets);
-        console.log('gets:', datas);
         if (datas.meta.result === 100) {
           this.setState({
             page: p,

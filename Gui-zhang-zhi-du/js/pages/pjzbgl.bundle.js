@@ -244,7 +244,6 @@ webpackJsonp([4],{
 	      switch (type) {
 	        case 'edit':
 	          var a = './masterAddZbEditor.html?isEditor=true&type=' + +(lb === "通用") + '&indexBatch=' + zbpc;
-	          console.log(a);
 	          window.location.href = a;
 	          break;
 	        case 'delete':
@@ -358,7 +357,6 @@ webpackJsonp([4],{
 	    value: function render() {
 	      var _this9 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          id = _props.id;
@@ -417,15 +415,10 @@ webpackJsonp([4],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      console.log("popup di mount", document.body.offsetHeight);
 	      if (window.frameElement) {
 	        window.frameElement.height = document.body.offsetHeight;
 	      }
-	      console.log(this.refs.pb);
 	      // background click to cancel
-	      this.refs.pb.onclick = function (e) {
-	        e.stopPropagation();console.log("stop");
-	      };
 	      var _props2 = this.props,
 	          id = _props2.id,
 	          type = _props2.type;

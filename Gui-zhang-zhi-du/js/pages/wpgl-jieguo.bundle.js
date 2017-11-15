@@ -143,7 +143,6 @@ webpackJsonp([8],{
 	        bykc: this.search_cache.bykc
 	      });
 	      this.name_input.value = '';
-	      console.log("model:", model);
 	      this._get_list(1);
 	    }
 	  }, {
@@ -467,20 +466,16 @@ webpackJsonp([8],{
 	    value: function option(type, id, wpid, groupItem, itemName, courseId, eve) {
 	      // eve.preventDefault();
 
-	      console.log("option:", type);
 	      switch (type) {
 	        case 'show':
 	          Creat_popup('show', groupItem, id);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case 'edit':
-	          console.log("修改");
 	          if (this.props.model === 'zj') {
 	            window.location.href = './masterWPEditorBymaster.html?wpID=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem + '&wppc=' + parseHash(window.location.href).wppc;
-	            // console.log(`./masterWPEditorBymaster.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`)
 	          } else {
 	            window.location.href = './masterWPEditor.html?courseNo=' + courseId + '&wpID=' + wpid + '&expId=' + id + '&masterId=' + id + '&masterName=' + itemName + '&groupItem=' + groupItem + '&wppc=' + parseHash(window.location.href).wppc;
-	            // console.log(`./masterWPEditor.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`)
 	          }
 	          break;
 	        default:
@@ -827,7 +822,6 @@ webpackJsonp([8],{
 	        if (bgh > parseInt(document.body.offsetHeight)) {
 	          H = bgh;
 	        }
-	        console.log("height:", bgh);
 	        window.frameElement.height = H;
 	      }
 	    }
@@ -857,7 +851,6 @@ webpackJsonp([8],{
 	    value: function render() {
 	      var _this11 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          names = _props.names;
@@ -965,7 +958,6 @@ webpackJsonp([8],{
 	}(_react2["default"].Component);
 
 	function Creat_popup(type, names, id) {
-	  console.log(id);
 	  var popup_datas = {
 	    type: type,
 	    names: names,

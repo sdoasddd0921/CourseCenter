@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 var ajax=require('./post_ajax.js');
 var Place=2;
-console.log("Place=2,展示页")
 /*
  * 学习资源
  */
@@ -13,7 +12,6 @@ class BlueMUI_CreateNav extends React.Component {
     super(props);
     this.choose=this.choose.bind(this);
     this.set_nav=this.set_nav.bind(this);
-    console.log(this.props,'___15')
     this.state={
       Nav:this.props.module||'a'
     }
@@ -91,7 +89,6 @@ var Show_nav_item=function(prop) {
     data:data,
     success:function(gets) {
       let datas=JSON.parse(gets);
-      console.log(datas,'___94');
       ReactDOM.unmountComponentAtNode(document.getElementById('React_right'));
       ReactDOM.render(
         <Comp {...datas}/>,
@@ -178,7 +175,6 @@ class BlueMUI_Create_a extends React.Component {
   }
 
   render() {
-    console.log('视频',this.props)
     return(<div id='right'>
       {this.create_shipin()}
       {this.create_other_shipin()}
@@ -202,7 +198,6 @@ class BlueMUI_Create_b extends React.Component {
       var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
       
       window.frames['preview'].location.href = 'pdfViewer.html?file='+(swfURL + No.xywjm);
-      console.log(No)
       if(No.sfnxz==1) {
         // 字段sfnxz：1->能下载，2->不能下载
         ReactDOM.render(
@@ -231,13 +226,11 @@ class BlueMUI_Create_b extends React.Component {
     let back = [];
 
     this.jiangyi = check.call(this);
-    console.log("讲义-",this.jiangyi)
     back.push(Create_tab('讲义'));
     if(this.jiangyi) {
       back.push(<div key="no_data" style={{width:"100%",height:"100px"}}></div>);
     } else {
       this.default_kcbh=this.props.data[0];
-      console.log('默认：',this.default_kcbh)
       this.props.data.map(e=>{
         back.push(<a href="javascript:void(0)" key={e.id} onClick={this.show.bind(this,e)}>{e.ywjm}</a>);
       });
@@ -259,16 +252,13 @@ class BlueMUI_Create_b extends React.Component {
     for(let i in data) {
       ajax_data+=i+'='+data[i]+'&';
     }
-    console.log(ajax_data.substr(0,ajax_data.length-1))
     xmlhttp.onreadystatechange=()=>{
       if (xmlhttp.readyState==4 && xmlhttp.status==200) {
         let datas=JSON.parse(xmlhttp.responseText);
         this.other = datas.meta.result;
         if(this.other==101||this.other==102) {
-          console.log('22无数据')
           back.push(<div key="no_data" style={{width:"100%",height:"100px"}}></div>);
         } else {
-          console.log('success',datas)
           datas.data.map(e=>{
             let Xiazai;
             if(e.sfnxz==1) {
@@ -295,7 +285,6 @@ class BlueMUI_Create_b extends React.Component {
   }
 
   render() {
-    console.log('讲义', this.props)
     return(<div id='right' ref='right'>
       <div id="jiangyi">
         {this.create_jiangyi()}
@@ -310,7 +299,6 @@ class BlueMUI_Create_b extends React.Component {
   }
 
   componentDidMount() {
-    console.log('___247',this.jiangyi,this.other)
     let error_msg="";
     if(this.jiangyi&&this.other!==100) {
       if(this.other===101) {
@@ -481,12 +469,10 @@ class BlueMUI_Create_f extends React.Component {
   }
 
   create_jiaocai() {
-    console.log(this);
     let flag = check.call(this);
     let back=[];
 
     back.push(Create_tab('课程教材'));
-    console.log('aaa',flag)
     if(flag) return flag;
     this.props.data.teachBookList.map(e=>{
       back.push(<div className="item" key={e.id} >

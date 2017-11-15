@@ -17,7 +17,7 @@ function parseHash(URL) {
 		}
 
 	}
-	result.classId='A1040040';
+	result.classId='A1050080';
 	return result;
 }
 

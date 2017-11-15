@@ -131,7 +131,6 @@ webpackJsonp([3],{
 	      this.setState({
 	        wppc: reviewBatch
 	      }, function () {
-	        console.log('test:', _this3.wppc_select.value);
 	        _this3.search();
 	      });
 
@@ -174,7 +173,6 @@ webpackJsonp([3],{
 	    value: function render() {
 	      var _this5 = this;
 
-	      // console.log("TP:",this.state.TP)
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'Option_react' },
@@ -475,7 +473,6 @@ webpackJsonp([3],{
 	    value: function render() {
 	      var _this10 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          id = _props.id;

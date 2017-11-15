@@ -195,7 +195,6 @@ class Option extends React.Component {
     this.setState({
       wppc: reviewBatch
     }, () => {
-      console.log('test:', this.wppc_select.value);
       this.search();
     });
 
@@ -232,7 +231,6 @@ class Option extends React.Component {
   }
 
   render() {
-    // console.log("TP:",this.state.TP)
     return (
       <div id="Option_react">
         <div id="option">
@@ -395,7 +393,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,id}=this.props;
     const MAP={
       "delete": "删除"
@@ -644,15 +641,15 @@ class BlueMUI_CreateTabs extends React.Component {
   }
 
   componentDidMount() {
-    this.refs[this.state.subModule].style.borderBottom='2px solid #009361';
+    this.refs[this.state.subModule].style.color='#009361';
   }
 
   componentWillUpdate(nextProps, nextState) {
     let end=this.refs.tabs.children.length;
     for(let i=0;i<end;i++) {
-      this.refs.tabs.children[i].style.borderBottom='none';
+      this.refs.tabs.children[i].style.color='#999999';
     }
-    this.refs[nextState.subModule].style.borderBottom='2px solid #009361';
+    this.refs[nextState.subModule].style.color='#009361';
   }
 
 }
@@ -710,11 +707,15 @@ class BlueMUI_CreateOptions extends React.Component {
     let that=this;
     let val = this.refs.serchValue ? this.refs.serchValue.value : '';
     function hand_serch(eve) {
+      let searchValue = '';
+      if (document.getElementById('jxtdss')) {
+        searchValue = document.getElementById('jxtdss').value;
+      }
       BlueMUI_GetList(
         that.state.subModule,
         1,
         that.state.course_state,
-        document.getElementById('jxtdss')||document.getElementById('jxtdss').value,
+        searchValue,
         that
       );
     }
@@ -799,11 +800,6 @@ class BlueMUI_CreateOptions extends React.Component {
         <Option />,
         document.getElementById('React_list')
       );
-
-
-
-
-
       return;
     }
 
@@ -1037,7 +1033,7 @@ class BlueMUI_CreatePopup extends React.Component {
           <td>{e.czhzt}</td>
           <td>{e.czsj}</td>
           <td>{e.czrxm}</td>
-          <td>{e.bz}</td>
+          <td>{e.bz.replace(/\\n/g, '\n')}</td>
         </tr>)
       })}
     </tbody>);
@@ -1105,7 +1101,6 @@ class Tijiaoshenhe extends React.Component {
   }
   componentDidMount() {
     this.refs.tijiao.onclick=(e=>{
-      console.log(this.props.Kcbh);
       Tijiao(1,this.props.Kcbh);
       this.die();
     });

@@ -145,7 +145,6 @@ class List extends React.Component {
     switch(type) {
       case 'edit':
         let a = `./masterAddZbEditor.html?isEditor=true&type=${+(lb==="通用")}&indexBatch=${zbpc}`;
-        console.log(a);
         window.location.href=a;
         break;
       case 'delete':
@@ -213,7 +212,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,id}=this.props;
     const MAP={
       "delete": "删除"
@@ -248,13 +246,10 @@ class Popup extends React.Component {
   }
 
   componentDidMount() {
-    console.log("popup di mount",document.body.offsetHeight)
     if(window.frameElement) {
       window.frameElement.height=document.body.offsetHeight;
     }
-    console.log(this.refs.pb)
     // background click to cancel
-    this.refs.pb.onclick=e=>{e.stopPropagation();console.log("stop")};
     const {id,type}=this.props;
     let dat={};
 

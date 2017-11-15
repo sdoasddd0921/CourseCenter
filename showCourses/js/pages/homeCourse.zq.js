@@ -140,7 +140,6 @@ webpackJsonp([0],{
 	    //   starNum:getCourseHomePageMsg.courseBaseMsg.kcpf,// 当前评价的星星数
 	    //   enable:false,// 是否可修改评价，布尔值
 	    //   callback:function(value){//
-	    //     console.log(value);
 	    //   }},
 	    //   'Review',
 	    //   document.getElementById('evaluation3')
@@ -158,7 +157,6 @@ webpackJsonp([0],{
 	  enable: true, // 是否可修改评价，布尔值
 	  callback: function callback(value) {
 	    //
-	    console.log(value);
 	    document.getElementById('value2').value = value;
 	  }
 	}, 'Review', document.getElementById('evaluation2'));
@@ -173,7 +171,6 @@ webpackJsonp([0],{
 	  enable: true, // 是否可修改评价，布尔值
 	  callback: function callback(value) {
 	    //
-	    console.log(value);
 	    // document.getElementById('percent').innerText=value*20;
 	    document.getElementById('value1').value = value;
 	  }

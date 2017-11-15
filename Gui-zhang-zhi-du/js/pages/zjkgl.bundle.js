@@ -883,7 +883,6 @@ webpackJsonp([10],{
 	        checks.map(function (e) {
 	          (e.checked = eve.target.checked) && _this11.ids.push(e.value.split("#")[0]) && masterNames.push(e.value.split("#")[1]);
 	        });
-	        console.log(masterNames.join(","));
 	      };
 	    }
 	  }, {
@@ -912,7 +911,6 @@ webpackJsonp([10],{
 	    value: function render() {
 	      var _this13 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          names = _props.names;

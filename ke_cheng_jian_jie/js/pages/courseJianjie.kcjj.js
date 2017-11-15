@@ -50,7 +50,6 @@ webpackJsonp([0],{
 	  _createClass(JianJie, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log('props:', this.props);
 	      var H5 = '';
 	      if (this.props.H5) {
 	        H5 = _react2["default"].createElement('div', { id: 'intro', dangerouslySetInnerHTML: { __html: this.props.H5 } });
@@ -61,65 +60,30 @@ webpackJsonp([0],{
 	          this.props.intro
 	        );
 	      }
-	      return _react2["default"].createElement(
-	        'div',
-	        null,
-	        _react2["default"].createElement(
-	          'div',
-	          { id: 'title' },
-	          this.props.courseName,
-	          '\u8BFE\u7A0B\u7B80\u4ECB'
-	        ),
-	        _react2["default"].createElement(
-	          'div',
-	          { id: 'infos' },
-	          _react2["default"].createElement(
-	            'div',
-	            { id: 'left' },
-	            _react2["default"].createElement(
-	              'p',
-	              null,
-	              _react2["default"].createElement(
-	                'span',
-	                { id: 'No' },
-	                '\u8BFE\u7A0B\u7F16\u53F7\uFF1A',
-	                this.props.infos.No
-	              ),
-	              _react2["default"].createElement(
-	                'span',
-	                null,
-	                '\u5B66\u65F6[\u5B66\u5206]\uFF1A',
-	                this.props.infos.xs,
-	                '[',
-	                this.props.infos.xf,
-	                ']'
-	              )
-	            ),
-	            _react2["default"].createElement(
-	              'p',
-	              null,
-	              '\u9002\u7528\u4E13\u4E1A\uFF1A',
-	              this.props.infos.suit
-	            )
-	          ),
-	          _react2["default"].createElement(
-	            'div',
-	            { id: 'right' },
-	            _react2["default"].createElement(
-	              'p',
-	              null,
-	              '\u8BFE\u7A0B\u7C7B\u578B\uFF1A',
-	              this.props.infos.type
-	            )
-	          )
-	        ),
-	        H5
-	      );
+	      return H5;
 	    }
 	  }]);
 
 	  return JianJie;
 	}(_react2["default"].Component);
+
+	/*
+
+	      <div id="title">{this.props.courseName}课程简介</div>
+	      <div id="infos">
+	        <div id="left">
+	          <p>
+	            <span id="No">课程编号：{this.props.infos.No}</span>
+	            <span>学时[学分]：{this.props.infos.xs}[{this.props.infos.xf}]</span>
+	          </p>
+	          <p>适用专业：{this.props.infos.suit}</p>
+	        </div>
+	        <div id="right">
+	          <p>课程类型：{this.props.infos.type}</p>
+	        </div>
+	      </div>
+	      { H5 }
+	*/
 	// getCourseHomePageMsg
 
 	function aj1() {
@@ -182,51 +146,8 @@ webpackJsonp([0],{
 
 	Promise.all([aj1(), aj2()]).then(function (results) {
 	  var introData = Object.assign(results[0], results[1]);
-	  // console.log('results:', JSON.stringify(introData));
 	  _reactDom2["default"].render(_react2["default"].createElement(JianJie, introData), document.getElementById('jianjie'));
 	});
-
-	// ajax({
-	//   url:courseCenter.host+'getCourseIntroducePageMsg',
-	//   data:{
-	//     kcbh:Course.kcbh,
-	//     unifyCode:User.id,
-	//     place:Place
-	//   },
-	//   success:function(gets) {
-	//     let D = JSON.parse(gets);
-	//     let datas = D.data[0];
-	//     let intro = datas.kcjs;
-	//     let courseName = datas.kcmc;
-	//     let infos = {
-	//       No: datas.kcbh,
-	//       xs: 'test2',
-	//       xf: 'test3',
-	//       pre: 'test4',
-	//       type: 'test5',
-	//       suit: 'test6'
-	//     };
-	//     let H5 = datas.kcjshtml;
-
-	//     if(D.meta.result==101) {
-	//       window.location.href='error1.html';
-	//       return;
-	//     } else if(D.meta.result==102) {
-	//       window.location.href='error2.html';
-	//       return;
-	//     }
-	//     if(!D.data||datas.kcjshtml=='') {
-	//       // window.location.href='error.html';
-	//       document.getElementById('jianjie').innerHTML='<p style="text-align:center;">没有课程简介</p>';
-	//     } else {
-	//       ReactDOM.render(
-	//         <JianJie intro={intro} courseName={courseName} infos={infos} H5={H5}/>,
-	//         document.getElementById('jianjie')
-	//       );
-	//       // document.getElementById('jianjie').innerHTML=datas.data[0].kcjshtml;
-	//     }
-	//   }
-	// });
 
 /***/ }),
 

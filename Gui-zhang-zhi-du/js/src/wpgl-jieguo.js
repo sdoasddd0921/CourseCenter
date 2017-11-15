@@ -108,7 +108,6 @@ class Option extends React.Component {
       bykc: this.search_cache.bykc
     });
     this.name_input.value='';
-    console.log("model:",model)
     this._get_list(1);
   }
 
@@ -298,20 +297,16 @@ class Lists extends React.Component {
   option(type, id, wpid, groupItem, itemName, courseId, eve) {
     // eve.preventDefault();
 
-    console.log("option:",type);
     switch(type) {
       case 'show':
         Creat_popup('show', groupItem, id);
         document.getElementById('popup').style.display="block";
         break;
       case 'edit':
-        console.log("修改");
         if(this.props.model==='zj') {
           window.location.href=`./masterWPEditorBymaster.html?wpID=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`;
-          // console.log(`./masterWPEditorBymaster.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`)
         } else {
           window.location.href=`./masterWPEditor.html?courseNo=${courseId}&wpID=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`;
-          // console.log(`./masterWPEditor.html?wpId=${wpid}&expId=${id}&masterId=${id}&masterName=${itemName}&groupItem=${groupItem}&wppc=${parseHash(window.location.href).wppc}`)
         }
         break;
       default:
@@ -504,7 +499,6 @@ class Poplist extends React.Component {
       if(bgh>parseInt(document.body.offsetHeight)) {
         H=bgh;
       }
-      console.log("height:",bgh)
       window.frameElement.height=H;
     }
 
@@ -524,7 +518,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,names}=this.props;
     const MAP={
       "PLdelete": "删除",
@@ -589,7 +582,6 @@ class Popup extends React.Component {
 }
 
 function Creat_popup(type, names, id) {
-  console.log(id)
   const popup_datas={
     type: type,
     names: names,

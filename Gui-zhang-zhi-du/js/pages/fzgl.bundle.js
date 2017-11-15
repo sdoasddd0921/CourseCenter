@@ -363,7 +363,6 @@ webpackJsonp([0],{
 	    value: function render() {
 	      var _this9 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          id = _props.id;

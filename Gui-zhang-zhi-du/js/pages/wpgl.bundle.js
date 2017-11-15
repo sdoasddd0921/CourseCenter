@@ -210,7 +210,6 @@ webpackJsonp([6],{
 	      var pop = document.getElementById('popup');
 	      // PiLiangDelete
 	      this.PLdelete.onclick = function () {
-	        console.log(WPPCS);
 	        Creat_popup('PLdelete', WPPCS, _this5.refs.list.ids);
 	        pop.style.display = 'block';
 	      };
@@ -314,7 +313,6 @@ webpackJsonp([6],{
 	    value: function option(type, id, wppc, eve) {
 	      eve.preventDefault();
 
-	      console.log("option:", type);
 	      switch (type) {
 	        case 'delete':
 	          Creat_popup('delete', wppc, id);
@@ -496,7 +494,6 @@ webpackJsonp([6],{
 	        checks.map(function (e) {
 	          (e.checked = eve.target.checked) && _this9.ids.push(e.value.split("#")[0]) && WPPCS.push(e.value.split("#")[1]);
 	        });
-	        console.log(WPPCS.join(","));
 	      };
 	    }
 	  }, {
@@ -525,7 +522,6 @@ webpackJsonp([6],{
 	    value: function render() {
 	      var _this11 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          names = _props.names;
@@ -645,8 +641,6 @@ webpackJsonp([6],{
 	    //     if(this.refs.pb.offsetHeight>parseInt(document.body.offsetHeight)) {
 	    //       H=this.refs.pb.offsetHeight;
 	    //     }
-	    //     console.log("height:",this.refs.pb.parentNode.clientHeight)
-	    //     console.log(document.getElementById('popup').offsetHeight)
 	    //     window.frameElement.height=H;
 	    //   }
 	    // }
@@ -657,7 +651,6 @@ webpackJsonp([6],{
 	}(_react2["default"].Component);
 
 	function Creat_popup(type, names, id) {
-	  console.log(id);
 	  var popup_datas = {
 	    type: type,
 	    names: names,

@@ -320,7 +320,6 @@ webpackJsonp([0],{
 	      this.setState({
 	        wppc: reviewBatch
 	      }, function () {
-	        console.log('test:', _this6.wppc_select.value);
 	        _this6.search();
 	      });
 
@@ -363,7 +362,6 @@ webpackJsonp([0],{
 	    value: function render() {
 	      var _this8 = this;
 
-	      // console.log("TP:",this.state.TP)
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'Option_react' },
@@ -660,7 +658,6 @@ webpackJsonp([0],{
 	    value: function render() {
 	      var _this13 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          id = _props.id;
@@ -1054,16 +1051,16 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      this.refs[this.state.subModule].style.borderBottom = '2px solid #009361';
+	      this.refs[this.state.subModule].style.color = '#009361';
 	    }
 	  }, {
 	    key: 'componentWillUpdate',
 	    value: function componentWillUpdate(nextProps, nextState) {
 	      var end = this.refs.tabs.children.length;
 	      for (var i = 0; i < end; i++) {
-	        this.refs.tabs.children[i].style.borderBottom = 'none';
+	        this.refs.tabs.children[i].style.color = '#999999';
 	      }
-	      this.refs[nextState.subModule].style.borderBottom = '2px solid #009361';
+	      this.refs[nextState.subModule].style.color = '#009361';
 	    }
 	  }]);
 
@@ -1138,7 +1135,11 @@ webpackJsonp([0],{
 	      var that = this;
 	      var val = this.refs.serchValue ? this.refs.serchValue.value : '';
 	      function hand_serch(eve) {
-	        BlueMUI_GetList(that.state.subModule, 1, that.state.course_state, document.getElementById('jxtdss') || document.getElementById('jxtdss').value, that);
+	        var searchValue = '';
+	        if (document.getElementById('jxtdss')) {
+	          searchValue = document.getElementById('jxtdss').value;
+	        }
+	        BlueMUI_GetList(that.state.subModule, 1, that.state.course_state, searchValue, that);
 	      }
 	      //查询列表
 	      BlueMUI_GetList(this.state.subModule, this.state.page, this.state.course_state, val, this);
@@ -1279,7 +1280,6 @@ webpackJsonp([0],{
 	        BluMUI.result.CreateList = '';
 	        _reactDom2["default"].unmountComponentAtNode(document.getElementById('React_fanye'));
 	        Kcfzgl_option = _reactDom2["default"].render(_react2["default"].createElement(Option, null), document.getElementById('React_list'));
-
 	        return;
 	      }
 
@@ -1689,7 +1689,7 @@ webpackJsonp([0],{
 	            _react2["default"].createElement(
 	              'td',
 	              null,
-	              e.bz
+	              e.bz.replace(/\\n/g, '\n')
 	            )
 	          );
 	        })
@@ -1781,7 +1781,6 @@ webpackJsonp([0],{
 	      var _this23 = this;
 
 	      this.refs.tijiao.onclick = function (e) {
-	        console.log(_this23.props.Kcbh);
 	        Tijiao(1, _this23.props.Kcbh);
 	        _this23.die();
 	      };

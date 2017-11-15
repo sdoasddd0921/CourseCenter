@@ -530,7 +530,6 @@ class List extends React.Component {
         && this.ids.push(e.value.split("#")[0])
         && masterNames.push(e.value.split("#")[1]);
       });
-      console.log(masterNames.join(","))
     }
   }
 
@@ -547,7 +546,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,names}=this.props;
     const MAP={
       "PLdelete": "删除",

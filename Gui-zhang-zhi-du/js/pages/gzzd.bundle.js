@@ -154,7 +154,6 @@ webpackJsonp([2],{
 	      } else {
 	        this.pub = this.refs.Pub.checked ? 1 : 0;
 	      }
-	      console.log('this page', this.P.page);
 	      ajax({
 	        url: courseCenter.host + 'getRegulationHead',
 	        data: {
@@ -168,15 +167,11 @@ webpackJsonp([2],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log('列表信息', datas);
 	          _this2.P = {
 	            page: p || _this2.P.page,
 	            pages: datas.data.totalPages
 	          };
 	          show_list(datas.data.regulationInformation, _this2.P, _this2);
-	          console.log("子iframe");
-	          console.log(parent.document.getElementById('ifs-gzzd').height);
-	          console.log(document.body.scrollHeight);
 	          parent.document.getElementById('ifs-gzzd').height = document.body.scrollHeight;
 	        }
 	      });
@@ -259,7 +254,6 @@ webpackJsonp([2],{
 	  _createClass(BlueMUI_CreateFanye, [{
 	    key: 'create_popup_fanye',
 	    value: function create_popup_fanye() {
-	      console.log(this.props, "___376");
 	      var style = {};
 	      var fanye = [];
 	      var start = 1;
@@ -414,14 +408,12 @@ webpackJsonp([2],{
 	      if (p == 0) {
 	        return;
 	      }
-	      console.log("开始翻页");
 	      this.props.This.P.page = p;
 	      this.props.This.serch();
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      // console.log(this.props,"fanye")
 	      return this.create_popup_fanye();
 	    }
 	  }]);
@@ -449,32 +441,26 @@ webpackJsonp([2],{
 	  _createClass(List, [{
 	    key: 'del',
 	    value: function del(id) {
-	      console.log('删除：', id);
 	      ajax({
 	        url: courseCenter.host + 'deleteRegulation',
 	        data: {
 	          unifyCode: getCookie('userId'),
 	          id: id
 	        },
-	        success: function success(e) {
-	          console.log(JSON.parse(e));
-	        }
+	        success: function success(e) {}
 	      });
 	      this.props.This.serch();
 	    }
 	  }, {
 	    key: 'pub',
 	    value: function pub(id) {
-	      console.log('发布：', id);
 	      ajax({
 	        url: courseCenter.host + 'publishRegulation',
 	        data: {
 	          unifyCode: getCookie('userId'),
 	          id: id
 	        },
-	        success: function success(e) {
-	          console.log(JSON.parse(e));
-	        }
+	        success: function success(e) {}
 	      });
 	      this.props.This.serch();
 	    }

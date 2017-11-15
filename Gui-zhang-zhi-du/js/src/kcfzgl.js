@@ -94,7 +94,6 @@ class Option extends React.Component {
     this.setState({
       wppc: reviewBatch
     }, () => {
-      console.log('test:', this.wppc_select.value);
       this.search();
     });
 
@@ -131,7 +130,6 @@ class Option extends React.Component {
   }
 
   render() {
-    // console.log("TP:",this.state.TP)
     return (
       <div id="Option_react">
         <div id="option">
@@ -298,7 +296,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,id}=this.props;
     const MAP={
       "delete": "删除"

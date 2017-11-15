@@ -77,7 +77,6 @@ webpackJsonp([0],{
 
 	var ajax = __webpack_require__(160);
 	var Place = 2;
-	console.log("Place=2,展示页");
 	/*
 	 * 学习资源
 	 */
@@ -94,7 +93,6 @@ webpackJsonp([0],{
 
 	    _this.choose = _this.choose.bind(_this);
 	    _this.set_nav = _this.set_nav.bind(_this);
-	    console.log(_this.props, '___15');
 	    _this.state = {
 	      Nav: _this.props.module || 'a'
 	    };
@@ -234,7 +232,6 @@ webpackJsonp([0],{
 	    data: data,
 	    success: function success(gets) {
 	      var datas = JSON.parse(gets);
-	      console.log(datas, '___94');
 	      _reactDom2["default"].unmountComponentAtNode(document.getElementById('React_right'));
 	      _reactDom2["default"].render(_react2["default"].createElement(Comp, datas), document.getElementById('React_right'));
 	    }
@@ -349,7 +346,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('视频', this.props);
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'right' },
@@ -388,7 +384,6 @@ webpackJsonp([0],{
 	        var swfURL = courseCenter.host + 'CquptCourseCenter/pages/classInfShow/docs/CourseCenterAttachment/';
 
 	        window.frames['preview'].location.href = 'pdfViewer.html?file=' + (swfURL + No.xywjm);
-	        console.log(No);
 	        if (No.sfnxz == 1) {
 	          // 字段sfnxz：1->能下载，2->不能下载
 	          _reactDom2["default"].render(_react2["default"].createElement(
@@ -423,13 +418,11 @@ webpackJsonp([0],{
 	      var back = [];
 
 	      this.jiangyi = check.call(this);
-	      console.log("讲义-", this.jiangyi);
 	      back.push(Create_tab('讲义'));
 	      if (this.jiangyi) {
 	        back.push(_react2["default"].createElement('div', { key: 'no_data', style: { width: "100%", height: "100px" } }));
 	      } else {
 	        this.default_kcbh = this.props.data[0];
-	        console.log('默认：', this.default_kcbh);
 	        this.props.data.map(function (e) {
 	          back.push(_react2["default"].createElement(
 	            'a',
@@ -458,16 +451,13 @@ webpackJsonp([0],{
 	      for (var i in data) {
 	        ajax_data += i + '=' + data[i] + '&';
 	      }
-	      console.log(ajax_data.substr(0, ajax_data.length - 1));
 	      xmlhttp.onreadystatechange = function () {
 	        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	          var datas = JSON.parse(xmlhttp.responseText);
 	          _this6.other = datas.meta.result;
 	          if (_this6.other == 101 || _this6.other == 102) {
-	            console.log('22无数据');
 	            back.push(_react2["default"].createElement('div', { key: 'no_data', style: { width: "100%", height: "100px" } }));
 	          } else {
-	            console.log('success', datas);
 	            datas.data.map(function (e) {
 	              var Xiazai = void 0;
 	              if (e.sfnxz == 1) {
@@ -504,7 +494,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log('讲义', this.props);
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'right', ref: 'right' },
@@ -526,7 +515,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      console.log('___247', this.jiangyi, this.other);
 	      var error_msg = "";
 	      if (this.jiangyi && this.other !== 100) {
 	        if (this.other === 101) {
@@ -802,12 +790,10 @@ webpackJsonp([0],{
 	  _createClass(BlueMUI_Create_f, [{
 	    key: 'create_jiaocai',
 	    value: function create_jiaocai() {
-	      console.log(this);
 	      var flag = check.call(this);
 	      var back = [];
 
 	      back.push(Create_tab('课程教材'));
-	      console.log('aaa', flag);
 	      if (flag) return flag;
 	      this.props.data.teachBookList.map(function (e) {
 	        back.push(_react2["default"].createElement(

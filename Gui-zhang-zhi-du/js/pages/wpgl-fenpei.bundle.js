@@ -65,7 +65,6 @@ webpackJsonp([7],{
 	      wfp: GET("wfp") || SET("wfp", 1)
 	    };
 	    _this.title = parseHash(window.location.href)['wppc'];
-	    console.log(_this.title);
 	    _this.state = {
 	      TP: {
 	        page: 1,
@@ -98,7 +97,6 @@ webpackJsonp([7],{
 	        success: function success(gets) {
 	          SET("page", page);
 	          var datas = JSON.parse(gets);
-	          console.log(datas.data.list);
 	          _this2.setState({
 	            TP: {
 	              page: page,
@@ -113,7 +111,6 @@ webpackJsonp([7],{
 	  }, {
 	    key: 'search',
 	    value: function search() {
-	      console.log("搜索");
 	      // this.search_cache.zjxm=SET("zjxm",this.state.zjxm);
 	      this._get_list(1);
 	    }
@@ -125,9 +122,7 @@ webpackJsonp([7],{
 	      var change_fzx = function change_fzx(eve) {
 	        _this3.search_cache.fzx = SET('fzx', eve.target.value);
 	        _this3._get_list(1);
-	        console.log(eve.target.value);
 	      };
-	      console.log('fzx:', this.search_cache.fzx);
 	      return _react2["default"].createElement('select', {
 	        name: 'fzx',
 	        id: 'fenpei-fzx',
@@ -142,7 +137,6 @@ webpackJsonp([7],{
 	  }, {
 	    key: 'change_state',
 	    value: function change_state(state, eve) {
-	      console.log(state, eve.target.checked);
 	      this.search_cache[state] = SET(state, +eve.target.checked);
 	      this.search();
 	    }
@@ -299,7 +293,6 @@ webpackJsonp([7],{
 	    value: function componentDidMount() {
 	      var _this5 = this;
 
-	      console.log('moren:', this.fzx_select.value);
 	      var ops = '<option value="">\u8BF7\u9009\u62E9</option>';
 	      this.fzx_select.innerHTML = ops;
 	      // 填充分组项次下拉菜单
@@ -320,7 +313,6 @@ webpackJsonp([7],{
 	          JSON.parse(gets).data.forEach(function (e, index) {
 	            return ops += '<option data-reactid=".0.0.1.2.1.' + index + '" ' + (e.fzx === nowItem ? 'selected' : null) + ' value=' + e.fzx + '>' + e.fzx + '</option>';
 	          });
-	          console.log(ops);
 	          _this5.fzx_select.innerHTML = ops.toString();
 	          // this.setState({dangerHTML: ops});
 	        }
@@ -353,7 +345,6 @@ webpackJsonp([7],{
 	          alert('请先选择需要撤销的项！');
 	          return;
 	        }
-	        console.log('flag:', flag);
 	        if (flag) {
 	          alert('只能撤销已分配的项目，请检查！');
 	          return;
@@ -378,7 +369,6 @@ webpackJsonp([7],{
 	          alert('请先选择需要分配的项！');
 	          return;
 	        }
-	        console.log('flag:', flag);
 	        if (flag) {
 	          alert('只能分配未分配的项目，请检查！');
 	          return;
@@ -483,14 +473,12 @@ webpackJsonp([7],{
 	  }, {
 	    key: 'option',
 	    value: function option(type, id, num, groupItem, index) {
-	      console.log("option:", type);
 	      switch (type) {
 	        case '撤销':
 	          Creat_popup('撤销', num, id, groupItem, index);
 	          document.getElementById('popup').style.display = "block";
 	          break;
 	        case '自动分配':
-	          console.log('自动分配', num, id, groupItem, index, FenzuNum);
 	          Creat_popup('自动分配', num, id, groupItem, index);
 	          document.getElementById('popup').style.display = "block";
 	          break;
@@ -527,7 +515,6 @@ webpackJsonp([7],{
 	        Items[index] = '';
 	      }
 	      this.allCheck.checked = false;
-	      console.log(Nums, this.lists, Items);
 	    }
 
 	    // 输入数字检测
@@ -537,7 +524,6 @@ webpackJsonp([7],{
 	    value: function input_num(index, eve) {
 	      if (/^\d*$/.test(eve.target.value)) {
 	        FenzuNum[index] = +eve.target.value;
-	        console.log('ok,', FenzuNum[index]);
 	      } else {
 	        eve.target.value = 0;
 	        return;
@@ -727,7 +713,6 @@ webpackJsonp([7],{
 	          Nums = [];
 	          Items.fill('');
 	        }
-	        console.log(Items);
 	        Array.from(document.querySelectorAll('tbody input[type="checkbox"]')).forEach(function (e) {
 	          return e.checked = eve.target.checked;
 	        });
@@ -772,7 +757,6 @@ webpackJsonp([7],{
 	      var type = this.props.type === 'showZJ' ? 'getZjfzList' : 'getKcfzList';
 	      var dat = {};
 	      if (this.props.type === 'showZJ') {
-	        console.log('专家');
 	        dat = {
 	          unifyCode: getCookie("userId"),
 	          evaluateGroupBatch: this.props.fzpc,
@@ -782,7 +766,6 @@ webpackJsonp([7],{
 	          count: _POPCOUNT
 	        };
 	      } else {
-	        console.log('课程');
 	        dat = {
 	          unifyCode: getCookie("userId"),
 	          reviewBatch: parseHash(window.location.href).wppc,
@@ -797,7 +780,6 @@ webpackJsonp([7],{
 	        data: dat,
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log(datas);
 	          if (datas.meta.result !== 100) {
 	            return;
 	          }
@@ -817,7 +799,6 @@ webpackJsonp([7],{
 	    value: function render() {
 	      var _this12 = this;
 
-	      console.log('poplist:', this.props);
 	      var thead = '';
 	      if (this.props.type === 'showZJ') {
 	        thead = _react2["default"].createElement(
@@ -1049,7 +1030,6 @@ webpackJsonp([7],{
 	    value: function render() {
 	      var _this14 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          names = _props.names,
@@ -1145,7 +1125,6 @@ webpackJsonp([7],{
 	          break;
 	        case 'showZJ':
 	        case 'showKC':
-	          console.log("show");
 	          return _react2["default"].createElement(
 	            'div',
 	            {
@@ -1178,12 +1157,10 @@ webpackJsonp([7],{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      if (window.frameElement) {
-	        console.log('558--', document.body.scrollHeight);
 	        var H = document.body.scrollHeight;
 	        if (this.background.height > parseInt(document.body.scrollHeight)) {
 	          H = this.background.scrollHeight;
 	        }
-	        console.log("height:", this.background.scrollHeight);
 	        window.frameElement.height = H;
 	      }
 
@@ -1214,7 +1191,7 @@ webpackJsonp([7],{
 	          var A = [];
 	          var B = [];
 	          Checks.forEach(function (e) {
-	            A.push(Items[e].expertGroup);
+	            A.push(Items[e].groupItem);
 	            B.push(FenzuNum[e]);
 	          });
 	          dat = {
@@ -1276,7 +1253,6 @@ webpackJsonp([7],{
 	}(_react2["default"].Component);
 
 	function Creat_popup(type, names, id, groupItem, index) {
-	  console.log(id);
 	  var popup_datas = {
 	    type: type,
 	    names: names,

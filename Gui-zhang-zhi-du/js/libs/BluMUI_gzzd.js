@@ -25,7 +25,6 @@ class Filter extends React.Component {
     } else {
       this.pub=this.refs.Pub.checked?1:0;
     }
-      console.log('this page',this.P.page)
     ajax({
       url:courseCenter.host+'getRegulationHead',
       data:{
@@ -39,7 +38,6 @@ class Filter extends React.Component {
       },
       success:gets=>{
         let datas=JSON.parse(gets);
-        console.log('列表信息',datas)
         this.P={
           page:p||this.P.page,
           pages:datas.data.totalPages
@@ -49,9 +47,6 @@ class Filter extends React.Component {
           this.P,
           this
         );
-        console.log("子iframe")
-        console.log(parent.document.getElementById('ifs-gzzd').height)
-        console.log(document.body.scrollHeight)
         parent.document.getElementById('ifs-gzzd').height=document.body.scrollHeight;
       }
     });
@@ -96,7 +91,6 @@ class BlueMUI_CreateFanye extends React.Component {
   }
 
   create_popup_fanye() {
-    console.log(this.props,"___376")
     let style={};
     let fanye=[];
     let start=1;
@@ -178,13 +172,11 @@ class BlueMUI_CreateFanye extends React.Component {
     if(p==0) {
       return;
     }
-    console.log("开始翻页")
     this.props.This.P.page=p;
     this.props.This.serch();
   }
 
   render() {
-    // console.log(this.props,"fanye")
     return this.create_popup_fanye();
   }
 }
@@ -199,7 +191,6 @@ class List extends React.Component {
     this.pub=this.pub.bind(this);
   }
   del(id) {
-    console.log('删除：',id);
     ajax({
       url:courseCenter.host+'deleteRegulation',
       data:{
@@ -207,13 +198,11 @@ class List extends React.Component {
         id:id
       },
       success:e=>{
-        console.log(JSON.parse(e))
       }
     });
     this.props.This.serch();
   }
   pub(id) {
-    console.log('发布：',id);
     ajax({
       url:courseCenter.host+'publishRegulation',
       data:{
@@ -221,7 +210,6 @@ class List extends React.Component {
         id:id
       },
       success:e=>{
-        console.log(JSON.parse(e))
       }
     });
     this.props.This.serch();

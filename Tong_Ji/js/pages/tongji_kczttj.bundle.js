@@ -326,7 +326,6 @@ webpackJsonp([1],{
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log("lists-state:", this.state);
 	      return _react2["default"].createElement(
 	        'div',
 	        { id: 'kczttj_lists' },
@@ -435,7 +434,6 @@ webpackJsonp([1],{
 	            pages: datas.data.totalPages,
 	            rows: datas.data.total
 	          });
-	          console.log(_this5.datas);
 	        }
 	      });
 	    }

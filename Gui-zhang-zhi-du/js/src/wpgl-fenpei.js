@@ -38,7 +38,6 @@ class Option extends React.Component {
       wfp: GET("wfp")||SET("wfp",1)
     };
     this.title=parseHash(window.location.href)['wppc'];
-    console.log(this.title);
     this.state={
       TP: {
         page:1,
@@ -66,7 +65,6 @@ class Option extends React.Component {
       success: (gets)=>{
         SET("page", page);
         let datas=JSON.parse(gets);
-        console.log(datas.data.list)
         this.setState({
           TP: {
             page: page,
@@ -80,7 +78,6 @@ class Option extends React.Component {
   }
 
   search() {
-    console.log("搜索")
     // this.search_cache.zjxm=SET("zjxm",this.state.zjxm);
     this._get_list(1);
   }
@@ -89,9 +86,7 @@ class Option extends React.Component {
     let change_fzx=(eve)=>{
       this.search_cache.fzx=SET('fzx', eve.target.value);
       this._get_list(1);
-      console.log(eve.target.value)
     }
-    console.log('fzx:',this.search_cache.fzx)
     return (
       <select
         name="fzx" 
@@ -107,7 +102,6 @@ class Option extends React.Component {
   }
 
   change_state(state,eve) {
-    console.log(state,eve.target.checked)
     this.search_cache[state]=SET(state,+eve.target.checked);
     this.search();
   }
@@ -177,7 +171,6 @@ class Option extends React.Component {
   }
 
   componentDidMount() {
-    console.log('moren:',this.fzx_select.value)
     let ops=`<option value="">请选择</option>`;
     this.fzx_select.innerHTML = ops;
     // 填充分组项次下拉菜单
@@ -198,7 +191,6 @@ class Option extends React.Component {
         JSON.parse(gets).data.forEach(
           (e, index)=>ops+=`<option data-reactid=".0.0.1.2.1.${index}" ${e.fzx===nowItem?'selected':null} value=${e.fzx}>${e.fzx}</option>`
         )
-        console.log(ops);
         this.fzx_select.innerHTML = ops.toString();
         // this.setState({dangerHTML: ops});
       }
@@ -229,7 +221,6 @@ class Option extends React.Component {
         alert('请先选择需要撤销的项！');
         return;
       }
-      console.log('flag:', flag);
       if (flag) {
         alert('只能撤销已分配的项目，请检查！');
         return;
@@ -250,7 +241,6 @@ class Option extends React.Component {
         alert('请先选择需要分配的项！');
         return;
       }
-      console.log('flag:', flag);
       if (flag) {
         alert('只能分配未分配的项目，请检查！');
         return;
@@ -305,14 +295,12 @@ class Lists extends React.Component {
   }
 
   option(type, id, num, groupItem, index) {
-    console.log("option:",type);
     switch(type) {
       case '撤销':
         Creat_popup('撤销', num, id, groupItem, index);
         document.getElementById('popup').style.display="block";
         break;
       case '自动分配':
-        console.log('自动分配', num, id, groupItem, index, FenzuNum);
         Creat_popup('自动分配', num, id, groupItem, index);
         document.getElementById('popup').style.display="block";
         break;
@@ -348,14 +336,12 @@ class Lists extends React.Component {
       Items[index] = '';
     }
     this.allCheck.checked=false;
-    console.log(Nums,this.lists, Items);
   }
 
   // 输入数字检测
   input_num(index, eve) {
     if(/^\d*$/.test(eve.target.value)) {
       FenzuNum[index] = +eve.target.value;
-      console.log('ok,',FenzuNum[index]);
     } else {
       eve.target.value = 0;
       return;
@@ -475,7 +461,6 @@ class Lists extends React.Component {
         Nums = [];
         Items.fill('');
       }
-      console.log(Items);
       Array.from(document.querySelectorAll('tbody input[type="checkbox"]')).forEach(
         e=>e.checked = eve.target.checked
       );
@@ -506,7 +491,6 @@ class Poplist extends React.Component {
     let type = this.props.type === 'showZJ' ? 'getZjfzList' : 'getKcfzList';
     let dat = {};
     if (this.props.type === 'showZJ') {
-      console.log('专家');
       dat = {
         unifyCode: getCookie("userId"),
         evaluateGroupBatch: this.props.fzpc,
@@ -516,7 +500,6 @@ class Poplist extends React.Component {
         count: _POPCOUNT
       };
     } else {
-      console.log('课程');
       dat = {
         unifyCode: getCookie("userId"),
         reviewBatch: parseHash(window.location.href).wppc,
@@ -531,7 +514,6 @@ class Poplist extends React.Component {
       data: dat,
       success: (gets) => {
         let datas=JSON.parse(gets);
-        console.log(datas);
         if(datas.meta.result!==100) {
           return;
         }
@@ -548,7 +530,6 @@ class Poplist extends React.Component {
   }
 
   render() {
-    console.log('poplist:',this.props)
     let thead = '';
     if (this.props.type === 'showZJ') {
       thead = <thead>
@@ -649,7 +630,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,names,groupItem}=this.props;
     const MAP={
       "撤销": "撤销",
@@ -693,7 +673,6 @@ class Popup extends React.Component {
         break;
       case 'showZJ':
       case 'showKC':
-        console.log("show")
         return(
           <div 
             id="background" 
@@ -713,12 +692,10 @@ class Popup extends React.Component {
 
   componentDidMount() {
     if(window.frameElement) {
-      console.log('558--',document.body.scrollHeight)
       let H=document.body.scrollHeight;
       if(this.background.height>parseInt(document.body.scrollHeight)) {
         H=this.background.scrollHeight;
       }
-      console.log("height:",this.background.scrollHeight)
       window.frameElement.height=H;
     }
 
@@ -747,7 +724,7 @@ class Popup extends React.Component {
         let A = [];
         let B = [];
         Checks.forEach((e) => {
-          A.push(Items[e].expertGroup);
+          A.push(Items[e].groupItem);
           B.push(FenzuNum[e]);
         });
         dat={
@@ -804,7 +781,6 @@ class Popup extends React.Component {
 }
 
 function Creat_popup(type, names, id, groupItem, index) {
-  console.log(id)
   const popup_datas={
     type: type,
     names: names,

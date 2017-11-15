@@ -28,7 +28,6 @@ webpackJsonp([0],{
 	      alert("数据获取失败，请重新登录！");
 	    }
 	    var datas = JSON.parse(gets);
-	    console.log(datas);
 	    BluMUI.create({
 	      id: 'Tab',
 	      role: datas.data
@@ -173,7 +172,6 @@ webpackJsonp([0],{
 	        },
 	        success: function success(gets) {
 	          var list = JSON.parse(gets);
-	          console.log(_this2);
 	          _this2.setState({
 	            lists: list.data.courseList,
 	            page: p
@@ -729,7 +727,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'popup_serch',
 	    value: function popup_serch(p, start) {
-	      console.log('inner:', p);
 	      if (p == 0) {
 	        return;
 	      }
@@ -1504,7 +1501,6 @@ webpackJsonp([0],{
 	      if (this.props.TP.total === 0) {
 	        return _react2["default"].createElement('div', { style: { height: '21px', padding: '30px 0' } });
 	      }
-	      console.log('total:', this.props.TP.total);
 
 	      var nums = [];
 	      var start = 1;
@@ -1579,7 +1575,6 @@ webpackJsonp([0],{
 	  }, {
 	    key: 'fanye',
 	    value: function fanye(p) {
-	      console.log('in TP:', p);
 	      if (!this.refs.tp || !this.props.callback) {
 	        return;
 	      }
@@ -1711,7 +1706,6 @@ webpackJsonp([0],{
 	          },
 	          success: function success(get) {
 	            var datas = JSON.parse(get);
-	            console.log('test:', datas.data);
 	            BluMUI.result.Title.setState({
 	              lists: datas.data.courseList,
 	              page: 1,
@@ -1763,7 +1757,6 @@ webpackJsonp([0],{
 	    value: function render() {
 	      if (this.state.Rank == 1) {
 	        document.getElementById('serch_title').innerText = '系部中心名称';
-	        console.log(document.getElementById('serch_title'));
 	        document.getElementById('jxtdss').placeholder = '请输入系部中心名称';
 	      } else {
 	        document.getElementById('serch_title').innerText = '课程名称';

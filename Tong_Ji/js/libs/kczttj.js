@@ -114,7 +114,6 @@ class Lists extends React.Component {
   }
 
   render() {
-    console.log("lists-state:",this.state);
     return(<div id="kczttj_lists">
       <div id="kczttj_table">
         <table>
@@ -166,7 +165,6 @@ class Lists extends React.Component {
           pages: datas.data.totalPages,
           rows: datas.data.total
         });
-        console.log(this.datas);
       }
     });
   }

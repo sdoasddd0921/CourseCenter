@@ -21,7 +21,6 @@ ajax({
       alert("数据获取失败，请重新登录！");
     }
     var datas=JSON.parse(gets);
-    console.log(datas)
     BluMUI.create({
       id:'Tab',
       role:datas.data

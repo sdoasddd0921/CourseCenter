@@ -66,7 +66,6 @@ class Option extends React.Component {
       },
       success: (gets)=>{
         let datas=JSON.parse(gets);
-        console.log('datas:',datas);
         SET("page", page);
         this.setState({
           TP: {
@@ -323,7 +322,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,id}=this.props;
     const MAP={
       "delete": "删除"

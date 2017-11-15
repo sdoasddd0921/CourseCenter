@@ -134,7 +134,6 @@ class Option extends React.Component {
     let pop = document.getElementById('popup');
     // PiLiangDelete
     this.PLdelete.onclick=()=>{
-      console.log(WPPCS)
       Creat_popup('PLdelete', WPPCS, this.refs.list.ids)
       pop.style.display='block';
     };
@@ -182,7 +181,6 @@ class Lists extends React.Component {
   option(type, id, wppc,eve) {
     eve.preventDefault();
 
-    console.log("option:",type);
     switch(type) {
       case 'delete':
         Creat_popup('delete', wppc, id);
@@ -282,7 +280,6 @@ class Lists extends React.Component {
         && this.ids.push(e.value.split("#")[0])
         && WPPCS.push(e.value.split("#")[1]);
       });
-      console.log(WPPCS.join(","))
     }
   }
 
@@ -300,7 +297,6 @@ class Popup extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     const {type,names}=this.props;
     const MAP={
       "PLdelete": "删除",
@@ -391,15 +387,12 @@ class Popup extends React.Component {
   //     if(this.refs.pb.offsetHeight>parseInt(document.body.offsetHeight)) {
   //       H=this.refs.pb.offsetHeight;
   //     }
-  //     console.log("height:",this.refs.pb.parentNode.clientHeight)
-  //     console.log(document.getElementById('popup').offsetHeight)
   //     window.frameElement.height=H;
   //   }
   // }
 }
 
 function Creat_popup(type, names, id) {
-  console.log(id)
   const popup_datas={
     type: type,
     names: names,

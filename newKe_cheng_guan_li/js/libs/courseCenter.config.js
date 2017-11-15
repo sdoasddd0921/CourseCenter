@@ -1,7 +1,7 @@
 var courseCenter = {
 	// host:'http://cc.cqupt.edu.cn/',
 	// host:'http://172.22.114.135:6535/',
-	host:'http://172.20.2.139/'
+	host:'http://172.20.2.137/'
 }
 function parseHash(URL) {
 	var hash = decodeURI(URL).split('?')[1],
@@ -37,7 +37,7 @@ function getCookie(c_name)
 			return unescape(document.cookie.substring(c_start,c_end))
 		}
 	}
-	return "0102549"
+	return "0102215"
 	// LTT:0102549
 	// CW:0102215
 }

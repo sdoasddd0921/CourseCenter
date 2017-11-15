@@ -99,7 +99,6 @@ webpackJsonp([9],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log('datas:', datas);
 	          SET("page", page);
 	          _this2.setState({
 	            TP: {
@@ -532,7 +531,6 @@ webpackJsonp([9],{
 	    value: function render() {
 	      var _this9 = this;
 
-	      console.log(this.props);
 	      var _props = this.props,
 	          type = _props.type,
 	          id = _props.id;

@@ -32,7 +32,6 @@ ajax({
       }
       menus.push(menu_msg);
     });
-    console.log("newMenu:",menus)
 
     // 左边的菜单
     BluMUI.create({

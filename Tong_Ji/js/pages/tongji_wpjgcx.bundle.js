@@ -167,7 +167,6 @@ webpackJsonp([3],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log(datas);
 	          var ops = ['<option value="">\u8BF7\u9009\u62E9</option>'];
 	          datas.data.list.forEach(function (e) {
 	            ops.push('<option value="' + e.wppc + '">' + e.wppc + '</option>');
@@ -188,7 +187,6 @@ webpackJsonp([3],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log(datas);
 	          var ops = ['<option value="">\u8BF7\u9009\u62E9</option>'];
 	          datas.data.forEach(function (e) {
 	            ops.push('<option value="' + e.kkxymc + '">' + e.kkxymc + '</option>');
@@ -210,7 +208,6 @@ webpackJsonp([3],{
 	        },
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log(datas);
 	          var ops = ['<option value="">\u8BF7\u9009\u62E9</option>'];
 	          datas.data.forEach(function (e) {
 	            ops.push('<option value="' + e.jysmc + '">' + e.jysmc + '</option>');
@@ -239,7 +236,6 @@ webpackJsonp([3],{
 	        data: D,
 	        success: function success(gets) {
 	          var datas = JSON.parse(gets);
-	          console.log('gets:', datas);
 	          if (datas.meta.result === 100) {
 	            _this5.setState({
 	              page: p,
